@@ -1,7 +1,7 @@
 ######################
 # Project Specific
 ######################
-/src/main/webapp/content/css/main.css
+/src/main/css/main.css
 /target/classes/static/**
 /src/test/javascript/coverage/
 
@@ -158,3 +158,11 @@ system.properties
 ######################
 /coverage/
 /.nyc_output/
+
+
+
+######################
+# Parcel
+######################
+/.parcel-cache
+/dist

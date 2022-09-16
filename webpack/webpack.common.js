@@ -65,7 +65,7 @@ module.exports = options =>
           {
             test: /\.tsx?$/,
             use: getTsLoaderRule(options.env),
-            include: [utils.root('./src/main/webapp/app')],
+            include: [utils.root('./src/app')],
             exclude: [utils.root('node_modules')],
           },
           {
@@ -125,16 +125,16 @@ module.exports = options =>
               globOptions: { ignore: ['**/index.html'] },
             },
             { from: './node_modules/axios/dist/axios.min.js', to: 'swagger-ui/' },
-            { from: './src/main/webapp/swagger-ui/', to: 'swagger-ui/' },
-            { from: './src/main/webapp/content/', to: 'content/' },
-            { from: './src/main/webapp/favicon.ico', to: 'favicon.ico' },
-            { from: './src/main/webapp/manifest.webapp', to: 'manifest.webapp' },
+            { from: './src/swagger-ui/', to: 'swagger-ui/' },
+            { from: './src/content/', to: 'content/' },
+            { from: './src/favicon.ico', to: 'favicon.ico' },
+            { from: './src/manifest.webapp', to: 'manifest.webapp' },
             // jhipster-needle-add-assets-to-webpack - JHipster will add/remove third-party resources in this array
-            { from: './src/main/webapp/robots.txt', to: 'robots.txt' },
+            { from: './src/robots.txt', to: 'robots.txt' },
           ],
         }),
         new HtmlWebpackPlugin({
-          template: './src/main/webapp/index.html',
+          template: './src/index.html',
           chunksSortMode: 'auto',
           inject: 'body',
           base: '/gestionhebergement',
