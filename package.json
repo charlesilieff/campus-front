@@ -65,6 +65,7 @@
     "loaders.css": "0.1.2",
     "lodash": "4.17.21",
     "parcel": "^2.7.0",
+    "parcel-reporter-static-files-copy": "^1.4.0",
     "path-browserify": "1.0.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
@@ -168,5 +169,9 @@
   },
   "alias": {
     "app": "./src/app"
+  },
+  "staticFiles": {
+    "staticPath": "src/content/images",
+    "staticOutPath": "content/images"
   }
 }
