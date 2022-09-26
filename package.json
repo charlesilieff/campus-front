@@ -15,7 +15,7 @@
     "pree2e:headless": "npm run ci:server:await",
     "e2e:headless": "npm run e2e:cypress:headless",
     "e2e:cypress:headless": "npm run e2e:cypress -- --headless",
-    "e2e:cypress": "cypress run --browser firefox --record ${CYPRESS_ENABLE_RECORD:-false}",
+    "e2e:cypress": "cypress run --browser chrome --record ${CYPRESS_ENABLE_RECORD:-false}",
     "cypress": "cypress open",
     "jest": "jest --coverage --logHeapUsage --maxWorkers=2 --config jest.conf.js",
     "jest:update": "npm run jest -- --updateSnapshot",
@@ -64,8 +64,6 @@
     "dayjs": "1.10.5",
     "loaders.css": "0.1.2",
     "lodash": "4.17.21",
-    "parcel": "^2.7.0",
-    "parcel-reporter-static-files-copy": "^1.4.0",
     "path-browserify": "1.0.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
@@ -86,6 +84,8 @@
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.7.0",
+    "parcel": "^2.7.0",
+    "parcel-reporter-static-files-copy": "^1.4.0",
     "@testing-library/react": "11.2.7",
     "@types/jest": "26.0.23",
     "@types/lodash": "4.14.170",
@@ -107,8 +107,7 @@
     "cross-env": "7.0.3",
     "css-loader": "5.2.6",
     "css-minimizer-webpack-plugin": "3.0.1",
-    "cypress": "^8.4.0",
-    "cypress-audit": "1.0.0",
+    "cypress": "^10.8.0",
     "eslint": "7.28.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-cypress": "2.11.3",
@@ -173,5 +172,10 @@
   "staticFiles": {
     "staticPath": "src/content/images",
     "staticOutPath": "content/images"
-  }
+  },
+  "browserslist": [
+    "last 1 chrome version",
+    "last 1 firefox version",
+    "last 1 safari version"
+  ]
 }
