@@ -46,7 +46,7 @@ export const Room = (props: RouteComponentProps<{ url: string }>) => {
                 <th>Commentaire</th>
                 <th>Type de chambre</th>
                 <th>Emplacement de la chambre</th>
-                <th> Nombre de lits</th>
+                <th>Nombre de lits</th>
                 <th />
               </tr>
             </thead>

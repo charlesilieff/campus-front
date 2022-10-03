@@ -47,7 +47,7 @@ Cypress.Commands.add('clickOnEntityMenuItem', (entityName: string) => {
     .get(navbarSelector)
     .get(entityItemSelector)
     .click({ force: true })
-    .get(`.dropdown-item[href="/gestionhebergement/${entityName}"]`)
+    .get(`.dropdown-item[href="/${entityName}"]`)
     .click({ force: true });
 });
 
@@ -66,4 +66,4 @@ declare global {
 }
 
 // Convert this to a module instead of script (allows import/export)
-export {};
+export { };
