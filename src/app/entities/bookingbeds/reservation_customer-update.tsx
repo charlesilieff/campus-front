@@ -79,22 +79,7 @@ export const ReservationCustomerUpdate = (props: RouteComponentProps<{ id: strin
   };
 
   const defaultValues = () => {
-    // return {
-    //   firstname: 'Bob',
-    //   lastname: 'Marley',
-    //   age: 69,
-    //   phoneNumber: '0102030405',
-    //   email: 'bob@marley.jam',
-    //   personNumber: 10,
-    //   specialDietNumber: 10,
-    //   arrivalDate: dayjs(new Date(2022, 12, 22)).format('YYYY-MM-DD'),
-    //   departureDate: dayjs(new Date(2022, 12, 26)).format('YYYY-MM-DD'),
-    //   arrivalDinerNumber: 10,
-    //   arrivalLunchNumber: 11,
-    //   customerComment: 'ttoto',
-    //   departureDinerNumber: 5,
-    //   departureLunchNumber: 4,
-    // };
+   
 
     return {
       isArrivalDiner: true,
@@ -124,6 +109,22 @@ export const ReservationCustomerUpdate = (props: RouteComponentProps<{ id: strin
             <p>Chargement...</p>
           ) : (
             <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
+               <Button
+                tag={Link}
+                id="cancel-save"
+                data-cy="entityCreateCancelButton"
+                to="/planning"
+                replace
+                style={{ backgroundColor: '#114B5F', color: 'white' }}
+              >
+                &nbsp;
+                <span className="d-none d-md-inline">Annuler</span>
+              </Button>
+              &nbsp;
+              <Button color="primary" id="save-entity" data-cy="stepTwo" type="submit">
+                <FontAwesomeIcon icon="save" />
+                &nbsp; Suivant
+              </Button>
               <ValidatedField
                 label="Prénom"
                 id="customer-firstname"

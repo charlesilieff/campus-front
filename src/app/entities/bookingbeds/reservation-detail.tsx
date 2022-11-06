@@ -19,8 +19,25 @@ export const ReservationDetail = (props: RouteComponentProps<{ id: string }>) =>
   const reservationEntity = useAppSelector(state => state.bookingBeds.entity);
   const customerEntity = reservationEntity.customer;
   return (
+    
     <Row>
+      
       <Col md="8">
+      {isAdmin ? (
+          <>
+            <Button tag={Link} to={`/bookingbeds/${reservationEntity.id}/delete`} color="danger" data-cy="entityDeleteButton">
+              <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Annuler la réservation</span>
+            </Button>
+            &nbsp;
+            <Button tag={Link} to={`/bookingbeds/${reservationEntity.id}/edit`} replace color="primary">
+              <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Modifier la réservation</span>
+            </Button>
+          </>
+        ) : (
+          <Button tag={Link} to={`/planning`} replace color="primary">
+            <FontAwesomeIcon icon="calendar-day" /> <span className="d-none d-md-inline">Planning</span>
+          </Button>
+        )}
         <h2 data-cy="customerDetailsHeading">Client</h2>
         <dl className="jh-entity-details">
           <dt>

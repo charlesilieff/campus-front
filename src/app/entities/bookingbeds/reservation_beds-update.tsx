@@ -14,12 +14,12 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { isNumber, TextFormat } from 'react-jhipster';
+import {  TextFormat } from 'react-jhipster';
 import { RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Row } from 'reactstrap';
 import { backToOne, createEntity, updateEntity } from './reservation.reducer';
-import { PlaceMenu } from 'app/shared/layout/menus/placeMenu';
 import PlaceModal from '../place/placeModal';
+import { Heading, HStack, Select, Text, VStack } from '@chakra-ui/react';
 
 const apiUrlPlacesWithoutImage = 'api/places/noimage';
 const apiUrlAllPlaces = 'api/planning/places';
@@ -249,13 +249,18 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
     <div>
       <Row className="justify-content-center">
         <Col md="6">
-          <h2 id="gestionhebergementApp.reservation.home.createOrEditLabel" data-cy="ReservationCreateUpdateHeading">
+        
+          <Heading size={"lg"}id="gestionhebergementApp.reservation.home.createOrEditLabel" data-cy="ReservationCreateUpdateHeading">
             Choisissez les lits :
-          </h2>
+          </Heading>
         </Col>
       </Row>
       <Row>
         <Col sm={{ size: 6, order: 2, offset: 2 }}>
+        <HStack>
+            <Text fontWeight={"bold"}>Nom: {reservationEntity?.customer.firstname}   </Text>
+            <Text fontWeight={"bold"}>Prénom: {reservationEntity?.customer.lastname}  </Text>
+          </HStack>
           <p>
             Date d&apos;arrivée : <TextFormat value={reservationEntity?.arrivalDate} type="date" format={APP_LOCAL_DATE_FORMAT} /> Date de
             départ : <TextFormat value={reservationEntity?.departureDate} type="date" format={APP_LOCAL_DATE_FORMAT} />
@@ -265,8 +270,8 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
       </Row>
       <Row className="justify-content-center" style={{ marginBottom: '2rem' }}>
         <Col md={{ size: 2, order: 0, offset: 2 }}>
-          <p>Filtre par lieu</p>
-          <select
+          <Heading size={"md"}>Filtre par lieu</Heading>
+          <Select
             className="block"
             id="place"
             name="placeId"
@@ -287,12 +292,12 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
             ) : (
               <option value="" key="0" />
             )}
-          </select>
+          </Select>
           <PlaceModal {...placeImage} />
         </Col>
         <Col md={{ size: 4, order: 1 }}>
-          <p>Filtre par type de chambre</p>
-          <select
+        <Heading size={"md"}>Filtre par type de chambre</Heading>
+          <Select
             className="block"
             id="roomKind"
             name="roomKindId"
@@ -312,7 +317,7 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
             ) : (
               <option value="" key="0" />
             )}
-          </select>
+          </Select>
         </Col>
       </Row>
       <Row className="justify-content-center">

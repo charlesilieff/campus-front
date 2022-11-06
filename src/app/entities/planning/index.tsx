@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppSelector } from 'app/config/store';
 import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import { AUTHORITIES } from 'app/config/constants';
+import { HStack, Select } from '@chakra-ui/react';
 
 const apiUrlPlacesWithoutImage = '/api/places/noimage';
 const apiUrlPlaces = 'api/planning/places';
@@ -63,7 +64,7 @@ const Index = () => {
 
   return (
     <div>
-      <div>
+      <HStack>
         <ValidatedField
           className="inline-block"
           id="date"
@@ -72,12 +73,13 @@ const Index = () => {
           type="date"
           onChange={newDatePlanning}
         ></ValidatedField>
-        <select
+        <Select
+        width={"200px"}
           className="block"
           id="place"
           name="placeId"
           data-cy="place"
-          style={{ padding: '0.4rem', borderRadius: '0.3rem', marginLeft: '2rem' }}
+          pl={10}
           onChange={e => {
             getOnePlace(e.target.value);
           }}
@@ -92,7 +94,7 @@ const Index = () => {
             <option value="" key="0" />
           )}
           Lieu
-        </select>
+        </Select>
         <PlaceModal {...place} />
         &nbsp;&nbsp;&nbsp;
         {isAdmin ? (
@@ -114,7 +116,7 @@ const Index = () => {
         ) : (
           ''
         )}
-      </div>
+      </HStack>
       <Planning place={place} date={date} totalDays={totalDays} reservations={reservations} />
     </div>
   );

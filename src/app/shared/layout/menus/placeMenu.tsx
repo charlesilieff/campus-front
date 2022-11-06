@@ -1,3 +1,4 @@
+import { HStack, Select } from '@chakra-ui/react';
 import PlaceModal from 'app/entities/place/placeModal';
 import { IPlace } from 'app/shared/model/place.model';
 import axios from 'axios';
@@ -29,14 +30,15 @@ export const PlaceMenu = () => {
   }, []);
 
   return (
-    <p style={{ textAlign: 'left' }}>
-      <div style={{ display: 'contents' }}>
-        <select
+    <HStack my={4} >
+      
+        <Select
+        width={"200px"}
           className="block"
           id="place"
           name="placeId"
           data-cy="place"
-          style={{ padding: '0.4rem', borderRadius: '0.3rem', marginLeft: '2rem' }}
+          
           onChange={e => {
             getOnePlace(e.target.value);
           }}
@@ -50,10 +52,10 @@ export const PlaceMenu = () => {
           ) : (
             <option value="" key="0" />
           )}
-        </select>
+        </Select>
 
         <PlaceModal {...place} />
-      </div>
-    </p>
+      
+    </HStack>
   );
 };

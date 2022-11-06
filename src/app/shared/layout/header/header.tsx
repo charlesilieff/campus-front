@@ -2,7 +2,7 @@ import React from 'react';
 import LoadingBar from 'react-redux-loading-bar';
 import { Nav, Navbar } from 'reactstrap';
 import { AccountMenu, AdminMenu, EntitiesMenu } from '../menus';
-import { Brand, Home } from './header-components';
+import { Brand, Home,Help } from './header-components';
 import './header.scss';
 
 export interface IHeaderProps {
@@ -33,6 +33,7 @@ const Header = (props: IHeaderProps) => {
       <Navbar data-cy="navbar" dark expand="sm" fixed="top" className="bg-primary">
         <Brand />
         <Nav id="header-tabs" className="ml-auto" navbar>
+        {!window.location.pathname.endsWith('reservation-request/new') && <Help />}
           {!window.location.pathname.endsWith('reservation-request/new') && <Home />}
 
           {props.isAuthenticated && <EntitiesMenu isResp={props.isResp} isCooker={props.isCooker} isUser={props.isUser} />}
