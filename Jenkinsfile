@@ -21,7 +21,7 @@ pipeline {
                 echo "Login to Ilieff docker repo"
                 sh "docker login docker.ilieff.fr -u charles -pM7%bqs3L3jawUJ"
                 echo "Push docker..."
-                sh "docker push campus-front"
+                sh "docker push docker.ilieff.fr/campus-front"
             }
        }
    }
