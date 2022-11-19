@@ -90,11 +90,7 @@ This is an example of how to list things you need to test the software and how t
   ```sh
   npm install npm@latest -g
   ```
-IMPORT : Fonctionne uniquement avec Java 11 (OpenJDK)
-- maven
-  ```sh
-  ./mvnw
-  ```
+
 
 ### Installation
 
@@ -108,13 +104,8 @@ IMPORT : Fonctionne uniquement avec Java 11 (OpenJDK)
    ```
    //TODO
 
-<!-- USAGE EXAMPLES -->
 
-## Usage
 
-//TODO
-
-<!-- ROADMAP -->
 
 ## Roadmap
 
@@ -143,7 +134,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## Contact
 
 Charles Ilieff - cilieff@gmail.com
-<br />
+
 Hervé Caujolle - herve.caujolle@gmail.com
 
 Project Link: [https://github.com/Carlolis/gestionhebergement](https://github.com/Carlolis/gestionhebergement)

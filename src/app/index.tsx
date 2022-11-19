@@ -31,7 +31,6 @@ const render = Component =>
       </Provider>
       </ChakraProvider>
     </ErrorBoundary>,
-    rootEl
   );
 
 render(AppComponent);

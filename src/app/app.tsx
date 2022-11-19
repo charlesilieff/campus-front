@@ -6,7 +6,6 @@ import React, { useEffect } from 'react';
 import { Card } from 'reactstrap';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import { hot } from 'react-hot-loader';
 
 import { useAppDispatch, useAppSelector } from './config/store';
 import { getSession } from './shared/reducers/authentication';
@@ -67,4 +66,4 @@ export const App = () => {
   );
 };
 
-export default hot(module)(App);
+export default App;
