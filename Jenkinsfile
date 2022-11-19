@@ -18,12 +18,8 @@ pipeline {
             steps {
                 echo "Building docker..."
                 sh "docker build . -t campus-front"
-            }      
-            steps {
                 echo "Login to Ilieff docker repo"
                 sh "docker login docker.ilieff.fr -u charles -pM7%bqs3L3jawUJ"
-        }
-            steps {
                 echo "Push docker..."
                 sh "docker push campus-front"
             }
