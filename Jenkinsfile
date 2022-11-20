@@ -17,7 +17,7 @@ pipeline {
         stage('Docker'){
             steps {
                 echo "Building docker..."
-                sh "docker build . -t campus-front"
+                sh "docker build . -t docker.ilieff.fr/campus-front"
                 echo "Login to Ilieff docker repo"
                 sh "docker login docker.ilieff.fr -u charles -pM7%bqs3L3jawUJ"
                 echo "Push docker..."
