@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
+import { ICustomer } from 'app/shared/model/customer.model';
 import { IReservationRequest } from 'app/shared/model/reservation-request.model';
 import React, { useEffect, useState } from 'react';
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
@@ -23,9 +24,10 @@ export const CustomerUpdate = (props: RouteComponentProps<{ id: string }>) => {
     }
   }, []);
 
-  const saveCustomer = (values: IReservationRequest) => {
+  const saveCustomer = (values: ICustomer) => {
     const entity = {
-      customer: { ...customerEntity, ...values,isFemal: true},
+      // @ts-expect-error : age is "" if not set
+      customer: { ...customerEntity, ...values,age:values.age===""?undefined:values.age, isFemal: true},
     };
 
     dispatch(setData(entity));
@@ -49,7 +51,7 @@ export const CustomerUpdate = (props: RouteComponentProps<{ id: string }>) => {
           {loading ? (
             <p>Chargement...</p>
           ) : (
-            <ValidatedForm defaultValues={defaultValues()} onSubmit={saveCustomer}>
+            <ValidatedForm defaultValues={defaultValues()} onSubmit={e=>saveCustomer(e)}>
               <ValidatedField
                 label="Prénom"
                 id="customer-firstname"
