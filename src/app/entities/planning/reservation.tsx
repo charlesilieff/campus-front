@@ -31,20 +31,24 @@ export const Reservation = ({ reservation, index, place, positionX, positionY, d
       }
     });
   });
-
+  
 
   return reservationBedIds.map((bedId: number, indexBed: number) => {
     const endTable = 39;
     const arrivalDate = dayjs(reservation.arrivalDate);
-    let gridColumnStart = positionX[getDateKey(arrivalDate)];
+    
+    let gridColumnStart = positionX[getDateKey(arrivalDate)] === undefined ? 8 : positionX[getDateKey(arrivalDate)];
     const difference = dayjs(reservation?.departureDate).diff(dayjs(reservation?.arrivalDate), 'day');
     const difference2 = dayjs(dayjs(reservation?.departureDate)).diff(date.format('YYYY-MM-DD'), 'day') ;
+    
+    
     let gridColumnEnd = gridColumnStart + difference >= endTable ? endTable : gridColumnStart + difference + 1;
-   
+    
     if (arrivalDate.isBefore(date, 'day')) {
       gridColumnStart = positionX[getDateKey(date)];
       
-      gridColumnEnd = gridColumnStart + difference >= endTable ? endTable : gridColumnStart ===8 ? difference2 +8+1:gridColumnStart+difference + 1;
+      const difference3 = dayjs(reservation?.departureDate).diff(date, 'day');
+      gridColumnEnd = gridColumnStart + difference3 >= endTable ? endTable : gridColumnStart ===8 ? difference2 +8+1:gridColumnStart+difference + 1;
       style = Object.assign(
         {
           borderBottomLeftRadius: '0em',
@@ -54,6 +58,7 @@ export const Reservation = ({ reservation, index, place, positionX, positionY, d
         },
         style
       );
+      
     }
 
     if (gridColumnEnd === endTable && date.add(30,"days").format('YYYY-MM-DD') !== dayjs(reservation?.departureDate).format('YYYY-MM-DD')) {

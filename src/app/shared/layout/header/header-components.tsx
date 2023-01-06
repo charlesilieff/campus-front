@@ -25,7 +25,7 @@ export const Home = props => (
   <ChakraLink>
     <NavLink tag={Link} to="/" className="d-flex align-items-center">
       <FontAwesomeIcon icon="home" />
-      <span>Acceuil</span>
+      <span>Accueil</span>
     </NavLink>
     </ChakraLink>
 );

@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { ICustomer } from 'app/shared/model/customer.model';
-import { IReservationRequest } from 'app/shared/model/reservation-request.model';
 import React, { useEffect, useState } from 'react';
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { RouteComponentProps } from 'react-router-dom';
