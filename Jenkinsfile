@@ -34,7 +34,7 @@ pipeline {
        stage('Deploy') {
             steps {
                 sshCommand remote: remote, command: "docker stop campus-front"
-                sshCommand remote: remote, command: "docker rm campus-fron"
+                sshCommand remote: remote, command: "docker rm campus-front"
                 sshCommand remote: remote, command: "docker run -d --restart unless-stopped --name campus-front --pull=always -p 80:80 docker.ilieff.fr/campus-front:latest"
             }
         }
