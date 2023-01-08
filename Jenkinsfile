@@ -1,3 +1,10 @@
+def remote = [:]
+remote.name = 'campusTest'
+remote.host = '192.168.1.25'
+remote.user = 'debian'
+remote.password = PASSWORD_LXC_TEST_CAMPUS
+remote.allowAnyHosts = true
+
 pipeline {
     agent any
     stages {
@@ -14,7 +21,7 @@ pipeline {
                 sh "npx parcel build src/main.html"
             }
         }
-        stage('Docker'){
+        stage('Docker push'){
             steps {
                 echo "Building docker..."
                 sh "docker build . -t docker.ilieff.fr/campus-front"
@@ -24,5 +31,12 @@ pipeline {
                 sh "docker push docker.ilieff.fr/campus-front"
             }
        }
+       stage('Deploy') {
+            steps {
+                sshCommand remote: remote, command: "docker stop campus-front"
+                sshCommand remote: remote, command: "docker rm campus-fron"
+                sshCommand remote: remote, command: "docker run -d --restart unless-stopped --name campus-front --pull=always -p 80:80 docker.ilieff.fr/campus-front:latest "
+            }
+        }
    }
 }
