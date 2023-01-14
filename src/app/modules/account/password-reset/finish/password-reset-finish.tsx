@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Button } from 'reactstrap';
 import { getUrlParameter, ValidatedField, ValidatedForm } from 'react-jhipster';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { handlePasswordResetFinish, reset } from '../password-reset.reducer';
@@ -19,8 +19,12 @@ export const PasswordResetFinishPage = (props: RouteComponentProps<{ key: string
     },
     []
   );
+  const history = useHistory();
 
-  const handleValidSubmit = ({ newPassword }) => dispatch(handlePasswordResetFinish({ key, newPassword }));
+  const handleValidSubmit = ({ newPassword }) => {
+    dispatch(handlePasswordResetFinish({ key, newPassword }));
+    history.push('/login');
+  };
 
   const updatePassword = event => setPassword(event.target.value);
 
@@ -55,7 +59,7 @@ export const PasswordResetFinishPage = (props: RouteComponentProps<{ key: string
           data-cy="confirmResetPassword"
         />
         <Button color="success" type="submit" data-cy="submit">
-          Validate new password
+          Valider le nouveau mot de passe
         </Button>
       </ValidatedForm>
     );

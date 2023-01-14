@@ -32,15 +32,15 @@ export const PasswordResetInit = () => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h1>Reset your password</h1>
+          <h1>Réinitialiser votre mot de passe</h1>
           <Alert color="warning">
-            <p>Enter the email address you used to register</p>
+            <p>{"Saisissez l'adresse électronique que vous avez utilisée pour vous inscrire"}</p>
           </Alert>
           <ValidatedForm onSubmit={handleValidSubmit}>
             <ValidatedField
               name="email"
               label="Email"
-              placeholder={'Your email'}
+              placeholder={'Votre email'}
               type="email"
               validate={{
                 required: { value: true, message: 'Your email is required.' },
@@ -51,7 +51,7 @@ export const PasswordResetInit = () => {
               data-cy="emailResetPassword"
             />
             <Button color="primary" type="submit" data-cy="submit">
-              Reset password
+              Réinitialiser le mot de passe
             </Button>
           </ValidatedForm>
         </Col>
