@@ -8,7 +8,7 @@ import { activateAction, reset } from './activate.reducer';
 
 const successAlert = (
   <Alert color="success">
-    <strong>Votre compte a bien été activé.</strong> S&apos;il-vous-plaît
+    <strong>Votre compte a bien été activé.</strong> S&apos;il-vous-plaît{' '}
     <Link to="/login" className="alert-link">
       connectez-vous
     </Link>
