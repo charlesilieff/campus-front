@@ -27,6 +27,7 @@ export const getEntity = createAsyncThunk(
   'bed/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`;
+
     return axios.get<IBed>(requestUrl);
   },
   { serializeError: serializeAxiosError }

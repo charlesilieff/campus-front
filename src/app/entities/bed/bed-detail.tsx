@@ -10,6 +10,7 @@ export const BedDetail = (props: RouteComponentProps<{ id: string }>) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    
     dispatch(getEntity(props.match.params.id));
   }, []);
 

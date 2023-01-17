@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, FormText, UncontrolledTooltip } from 'reactstrap';
+import { Button, Row, Col,  UncontrolledTooltip } from 'reactstrap';
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { IRoom } from 'app/shared/model/room.model';
 import { getEntities as getRooms } from 'app/entities/room/room.reducer';
-import { IReservation } from 'app/shared/model/reservation.model';
-import { getEntities as getReservations } from 'app/entities/reservation/reservation.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './bed.reducer';
-import { IBed } from 'app/shared/model/bed.model';
-import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 export const BedUpdate = (props: RouteComponentProps<{ id: string }>) => {
@@ -20,7 +14,6 @@ export const BedUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const [isNew] = useState(!props.match.params || !props.match.params.id);
 
   const rooms = useAppSelector(state => state.room.entities);
-  const reservations = useAppSelector(state => state.reservation.entities);
   const bedEntity = useAppSelector(state => state.bed.entity);
   const loading = useAppSelector(state => state.bed.loading);
   const updating = useAppSelector(state => state.bed.updating);
@@ -38,7 +31,6 @@ export const BedUpdate = (props: RouteComponentProps<{ id: string }>) => {
     }
 
     dispatch(getRooms({}));
-    dispatch(getReservations({}));
   }, []);
 
   useEffect(() => {
