@@ -3,20 +3,14 @@
 
 set -e
 
-
-alias yarn="node ./.yarn/releases/yarn-3.1.0.cjs"
-# this line was blocking me on vanilla ubuntu, since we seem to do fine with it both on OSX and ubuntu, I disabled it for now; I believe expand_aliases on is even the default...
-# shopt -s expand_aliases
-
 if [ -n "$(git status -s)" ]; then
   git status -s
   echo "^ You forgot to commit / ignore some files"
   exit 1;
 fi
 
-echo "Yarning" && yarn 
-echo "Check Dedupe.." && yarn dedupe -c
+echo "Npm i" && npm i 
+echo "Check Dedupe.." && npm dedupe
 
-# ./affected-checks-all.sh
-./affected-checks-projects.sh
+echo "linting.." && npm run lint
 echo "PrePush Done!"
