@@ -8,12 +8,11 @@ remote.allowAnyHosts = true
 pipeline {
     agent any
     options {
-            ansiColor('gnome-terminal')
+            ansiColor('xterm')
         }
     stages {
         stage('Install') {
             steps {
-
                 echo "Npm install..."
                 sh "npm install"
             }

@@ -44,6 +44,7 @@ export const BedUpdate = (props: RouteComponentProps<{ id: string }>) => {
     const entity: IBed = {
       ...bedEntity,
       ...values,
+      roomId: values.roomId === '' ? undefined : values.roomId,
       room: rooms.find(it => it.id.toString() === values.roomId.toString())
     }
 
@@ -57,7 +58,8 @@ export const BedUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const defaultValues = () =>
     isNew ? {} : {
       ...bedEntity,
-      roomId: bedEntity?.room?.id
+      // @ts-expect-error TODO: fix this
+      roomId: bedEntity?.room?.id === '' ? undefined : bedEntity?.room?.id
     }
 
   return (

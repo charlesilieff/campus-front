@@ -53,7 +53,7 @@ export const createEntity = createAsyncThunk(
 export const updateEntity = createAsyncThunk(
   'bed/update_entity',
   async (entity: IBed, thunkAPI) => {
-    const result = await axios.put<IBed>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
+    const result = await axios.put<IBed>(`${apiUrl}/${entity.id}`, cleanEntity({ ...entity }))
     thunkAPI.dispatch(getEntities())
     return result
   },
