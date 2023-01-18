@@ -1,7 +1,7 @@
 import React from 'react'
 import { RegisterOptions, useFormContext, UseFormGetValues } from 'react-hook-form'
 import { FormFeedback, FormGroup, Input, Label } from 'reactstrap'
-import { InputType } from 'reactstrap/es/Input'
+import { InputType } from 'reactstrap/types/lib/Input'
 
 type ValidateFunction = (value: any, getValue: UseFormGetValues<any>) => true | string
 interface FieldProps {

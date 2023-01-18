@@ -350,8 +350,7 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
           {loading ? <p>Chargement...</p> : (
             <FormProvider {...form}>
               <form onSubmit={form.handleSubmit(saveEntity)}>
-                <Beds rooms={rooms} bedsToBook={bedsToBook} checkBedsToBook={checkBedsToBook}>
-                </Beds>
+                <Beds rooms={rooms} bedsToBook={bedsToBook} checkBedsToBook={checkBedsToBook} />
                 <CustomValidatedField
                   label="Moyen de paiement"
                   id="reservation-paymentMode"

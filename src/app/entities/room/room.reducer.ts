@@ -2,8 +2,11 @@ import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/t
 import axios from 'axios'
 
 import { defaultValue, IRoom } from 'app/shared/model/room.model'
-import { createEntitySlice, EntityState, IQueryParams,
-  serializeAxiosError } from 'app/shared/reducers/reducer.utils'
+import {
+  createEntitySlice,
+  EntityState,
+  serializeAxiosError
+} from 'app/shared/reducers/reducer.utils'
 import { cleanEntity } from 'app/shared/util/entity-utils'
 
 const initialState: EntityState<IRoom> = {
@@ -21,7 +24,7 @@ const apiUrl = 'api/rooms'
 
 export const getEntities = createAsyncThunk(
   'room/fetch_entity_list',
-  async ({ page, size, sort }: IQueryParams) => {
+  async () => {
     const requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`
     return axios.get<IRoom[]>(requestUrl)
   }
@@ -40,7 +43,7 @@ export const createEntity = createAsyncThunk(
   'room/create_entity',
   async (entity: IRoom, thunkAPI) => {
     const result = await axios.post<IRoom>(apiUrl, cleanEntity(entity))
-    thunkAPI.dispatch(getEntities({}))
+    thunkAPI.dispatch(getEntities())
     return result
   },
   { serializeError: serializeAxiosError }
@@ -50,7 +53,7 @@ export const updateEntity = createAsyncThunk(
   'room/update_entity',
   async (entity: IRoom, thunkAPI) => {
     const result = await axios.put<IRoom>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
-    thunkAPI.dispatch(getEntities({}))
+    thunkAPI.dispatch(getEntities())
     return result
   },
   { serializeError: serializeAxiosError }
@@ -60,7 +63,7 @@ export const partialUpdateEntity = createAsyncThunk(
   'room/partial_update_entity',
   async (entity: IRoom, thunkAPI) => {
     const result = await axios.patch<IRoom>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
-    thunkAPI.dispatch(getEntities({}))
+    thunkAPI.dispatch(getEntities())
     return result
   },
   { serializeError: serializeAxiosError }
@@ -72,7 +75,7 @@ export const deleteEntity = createAsyncThunk(
     try {
       const requestUrl = `${apiUrl}/${id}`
       const result = await axios.delete<IRoom>(requestUrl)
-      thunkAPI.dispatch(getEntities({}))
+      thunkAPI.dispatch(getEntities())
       return result
     } catch (error) {
       return thunkAPI.rejectWithValue('Veuillez supprimer les lits de la chambre avant')

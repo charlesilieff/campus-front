@@ -1,7 +1,6 @@
 import { IBed } from 'app/shared/model/bed.model'
 import { ICustomer } from 'app/shared/model/customer.model'
 import { IPricing } from 'app/shared/model/pricing.model'
-import dayjs from 'dayjs'
 
 export interface IReservation {
   id?: number

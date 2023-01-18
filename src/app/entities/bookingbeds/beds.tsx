@@ -32,8 +32,7 @@ const Beds: FunctionComponent<IProps> = ({ rooms, bedsToBook, checkBedsToBook })
                   data-cy={bed.id.toString()}
                   checked={bedsToBook?.includes(bed.id) ? true : false}
                   onChange={() => checkBedsToBook(bed.id)}
-                >
-                </CustomValidatedField>
+                />
               )
             })}
             <br />

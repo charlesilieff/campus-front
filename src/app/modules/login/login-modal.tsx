@@ -61,7 +61,8 @@ const LoginModal = (props: ILoginModalProps) => {
                   required: "Le nom d'utilisateur ne peut pas être vide."
                 }}
                 register={register}
-                error={errors.username.message.toString()}
+                // @ts-expect-error react-hook-form types are not up to date
+                error={errors.username}
                 isTouched={touchedFields.username}
               />
               <ValidatedField
@@ -75,6 +76,7 @@ const LoginModal = (props: ILoginModalProps) => {
                   required: 'Le mot de passe ne peut pas être vide.'
                 }}
                 register={register}
+                // @ts-expect-error react-hook-form types are not up to date
                 error={errors.password}
                 isTouched={touchedFields.password}
               />

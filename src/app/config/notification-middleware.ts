@@ -1,7 +1,8 @@
 import { toast } from 'react-toastify'
 import { isFulfilledAction, isRejectedAction } from '../shared/reducers/reducer.utils'
 
-const addErrorAlert = (message, key?, data?) => {
+const addErrorAlert = (message: string, key?: string, data?: string) => {
+  console.log(key, data)
   toast.error(message)
 }
 
@@ -58,7 +59,7 @@ export default () =>
                   })
                 if (errorHeader) {
                   const entityName = entityKey
-                  addErrorAlert(errorHeader, errorHeader, { entityName })
+                  addErrorAlert(errorHeader, errorHeader, entityName)
                 } else if (data?.fieldErrors) {
                   const fieldErrors = data.fieldErrors
                   for (i = 0; i < fieldErrors.length; i++) {
@@ -70,9 +71,11 @@ export default () =>
                     const convertedField = fieldError.field.replace(/\[\d*\]/g, '[]')
                     const fieldName = convertedField.charAt(0).toUpperCase()
                       + convertedField.slice(1)
-                    addErrorAlert(`Error on field "${fieldName}"`, `error.${fieldError.message}`, {
+                    addErrorAlert(
+                      `Error on field "${fieldName}"`,
+                      `error.${fieldError.message}`,
                       fieldName
-                    })
+                    )
                   }
                 } else if (typeof data === 'string' && data !== '') {
                   addErrorAlert(data)

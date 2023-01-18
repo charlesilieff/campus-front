@@ -3,8 +3,11 @@ import axios from 'axios'
 
 import { defaultValue, IBookingBeds } from 'app/shared/model/bookingBeds.model'
 import { IReservation } from 'app/shared/model/reservation.model'
-import { createEntitySlice, EntityState, IQueryParams,
-  serializeAxiosError } from 'app/shared/reducers/reducer.utils'
+import {
+  createEntitySlice,
+  EntityState,
+  serializeAxiosError
+} from 'app/shared/reducers/reducer.utils'
 import { cleanEntity } from 'app/shared/util/entity-utils'
 
 const initialState: EntityState<IBookingBeds> = {
@@ -24,7 +27,7 @@ const apiUrl = 'api/reservations'
 
 export const getEntities = createAsyncThunk(
   'reservation/fetch_entity_list',
-  async ({ page, size, sort }: IQueryParams) => {
+  async () => {
     const requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`
     return axios.get<IReservation[]>(requestUrl)
   }
@@ -43,7 +46,7 @@ export const createEntity = createAsyncThunk(
   'bookingBeds/create_entity',
   async (entity: IReservation, thunkAPI) => {
     const result = await axios.post<IBookingBeds>(apiUrlBookingBeds, cleanEntity(entity))
-    thunkAPI.dispatch(getEntities({}))
+    thunkAPI.dispatch(getEntities())
     return result
   },
   { serializeError: serializeAxiosError }
@@ -56,7 +59,7 @@ export const updateEntity = createAsyncThunk(
       `${apiUrlBookingBeds}/${entity.id}`,
       cleanEntity(entity)
     )
-    thunkAPI.dispatch(getEntities({}))
+    thunkAPI.dispatch(getEntities())
     return result
   },
   { serializeError: serializeAxiosError }
@@ -66,7 +69,7 @@ export const partialUpdateEntity = createAsyncThunk(
   'bookingBeds/partial_update_entity',
   async (entity: IReservation, thunkAPI) => {
     const result = await axios.patch<IBookingBeds>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
-    thunkAPI.dispatch(getEntities({}))
+    thunkAPI.dispatch(getEntities())
     return result
   },
   { serializeError: serializeAxiosError }
@@ -77,7 +80,7 @@ export const deleteEntity = createAsyncThunk(
   async (id: string | number, thunkAPI) => {
     const requestUrl = `${apiUrlBookingBeds}/${id}`
     const result = await axios.delete<IReservation>(requestUrl)
-    thunkAPI.dispatch(getEntities({}))
+    thunkAPI.dispatch(getEntities())
     return result
   },
   { serializeError: serializeAxiosError }

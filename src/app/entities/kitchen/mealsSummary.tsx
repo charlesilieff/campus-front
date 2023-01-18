@@ -48,10 +48,7 @@ const KitchenSummary = ({ date, totalDays, numberOfDays }: IProps) => {
         const dateDay = date.add(index, 'day')
         const dateKey = getDateKey(dateDay)
         positionX[dateKey] = gridColumnStart
-        return (
-          <DaySummary positionX={gridColumnStart} key={dateKey} date={dateDay} index={index}>
-          </DaySummary>
-        )
+        return <DaySummary positionX={gridColumnStart} key={dateKey} date={dateDay} index={index} />
       })}
     </div>
   )

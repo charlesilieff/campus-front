@@ -13,7 +13,7 @@ describe('AccountMenu', () => {
 
   const authenticatedWrapper = () => {
     if (!mountedWrapper) {
-      const history = createMemoryHistory()
+      const history = createMemoryHistory({ initialEntries: ['/'] })
       const { container } = render(
         <Router history={history}>
           <AccountMenu isAuthenticated />

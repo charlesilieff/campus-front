@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
     "jsx": "react",
     "target": "es6",
     "module": "esnext",
@@ -35,9 +37,10 @@
   },
   "include": [
     "src/app",
-    "src/test/javascript/spec"
+    "src/test/javascript/spec",
+    "cypress.config.ts"
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
 }

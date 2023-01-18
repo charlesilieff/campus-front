@@ -60,8 +60,7 @@ const MealsPlanning = (
             date={dateDay}
             index={index}
             isButtonPressed={() => isButtonPressed()}
-          >
-          </Day>
+          />
         )
       })}
     </div>

@@ -1,9 +1,12 @@
-import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit'
+import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import { defaultValue, IBedroomKind } from 'app/shared/model/bedroom-kind.model'
-import { createEntitySlice, EntityState, IQueryParams,
-  serializeAxiosError } from 'app/shared/reducers/reducer.utils'
+import {
+  createEntitySlice,
+  EntityState,
+  serializeAxiosError
+} from 'app/shared/reducers/reducer.utils'
 import { cleanEntity } from 'app/shared/util/entity-utils'
 
 const initialState: EntityState<IBedroomKind> = {
@@ -21,7 +24,7 @@ const apiUrl = 'api/bedroom-kinds'
 
 export const getEntities = createAsyncThunk(
   'bedroomKind/fetch_entity_list',
-  async ({ page, size, sort }: IQueryParams) => {
+  async () => {
     const requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`
     return axios.get<IBedroomKind[]>(requestUrl)
   }
@@ -40,7 +43,7 @@ export const createEntity = createAsyncThunk(
   'bedroomKind/create_entity',
   async (entity: IBedroomKind, thunkAPI) => {
     const result = await axios.post<IBedroomKind>(apiUrl, cleanEntity(entity))
-    thunkAPI.dispatch(getEntities({}))
+    thunkAPI.dispatch(getEntities())
     return result
   },
   { serializeError: serializeAxiosError }
@@ -50,7 +53,7 @@ export const updateEntity = createAsyncThunk(
   'bedroomKind/update_entity',
   async (entity: IBedroomKind, thunkAPI) => {
     const result = await axios.put<IBedroomKind>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
-    thunkAPI.dispatch(getEntities({}))
+    thunkAPI.dispatch(getEntities())
     return result
   },
   { serializeError: serializeAxiosError }
@@ -60,7 +63,7 @@ export const partialUpdateEntity = createAsyncThunk(
   'bedroomKind/partial_update_entity',
   async (entity: IBedroomKind, thunkAPI) => {
     const result = await axios.patch<IBedroomKind>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
-    thunkAPI.dispatch(getEntities({}))
+    thunkAPI.dispatch(getEntities())
     return result
   },
   { serializeError: serializeAxiosError }
@@ -71,7 +74,7 @@ export const deleteEntity = createAsyncThunk(
   async (id: string | number, thunkAPI) => {
     const requestUrl = `${apiUrl}/${id}`
     const result = await axios.delete<IBedroomKind>(requestUrl)
-    thunkAPI.dispatch(getEntities({}))
+    thunkAPI.dispatch(getEntities())
     return result
   },
   { serializeError: serializeAxiosError }

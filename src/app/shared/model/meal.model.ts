@@ -1,5 +1,3 @@
-import dayjs from 'dayjs'
-
 export interface IMeal {
   id?: number | null
   date?: string

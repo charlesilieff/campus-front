@@ -25,10 +25,10 @@ export const CustomerUpdate = (props: RouteComponentProps<{ id: string }>) => {
 
   const saveCustomer = (values: ICustomer) => {
     const entity = {
-      // @ts-expect-error : age is "" if not set
       customer: {
         ...customerEntity,
         ...values,
+        // @ts-expect-error : age is "" if not set
         age: values.age === '' ? undefined : values.age,
         isFemal: true
       }

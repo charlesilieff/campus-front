@@ -26,7 +26,7 @@ export type AuthenticationState = Readonly<typeof initialState>
 // Actions
 
 export const getSession = (): AppThunk =>
-  (dispatch, getState) => {
+  dispatch => {
     dispatch(getAccount())
   }
 
