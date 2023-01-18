@@ -1,4 +1,4 @@
-import { Heading, HStack, Select, Text, VStack } from '@chakra-ui/react'
+import { Heading, HStack, Select, Text } from '@chakra-ui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'

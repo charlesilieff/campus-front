@@ -24,7 +24,8 @@ export const PasswordPage = () => {
     dispatch(savePassword({ currentPassword, newPassword }))
   }
 
-  const updatePassword = event => setPassword(event.target.value)
+  const updatePassword = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setPassword(event.target.value)
 
   const account = useAppSelector(state => state.authentication.account)
   const successMessage = useAppSelector(state => state.password.successMessage)

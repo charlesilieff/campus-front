@@ -3,7 +3,7 @@ import * as React from 'react'
 import { TranslatorContext } from 'react-jhipster'
 
 export interface IDurationFormat {
-  value: any
+  value: string
   blankOnInvalid?: boolean
   locale?: string
 }

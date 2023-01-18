@@ -4,4 +4,5 @@ jest.conf.js
 target/
 build/
 node/
+dist/
 postcss.config.js

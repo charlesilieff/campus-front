@@ -110,7 +110,7 @@ const Index = () => {
   ))
 
   useEffect(() => {
-    ;({ mealsDataDays, resultTotalMeals } = calculateAccordingToNumberOfDays(
+    ({ mealsDataDays, resultTotalMeals } = calculateAccordingToNumberOfDays(
       mealsDataDays,
       numberOfDays,
       mealsData,
