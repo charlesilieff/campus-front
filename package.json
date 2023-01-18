@@ -25,7 +25,8 @@
     "test:watch": "npm run jest -- --watch",
     "cypress:audits": "cypress open --config-file cypress-audits.json",
     "e2e:cypress:audits:headless": "npm run e2e:cypress -- --headless --config-file cypress-audits.json",
-    "e2e:cypress:audits": "cypress run --browser chrome --record ${CYPRESS_ENABLE_RECORD:-false} --config-file cypress-audits.json"
+    "e2e:cypress:audits": "cypress run --browser chrome --record ${CYPRESS_ENABLE_RECORD:-false} --config-file cypress-audits.json",
+    "prepare": "husky install"
   },
   "config": {
     "backend_port": "8080",
@@ -98,7 +99,7 @@
     "eslint-plugin-sort-destructure-keys": "^1.4.0",
     "file-loader": "6.2.0",
     "generator-jhipster": "7.1.0",
-    "husky": "8.0.3",
+    "husky": "^8.0.0",
     "identity-obj-proxy": "3.0.0",
     "jest": "29.3.1",
     "jest-junit": "12.2.0",
