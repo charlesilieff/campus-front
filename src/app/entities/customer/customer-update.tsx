@@ -39,6 +39,8 @@ export const CustomerUpdate = (props: RouteComponentProps<{ id: string }>) => {
     const entity = {
       ...customerEntity,
       ...values,
+      // @ts-expect-error : age is a number
+      age: customerEntity.age === '' ? 0 : customerEntity.age,
       isFemal: true
     }
 
