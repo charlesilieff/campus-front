@@ -1,6 +1,6 @@
-import './docs.scss';
+import './docs.scss'
 
-import React from 'react';
+import React from 'react'
 
 const DocsPage = () => (
   <div>
@@ -14,6 +14,6 @@ const DocsPage = () => (
       data-cy="swagger-frame"
     />
   </div>
-);
+)
 
-export default DocsPage;
+export default DocsPage

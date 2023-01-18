@@ -17,6 +17,6 @@ export default defineConfig({
     },
     baseUrl: 'http://localhost:1234/',
     specPattern: 'src/test/cypress/integration/**/*.spec.ts',
-    supportFile: 'src/test/cypress/support/index.ts',
-  },
+    supportFile: 'src/test/cypress/support/index.ts'
+  }
 })

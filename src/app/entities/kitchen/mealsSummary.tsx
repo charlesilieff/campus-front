@@ -1,13 +1,13 @@
-import { getDateKey } from 'app/shared/util/date-utils';
-import { Dayjs } from 'dayjs';
-import React from 'react';
-import DaySummary from './daySummary';
-import Months from './months';
+import { getDateKey } from 'app/shared/util/date-utils'
+import { Dayjs } from 'dayjs'
+import React from 'react'
+import DaySummary from './daySummary'
+import Months from './months'
 
 interface IProps {
-  date: Dayjs;
-  totalDays: number;
-  numberOfDays: number;
+  date: Dayjs
+  totalDays: number
+  numberOfDays: number
 }
 
 /**
@@ -20,14 +20,14 @@ interface IProps {
  */
 const KitchenSummary = ({ date, totalDays, numberOfDays }: IProps) => {
   // On souhaite afficher 31 jours => Tableau de 31 élements.
-  const monthDays = Array.from({ length: numberOfDays });
+  const monthDays = Array.from({ length: numberOfDays })
 
   // Objets contenant la position en x dans la grille des jours.
-  const positionX = {};
+  const positionX = {}
 
   // Objets contenant la position en y dans la grille des lits.
-  const positionY = {};
-  const positionYEnd = {};
+  const positionY = {}
+  const positionYEnd = {}
 
   return (
     <div className="grid-container" style={gridFormatStyle(numberOfDays)}>
@@ -39,20 +39,25 @@ const KitchenSummary = ({ date, totalDays, numberOfDays }: IProps) => {
       <div className="diet classicdietdinner">Classique</div>
       <Months date={date} month={0} totalDays={totalDays}></Months>
 
-      {date.date() + numberOfDays - 1 > totalDays && <Months date={date} month={1} totalDays={totalDays}></Months>}
+      {date.date() + numberOfDays - 1 > totalDays && (
+        <Months date={date} month={1} totalDays={totalDays}></Months>
+      )}
       {monthDays.map((_, index) => {
-        const gridColumnStart = 8 + index;
+        const gridColumnStart = 8 + index
         // On construit l'objet qui va permettre de récuperer la bonne position en X pour afficher les réservations.
-        const dateDay = date.add(index, 'day');
-        const dateKey = getDateKey(dateDay);
-        positionX[dateKey] = gridColumnStart;
-        return <DaySummary positionX={gridColumnStart} key={dateKey} date={dateDay} index={index}></DaySummary>;
+        const dateDay = date.add(index, 'day')
+        const dateKey = getDateKey(dateDay)
+        positionX[dateKey] = gridColumnStart
+        return (
+          <DaySummary positionX={gridColumnStart} key={dateKey} date={dateDay} index={index}>
+          </DaySummary>
+        )
       })}
     </div>
-  );
-};
+  )
+}
 
-export default KitchenSummary;
+export default KitchenSummary
 
 /**
  * Style of the grid according to the number of days.
@@ -60,10 +65,10 @@ export default KitchenSummary;
  * @returns
  */
 function gridFormatStyle(numberOfDays: number) {
-  const style = {} as React.CSSProperties;
+  const style = {} as React.CSSProperties
   if (numberOfDays === 15) {
-    style.borderLeftWidth = '0.2em';
-    style.gridTemplateColumns = '3em repeat(21, minmax(20px, 1fr))';
+    style.borderLeftWidth = '0.2em'
+    style.gridTemplateColumns = '3em repeat(21, minmax(20px, 1fr))'
   }
-  return style;
+  return style
 }

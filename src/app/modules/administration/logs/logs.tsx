@@ -1,27 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react'
 
-import { getLoggers, changeLogLevel } from '../administration.reducer';
-import { useAppDispatch, useAppSelector } from 'app/config/store';
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { changeLogLevel, getLoggers } from '../administration.reducer'
 
 export const LogsPage = () => {
-  const [filter, setFilter] = useState('');
-  const logs = useAppSelector(state => state.administration.logs);
-  const isFetching = useAppSelector(state => state.administration.loading);
-  const dispatch = useAppDispatch();
+  const [filter, setFilter] = useState('')
+  const logs = useAppSelector(state => state.administration.logs)
+  const isFetching = useAppSelector(state => state.administration.loading)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getLoggers());
-  }, []);
+    dispatch(getLoggers())
+  }, [])
 
-  const changeLevel = (loggerName, level) => () => dispatch(changeLogLevel(loggerName, level));
+  const changeLevel = (loggerName, level) => () => dispatch(changeLogLevel(loggerName, level))
 
-  const changeFilter = evt => setFilter(evt.target.value);
+  const changeFilter = evt => setFilter(evt.target.value)
 
-  const getClassName = (level, check, className) => (level === check ? `btn btn-sm btn-${className}` : 'btn btn-sm btn-light');
+  const getClassName = (
+    level,
+    check,
+    className
+  ) => (level === check ? `btn btn-sm btn-${className}` : 'btn btn-sm btn-light')
 
-  const filterFn = l => l.name.toUpperCase().includes(filter.toUpperCase());
+  const filterFn = l => l.name.toUpperCase().includes(filter.toUpperCase())
 
-  const loggers = logs ? Object.entries(logs.loggers).map(e => ({ name: e[0], level: e[1].effectiveLevel })) : [];
+  const loggers = logs ?
+    Object.entries(logs.loggers).map(e => ({ name: e[0], level: e[1].effectiveLevel })) :
+    []
 
   return (
     <div>
@@ -31,9 +37,18 @@ export const LogsPage = () => {
       <p>There are {loggers.length.toString()} loggers.</p>
 
       <span>Filter</span>
-      <input type="text" value={filter} onChange={changeFilter} className="form-control" disabled={isFetching} />
+      <input
+        type="text"
+        value={filter}
+        onChange={changeFilter}
+        className="form-control"
+        disabled={isFetching}
+      />
 
-      <table className="table table-sm table-striped table-bordered" aria-describedby="logs-page-heading">
+      <table
+        className="table table-sm table-striped table-bordered"
+        aria-describedby="logs-page-heading"
+      >
         <thead>
           <tr title="click to order">
             <th>
@@ -99,7 +114,7 @@ export const LogsPage = () => {
         </tbody>
       </table>
     </div>
-  );
-};
+  )
+}
 
-export default LogsPage;
+export default LogsPage

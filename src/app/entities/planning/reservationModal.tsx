@@ -1,15 +1,15 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import dayjs from 'dayjs';
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap';
-import { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import dayjs from 'dayjs'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap'
+import { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
 interface IProps {
-  reservation: IReservationsPlanning;
+  reservation: IReservationsPlanning
 }
 const ReservationModal = ({ reservation }: IProps) => {
-  const [modal, setModal] = useState(false);
-  const toggle = () => setModal(!modal);
+  const [modal, setModal] = useState(false)
+  const toggle = () => setModal(!modal)
   return (
     <div>
       <Button color="green" onClick={toggle}>
@@ -33,7 +33,7 @@ const ReservationModal = ({ reservation }: IProps) => {
         </ModalBody>
       </Modal>
     </div>
-  );
-};
+  )
+}
 
-export default ReservationModal;
+export default ReservationModal

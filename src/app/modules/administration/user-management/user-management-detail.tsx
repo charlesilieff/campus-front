@@ -1,22 +1,22 @@
-import React, { useEffect } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Badge } from 'reactstrap';
-import { TextFormat } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, { useEffect } from 'react'
+import { TextFormat } from 'react-jhipster'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { Badge, Button, Row } from 'reactstrap'
 
-import { APP_DATE_FORMAT } from 'app/config/constants';
+import { APP_DATE_FORMAT } from 'app/config/constants'
 
-import { getUser } from './user-management.reducer';
-import { useAppDispatch, useAppSelector } from 'app/config/store';
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { getUser } from './user-management.reducer'
 
 export const UserManagementDetail = (props: RouteComponentProps<{ login: string }>) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getUser(props.match.params.login));
-  }, []);
+    dispatch(getUser(props.match.params.login))
+  }, [])
 
-  const user = useAppSelector(state => state.userManagement.user);
+  const user = useAppSelector(state => state.userManagement.user)
 
   return (
     <div>
@@ -28,7 +28,9 @@ export const UserManagementDetail = (props: RouteComponentProps<{ login: string 
           <dt>Login</dt>
           <dd>
             <span>{user.login}</span>&nbsp;
-            {user.activated ? <Badge color="success">Activated</Badge> : <Badge color="danger">Deactivated</Badge>}
+            {user.activated ?
+              <Badge color="success">Activated</Badge> :
+              <Badge color="danger">Deactivated</Badge>}
           </dd>
           <dt>First Name</dt>
           <dd>{user.firstName}</dd>
@@ -39,25 +41,43 @@ export const UserManagementDetail = (props: RouteComponentProps<{ login: string 
           <dt>Created By</dt>
           <dd>{user.createdBy}</dd>
           <dt>Created Date</dt>
-          <dd>{user.createdDate ? <TextFormat value={user.createdDate} type="date" format={APP_DATE_FORMAT} blankOnInvalid /> : null}</dd>
+          <dd>
+            {user.createdDate ?
+              (
+                <TextFormat
+                  value={user.createdDate}
+                  type="date"
+                  format={APP_DATE_FORMAT}
+                  blankOnInvalid
+                />
+              ) :
+              null}
+          </dd>
           <dt>Last Modified By</dt>
           <dd>{user.lastModifiedBy}</dd>
           <dt>Last Modified Date</dt>
           <dd>
-            {user.lastModifiedDate ? (
-              <TextFormat value={user.lastModifiedDate} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
-            ) : null}
+            {user.lastModifiedDate ?
+              (
+                <TextFormat
+                  value={user.lastModifiedDate}
+                  type="date"
+                  format={APP_DATE_FORMAT}
+                  blankOnInvalid
+                />
+              ) :
+              null}
           </dd>
           <dt>Profiles</dt>
           <dd>
             <ul className="list-unstyled">
-              {user.authorities
-                ? user.authorities.map((authority, i) => (
-                    <li key={`user-auth-${i}`}>
-                      <Badge color="info">{authority}</Badge>
-                    </li>
-                  ))
-                : null}
+              {user.authorities ?
+                user.authorities.map((authority, i) => (
+                  <li key={`user-auth-${i}`}>
+                    <Badge color="info">{authority}</Badge>
+                  </li>
+                )) :
+                null}
             </ul>
           </dd>
         </dl>
@@ -66,7 +86,7 @@ export const UserManagementDetail = (props: RouteComponentProps<{ login: string 
         <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Retour</span>
       </Button>
     </div>
-  );
-};
+  )
+}
 
-export default UserManagementDetail;
+export default UserManagementDetail

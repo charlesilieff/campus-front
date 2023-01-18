@@ -1,7 +1,7 @@
-import React from 'react';
-import MenuItem from 'app/shared/layout/menus/menu-item';
+import MenuItem from 'app/shared/layout/menus/menu-item'
+import React from 'react'
 
-import { NavDropdown } from './menu-components';
+import { NavDropdown } from './menu-components'
 
 export const EntitiesMenu = props => (
   <NavDropdown
@@ -12,9 +12,11 @@ export const EntitiesMenu = props => (
     style={{ maxHeight: '80vh', overflow: 'auto' }}
   >
     <>{/* to avoid warnings when empty */}</>
-    {/* <MenuItem icon="coffee" to="/reservation">
+    {
+      /* <MenuItem icon="coffee" to="/reservation">
       Réservations
-    </MenuItem> */}
+    </MenuItem> */
+    }
     {props.isResp && (
       <>
         <MenuItem icon="snowman" to="/customer">
@@ -49,4 +51,4 @@ export const EntitiesMenu = props => (
     )}
     {/* jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here */}
   </NavDropdown>
-);
+)

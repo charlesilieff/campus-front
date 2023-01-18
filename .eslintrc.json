@@ -1,6 +1,8 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "extends": [
     "plugin:react/recommended",
     "eslint:recommended",
@@ -27,11 +29,25 @@
     "@typescript-eslint/member-ordering": [
       "error",
       {
-        "default": ["static-field", "instance-field", "constructor", "static-method", "instance-method"]
+        "default": [
+          "static-field",
+          "instance-field",
+          "constructor",
+          "static-method",
+          "instance-method"
+        ]
       }
     ],
-    "@typescript-eslint/no-parameter-properties": ["warn", { "allows": ["public", "private", "protected"] }],
-
+    "@typescript-eslint/no-parameter-properties": [
+      "warn",
+      {
+        "allows": [
+          "public",
+          "private",
+          "protected"
+        ]
+      }
+    ],
     "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/explicit-member-accessibility": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
@@ -57,7 +73,10 @@
     "@typescript-eslint/unbound-method": "off",
     "@typescript-eslint/array-type": "off",
     "@typescript-eslint/no-shadow": "error",
-    "spaced-comment": ["warn", "always"],
+    "spaced-comment": [
+      "warn",
+      "always"
+    ],
     "guard-for-in": "error",
     "no-labels": "error",
     "no-caller": "error",
@@ -68,11 +87,26 @@
     "no-new": "error",
     "no-var": "error",
     "radix": "error",
-    "eqeqeq": ["error", "always", { "null": "ignore" }],
+    "eqeqeq": [
+      "error",
+      "always",
+      {
+        "null": "ignore"
+      }
+    ],
     "prefer-const": "error",
-    "object-shorthand": ["error", "always", { "avoidExplicitReturnArrows": true }],
+    "object-shorthand": [
+      "error",
+      "always",
+      {
+        "avoidExplicitReturnArrows": true
+      }
+    ],
     "default-case": "error",
-    "complexity": ["error", 40],
+    "complexity": [
+      "error",
+      40
+    ],
     "no-invalid-this": "off",
     "react/prop-types": "off",
     "react/display-name": "off"

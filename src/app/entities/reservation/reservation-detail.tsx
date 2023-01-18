@@ -1,21 +1,21 @@
-import React, { useEffect } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, UncontrolledTooltip, Row, Col } from 'reactstrap';
-import { TextFormat } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, { useEffect } from 'react'
+import { TextFormat } from 'react-jhipster'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { Button, Col, Row, UncontrolledTooltip } from 'reactstrap'
 
-import { getEntity } from './reservation.reducer';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import { useAppDispatch, useAppSelector } from 'app/config/store';
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { getEntity } from './reservation.reducer'
 
 export const ReservationDetail = (props: RouteComponentProps<{ id: string }>) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getEntity(props.match.params.id));
-  }, []);
+    dispatch(getEntity(props.match.params.id))
+  }, [])
 
-  const reservationEntity = useAppSelector(state => state.reservation.entity);
+  const reservationEntity = useAppSelector(state => state.reservation.entity)
   return (
     <Row>
       <Col md="8">
@@ -73,17 +73,29 @@ export const ReservationDetail = (props: RouteComponentProps<{ id: string }>) =>
             <span id="arrivalDate">Date d&apos;arrivée</span>
           </dt>
           <dd>
-            {reservationEntity.arrivalDate ? (
-              <TextFormat value={reservationEntity.arrivalDate} type="date" format={APP_LOCAL_DATE_FORMAT} />
-            ) : null}
+            {reservationEntity.arrivalDate ?
+              (
+                <TextFormat
+                  value={reservationEntity.arrivalDate}
+                  type="date"
+                  format={APP_LOCAL_DATE_FORMAT}
+                />
+              ) :
+              null}
           </dd>
           <dt>
             <span id="departureDate">Date de départ</span>
           </dt>
           <dd>
-            {reservationEntity.departureDate ? (
-              <TextFormat value={reservationEntity.departureDate} type="date" format={APP_LOCAL_DATE_FORMAT} />
-            ) : null}
+            {reservationEntity.departureDate ?
+              (
+                <TextFormat
+                  value={reservationEntity.departureDate}
+                  type="date"
+                  format={APP_LOCAL_DATE_FORMAT}
+                />
+              ) :
+              null}
           </dd>
           <dt>
             <span id="comment">Commentaire</span>
@@ -93,14 +105,14 @@ export const ReservationDetail = (props: RouteComponentProps<{ id: string }>) =>
           <dd>{reservationEntity.pricing ? reservationEntity.pricing.wording : ''}</dd>
           <dt>Lits</dt>
           <dd>
-            {reservationEntity.beds
-              ? reservationEntity.beds.map((val, i) => (
-                  <span key={val.id}>
-                    <a>{val.number}</a>
-                    {reservationEntity.beds && i === reservationEntity.beds.length - 1 ? '' : ', '}
-                  </span>
-                ))
-              : null}
+            {reservationEntity.beds ?
+              reservationEntity.beds.map((val, i) => (
+                <span key={val.id}>
+                  <a>{val.number}</a>
+                  {reservationEntity.beds && i === reservationEntity.beds.length - 1 ? '' : ', '}
+                </span>
+              )) :
+              null}
           </dd>
           <dt>Client</dt>
           <dd>{reservationEntity.customer ? reservationEntity.customer.email : ''}</dd>
@@ -114,7 +126,7 @@ export const ReservationDetail = (props: RouteComponentProps<{ id: string }>) =>
         </Button>
       </Col>
     </Row>
-  );
-};
+  )
+}
 
-export default ReservationDetail;
+export default ReservationDetail

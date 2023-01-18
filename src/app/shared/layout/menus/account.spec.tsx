@@ -1,58 +1,58 @@
 /**
  * @jest-environment jsdom
  */
-import React from 'react';
-import { render } from '@testing-library/react';
-import { Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
+import { render } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import React from 'react'
+import { Router } from 'react-router-dom'
 
-import { AccountMenu } from './account';
+import { AccountMenu } from './account'
 
 describe('AccountMenu', () => {
-  let mountedWrapper;
+  let mountedWrapper
 
   const authenticatedWrapper = () => {
     if (!mountedWrapper) {
-      const history = createMemoryHistory();
+      const history = createMemoryHistory()
       const { container } = render(
         <Router history={history}>
           <AccountMenu isAuthenticated />
         </Router>
-      );
-      mountedWrapper = container.innerHTML;
+      )
+      mountedWrapper = container.innerHTML
     }
-    return mountedWrapper;
-  };
+    return mountedWrapper
+  }
   const guestWrapper = () => {
     if (!mountedWrapper) {
-      const history = createMemoryHistory();
+      const history = createMemoryHistory()
       const { container } = (mountedWrapper = render(
         <Router history={history}>
           <AccountMenu />
         </Router>
-      ));
-      mountedWrapper = container.innerHTML;
+      ))
+      mountedWrapper = container.innerHTML
     }
-    return mountedWrapper;
-  };
+    return mountedWrapper
+  }
 
   beforeEach(() => {
-    mountedWrapper = undefined;
-  });
+    mountedWrapper = undefined
+  })
 
   // All tests will go here
 
   it('Renders a authenticated AccountMenu component', () => {
-    const html = authenticatedWrapper();
+    const html = authenticatedWrapper()
 
-    expect(html).not.toContain('/login');
-    expect(html).toContain('/logout');
-  });
+    expect(html).not.toContain('/login')
+    expect(html).toContain('/logout')
+  })
 
   it('Renders a guest AccountMenu component', () => {
-    const html = guestWrapper();
+    const html = guestWrapper()
 
-    expect(html).toContain('/login');
-    expect(html).not.toContain('/logout');
-  });
-});
+    expect(html).toContain('/login')
+    expect(html).not.toContain('/logout')
+  })
+})

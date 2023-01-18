@@ -1,21 +1,21 @@
-import React, { useEffect } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col } from 'reactstrap';
-import {} from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect } from 'react'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { Button, Col, Row } from 'reactstrap'
+import {} from 'react-jhipster'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { getEntity } from './bedroom-kind.reducer';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import { useAppDispatch, useAppSelector } from 'app/config/store';
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { getEntity } from './bedroom-kind.reducer'
 
 export const BedroomKindDetail = (props: RouteComponentProps<{ id: string }>) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getEntity(props.match.params.id));
-  }, []);
+    dispatch(getEntity(props.match.params.id))
+  }, [])
 
-  const bedroomKindEntity = useAppSelector(state => state.bedroomKind.entity);
+  const bedroomKindEntity = useAppSelector(state => state.bedroomKind.entity)
   return (
     <Row>
       <Col md="8">
@@ -30,16 +30,27 @@ export const BedroomKindDetail = (props: RouteComponentProps<{ id: string }>) =>
           </dt>
           <dd>{bedroomKindEntity.description}</dd>
         </dl>
-        <Button tag={Link} to="/bedroom-kind" replace color="info" data-cy="entityDetailsBackButton">
+        <Button
+          tag={Link}
+          to="/bedroom-kind"
+          replace
+          color="info"
+          data-cy="entityDetailsBackButton"
+        >
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Retour</span>
         </Button>
         &nbsp;
-        <Button tag={Link} to={`/bedroom-kind/${bedroomKindEntity.id}/edit`} replace color="primary">
+        <Button
+          tag={Link}
+          to={`/bedroom-kind/${bedroomKindEntity.id}/edit`}
+          replace
+          color="primary"
+        >
           <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Modifier</span>
         </Button>
       </Col>
     </Row>
-  );
-};
+  )
+}
 
-export default BedroomKindDetail;
+export default BedroomKindDetail

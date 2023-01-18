@@ -1,27 +1,29 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
-import { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model';
-import ReservationModal from './reservationModal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React from 'react'
+import { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
+import ReservationModal from './reservationModal'
 
 interface IProps {
-  reservation: IReservationsPlanning;
-  gridRowStart: number;
-  gridRowEnd: number;
-  gridColumnStart: number;
-  gridColumnEnd: number;
-  style: React.CSSProperties;
+  reservation: IReservationsPlanning
+  gridRowStart: number
+  gridRowEnd: number
+  gridColumnStart: number
+  gridColumnEnd: number
+  style: React.CSSProperties
 }
 
-export const ReservationBed = ({ reservation, gridRowStart, gridRowEnd, gridColumnStart, gridColumnEnd, style }: IProps) => {
+export const ReservationBed = (
+  { reservation, gridRowStart, gridRowEnd, gridColumnStart, gridColumnEnd, style }: IProps
+) => {
   style = Object.assign(
     {
       gridRowStart,
       gridRowEnd,
       gridColumnStart,
-      gridColumnEnd,
+      gridColumnEnd
     },
     style
-  );
+  )
   // }
   return (
     <div className="reservation" style={style}>
@@ -33,7 +35,7 @@ export const ReservationBed = ({ reservation, gridRowStart, gridRowEnd, gridColu
         color={reservation?.isConfirmed ? 'green' : 'red'}
       />
     </div>
-  );
-};
+  )
+}
 
-export default ReservationBed;
+export default ReservationBed

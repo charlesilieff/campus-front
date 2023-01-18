@@ -1,38 +1,38 @@
-import React, { useEffect } from 'react';
-import { Button, Col, Row } from 'reactstrap';
-import { ValidatedField, ValidatedForm, isEmail } from 'react-jhipster';
-import { toast } from 'react-toastify';
+import React, { useEffect } from 'react'
+import { isEmail, ValidatedField, ValidatedForm } from 'react-jhipster'
+import { toast } from 'react-toastify'
+import { Button, Col, Row } from 'reactstrap'
 
-import { useAppDispatch, useAppSelector } from 'app/config/store';
-import { getSession } from 'app/shared/reducers/authentication';
-import { saveAccountSettings, reset } from './settings.reducer';
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { getSession } from 'app/shared/reducers/authentication'
+import { reset, saveAccountSettings } from './settings.reducer'
 
 export const SettingsPage = () => {
-  const dispatch = useAppDispatch();
-  const account = useAppSelector(state => state.authentication.account);
-  const successMessage = useAppSelector(state => state.settings.successMessage);
+  const dispatch = useAppDispatch()
+  const account = useAppSelector(state => state.authentication.account)
+  const successMessage = useAppSelector(state => state.settings.successMessage)
 
   useEffect(() => {
-    dispatch(getSession());
+    dispatch(getSession())
     return () => {
-      dispatch(reset());
-    };
-  }, []);
+      dispatch(reset())
+    }
+  }, [])
 
   useEffect(() => {
     if (successMessage) {
-      toast.success(successMessage);
+      toast.success(successMessage)
     }
-  }, [successMessage]);
+  }, [successMessage])
 
   const handleValidSubmit = values => {
     dispatch(
       saveAccountSettings({
         ...account,
-        ...values,
+        ...values
       })
-    );
-  };
+    )
+  }
 
   return (
     <div>
@@ -47,8 +47,14 @@ export const SettingsPage = () => {
               placeholder="Your first name"
               validate={{
                 required: { value: true, message: 'Your first name is required.' },
-                minLength: { value: 1, message: 'Your first name is required to be at least 1 character' },
-                maxLength: { value: 50, message: 'Your first name cannot be longer than 50 characters' },
+                minLength: {
+                  value: 1,
+                  message: 'Your first name is required to be at least 1 character'
+                },
+                maxLength: {
+                  value: 50,
+                  message: 'Your first name cannot be longer than 50 characters'
+                }
               }}
               data-cy="firstname"
             />
@@ -59,8 +65,14 @@ export const SettingsPage = () => {
               placeholder="Your last name"
               validate={{
                 required: { value: true, message: 'Your last name is required.' },
-                minLength: { value: 1, message: 'Your last name is required to be at least 1 character' },
-                maxLength: { value: 50, message: 'Your last name cannot be longer than 50 characters' },
+                minLength: {
+                  value: 1,
+                  message: 'Your last name is required to be at least 1 character'
+                },
+                maxLength: {
+                  value: 50,
+                  message: 'Your last name cannot be longer than 50 characters'
+                }
               }}
               data-cy="lastname"
             />
@@ -71,9 +83,15 @@ export const SettingsPage = () => {
               type="email"
               validate={{
                 required: { value: true, message: 'Your email is required.' },
-                minLength: { value: 5, message: 'Your email is required to be at least 5 characters.' },
-                maxLength: { value: 254, message: 'Your email cannot be longer than 50 characters.' },
-                validate: v => isEmail(v) || 'Your email is invalid.',
+                minLength: {
+                  value: 5,
+                  message: 'Your email is required to be at least 5 characters.'
+                },
+                maxLength: {
+                  value: 254,
+                  message: 'Your email cannot be longer than 50 characters.'
+                },
+                validate: v => isEmail(v) || 'Your email is invalid.'
               }}
               data-cy="email"
             />
@@ -84,7 +102,7 @@ export const SettingsPage = () => {
         </Col>
       </Row>
     </div>
-  );
-};
+  )
+}
 
-export default SettingsPage;
+export default SettingsPage

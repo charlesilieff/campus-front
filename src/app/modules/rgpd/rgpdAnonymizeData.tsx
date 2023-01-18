@@ -1,20 +1,20 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ICustomer } from 'app/shared/model/customer.model';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ICustomer } from 'app/shared/model/customer.model'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
 export const RGPDAnonymizeData = () => {
-  const [isCustomersToAnonymize, setIsCustomersToAnonymize] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [customers, setCustomers] = useState(null as ICustomer[]);
-  const requestUrl = `/api/anonymizecustomers`;
+  const [isCustomersToAnonymize, setIsCustomersToAnonymize] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+  const [customers, setCustomers] = useState(null as ICustomer[])
+  const requestUrl = `/api/anonymizecustomers`
 
   const getIsCustomersToAnonymize = async () => {
-    const { data } = await axios.get<ICustomer[]>(requestUrl);
+    const { data } = await axios.get<ICustomer[]>(requestUrl)
 
     if (data.length !== 0) {
-      setIsCustomersToAnonymize(true);
+      setIsCustomersToAnonymize(true)
 
       setCustomers(
         data.map(c => {
@@ -24,28 +24,28 @@ export const RGPDAnonymizeData = () => {
             lastname: 'anonyme',
             age: 1,
             phoneNumber: '0000000000',
-            email: `anonyme${c.id}@anonyme.fr`,
-          };
+            email: `anonyme${c.id}@anonyme.fr`
+          }
         })
-      );
+      )
     }
-  };
+  }
 
   const anonymizeCustomers = async () => {
     try {
-      await axios.put<ICustomer[]>(requestUrl, customers);
+      await axios.put<ICustomer[]>(requestUrl, customers)
 
-      alert('Les données ont bien été anonymisées');
-      setIsOpen(false);
+      alert('Les données ont bien été anonymisées')
+      setIsOpen(false)
     } catch (error) {
-      alert(`Une erreur s'est produite : ${error}`);
-      setIsOpen(false);
+      alert(`Une erreur s'est produite : ${error}`)
+      setIsOpen(false)
     }
-  };
+  }
 
   useEffect(() => {
-    getIsCustomersToAnonymize();
-  }, []);
+    getIsCustomersToAnonymize()
+  }, [])
 
   return (
     <>
@@ -53,29 +53,45 @@ export const RGPDAnonymizeData = () => {
         <ModalHeader toggle={() => setIsOpen(false)} data-cy="bedDeleteDialogHeading">
           Confirmer l&apos;opération.
         </ModalHeader>
-        <ModalBody id="gestionhebergementApp.bed.delete.question">Êtes-vous sûr de vouloir anonymiser les données clients ?</ModalBody>
+        <ModalBody id="gestionhebergementApp.bed.delete.question">
+          Êtes-vous sûr de vouloir anonymiser les données clients ?
+        </ModalBody>
         <ModalFooter>
           <Button color="secondary" onClick={() => setIsOpen(false)}>
             <FontAwesomeIcon icon="ban" />
             &nbsp; Retour
           </Button>
-          <Button id="jhi-confirm-delete-bed" data-cy="entityConfirmDeleteButton" color="danger" onClick={() => anonymizeCustomers()}>
+          <Button
+            id="jhi-confirm-delete-bed"
+            data-cy="entityConfirmDeleteButton"
+            color="danger"
+            onClick={() => anonymizeCustomers()}
+          >
             <FontAwesomeIcon icon="trash" />
             &nbsp; Confirmer
           </Button>
         </ModalFooter>
       </Modal>
 
-      {isCustomersToAnonymize ? (
-        <Button id="delete-rgpd-data" data-cy="deleteLink" color="danger" onClick={() => setIsOpen(true)}>
-          <FontAwesomeIcon icon="trash" />
-          &nbsp; Anonymiser les données clients.
-        </Button>
-      ) : (
-        <div>RGPD : Pas de données clients à anonymiser (derniére réservation antérieure à 3 ans).</div>
-      )}
+      {isCustomersToAnonymize ?
+        (
+          <Button
+            id="delete-rgpd-data"
+            data-cy="deleteLink"
+            color="danger"
+            onClick={() => setIsOpen(true)}
+          >
+            <FontAwesomeIcon icon="trash" />
+            &nbsp; Anonymiser les données clients.
+          </Button>
+        ) :
+        (
+          <div>
+            RGPD : Pas de données clients à anonymiser (derniére réservation antérieure à 3 ans).
+          </div>
+        )}
     </>
-  );
-};
+  )
+}
 
-export default RGPDAnonymizeData;
+export default RGPDAnonymizeData

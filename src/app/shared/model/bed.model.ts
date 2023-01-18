@@ -1,13 +1,13 @@
-import { IRoom } from 'app/shared/model/room.model';
-import { IReservation } from 'app/shared/model/reservation.model';
+import { IReservation } from 'app/shared/model/reservation.model'
+import { IRoom } from 'app/shared/model/room.model'
 
 export interface IBed {
-  id?: number;
-  kind?: string;
-  number?: string;
-  numberOfPlaces?: number;
-  room?: IRoom | null;
-  reservations?: IReservation[] | null;
+  id?: number
+  kind?: string
+  number?: string
+  numberOfPlaces?: number
+  room?: IRoom | null
+  reservations?: IReservation[] | null
 }
 
-export const defaultValue: Readonly<IBed> = {};
+export const defaultValue: Readonly<IBed> = {}

@@ -1,54 +1,61 @@
-import React, { useEffect } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
+import React, { useEffect } from 'react'
+import { RouteComponentProps } from 'react-router-dom'
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { useAppDispatch, useAppSelector } from 'app/config/store';
-import { getEntity, deleteEntity } from './reservation.reducer';
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { deleteEntity, getEntity } from './reservation.reducer'
 
 export const ReservationDeleteDialog = (props: RouteComponentProps<{ id: string }>) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getEntity(props.match.params.id));
-  }, []);
+    dispatch(getEntity(props.match.params.id))
+  }, [])
 
-  const reservationEntity = useAppSelector(state => state.bookingBeds.entity);
-  const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess);
+  const reservationEntity = useAppSelector(state => state.bookingBeds.entity)
+  const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
 
   const handleClose = () => {
-    props.history.push('/planning');
-  };
+    props.history.push('/planning')
+  }
 
   useEffect(() => {
     if (updateSuccess) {
-      handleClose();
+      handleClose()
     }
-  }, [updateSuccess]);
+  }, [updateSuccess])
 
   const confirmDelete = () => {
-    dispatch(deleteEntity(reservationEntity.id));
-  };
+    dispatch(deleteEntity(reservationEntity.id))
+  }
 
   return (
     <Modal isOpen toggle={handleClose}>
       <ModalHeader toggle={handleClose} data-cy="reservationDeleteDialogHeading">
         Confirmer l&apos;opération de suppression
       </ModalHeader>
-      <ModalBody id="gestionhebergementApp.reservation.delete.question">Êtes-vous sûr de vouloir supprimer cette réservation ?</ModalBody>
+      <ModalBody id="gestionhebergementApp.reservation.delete.question">
+        Êtes-vous sûr de vouloir supprimer cette réservation ?
+      </ModalBody>
       <ModalFooter>
         <Button color="secondary" onClick={handleClose}>
           <FontAwesomeIcon icon="ban" />
           &nbsp; Retour
         </Button>
-        <Button id="jhi-confirm-delete-reservation" data-cy="entityConfirmDeleteButton" color="danger" onClick={confirmDelete}>
+        <Button
+          id="jhi-confirm-delete-reservation"
+          data-cy="entityConfirmDeleteButton"
+          color="danger"
+          onClick={confirmDelete}
+        >
           <FontAwesomeIcon icon="trash" />
           &nbsp; Supprimer
         </Button>
       </ModalFooter>
     </Modal>
-  );
-};
+  )
+}
 
-export default ReservationDeleteDialog;
+export default ReservationDeleteDialog

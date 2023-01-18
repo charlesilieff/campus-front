@@ -1,12 +1,12 @@
-import React from 'react';
-import { Switch } from 'react-router-dom';
+import React from 'react'
+import { Switch } from 'react-router-dom'
 
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
+import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
 
-import Pricing from './pricing';
-import PricingDetail from './pricing-detail';
-import PricingUpdate from './pricing-update';
-import PricingDeleteDialog from './pricing-delete-dialog';
+import Pricing from './pricing'
+import PricingDeleteDialog from './pricing-delete-dialog'
+import PricingDetail from './pricing-detail'
+import PricingUpdate from './pricing-update'
 
 const Routes = ({ match }) => (
   <>
@@ -18,6 +18,6 @@ const Routes = ({ match }) => (
     </Switch>
     <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={PricingDeleteDialog} />
   </>
-);
+)
 
-export default Routes;
+export default Routes

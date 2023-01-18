@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'
 
-import { Alert } from 'reactstrap';
+import { Alert } from 'reactstrap'
 
 class PageNotFound extends React.Component {
   render() {
@@ -8,8 +8,8 @@ class PageNotFound extends React.Component {
       <div>
         <Alert color="danger">The page does not exist.</Alert>
       </div>
-    );
+    )
   }
 }
 
-export default PageNotFound;
+export default PageNotFound

@@ -1,12 +1,12 @@
-import React from 'react';
-import { Switch } from 'react-router-dom';
+import React from 'react'
+import { Switch } from 'react-router-dom'
 
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
+import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
 
-import Place from './place';
-import PlaceDetail from './place-detail';
-import PlaceUpdate from './place-update';
-import PlaceDeleteDialog from './place-delete-dialog';
+import Place from './place'
+import PlaceDeleteDialog from './place-delete-dialog'
+import PlaceDetail from './place-detail'
+import PlaceUpdate from './place-update'
 
 const Routes = ({ match }) => (
   <>
@@ -18,6 +18,6 @@ const Routes = ({ match }) => (
     </Switch>
     <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={PlaceDeleteDialog} />
   </>
-);
+)
 
-export default Routes;
+export default Routes

@@ -1,24 +1,25 @@
-import React from 'react';
-import { DropdownItem } from 'reactstrap';
-import { NavLink as Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React from 'react'
+import { NavLink as Link } from 'react-router-dom'
+import { DropdownItem } from 'reactstrap'
 
 export interface IMenuItem {
-  icon: IconProp;
-  to: string;
-  id?: string;
-  'data-cy'?: string;
+  children: React.ReactNode
+  icon: IconProp
+  to: string
+  id?: string
+  'data-cy'?: string
 }
 
 export default class MenuItem extends React.Component<IMenuItem> {
   render() {
-    const { to, icon, id, children } = this.props;
+    const { to, icon, id, children } = this.props
 
     return (
       <DropdownItem tag={Link} to={to} id={id} data-cy={this.props['data-cy']}>
         <FontAwesomeIcon icon={icon} fixedWidth /> {children}
       </DropdownItem>
-    );
+    )
   }
 }

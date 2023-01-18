@@ -1,0 +1,18 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "davidanson.vscode-markdownlint",
+    "shd101wyy.markdown-preview-enhanced",
+    "dprint.dprint",
+    "yzhang.markdown-all-in-one",
+    "eamodio.gitlens",
+    "wayou.vscode-todo-highlight",
+    "miclo.sort-typescript-imports",
+    "christian-kohler.path-intellisense",
+    "christian-kohler.npm-intellisense",
+    "usernamehw.errorlens",
+    "gruntfuggly.todo-tree",
+    "streetsidesoftware.code-spell-checker",
+    "kisstkondoros.vscode-gutter-preview"
+  ]
+}

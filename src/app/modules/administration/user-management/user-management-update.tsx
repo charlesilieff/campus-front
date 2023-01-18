@@ -1,46 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, FormText } from 'reactstrap';
-import { ValidatedField, ValidatedForm, isEmail } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, { useEffect, useState } from 'react'
+import { isEmail, ValidatedField, ValidatedForm } from 'react-jhipster'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { Button, Col, FormText, Row } from 'reactstrap'
 
-import { getUser, getRoles, updateUser, createUser, reset } from './user-management.reducer';
-import { useAppDispatch, useAppSelector } from 'app/config/store';
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { createUser, getRoles, getUser, reset, updateUser } from './user-management.reducer'
 
 export const UserManagementUpdate = (props: RouteComponentProps<{ login: string }>) => {
-  const [isNew] = useState(!props.match.params || !props.match.params.login);
-  const dispatch = useAppDispatch();
+  const [isNew] = useState(!props.match.params || !props.match.params.login)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (isNew) {
-      dispatch(reset());
+      dispatch(reset())
     } else {
-      dispatch(getUser(props.match.params.login));
+      dispatch(getUser(props.match.params.login))
     }
-    dispatch(getRoles());
+    dispatch(getRoles())
     return () => {
-      dispatch(reset());
-    };
-  }, [props.match.params.login]);
+      dispatch(reset())
+    }
+  }, [props.match.params.login])
 
   const handleClose = () => {
-    props.history.push('/admin/user-management');
-  };
+    props.history.push('/admin/user-management')
+  }
 
   const saveUser = values => {
     if (isNew) {
-      dispatch(createUser(values));
+      dispatch(createUser(values))
     } else {
-      dispatch(updateUser(values));
+      dispatch(updateUser(values))
     }
-    handleClose();
-  };
+    handleClose()
+  }
 
-  const isInvalid = false;
-  const user = useAppSelector(state => state.userManagement.user);
-  const loading = useAppSelector(state => state.userManagement.loading);
-  const updating = useAppSelector(state => state.userManagement.updating);
-  const authorities = useAppSelector(state => state.userManagement.authorities);
+  const isInvalid = false
+  const user = useAppSelector(state => state.userManagement.user)
+  const loading = useAppSelector(state => state.userManagement.loading)
+  const updating = useAppSelector(state => state.userManagement.updating)
+  const authorities = useAppSelector(state => state.userManagement.authorities)
 
   return (
     <div>
@@ -51,9 +51,7 @@ export const UserManagementUpdate = (props: RouteComponentProps<{ login: string 
       </Row>
       <Row className="justify-content-center">
         <Col md="8">
-          {loading ? (
-            <p>Chargement...</p>
-          ) : (
+          {loading ? <p>Chargement...</p> : (
             <ValidatedForm onSubmit={saveUser} defaultValues={user}>
               <ValidatedField
                 type="text"
@@ -62,20 +60,21 @@ export const UserManagementUpdate = (props: RouteComponentProps<{ login: string 
                 validate={{
                   required: {
                     value: true,
-                    message: 'Your username is required.',
+                    message: 'Your username is required.'
                   },
                   pattern: {
-                    value: /^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$/,
-                    message: 'Your username is invalid.',
+                    value:
+                      /^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$/,
+                    message: 'Your username is invalid.'
                   },
                   minLength: {
                     value: 1,
-                    message: 'Your username is required to be at least 1 character.',
+                    message: 'Your username is required to be at least 1 character.'
                   },
                   maxLength: {
                     value: 50,
-                    message: 'Your username cannot be longer than 50 characters.',
-                  },
+                    message: 'Your username cannot be longer than 50 characters.'
+                  }
                 }}
               />
               <ValidatedField
@@ -85,8 +84,8 @@ export const UserManagementUpdate = (props: RouteComponentProps<{ login: string 
                 validate={{
                   maxLength: {
                     value: 50,
-                    message: 'This field cannot be longer than 50 characters.',
-                  },
+                    message: 'This field cannot be longer than 50 characters.'
+                  }
                 }}
               />
               <ValidatedField
@@ -96,8 +95,8 @@ export const UserManagementUpdate = (props: RouteComponentProps<{ login: string 
                 validate={{
                   maxLength: {
                     value: 50,
-                    message: 'This field cannot be longer than 50 characters.',
-                  },
+                    message: 'This field cannot be longer than 50 characters.'
+                  }
                 }}
               />
               <FormText>This field cannot be longer than 50 characters.</FormText>
@@ -109,20 +108,27 @@ export const UserManagementUpdate = (props: RouteComponentProps<{ login: string 
                 validate={{
                   required: {
                     value: true,
-                    message: 'Your email is required.',
+                    message: 'Your email is required.'
                   },
                   minLength: {
                     value: 5,
-                    message: 'Your email is required to be at least 5 characters.',
+                    message: 'Your email is required to be at least 5 characters.'
                   },
                   maxLength: {
                     value: 254,
-                    message: 'Your email cannot be longer than 50 characters.',
+                    message: 'Your email cannot be longer than 50 characters.'
                   },
-                  validate: v => isEmail(v) || 'Your email is invalid.',
+                  validate: v => isEmail(v) || 'Your email is invalid.'
                 }}
               />
-              <ValidatedField type="checkbox" name="activated" check value={true} disabled={!user.id} label="Activated" />
+              <ValidatedField
+                type="checkbox"
+                name="activated"
+                check
+                value={true}
+                disabled={!user.id}
+                label="Activated"
+              />
               <ValidatedField type="select" name="authorities" multiple label="Profiles">
                 {authorities.map(role => (
                   <option value={role} key={role}>
@@ -145,7 +151,7 @@ export const UserManagementUpdate = (props: RouteComponentProps<{ login: string 
         </Col>
       </Row>
     </div>
-  );
-};
+  )
+}
 
-export default UserManagementUpdate;
+export default UserManagementUpdate

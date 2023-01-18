@@ -1,12 +1,12 @@
-import React from 'react';
-import { Switch } from 'react-router-dom';
+import React from 'react'
+import { Switch } from 'react-router-dom'
 
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
+import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
 
-import Customer from './customer';
-import CustomerDetail from './customer-detail';
-import CustomerUpdate from './customer-update';
-import CustomerDeleteDialog from './customer-delete-dialog';
+import Customer from './customer'
+import CustomerDeleteDialog from './customer-delete-dialog'
+import CustomerDetail from './customer-detail'
+import CustomerUpdate from './customer-update'
 
 const Routes = ({ match }) => (
   <>
@@ -18,6 +18,6 @@ const Routes = ({ match }) => (
     </Switch>
     <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={CustomerDeleteDialog} />
   </>
-);
+)
 
-export default Routes;
+export default Routes

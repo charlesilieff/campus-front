@@ -8,5 +8,43 @@
     "gestionhebergement",
     "reduxjs",
     "toastify"
-  ]
+  ],
+  "editor.defaultFormatter": "dprint.dprint",
+  "javascript.format.enable": true,
+  "eslint.format.enable": false,
+  "markdown-preview-enhanced.automaticallyShowPreviewOfMarkdownBeingEdited": true,
+  "markdown-preview-enhanced.previewTheme": "github-dark.css",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "files.watcherExclude": {
+    "**/target": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.formatOnSave": true,
+  "dprint.path": "./node_modules/dprint/dprint",
+  "dprint.verbose": true,
+  "eslint.codeActionsOnSave.mode": "problems",
+  "[typescript]": {
+    "editor.defaultFormatter": "dprint.dprint"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dprint.dprint"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.markdownlint": true
+    }
+  },
+  "markdown.extension.tableFormatter.enabled": false,
+  "editor.wordWrap": "on",
+  "todo-tree.general.fileWatcherGlob": "**/*.ts, **/*.tsx",
+  "todo-tree.tree.disableCompactFolders": false,
+  "todo-tree.tree.expanded": false,
+  "todo-tree.tree.groupedBySubTag": true,
+  "todo-tree.tree.groupedByTag": false,
 }

@@ -76,6 +76,7 @@
     "uuid": "8.3.2"
   },
   "devDependencies": {
+    "dprint": "0.34.4",
     "@parcel/transformer-sass": "^2.7.0",
     "@testing-library/react": "11.2.7",
     "@types/jest": "26.0.23",

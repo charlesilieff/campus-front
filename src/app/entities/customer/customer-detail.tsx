@@ -1,21 +1,21 @@
-import React, { useEffect } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, UncontrolledTooltip, Row, Col } from 'reactstrap';
-import {} from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect } from 'react'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { Button, Col, Row, UncontrolledTooltip } from 'reactstrap'
+import {} from 'react-jhipster'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { getEntity } from './customer.reducer';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import { useAppDispatch, useAppSelector } from 'app/config/store';
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { getEntity } from './customer.reducer'
 
 export const CustomerDetail = (props: RouteComponentProps<{ id: string }>) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getEntity(props.match.params.id));
-  }, []);
+    dispatch(getEntity(props.match.params.id))
+  }, [])
 
-  const customerEntity = useAppSelector(state => state.customer.entity);
+  const customerEntity = useAppSelector(state => state.customer.entity)
   return (
     <Row>
       <Col md="8">
@@ -35,17 +35,21 @@ export const CustomerDetail = (props: RouteComponentProps<{ id: string }>) => {
             <span id="age">Age</span>
           </dt>
           <dd>{customerEntity.age}</dd>
-          {/* <dt>
+          {
+            /* <dt>
             <span id="isFemal">Genre</span>
           </dt>
-          <dd>{customerEntity.isFemal ? 'Femme' : 'Homme'}</dd> */}
+          <dd>{customerEntity.isFemal ? 'Femme' : 'Homme'}</dd> */
+          }
           <dt>
             <span id="phoneNumber">Téléphone</span>
           </dt>
           <dd>{customerEntity.phoneNumber}</dd>
           <dt>
             <span id="email">Email</span>
-            <UncontrolledTooltip target="email">Champs unique, peut servir pour l&#39;authentification</UncontrolledTooltip>
+            <UncontrolledTooltip target="email">
+              Champs unique, peut servir pour l&#39;authentification
+            </UncontrolledTooltip>
           </dt>
           <dd>{customerEntity.email}</dd>
           <dt>
@@ -62,7 +66,7 @@ export const CustomerDetail = (props: RouteComponentProps<{ id: string }>) => {
         </Button>
       </Col>
     </Row>
-  );
-};
+  )
+}
 
-export default CustomerDetail;
+export default CustomerDetail

@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Row, Col, Alert } from 'reactstrap';
-import { getUrlParameter } from 'react-jhipster';
+import React, { useEffect } from 'react'
+import { getUrlParameter } from 'react-jhipster'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { Alert, Col, Row } from 'reactstrap'
 
-import { useAppDispatch, useAppSelector } from 'app/config/store';
-import { activateAction, reset } from './activate.reducer';
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { activateAction, reset } from './activate.reducer'
 
 const successAlert = (
   <Alert color="success">
@@ -14,25 +14,25 @@ const successAlert = (
     </Link>
     .
   </Alert>
-);
+)
 
 const failureAlert = (
   <Alert color="danger">
     <strong>Your user could not be activated.</strong> Please use the registration form to sign up.
   </Alert>
-);
+)
 
 export const ActivatePage = (props: RouteComponentProps<{ key: any }>) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
   useEffect(() => {
-    const key = getUrlParameter('key', props.location.search);
-    dispatch(activateAction(key));
+    const key = getUrlParameter('key', props.location.search)
+    dispatch(activateAction(key))
     return () => {
-      dispatch(reset());
-    };
-  }, []);
+      dispatch(reset())
+    }
+  }, [])
 
-  const { activationSuccess, activationFailure } = useAppSelector(state => state.activate);
+  const { activationSuccess, activationFailure } = useAppSelector(state => state.activate)
 
   return (
     <div>
@@ -44,7 +44,7 @@ export const ActivatePage = (props: RouteComponentProps<{ key: any }>) => {
         </Col>
       </Row>
     </div>
-  );
-};
+  )
+}
 
-export default ActivatePage;
+export default ActivatePage

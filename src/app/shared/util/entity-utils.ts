@@ -1,5 +1,5 @@
-import pick from 'lodash/pick';
-import { IPaginationBaseState } from 'react-jhipster';
+import pick from 'lodash/pick'
+import { IPaginationBaseState } from 'react-jhipster'
 
 /**
  * Removes fields with an 'id' field that equals ''.
@@ -9,10 +9,12 @@ import { IPaginationBaseState } from 'react-jhipster';
  * @param entity Object to clean.
  */
 export const cleanEntity = entity => {
-  const keysToKeep = Object.keys(entity).filter(k => !(entity[k] instanceof Object) || (entity[k]['id'] !== '' && entity[k]['id'] !== -1));
+  const keysToKeep = Object.keys(entity).filter(k =>
+    !(entity[k] instanceof Object) || (entity[k]['id'] !== '' && entity[k]['id'] !== -1)
+  )
 
-  return pick(entity, keysToKeep);
-};
+  return pick(entity, keysToKeep)
+}
 
 /**
  * Simply map a list of element to a list a object with the element as id.
@@ -20,17 +22,21 @@ export const cleanEntity = entity => {
  * @param idList Elements to map.
  * @returns The list of objects with mapped ids.
  */
-export const mapIdList = (idList: ReadonlyArray<any>) => idList.filter((id: any) => id !== '').map((id: any) => ({ id }));
+export const mapIdList = (idList: ReadonlyArray<any>) =>
+  idList.filter((id: any) => id !== '').map((id: any) => ({ id }))
 
-export const overridePaginationStateWithQueryParams = (paginationBaseState: IPaginationBaseState, locationSearch: string) => {
-  const params = new URLSearchParams(locationSearch);
-  const page = params.get('page');
-  const sort = params.get('sort');
+export const overridePaginationStateWithQueryParams = (
+  paginationBaseState: IPaginationBaseState,
+  locationSearch: string
+) => {
+  const params = new URLSearchParams(locationSearch)
+  const page = params.get('page')
+  const sort = params.get('sort')
   if (page && sort) {
-    const sortSplit = sort.split(',');
-    paginationBaseState.activePage = +page;
-    paginationBaseState.sort = sortSplit[0];
-    paginationBaseState.order = sortSplit[1];
+    const sortSplit = sort.split(',')
+    paginationBaseState.activePage = +page
+    paginationBaseState.sort = sortSplit[0]
+    paginationBaseState.order = sortSplit[1]
   }
-  return paginationBaseState;
-};
+  return paginationBaseState
+}

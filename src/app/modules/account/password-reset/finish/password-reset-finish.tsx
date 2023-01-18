@@ -1,32 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { Col, Row, Button } from 'reactstrap';
-import { getUrlParameter, ValidatedField, ValidatedForm } from 'react-jhipster';
-import { RouteComponentProps, useHistory } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from 'react'
+import { getUrlParameter, ValidatedField, ValidatedForm } from 'react-jhipster'
+import { RouteComponentProps, useHistory } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { Button, Col, Row } from 'reactstrap'
 
-import { handlePasswordResetFinish, reset } from '../password-reset.reducer';
-import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar';
-import { useAppDispatch, useAppSelector } from 'app/config/store';
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar'
+import { handlePasswordResetFinish, reset } from '../password-reset.reducer'
 
 export const PasswordResetFinishPage = (props: RouteComponentProps<{ key: string }>) => {
-  const [password, setPassword] = useState('');
-  const [key] = useState(getUrlParameter('key', props.location.search));
-  const dispatch = useAppDispatch();
+  const [password, setPassword] = useState('')
+  const [key] = useState(getUrlParameter('key', props.location.search))
+  const dispatch = useAppDispatch()
 
   useEffect(
-    () => () => {
-      dispatch(reset());
-    },
+    () =>
+      () => {
+        dispatch(reset())
+      },
     []
-  );
-  const history = useHistory();
+  )
+  const history = useHistory()
 
   const handleValidSubmit = ({ newPassword }) => {
-    dispatch(handlePasswordResetFinish({ key, newPassword }));
-    history.push('/login');
-  };
+    dispatch(handlePasswordResetFinish({ key, newPassword }))
+    history.push('/login')
+  }
 
-  const updatePassword = event => setPassword(event.target.value);
+  const updatePassword = event => setPassword(event.target.value)
 
   const getResetForm = () => {
     return (
@@ -38,8 +39,11 @@ export const PasswordResetFinishPage = (props: RouteComponentProps<{ key: string
           type="password"
           validate={{
             required: { value: true, message: 'Your password is required.' },
-            minLength: { value: 4, message: 'Your password is required to be at least 4 characters.' },
-            maxLength: { value: 50, message: 'Your password cannot be longer than 50 characters.' },
+            minLength: {
+              value: 4,
+              message: 'Your password is required to be at least 4 characters.'
+            },
+            maxLength: { value: 50, message: 'Your password cannot be longer than 50 characters.' }
           }}
           onChange={updatePassword}
           data-cy="resetPassword"
@@ -52,9 +56,15 @@ export const PasswordResetFinishPage = (props: RouteComponentProps<{ key: string
           type="password"
           validate={{
             required: { value: true, message: 'Your confirmation password is required.' },
-            minLength: { value: 4, message: 'Your confirmation password is required to be at least 4 characters.' },
-            maxLength: { value: 50, message: 'Your confirmation password cannot be longer than 50 characters.' },
-            validate: v => v === password || 'The password and its confirmation do not match!',
+            minLength: {
+              value: 4,
+              message: 'Your confirmation password is required to be at least 4 characters.'
+            },
+            maxLength: {
+              value: 50,
+              message: 'Your confirmation password cannot be longer than 50 characters.'
+            },
+            validate: v => v === password || 'The password and its confirmation do not match!'
           }}
           data-cy="confirmResetPassword"
         />
@@ -62,16 +72,16 @@ export const PasswordResetFinishPage = (props: RouteComponentProps<{ key: string
           Valider le nouveau mot de passe
         </Button>
       </ValidatedForm>
-    );
-  };
+    )
+  }
 
-  const successMessage = useAppSelector(state => state.passwordReset.successMessage);
+  const successMessage = useAppSelector(state => state.passwordReset.successMessage)
 
   useEffect(() => {
     if (successMessage) {
-      toast.success(successMessage);
+      toast.success(successMessage)
     }
-  }, [successMessage]);
+  }, [successMessage])
 
   return (
     <div>
@@ -82,7 +92,7 @@ export const PasswordResetFinishPage = (props: RouteComponentProps<{ key: string
         </Col>
       </Row>
     </div>
-  );
-};
+  )
+}
 
-export default PasswordResetFinishPage;
+export default PasswordResetFinishPage

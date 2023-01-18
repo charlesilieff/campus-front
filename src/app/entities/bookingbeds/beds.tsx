@@ -1,17 +1,17 @@
-import { IRoom } from 'app/shared/model/room.model';
-import { CustomValidatedField } from 'app/shared/util/cross-validation-form';
-import React, { FunctionComponent } from 'react';
+import { IRoom } from 'app/shared/model/room.model'
+import { CustomValidatedField } from 'app/shared/util/cross-validation-form'
+import React, { FunctionComponent } from 'react'
 
 interface IProps {
-  rooms: IRoom[];
-  bedsToBook: number[];
-  checkBedsToBook: (bed: number) => void;
+  rooms: IRoom[]
+  bedsToBook: number[]
+  checkBedsToBook: (bed: number) => void
 }
 const Beds: FunctionComponent<IProps> = ({ rooms, bedsToBook, checkBedsToBook }) => {
   return (
     <>
       {rooms.map(room => {
-        const bedRoomKind = room.bedroomKind ? `(${room.bedroomKind.name})` : '';
+        const bedRoomKind = room.bedroomKind ? `(${room.bedroomKind.name})` : ''
 
         return (
           <React.Fragment key={room.id}>
@@ -19,30 +19,29 @@ const Beds: FunctionComponent<IProps> = ({ rooms, bedsToBook, checkBedsToBook })
               {`Chambre : ${room.name} ${bedRoomKind}
                          `}
             </p>{' '}
-            <div>Lits : </div>
-            {room.beds.length === 0
-              ? 'Aucun lits libre à ces dates.'
-              : room.beds.map(bed => {
-                  const bedkind = bed.kind ? `(${bed.kind})` : '';
-                  return (
-                    <CustomValidatedField
-                      label={`${bed.number} ${bedkind}  (places : ${bed.numberOfPlaces})`}
-                      key={bed.id}
-                      type="checkbox"
-                      id={`reservation-${bed.id}`}
-                      name={bed.id.toString()}
-                      data-cy={bed.id.toString()}
-                      checked={bedsToBook?.includes(bed.id) ? true : false}
-                      onChange={() => checkBedsToBook(bed.id)}
-                    ></CustomValidatedField>
-                  );
-                })}
+            <div>Lits :</div>
+            {room.beds.length === 0 ? 'Aucun lits libre à ces dates.' : room.beds.map(bed => {
+              const bedkind = bed.kind ? `(${bed.kind})` : ''
+              return (
+                <CustomValidatedField
+                  label={`${bed.number} ${bedkind}  (places : ${bed.numberOfPlaces})`}
+                  key={bed.id}
+                  type="checkbox"
+                  id={`reservation-${bed.id}`}
+                  name={bed.id.toString()}
+                  data-cy={bed.id.toString()}
+                  checked={bedsToBook?.includes(bed.id) ? true : false}
+                  onChange={() => checkBedsToBook(bed.id)}
+                >
+                </CustomValidatedField>
+              )
+            })}
             <br />
           </React.Fragment>
-        );
+        )
       })}
     </>
-  );
-};
+  )
+}
 
-export default Beds;
+export default Beds

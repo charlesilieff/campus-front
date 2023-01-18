@@ -1,20 +1,19 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useAppDispatch, useAppSelector } from 'app/config/store';
-import React, { useEffect } from 'react';
-import {} from 'react-jhipster';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row } from 'reactstrap';
-import { getEntity } from './bed.reducer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import React, { useEffect } from 'react'
+import {} from 'react-jhipster'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { Button, Col, Row } from 'reactstrap'
+import { getEntity } from './bed.reducer'
 
 export const BedDetail = (props: RouteComponentProps<{ id: string }>) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    
-    dispatch(getEntity(props.match.params.id));
-  }, []);
+    dispatch(getEntity(props.match.params.id))
+  }, [])
 
-  const bedEntity = useAppSelector(state => state.bed.entity);
+  const bedEntity = useAppSelector(state => state.bed.entity)
   return (
     <Row>
       <Col md="8">
@@ -44,7 +43,7 @@ export const BedDetail = (props: RouteComponentProps<{ id: string }>) => {
         </Button>
       </Col>
     </Row>
-  );
-};
+  )
+}
 
-export default BedDetail;
+export default BedDetail

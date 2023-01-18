@@ -1,20 +1,20 @@
-import React from 'react';
-import { Switch } from 'react-router-dom';
+import React from 'react'
+import { Switch } from 'react-router-dom'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
+import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
 
-import Customer from './customer'; 
-import Pricing from './pricing';
-import Bed from './bed';
-import Room from './room';
-import BedroomKind from './bedroom-kind';
-import Planning from './planning';
-import Place from './place';
-import ReservationNotConfirmed from './reservation/reservation_nobeds_notconfirmed';
-import BookingBeds from './bookingbeds';
-import Reservation from './reservation';
-import ReservationLunchOnly from './reservation/reservation_isLunchOnly';
+import Bed from './bed'
+import BedroomKind from './bedroom-kind'
+import BookingBeds from './bookingbeds'
+import Customer from './customer'
+import Place from './place'
+import Planning from './planning'
+import Pricing from './pricing'
+import Reservation from './reservation'
+import ReservationLunchOnly from './reservation/reservation_isLunchOnly'
+import ReservationNotConfirmed from './reservation/reservation_nobeds_notconfirmed'
+import Room from './room'
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -36,6 +36,6 @@ const Routes = ({ match }) => (
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>
   </div>
-);
+)
 
-export default Routes;
+export default Routes

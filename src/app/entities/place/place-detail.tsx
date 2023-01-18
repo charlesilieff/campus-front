@@ -1,21 +1,21 @@
-import React, { useEffect } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col } from 'reactstrap';
-import { openFile, byteSize } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, { useEffect } from 'react'
+import { byteSize, openFile } from 'react-jhipster'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { Button, Col, Row } from 'reactstrap'
 
-import { getEntity } from './place.reducer';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import { useAppDispatch, useAppSelector } from 'app/config/store';
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { getEntity } from './place.reducer'
 
 export const PlaceDetail = (props: RouteComponentProps<{ id: string }>) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getEntity(props.match.params.id));
-  }, []);
+    dispatch(getEntity(props.match.params.id))
+  }, [])
 
-  const placeEntity = useAppSelector(state => state.place.entity);
+  const placeEntity = useAppSelector(state => state.place.entity)
   return (
     <Row>
       <Col md="8">
@@ -33,18 +33,25 @@ export const PlaceDetail = (props: RouteComponentProps<{ id: string }>) => {
             <span id="image">Image</span>
           </dt>
           <dd>
-            {placeEntity.image ? (
-              <div>
-                {placeEntity.imageContentType ? (
-                  <a onClick={openFile(placeEntity.imageContentType, placeEntity.image)}>
-                    <img src={`data:${placeEntity.imageContentType};base64,${placeEntity.image}`} style={{ maxHeight: '30px' }} />
-                  </a>
-                ) : null}
-                <span>
-                  {placeEntity.imageContentType}, {byteSize(placeEntity.image)}
-                </span>
-              </div>
-            ) : null}
+            {placeEntity.image ?
+              (
+                <div>
+                  {placeEntity.imageContentType ?
+                    (
+                      <a onClick={openFile(placeEntity.imageContentType, placeEntity.image)}>
+                        <img
+                          src={`data:${placeEntity.imageContentType};base64,${placeEntity.image}`}
+                          style={{ maxHeight: '30px' }}
+                        />
+                      </a>
+                    ) :
+                    null}
+                  <span>
+                    {placeEntity.imageContentType}, {byteSize(placeEntity.image)}
+                  </span>
+                </div>
+              ) :
+              null}
           </dd>
         </dl>
         <Button tag={Link} to="/place" replace color="info" data-cy="entityDetailsBackButton">
@@ -56,7 +63,7 @@ export const PlaceDetail = (props: RouteComponentProps<{ id: string }>) => {
         </Button>
       </Col>
     </Row>
-  );
-};
+  )
+}
 
-export default PlaceDetail;
+export default PlaceDetail

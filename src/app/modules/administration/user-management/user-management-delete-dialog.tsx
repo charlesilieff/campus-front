@@ -1,30 +1,30 @@
-import React, { useEffect } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
+import React, { useEffect } from 'react'
+import { RouteComponentProps } from 'react-router-dom'
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { getUser, deleteUser } from './user-management.reducer';
-import { useAppDispatch, useAppSelector } from 'app/config/store';
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { deleteUser, getUser } from './user-management.reducer'
 
 export const UserManagementDeleteDialog = (props: RouteComponentProps<{ login: string }>) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getUser(props.match.params.login));
-  }, []);
+    dispatch(getUser(props.match.params.login))
+  }, [])
 
   const handleClose = event => {
-    event.stopPropagation();
-    props.history.push('/admin/user-management');
-  };
+    event.stopPropagation()
+    props.history.push('/admin/user-management')
+  }
 
-  const user = useAppSelector(state => state.userManagement.user);
+  const user = useAppSelector(state => state.userManagement.user)
 
   const confirmDelete = event => {
-    dispatch(deleteUser(user.login));
-    handleClose(event);
-  };
+    dispatch(deleteUser(user.login))
+    handleClose(event)
+  }
 
   return (
     <Modal isOpen toggle={handleClose}>
@@ -41,7 +41,7 @@ export const UserManagementDeleteDialog = (props: RouteComponentProps<{ login: s
         </Button>
       </ModalFooter>
     </Modal>
-  );
-};
+  )
+}
 
-export default UserManagementDeleteDialog;
+export default UserManagementDeleteDialog

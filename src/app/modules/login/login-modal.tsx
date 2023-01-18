@@ -1,31 +1,38 @@
-import React from 'react';
-import { ValidatedField } from 'react-jhipster';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert, Row, Col, Form } from 'reactstrap';
-import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { ValidatedField } from 'react-jhipster'
+import { Link } from 'react-router-dom'
+import { Alert, Button, Col, Form, Modal, ModalBody, ModalFooter, ModalHeader,
+  Row } from 'reactstrap'
 
 export interface ILoginModalProps {
-  showModal: boolean;
-  loginError: boolean;
-  handleLogin: (username: string, password: string, rememberMe: boolean) => void;
-  handleClose: () => void;
+  showModal: boolean
+  loginError: boolean
+  handleLogin: (username: string, password: string, rememberMe: boolean) => void
+  handleClose: () => void
 }
 
 const LoginModal = (props: ILoginModalProps) => {
   const login = ({ username, password, rememberMe }) => {
-    props.handleLogin(username, password, rememberMe);
-  };
+    props.handleLogin(username, password, rememberMe)
+  }
 
   const {
     handleSubmit,
     register,
-    formState: { errors, touchedFields },
-  } = useForm({ mode: 'onTouched' });
+    formState: { errors, touchedFields }
+  } = useForm({ mode: 'onTouched' })
 
-  const { loginError, handleClose } = props;
+  const { loginError, handleClose } = props
 
   return (
-    <Modal isOpen={props.showModal} toggle={handleClose} backdrop="static" id="login-page" autoFocus={false}>
+    <Modal
+      isOpen={props.showModal}
+      toggle={handleClose}
+      backdrop="static"
+      id="login-page"
+      autoFocus={false}
+    >
       <Form onSubmit={handleSubmit(login)}>
         <ModalHeader id="login-title" data-cy="loginTitle" toggle={handleClose}>
           Connexion
@@ -33,11 +40,14 @@ const LoginModal = (props: ILoginModalProps) => {
         <ModalBody>
           <Row>
             <Col md="12">
-              {loginError ? (
-                <Alert color="danger" data-cy="loginError">
-                  <strong>Impossible de se connecter to sign in!</strong> Vérifier votre mot de passe et/ou votre nom d&apos;utilisateur.
-                </Alert>
-              ) : null}
+              {loginError ?
+                (
+                  <Alert color="danger" data-cy="loginError">
+                    <strong>Impossible de se connecter to sign in!</strong>{' '}
+                    Vérifier votre mot de passe et/ou votre nom d&apos;utilisateur.
+                  </Alert>
+                ) :
+                null}
             </Col>
             <Col md="12">
               <ValidatedField
@@ -48,10 +58,10 @@ const LoginModal = (props: ILoginModalProps) => {
                 autoFocus
                 data-cy="username"
                 validate={{
-                  required: "Le nom d'utilisateur ne peut pas être vide.",
+                  required: "Le nom d'utilisateur ne peut pas être vide."
                 }}
                 register={register}
-                error={errors.username}
+                error={errors.username.message.toString()}
                 isTouched={touchedFields.username}
               />
               <ValidatedField
@@ -62,13 +72,20 @@ const LoginModal = (props: ILoginModalProps) => {
                 required
                 data-cy="password"
                 validate={{
-                  required: 'Le mot de passe ne peut pas être vide.',
+                  required: 'Le mot de passe ne peut pas être vide.'
                 }}
                 register={register}
                 error={errors.password}
                 isTouched={touchedFields.password}
               />
-              <ValidatedField name="rememberMe" type="checkbox" check label="Souvenez-vous de moi" value={true} register={register} />
+              <ValidatedField
+                name="rememberMe"
+                type="checkbox"
+                check
+                label="Souvenez-vous de moi"
+                value={true}
+                register={register}
+              />
             </Col>
           </Row>
           <div className="mt-1">&nbsp;</div>
@@ -78,7 +95,8 @@ const LoginModal = (props: ILoginModalProps) => {
             </Link>
           </Alert>
           <Alert color="warning">
-            <span>Vous n&apos;avez pas encore de compte ?</span> <Link to="/account/register">Créer un compte.</Link>
+            <span>Vous n&apos;avez pas encore de compte ?</span>{' '}
+            <Link to="/account/register">Créer un compte.</Link>
           </Alert>
         </ModalBody>
         <ModalFooter>
@@ -91,7 +109,7 @@ const LoginModal = (props: ILoginModalProps) => {
         </ModalFooter>
       </Form>
     </Modal>
-  );
-};
+  )
+}
 
-export default LoginModal;
+export default LoginModal

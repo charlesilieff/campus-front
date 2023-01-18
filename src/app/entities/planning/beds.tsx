@@ -1,22 +1,22 @@
-import { IBed } from 'app/shared/model/bed.model';
-import React, { FunctionComponent } from 'react';
+import { IBed } from 'app/shared/model/bed.model'
+import React, { FunctionComponent } from 'react'
 
 interface IProps {
-  rowPosition: number;
-  index: number;
-  bed: IBed;
+  rowPosition: number
+  index: number
+  bed: IBed
 }
 
 export const Bed: FunctionComponent<IProps> = ({ rowPosition, index, bed }) => {
-  const gridRowStart = rowPosition - 1 - index;
-  const gridRowEnd = rowPosition - index;
+  const gridRowStart = rowPosition - 1 - index
+  const gridRowEnd = rowPosition - index
 
   let style = {
     gridRowStart,
-    gridRowEnd,
-  } as React.CSSProperties;
+    gridRowEnd
+  } as React.CSSProperties
   if (index === 0) {
-    style = { ...style, borderBottom: '0.15em solid' };
+    style = { ...style, borderBottom: '0.15em solid' }
   }
   return (
     <>
@@ -29,11 +29,12 @@ export const Bed: FunctionComponent<IProps> = ({ rowPosition, index, bed }) => {
           gridColumnStart: 8,
           gridColumnEnd: 40,
           borderBottom: index === 0 ? '' : '0.02em dashed',
-          marginBottom: '-0.1em',
+          marginBottom: '-0.1em'
         }}
-      ></div>
+      >
+      </div>
     </>
-  );
-};
+  )
+}
 
-export default Bed;
+export default Bed

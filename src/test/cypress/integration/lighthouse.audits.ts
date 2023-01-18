@@ -1,7 +1,7 @@
 describe('Lighthoyse Audits', () => {
   beforeEach(() => {
-    cy.visit('/');
-  });
+    cy.visit('/')
+  })
 
   it('homepage', () => {
     const customThresholds = {
@@ -10,8 +10,8 @@ describe('Lighthoyse Audits', () => {
       seo: 90,
       'best-practices': 90,
       // If you have enabled PWA you should set this threshold to 100
-      pwa: 0,
-    };
+      pwa: 0
+    }
 
     const desktopConfig = {
       extends: 'lighthouse:default',
@@ -19,10 +19,10 @@ describe('Lighthoyse Audits', () => {
       // Change the CPU slowdown multiplier to emulate different kind of devices
       // See https://github.com/GoogleChrome/lighthouse/blob/master/docs/throttling.md#cpu-throttling for details
       throttling: {
-        cpuSlowdownMultiplier: 1,
+        cpuSlowdownMultiplier: 1
       },
-      screenEmulation: { disabled: true },
-    };
-    cy.lighthouse(customThresholds, desktopConfig);
-  });
-});
+      screenEmulation: { disabled: true }
+    }
+    cy.lighthouse(customThresholds, desktopConfig)
+  })
+})

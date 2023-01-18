@@ -1,54 +1,61 @@
-import React, { useEffect } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
+import React, { useEffect } from 'react'
+import { RouteComponentProps } from 'react-router-dom'
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { useAppDispatch, useAppSelector } from 'app/config/store';
-import { getEntity, deleteEntity } from './place.reducer';
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { deleteEntity, getEntity } from './place.reducer'
 
 export const PlaceDeleteDialog = (props: RouteComponentProps<{ id: string }>) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getEntity(props.match.params.id));
-  }, []);
+    dispatch(getEntity(props.match.params.id))
+  }, [])
 
-  const placeEntity = useAppSelector(state => state.place.entity);
-  const updateSuccess = useAppSelector(state => state.place.updateSuccess);
+  const placeEntity = useAppSelector(state => state.place.entity)
+  const updateSuccess = useAppSelector(state => state.place.updateSuccess)
 
   const handleClose = () => {
-    props.history.push('/place');
-  };
+    props.history.push('/place')
+  }
 
   useEffect(() => {
     if (updateSuccess) {
-      handleClose();
+      handleClose()
     }
-  }, [updateSuccess]);
+  }, [updateSuccess])
 
   const confirmDelete = () => {
-    dispatch(deleteEntity(placeEntity.id));
-  };
+    dispatch(deleteEntity(placeEntity.id))
+  }
 
   return (
     <Modal isOpen toggle={handleClose}>
       <ModalHeader toggle={handleClose} data-cy="placeDeleteDialogHeading">
         Confirmer l&apos;opération de suppression
       </ModalHeader>
-      <ModalBody id="gestionhebergementApp.place.delete.question">Êtes-vous sûr de vouloir supprimer ce lieu?</ModalBody>
+      <ModalBody id="gestionhebergementApp.place.delete.question">
+        Êtes-vous sûr de vouloir supprimer ce lieu?
+      </ModalBody>
       <ModalFooter>
         <Button color="secondary" onClick={handleClose}>
           <FontAwesomeIcon icon="ban" />
           &nbsp; Retour
         </Button>
-        <Button id="jhi-confirm-delete-place" data-cy="entityConfirmDeleteButton" color="danger" onClick={confirmDelete}>
+        <Button
+          id="jhi-confirm-delete-place"
+          data-cy="entityConfirmDeleteButton"
+          color="danger"
+          onClick={confirmDelete}
+        >
           <FontAwesomeIcon icon="trash" />
           &nbsp; Supprimer
         </Button>
       </ModalFooter>
     </Modal>
-  );
-};
+  )
+}
 
-export default PlaceDeleteDialog;
+export default PlaceDeleteDialog

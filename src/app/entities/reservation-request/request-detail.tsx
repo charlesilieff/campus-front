@@ -1,21 +1,21 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import { useAppDispatch, useAppSelector } from 'app/config/store';
-import React, { useEffect } from 'react';
-import { TextFormat } from 'react-jhipster';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row } from 'reactstrap';
-import { getEntity } from './reservation-request.reducer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import React, { useEffect } from 'react'
+import { TextFormat } from 'react-jhipster'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { Button, Col, Row } from 'reactstrap'
+import { getEntity } from './reservation-request.reducer'
 
 export const CustomerDetail = (props: RouteComponentProps<{ id: string }>) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getEntity(props.match.params.id));
-  }, []);
+    dispatch(getEntity(props.match.params.id))
+  }, [])
 
-  const customerEntity = useAppSelector(state => state.requestReservation.entity.customer);
-  const reservationEntity = useAppSelector(state => state.requestReservation.entity.reservation);
+  const customerEntity = useAppSelector(state => state.requestReservation.entity.customer)
+  const reservationEntity = useAppSelector(state => state.requestReservation.entity.reservation)
   return (
     <Row>
       <Col md="8">
@@ -33,10 +33,12 @@ export const CustomerDetail = (props: RouteComponentProps<{ id: string }>) => {
             <span id="age">Age</span>
           </dt>
           <dd>{customerEntity?.age}</dd>
-          {/* <dt>
+          {
+            /* <dt>
             <span id="isFemal">Genre</span>
           </dt>
-          <dd>{customerEntity?.isFemal ? 'Femme' : 'Homme'}</dd> */}
+          <dd>{customerEntity?.isFemal ? 'Femme' : 'Homme'}</dd> */
+          }
           <dt>
             <span id="phoneNumber">Téléphone</span>
           </dt>
@@ -84,17 +86,29 @@ export const CustomerDetail = (props: RouteComponentProps<{ id: string }>) => {
             <span id="arrivalDate">Date d&apos;arrivée</span>
           </dt>
           <dd>
-            {reservationEntity?.arrivalDate ? (
-              <TextFormat value={reservationEntity?.arrivalDate} type="date" format={APP_LOCAL_DATE_FORMAT} />
-            ) : null}
+            {reservationEntity?.arrivalDate ?
+              (
+                <TextFormat
+                  value={reservationEntity?.arrivalDate}
+                  type="date"
+                  format={APP_LOCAL_DATE_FORMAT}
+                />
+              ) :
+              null}
           </dd>
           <dt>
             <span id="departureDate">Date de départ</span>
           </dt>
           <dd>
-            {reservationEntity?.departureDate ? (
-              <TextFormat value={reservationEntity.departureDate} type="date" format={APP_LOCAL_DATE_FORMAT} />
-            ) : null}
+            {reservationEntity?.departureDate ?
+              (
+                <TextFormat
+                  value={reservationEntity.departureDate}
+                  type="date"
+                  format={APP_LOCAL_DATE_FORMAT}
+                />
+              ) :
+              null}
           </dd>
           <dt>
             <span id="comment">Commentaire</span>
@@ -103,14 +117,14 @@ export const CustomerDetail = (props: RouteComponentProps<{ id: string }>) => {
 
           <dt>Chambres réservées à votre nom</dt>
           <dd>
-            {reservationEntity?.rooms?.length === 0 || reservationEntity?.rooms === undefined
-              ? "Vous n'avez pas encore de chambres attribuées."
-              : reservationEntity?.rooms.map((val, i) => (
-                  <span key={val}>
-                    <a>{val}</a>
-                    {reservationEntity.rooms && i === reservationEntity.rooms.length - 1 ? '' : ', '}
-                  </span>
-                ))}
+            {reservationEntity?.rooms?.length === 0 || reservationEntity?.rooms === undefined ?
+              "Vous n'avez pas encore de chambres attribuées." :
+              reservationEntity?.rooms.map((val, i) => (
+                <span key={val}>
+                  <a>{val}</a>
+                  {reservationEntity.rooms && i === reservationEntity.rooms.length - 1 ? '' : ', '}
+                </span>
+              ))}
           </dd>
         </dl>
         <Button
@@ -120,15 +134,23 @@ export const CustomerDetail = (props: RouteComponentProps<{ id: string }>) => {
           color="info"
           data-cy="entityDetailsBackButton"
         >
-          <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Annuler la réservation</span>
+          <FontAwesomeIcon icon="trash" />{' '}
+          <span className="d-none d-md-inline">Annuler la réservation</span>
         </Button>
         &nbsp;
-        <Button data-cy="entityEditButton" tag={Link} to={`/reservation-request/${props.match.params.id}/edit`} replace color="primary">
-          <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Modifier la réservation</span>
+        <Button
+          data-cy="entityEditButton"
+          tag={Link}
+          to={`/reservation-request/${props.match.params.id}/edit`}
+          replace
+          color="primary"
+        >
+          <FontAwesomeIcon icon="pencil-alt" />{' '}
+          <span className="d-none d-md-inline">Modifier la réservation</span>
         </Button>
       </Col>
     </Row>
-  );
-};
+  )
+}
 
-export default CustomerDetail;
+export default CustomerDetail

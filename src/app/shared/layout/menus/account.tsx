@@ -1,7 +1,7 @@
-import React from 'react';
-import MenuItem from 'app/shared/layout/menus/menu-item';
+import MenuItem from 'app/shared/layout/menus/menu-item'
+import React from 'react'
 
-import { NavDropdown } from './menu-components';
+import { NavDropdown } from './menu-components'
 
 const accountMenuItemsAuthenticated = (
   <>
@@ -15,7 +15,7 @@ const accountMenuItemsAuthenticated = (
       Déconnexion
     </MenuItem>
   </>
-);
+)
 
 const accountMenuItems = (
   <>
@@ -26,12 +26,12 @@ const accountMenuItems = (
       Création d&apos;un compte
     </MenuItem>
   </>
-);
+)
 
 export const AccountMenu = ({ isAuthenticated = false }) => (
   <NavDropdown icon="user" name="Compte" id="account-menu" data-cy="accountMenu">
     {isAuthenticated ? accountMenuItemsAuthenticated : accountMenuItems}
   </NavDropdown>
-);
+)
 
-export default AccountMenu;
+export default AccountMenu

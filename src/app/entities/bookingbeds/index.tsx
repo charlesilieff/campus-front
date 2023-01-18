@@ -1,11 +1,11 @@
-import React from 'react';
-import { Switch } from 'react-router-dom';
+import React from 'react'
+import { Switch } from 'react-router-dom'
 
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
+import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
 
-import ReservationDetail from './reservation-detail';
-import ReservationDeleteDialog from './reservation-delete-dialog';
-import ReservationUpdate from './reservation-update';
+import ReservationDeleteDialog from './reservation-delete-dialog'
+import ReservationDetail from './reservation-detail'
+import ReservationUpdate from './reservation-update'
 
 const Routes = ({ match }) => (
   <>
@@ -14,8 +14,12 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={ReservationUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={ReservationDetail} />
     </Switch>
-    <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={ReservationDeleteDialog} />
+    <ErrorBoundaryRoute
+      exact
+      path={`${match.url}/:id/delete`}
+      component={ReservationDeleteDialog}
+    />
   </>
-);
+)
 
-export default Routes;
+export default Routes

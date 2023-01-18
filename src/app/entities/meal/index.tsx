@@ -1,5 +1,5 @@
-import React from 'react';
+import React from 'react'
 
-const Routes = ({ match }) => <>Coucou</>;
+const Routes = ({ match }) => <>Coucou</>
 
-export default Routes;
+export default Routes

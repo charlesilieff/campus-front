@@ -1,11 +1,11 @@
-import { AnyAction, configureStore, ThunkAction } from '@reduxjs/toolkit';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { AnyAction, configureStore, ThunkAction } from '@reduxjs/toolkit'
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
-import reducer from '../shared/reducers';
-import errorMiddleware from './error-middleware';
-import notificationMiddleware from './notification-middleware';
-import loggerMiddleware from './logger-middleware';
-import { loadingBarMiddleware } from 'react-redux-loading-bar';
+import { loadingBarMiddleware } from 'react-redux-loading-bar'
+import reducer from '../shared/reducers'
+import errorMiddleware from './error-middleware'
+import loggerMiddleware from './logger-middleware'
+import notificationMiddleware from './notification-middleware'
 
 const store = configureStore({
   reducer,
@@ -13,20 +13,20 @@ const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         // Ignore these field paths in all actions
-        ignoredActionPaths: ['payload.config', 'payload.request', 'error', 'meta.arg'],
-      },
-    }).concat(errorMiddleware, notificationMiddleware, loadingBarMiddleware(), loggerMiddleware),
-});
+        ignoredActionPaths: ['payload.config', 'payload.request', 'error', 'meta.arg']
+      }
+    }).concat(errorMiddleware, notificationMiddleware, loadingBarMiddleware(), loggerMiddleware)
+})
 
 const getStore = () => {
-  return store;
-};
+  return store
+}
 
-export type IRootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type IRootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
 
-export const useAppSelector: TypedUseSelectorHook<IRootState> = useSelector;
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, IRootState, unknown, AnyAction>;
+export const useAppSelector: TypedUseSelectorHook<IRootState> = useSelector
+export const useAppDispatch = () => useDispatch<AppDispatch>()
+export type AppThunk<ReturnType = void,> = ThunkAction<ReturnType, IRootState, unknown, AnyAction>
 
-export default getStore;
+export default getStore

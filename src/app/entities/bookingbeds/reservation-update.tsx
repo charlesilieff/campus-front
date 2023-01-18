@@ -1,22 +1,32 @@
-import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import React from 'react'
+import { RouteComponentProps } from 'react-router-dom'
 
-import { useAppSelector } from 'app/config/store';
-import ReservationCustomerUpdate from './reservation_customer-update';
-import ReservationBedsUpdate from './reservation_beds-update';
+import { useAppSelector } from 'app/config/store'
+import ReservationBedsUpdate from './reservation_beds-update'
+import ReservationCustomerUpdate from './reservation_customer-update'
 
 export const ReservationUpdate = (props: RouteComponentProps<{ id: string }>) => {
-  const stepOne = useAppSelector(state => state.bookingBeds.stepOne);
+  const stepOne = useAppSelector(state => state.bookingBeds.stepOne)
 
   return (
     <div>
-      {!stepOne ? (
-        <ReservationCustomerUpdate history={props.history} location={props.location} match={props.match} />
-      ) : (
-        <ReservationBedsUpdate history={props.history} location={props.location} match={props.match} />
-      )}
+      {!stepOne ?
+        (
+          <ReservationCustomerUpdate
+            history={props.history}
+            location={props.location}
+            match={props.match}
+          />
+        ) :
+        (
+          <ReservationBedsUpdate
+            history={props.history}
+            location={props.location}
+            match={props.match}
+          />
+        )}
     </div>
-  );
-};
+  )
+}
 
-export default ReservationUpdate;
+export default ReservationUpdate

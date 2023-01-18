@@ -1,29 +1,32 @@
 const getErrorMessage = errorData => {
-  let message = errorData.message;
+  let message = errorData.message
   if (errorData.fieldErrors) {
     errorData.fieldErrors.forEach(fErr => {
-      message += `\nfield: ${fErr.field},  Object: ${fErr.objectName}, message: ${fErr.message}\n`;
-    });
+      message += `\nfield: ${fErr.field},  Object: ${fErr.objectName}, message: ${fErr.message}\n`
+    })
   }
-  return message;
-};
+  return message
+}
 
-export default () => next => action => {
-  /**
-   *
-   * The error middleware serves to log error messages from dispatch
-   * It need not run in production
-   */
-  if (process.env.NODE_ENV === 'development') {
-    const { error } = action;
-    if (error) {
-      console.error(`${action.type} caught at middleware with reason: ${JSON.stringify(error.message)}.`);
-      if (error && error.response && error.response.data) {
-        const message = getErrorMessage(error.response.data);
-        console.error(`Actual cause: ${message}`);
+export default () =>
+  next =>
+    action => {
+      /**
+       * The error middleware serves to log error messages from dispatch
+       * It need not run in production
+       */
+      if (process.env.NODE_ENV === 'development') {
+        const { error } = action
+        if (error) {
+          console.error(
+            `${action.type} caught at middleware with reason: ${JSON.stringify(error.message)}.`
+          )
+          if (error && error.response && error.response.data) {
+            const message = getErrorMessage(error.response.data)
+            console.error(`Actual cause: ${message}`)
+          }
+        }
       }
+      // Dispatch initial action
+      return next(action)
     }
-  }
-  // Dispatch initial action
-  return next(action);
-};

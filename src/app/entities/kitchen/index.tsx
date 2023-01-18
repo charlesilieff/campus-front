@@ -1,70 +1,72 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IMeal } from 'app/shared/model/meal.model';
-import axios from 'axios';
-import dayjs, { Dayjs } from 'dayjs';
-import React, { useEffect, useState } from 'react';
-import { ValidatedField } from 'react-jhipster';
-import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap';
-import { IMealsNumber } from './IMealsNumber';
-import KitchenSummary from './mealsSummary';
-import MealContext from './mealsContext';
-import MealsPlanning from './mealsPlanning';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { IMeal } from 'app/shared/model/meal.model'
+import axios from 'axios'
+import dayjs, { Dayjs } from 'dayjs'
+import React, { useEffect, useState } from 'react'
+import { ValidatedField } from 'react-jhipster'
+import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap'
+import { IMealsNumber } from './IMealsNumber'
+import MealContext from './mealsContext'
+import MealsPlanning from './mealsPlanning'
+import KitchenSummary from './mealsSummary'
 
-const apiUrlMealsDateFor31Daus = 'api/meals/date';
+const apiUrlMealsDateFor31Daus = 'api/meals/date'
 interface IShowSavingProps {
-  isShow: boolean;
-  message: string;
+  isShow: boolean
+  message: string
 }
 
 const Index = () => {
-  const [date, setDate] = useState(dayjs());
+  const [date, setDate] = useState(dayjs())
 
-  const [mealsData, setMealsData] = useState([] as IMeal[]);
-  const [toggle, setToggle] = useState(false);
-  const [isPressed, setPressed] = useState(false as boolean);
+  const [mealsData, setMealsData] = useState([] as IMeal[])
+  const [toggle, setToggle] = useState(false)
+  const [isPressed, setPressed] = useState(false as boolean)
 
-  const defaultSavingPopupProps: IShowSavingProps = { isShow: false, message: '' };
-  const [showSavingPopup, setShowSavingPopup] = useState(defaultSavingPopupProps);
-  const [numberOfDays, setNumberOfDays] = useState(31 as number);
+  const defaultSavingPopupProps: IShowSavingProps = { isShow: false, message: '' }
+  const [showSavingPopup, setShowSavingPopup] = useState(defaultSavingPopupProps)
+  const [numberOfDays, setNumberOfDays] = useState(31 as number)
 
   useEffect(() => {
-    getMealsDateFor31Days(date);
-  }, [date]);
+    getMealsDateFor31Days(date)
+  }, [date])
 
   useEffect(() => {
     if (showSavingPopup) {
       const timeId = setTimeout(() => {
         // After 3 seconds set the show value to false
-        setShowSavingPopup({ isShow: false, message: '' });
-      }, 3000);
+        setShowSavingPopup({ isShow: false, message: '' })
+      }, 3000)
 
       return () => {
-        clearTimeout(timeId);
-      };
+        clearTimeout(timeId)
+      }
     }
-  }, [showSavingPopup]);
+  }, [showSavingPopup])
 
   const changePage = () => {
-    setToggle(!toggle);
-  };
+    setToggle(!toggle)
+  }
 
   const newDatePlanning = (dateStart: any) => {
-    setDate(dayjs(dateStart.target.value));
-  };
+    setDate(dayjs(dateStart.target.value))
+  }
 
   // On calcule le nombre de jours du mois de la date passée par l'utilisateur.
   // Si c'est égal à 31 on ne veut pas afficher le deuxiéme mois.
-  const totalDays = date.daysInMonth();
+  const totalDays = date.daysInMonth()
 
   const getMealsDateFor31Days = async (startDate: Dayjs) => {
-    const requestUrl = `${apiUrlMealsDateFor31Daus}/${startDate.format('YYYY-MM-DD')}?cacheBuster=${new Date().getTime()}`;
-    const { data } = await axios.get<IMeal[]>(requestUrl);
-    setMealsData(data);
-  };
+    const requestUrl = `${apiUrlMealsDateFor31Daus}/${startDate.format('YYYY-MM-DD')}?cacheBuster=${
+      new Date().getTime()
+    }`
+    const { data } = await axios.get<IMeal[]>(requestUrl)
+    setMealsData(data)
+  }
 
   const isButtonPressed: () => void = () => {
-    setPressed(true);
-  };
+    setPressed(true)
+  }
 
   /**
    * Définition du comportement d'affectation de données dans le contexte.
@@ -73,75 +75,77 @@ const Index = () => {
    */
   const changeMeal = (mealsNumber: IMealsNumber, index: number) => {
     // Modification de la méthode : copie par valeur (spread)
-    const newDefaultValue = [...mealsData];
+    const newDefaultValue = [...mealsData]
     newDefaultValue[index] = {
       ...newDefaultValue[index],
       specialLunchToCook: mealsNumber.lunchtime.specialDiet,
       specialDinnerToCook: mealsNumber.dinner.specialDiet,
       regularLunchToCook: mealsNumber.lunchtime.classicDiet,
       regularDinnerToCook: mealsNumber.dinner.classicDiet,
-      comment: mealsNumber.comment,
-    };
+      comment: mealsNumber.comment
+    }
     // Mise à jour du contexte : du nombre de repas à réaliser.
-    setMealsData([...newDefaultValue]);
-  };
+    setMealsData([...newDefaultValue])
+  }
 
   /**
    * Calculation of total.
-   *
    */
   const totalMeals = (table: number[]) => {
     const add = (accumulator, a) => {
-      return accumulator + a;
-    };
-    return table.reduce(add, 0); // with initial value to avoid when the array is empty
-  };
+      return accumulator + a
+    }
+    return table.reduce(add, 0) // with initial value to avoid when the array is empty
+  }
 
-  let resultTotalMeals: number[];
-  let mealsDataDays: IMeal[] = new Array(numberOfDays);
+  let resultTotalMeals: number[]
+  let mealsDataDays: IMeal[] = new Array(numberOfDays)
 
-  ({ mealsDataDays, resultTotalMeals } = calculateAccordingToNumberOfDays(
+  ;({ mealsDataDays, resultTotalMeals } = calculateAccordingToNumberOfDays(
     mealsDataDays,
     numberOfDays,
     mealsData,
     resultTotalMeals,
     totalMeals
-  ));
+  ))
 
   useEffect(() => {
-    ({ mealsDataDays, resultTotalMeals } = calculateAccordingToNumberOfDays(
+    ;({ mealsDataDays, resultTotalMeals } = calculateAccordingToNumberOfDays(
       mealsDataDays,
       numberOfDays,
       mealsData,
       resultTotalMeals,
       totalMeals
-    ));
-  }, [mealsData, numberOfDays]);
+    ))
+  }, [mealsData, numberOfDays])
 
   /**
    * Save meals and display a state message : saving ok or on error.
    * PUT command is send to the back-end.
    */
   const saveMeals = async () => {
-    const apiUrlMealsToCookFor31Daus = 'api/meals/all';
+    const apiUrlMealsToCookFor31Daus = 'api/meals/all'
     try {
-      await axios.put<IMeal[]>(apiUrlMealsToCookFor31Daus, mealsData);
-      setShowSavingPopup({ isShow: true, message: 'Sauvegarde effectuée.' });
+      await axios.put<IMeal[]>(apiUrlMealsToCookFor31Daus, mealsData)
+      setShowSavingPopup({ isShow: true, message: 'Sauvegarde effectuée.' })
     } catch (error) {
-      setShowSavingPopup({ isShow: true, message: 'Problème de communication entre la page et le serveur!!! => ' + error });
+      setShowSavingPopup({
+        isShow: true,
+        message: 'Problème de communication entre la page et le serveur!!! => ' + error
+      })
     }
-  };
+  }
 
   /**
    * 15 days display or 31 days.
    */
   const toggleNumberOfDays = () => {
     if (numberOfDays === 31) {
-      setNumberOfDays(15);
+      setNumberOfDays(15)
     } else {
-      setNumberOfDays(31);
+      setNumberOfDays(31)
     }
-  };
+  }
 
   return (
     <MealContext.Provider value={[mealsData, changeMeal]}>
@@ -154,41 +158,62 @@ const Index = () => {
             data-cy="date"
             type="date"
             onChange={newDatePlanning}
-          ></ValidatedField>
+          >
+          </ValidatedField>
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
           {!toggle && isPressed && (
             <div className="float-right">
-              <Button color="success" id="save-meals-to-cook" data-cy="entitySaveToCookButton" onClick={() => saveMeals()}>
+              <Button
+                color="success"
+                id="save-meals-to-cook"
+                data-cy="entitySaveToCookButton"
+                onClick={() => saveMeals()}
+              >
                 <FontAwesomeIcon icon="save" />
                 &nbsp; Sauvegarder
               </Button>
             </div>
           )}
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-          <Button color="primary" id="summary-meals-to-cook" data-cy="entitySummaryToCookButton" onClick={() => changePage()}>
+          <Button
+            color="primary"
+            id="summary-meals-to-cook"
+            data-cy="entitySummaryToCookButton"
+            onClick={() => changePage()}
+          >
             <FontAwesomeIcon icon="utensils" />
             &nbsp; {toggle ? 'Repas prévus' : 'Résumé'}
           </Button>
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
           {/* sur 15 jours */}
-          <Button color="primary" id="number-of-days" data-cy="numberofday" onClick={() => toggleNumberOfDays()}>
+          <Button
+            color="primary"
+            id="number-of-days"
+            data-cy="numberofday"
+            onClick={() => toggleNumberOfDays()}
+          >
             <FontAwesomeIcon icon="calendar" />
             &nbsp; {numberOfDays === 31 ? '15 jours' : '31 jours'}
           </Button>
         </div>
-        {toggle ? (
-          <KitchenSummary date={date} totalDays={totalDays} numberOfDays={numberOfDays} />
-        ) : (
-          <MealsPlanning date={date} totalDays={totalDays} isButtonPressed={() => isButtonPressed()} numberOfDays={numberOfDays} />
-        )}
+        {toggle ?
+          <KitchenSummary date={date} totalDays={totalDays} numberOfDays={numberOfDays} /> :
+          (
+            <MealsPlanning
+              date={date}
+              totalDays={totalDays}
+              isButtonPressed={() => isButtonPressed()}
+              numberOfDays={numberOfDays}
+            />
+          )}
       </div>
       {displayTotalMeals(resultTotalMeals)}
 
       {showSavingPopup.isShow && savePopupFunction(showSavingPopup.message)}
     </MealContext.Provider>
-  );
-};
-export default Index;
+  )
+}
+export default Index
 
 function calculateAccordingToNumberOfDays(
   mealsDataDays: IMeal[],
@@ -197,13 +222,13 @@ function calculateAccordingToNumberOfDays(
   resultTotalMeals: number[],
   totalMeals: (table: number[]) => any
 ) {
-  mealsDataDays = new Array(numberOfDays);
+  mealsDataDays = new Array(numberOfDays)
 
   for (let i = 0; i < numberOfDays; i++) {
-    mealsDataDays[i] = { ...mealsData[i] };
+    mealsDataDays[i] = { ...mealsData[i] }
   }
-  resultTotalMeals = totalMealsCalculation(mealsDataDays, totalMeals);
-  return { mealsDataDays, resultTotalMeals };
+  resultTotalMeals = totalMealsCalculation(mealsDataDays, totalMeals)
+  return { mealsDataDays, resultTotalMeals }
 }
 
 /**
@@ -256,14 +281,15 @@ function displayTotalMeals(resultTotalMeals: number[]) {
           <br />
         </div>
         <div id="total" className="col">
-          <br />{' '}
+          <br />
+          {' '}
         </div>
         <div id="total" className="col">
           {'Total repas: ' + resultTotalMeals[6]}
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 /**
@@ -275,30 +301,30 @@ function displayTotalMeals(resultTotalMeals: number[]) {
 function totalMealsCalculation(mealsData: IMeal[], totalMeals: (table: number[]) => any) {
   // regularLunchToCook: calculation of total.
   let table: number[] = mealsData.map((meals, index) => {
-    return meals.regularLunchToCook;
-  });
-  const totalRegularLunchToCook: number = totalMeals(table);
+    return meals.regularLunchToCook
+  })
+  const totalRegularLunchToCook: number = totalMeals(table)
 
   table = mealsData.map((meals, index) => {
-    return meals.regularDinnerToCook;
-  });
-  const totalRegularDinnerToCook: number = totalMeals(table);
+    return meals.regularDinnerToCook
+  })
+  const totalRegularDinnerToCook: number = totalMeals(table)
 
   // specialLunchToCook: calculation of total.
   table = mealsData.map((meals, index) => {
-    return meals.specialLunchToCook;
-  });
-  const totalSpecialLunchToCook: number = totalMeals(table);
+    return meals.specialLunchToCook
+  })
+  const totalSpecialLunchToCook: number = totalMeals(table)
 
   // specialDinnerToCook: calculation of total.
   table = mealsData.map((meals, index) => {
-    return meals.specialDinnerToCook;
-  });
-  const totalSpecialDinnerToCook: number = totalMeals(table);
+    return meals.specialDinnerToCook
+  })
+  const totalSpecialDinnerToCook: number = totalMeals(table)
 
-  const totalRegularToCook: number = totalRegularDinnerToCook + totalRegularLunchToCook;
-  const totalSpecialToCook: number = totalSpecialDinnerToCook + totalSpecialLunchToCook;
-  const totalToCook: number = totalRegularToCook + totalSpecialToCook;
+  const totalRegularToCook: number = totalRegularDinnerToCook + totalRegularLunchToCook
+  const totalSpecialToCook: number = totalSpecialDinnerToCook + totalSpecialLunchToCook
+  const totalToCook: number = totalRegularToCook + totalSpecialToCook
 
   const result: number[] = [
     totalRegularLunchToCook,
@@ -307,10 +333,10 @@ function totalMealsCalculation(mealsData: IMeal[], totalMeals: (table: number[])
     totalSpecialDinnerToCook,
     totalRegularToCook,
     totalSpecialToCook,
-    totalToCook,
-  ];
+    totalToCook
+  ]
 
-  return result;
+  return result
 }
 
 /**
@@ -328,8 +354,8 @@ function savePopupFunction(commentPopup: string) {
     <Modal isOpen={true}>
       <ModalHeader>Sauvegarde:</ModalHeader>
       <ModalBody>
-        <label> {commentPopup} </label>
+        <label>{commentPopup}</label>
       </ModalBody>
     </Modal>
-  );
+  )
 }

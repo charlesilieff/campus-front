@@ -1,12 +1,12 @@
-import React from 'react';
-import { Switch } from 'react-router-dom';
+import React from 'react'
+import { Switch } from 'react-router-dom'
 
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
+import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
 
-import Room from './room';
-import RoomDetail from './room-detail';
-import RoomUpdate from './room-update';
-import RoomDeleteDialog from './room-delete-dialog';
+import Room from './room'
+import RoomDeleteDialog from './room-delete-dialog'
+import RoomDetail from './room-detail'
+import RoomUpdate from './room-update'
 
 const Routes = ({ match }) => (
   <>
@@ -18,6 +18,6 @@ const Routes = ({ match }) => (
     </Switch>
     <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={RoomDeleteDialog} />
   </>
-);
+)
 
-export default Routes;
+export default Routes

@@ -1,276 +1,285 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import { useAppDispatch, useAppSelector } from 'app/config/store';
-import { IBed } from 'app/shared/model/bed.model';
-import { IBedroomKind } from 'app/shared/model/bedroom-kind.model';
-import { IBookingBeds } from 'app/shared/model/bookingBeds.model';
-import { IPlace } from 'app/shared/model/place.model';
-import { IReservation } from 'app/shared/model/reservation.model';
-import { IRoom } from 'app/shared/model/room.model';
-import { CustomValidatedField } from 'app/shared/util/cross-validation-form';
-import Beds from './beds';
-import { mapIdList } from 'app/shared/util/entity-utils';
-import axios from 'axios';
-import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import {  TextFormat } from 'react-jhipster';
-import { RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row } from 'reactstrap';
-import { backToOne, createEntity, updateEntity } from './reservation.reducer';
-import PlaceModal from '../place/placeModal';
-import { Heading, HStack, Select, Text, VStack } from '@chakra-ui/react';
+import { Heading, HStack, Select, Text, VStack } from '@chakra-ui/react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { IBed } from 'app/shared/model/bed.model'
+import { IBedroomKind } from 'app/shared/model/bedroom-kind.model'
+import { IBookingBeds } from 'app/shared/model/bookingBeds.model'
+import { IPlace } from 'app/shared/model/place.model'
+import { IReservation } from 'app/shared/model/reservation.model'
+import { IRoom } from 'app/shared/model/room.model'
+import { CustomValidatedField } from 'app/shared/util/cross-validation-form'
+import { mapIdList } from 'app/shared/util/entity-utils'
+import axios from 'axios'
+import dayjs from 'dayjs'
+import React, { useEffect, useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import { TextFormat } from 'react-jhipster'
+import { RouteComponentProps } from 'react-router-dom'
+import { Button, Col, Row } from 'reactstrap'
+import PlaceModal from '../place/placeModal'
+import Beds from './beds'
+import { backToOne, createEntity, updateEntity } from './reservation.reducer'
 
-const apiUrlPlacesWithoutImage = 'api/places/noimage';
-const apiUrlAllPlaces = 'api/planning/places';
+const apiUrlPlacesWithoutImage = 'api/places/noimage'
+const apiUrlAllPlaces = 'api/planning/places'
 
 export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
-  const reservationEntity = useAppSelector(state => state.bookingBeds.entity);
-  const loading = useAppSelector(state => state.bookingBeds.loading);
-  const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess);
+  const reservationEntity = useAppSelector(state => state.bookingBeds.entity)
+  const loading = useAppSelector(state => state.bookingBeds.loading)
+  const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
 
-  const arrivalDate = dayjs(reservationEntity.arrivalDate).format('YYYY-MM-DD');
-  const departureDate = dayjs(reservationEntity.departureDate).format('YYYY-MM-DD');
+  const arrivalDate = dayjs(reservationEntity.arrivalDate).format('YYYY-MM-DD')
+  const departureDate = dayjs(reservationEntity.departureDate).format('YYYY-MM-DD')
 
-  const apiUrlPlaces = `api/bookingbeds/${arrivalDate}/${departureDate}`;
+  const apiUrlPlaces = `api/bookingbeds/${arrivalDate}/${departureDate}`
 
-  const [isNew] = useState(!props.match.params || !props.match.params.id);
-  const [places, setPlaces] = useState([] as IPlace[]);
-  const [roomKinds, setRoomKinds] = useState([] as IBedroomKind[]);
-  const [rooms, setRooms] = useState([] as IRoom[]);
-  const [bedsToBook, setBedsToBook] = useState([] as number[]);
-  const [placeImage, setPlace] = useState(null as IPlace);
+  const [isNew] = useState(!props.match.params || !props.match.params.id)
+  const [places, setPlaces] = useState([] as IPlace[])
+  const [roomKinds, setRoomKinds] = useState([] as IBedroomKind[])
+  const [rooms, setRooms] = useState([] as IRoom[])
+  const [bedsToBook, setBedsToBook] = useState([] as number[])
+  const [placeImage, setPlace] = useState(null as IPlace)
 
   const getPlaces = async () => {
-    const requestUrl = `${apiUrlPlacesWithoutImage}?cacheBuster=${new Date().getTime()}`;
-    const { data } = await axios.get<IPlace[]>(requestUrl);
+    const requestUrl = `${apiUrlPlacesWithoutImage}?cacheBuster=${new Date().getTime()}`
+    const { data } = await axios.get<IPlace[]>(requestUrl)
 
-    setPlaces(data);
-  };
+    setPlaces(data)
+  }
 
   const getOnePlace = async (id: string) => {
-    const requestUrl = `${apiUrlAllPlaces}/${id}?cacheBuster=${new Date().getTime()}`;
-    const { data } = await axios.get<IPlace>(requestUrl);
-    setPlace(data);
-  };
+    const requestUrl = `${apiUrlAllPlaces}/${id}?cacheBuster=${new Date().getTime()}`
+    const { data } = await axios.get<IPlace>(requestUrl)
+    setPlace(data)
+  }
 
   useEffect(() => {
-    getPlaces();
-    getBookingBeds();
-    let updatedbedsToBook: number[];
+    getPlaces()
+    getBookingBeds()
+    let updatedbedsToBook: number[]
 
     // Pour la modif d'une réservation déjà existante
     updatedbedsToBook = reservationEntity.beds?.reduce((acc: number[], bed: IBed) => {
-      return acc.concat(bed.id);
-    }, [] as number[]);
+      return acc.concat(bed.id)
+    }, [] as number[])
 
     // Pour créer l'object quand on fait des aller-retour avec le premier formulaire.
     updatedbedsToBook = updatedbedsToBook?.concat(
       Object.keys(reservationEntity).map(key => {
-        return Number(key) && reservationEntity[key] ? Number(key) : null;
+        return Number(key) && reservationEntity[key] ? Number(key) : null
       })
-    );
+    )
 
-    setBedsToBook(updatedbedsToBook);
-  }, []);
+    setBedsToBook(updatedbedsToBook)
+  }, [])
 
   useEffect(() => {
     if (updateSuccess) {
-      handleClose();
+      handleClose()
     }
-  }, [updateSuccess]);
+  }, [updateSuccess])
 
   const handleClose = () => {
-    props.history.push('/planning');
-  };
+    props.history.push('/planning')
+  }
 
   const getBookingBeds = async () => {
-    const reservationId = isNew ? '' : `/${reservationEntity.id}`;
-    const requestUrl = `${apiUrlPlaces}${reservationId}?cacheBuster=${new Date().getTime()}`;
-    const { data } = await axios.get<IPlace[]>(requestUrl);
+    const reservationId = isNew ? '' : `/${reservationEntity.id}`
+    const requestUrl = `${apiUrlPlaces}${reservationId}?cacheBuster=${new Date().getTime()}`
+    const { data } = await axios.get<IPlace[]>(requestUrl)
 
-    data.forEach(place => place.rooms.sort((room1, room2) => room1.name.localeCompare(room2.name)));
+    data.forEach(place => place.rooms.sort((room1, room2) => room1.name.localeCompare(room2.name)))
 
-    setPlaces(data);
+    setPlaces(data)
 
     const roomsData: IRoom[] = data?.flatMap(place => {
-      return place.rooms;
-    });
+      return place.rooms
+    })
 
-    setRooms(roomsData);
+    setRooms(roomsData)
 
     setRoomKinds(
       roomsData
         .map(room => {
-          return room?.bedroomKind;
+          return room?.bedroomKind
         })
         // Permet de n'afficher que les bedroomKind non null et unique
         .filter((bedroomKind, index, arr) => {
-          return arr?.findIndex(e => bedroomKind?.name === e?.name) === index;
+          return arr?.findIndex(e => bedroomKind?.name === e?.name) === index
         })
-    );
-  };
+    )
+  }
 
   const filterBedPlace = (idPlace: number) => {
     if (isNaN(idPlace) || idPlace === 0) {
       setRooms(
         places?.flatMap(place => {
-          return place.rooms;
+          return place.rooms
         })
-      );
+      )
     } else {
       setRooms(
         places
           ?.filter(place => {
-            return place.id === idPlace;
+            return place.id === idPlace
           })
           ?.flatMap(place => {
-            return place.rooms;
+            return place.rooms
           })
-      );
+      )
     }
-  };
+  }
 
   const filterBedRoomKind = (idRoomKind: number) => {
     if (isNaN(idRoomKind)) {
       setRooms(
         places?.flatMap(place => {
-          return place.rooms;
+          return place.rooms
         })
-      );
+      )
     } else {
       setRooms(
         places
           ?.flatMap(place => {
-            return place.rooms;
+            return place.rooms
           })
           .filter(room => {
-            return room.bedroomKind?.id === idRoomKind;
+            return room.bedroomKind?.id === idRoomKind
           })
-      );
+      )
     }
-  };
+  }
 
   const back = (formValues: IBookingBeds) => {
-    formValues.beds = mapIdList(bedsToBook);
+    formValues.beds = mapIdList(bedsToBook)
 
-    dispatch(backToOne(formValues));
-  };
+    dispatch(backToOne(formValues))
+  }
 
   const checkBedsToBook = (bedId: number) => {
-    const updatedbedsToBook = bedsToBook ? [...bedsToBook] : [];
+    const updatedbedsToBook = bedsToBook ? [...bedsToBook] : []
 
     if (updatedbedsToBook.includes(bedId)) {
-      updatedbedsToBook.splice(bedsToBook.indexOf(bedId), 1);
+      updatedbedsToBook.splice(bedsToBook.indexOf(bedId), 1)
     } else {
-      updatedbedsToBook.push(bedId);
+      updatedbedsToBook.push(bedId)
     }
 
-    setBedsToBook(updatedbedsToBook);
-  };
+    setBedsToBook(updatedbedsToBook)
+  }
 
   const saveEntity = (values: IBookingBeds) => {
     // On selectionne et on créer une liste d'object bed (id seulement comme atribut)
     const bedsId = Object.keys(values).map(key => {
-      return Number(key) && values[key] ? Number(key) : '';
-    });
+      return Number(key) && values[key] ? Number(key) : ''
+    })
 
-    const beds: IBed[] = mapIdList(bedsId);
+    const beds: IBed[] = mapIdList(bedsId)
 
     const customerReservation = Object.fromEntries(
       Object.entries(values).filter(entry => {
-        return !Number(entry[0]);
+        return !Number(entry[0])
       })
-    );
+    )
 
     const reservationLast = Object.fromEntries(
       Object.entries(reservationEntity).filter(entry => {
-        return !Number(entry[0]);
+        return !Number(entry[0])
       })
-    );
+    )
 
     const reservation: IReservation = {
       ...reservationLast,
       ...customerReservation,
-      beds,
-    };
+      beds
+    }
 
     if (reservation.paymentMode === '') {
-      reservation.paymentMode = null;
+      reservation.paymentMode = null
     }
 
     // HCau Vérue: imposer une valeur specialDiet ne pouvant pas dépasser le nombre de visiteurs.
     if (reservation?.specialDietNumber > reservation?.personNumber) {
-      reservation.specialDietNumber = reservation.personNumber;
+      reservation.specialDietNumber = reservation.personNumber
     }
 
     if (reservation.isLunchOnly) {
-      reservation.isDepartureDiner = false;
-      reservation.isArrivalDiner = false;
+      reservation.isDepartureDiner = false
+      reservation.isArrivalDiner = false
     }
 
     if (isNew) {
-      dispatch(createEntity(reservation));
+      dispatch(createEntity(reservation))
     } else {
-      dispatch(updateEntity(reservation));
+      dispatch(updateEntity(reservation))
     }
-  };
+  }
 
   // Calcul du nombre de places réservés (coché)
   const placesBooked = places?.reduce((accP, place) => {
-    return (
-      accP +
-      place.rooms?.reduce((accR, room) => {
-        return (
-          accR +
-          room.beds?.reduce((acc, bed) => {
-            return acc + (bedsToBook?.includes(bed.id) ? bed.numberOfPlaces : 0);
-          }, 0)
-        );
-      }, 0)
-    );
-  }, 0);
+    return (accP
+      + place.rooms?.reduce((accR, room) => {
+        return (accR
+          + room.beds?.reduce((acc, bed) => {
+            return acc + (bedsToBook?.includes(bed.id) ? bed.numberOfPlaces : 0)
+          }, 0))
+      }, 0))
+  }, 0)
 
   const defaultValues = (): IBookingBeds => {
     const idBeds = reservationEntity.beds?.reduce((acc, bed) => {
-      return { ...acc, [bed.id?.toString()]: true };
-    }, new Object());
-    return { ...idBeds, ...reservationEntity };
-  };
+      return { ...acc, [bed.id?.toString()]: true }
+    }, new Object())
+    return { ...idBeds, ...reservationEntity }
+  }
 
   const form = useForm({
     mode: 'onBlur',
-    defaultValues: defaultValues(),
-  });
+    defaultValues: defaultValues()
+  })
 
   return (
     <div>
       <Row className="justify-content-center">
         <Col md="6">
-        
-          <Heading size={"lg"}id="gestionhebergementApp.reservation.home.createOrEditLabel" data-cy="ReservationCreateUpdateHeading">
+          <Heading
+            size={'lg'}
+            id="gestionhebergementApp.reservation.home.createOrEditLabel"
+            data-cy="ReservationCreateUpdateHeading"
+          >
             Choisissez les lits :
           </Heading>
         </Col>
       </Row>
       <Row>
         <Col sm={{ size: 6, order: 2, offset: 2 }}>
-        <HStack>
-            <Text fontWeight={"bold"}>Nom: {reservationEntity?.customer.firstname}   </Text>
-            <Text fontWeight={"bold"}>Prénom: {reservationEntity?.customer.lastname}  </Text>
+          <HStack>
+            <Text fontWeight={'bold'}>Nom: {reservationEntity?.customer.firstname}</Text>
+            <Text fontWeight={'bold'}>Prénom: {reservationEntity?.customer.lastname}</Text>
           </HStack>
           <p>
-            Date d&apos;arrivée : <TextFormat value={reservationEntity?.arrivalDate} type="date" format={APP_LOCAL_DATE_FORMAT} /> Date de
-            départ : <TextFormat value={reservationEntity?.departureDate} type="date" format={APP_LOCAL_DATE_FORMAT} />
+            Date d&apos;arrivée :{' '}
+            <TextFormat
+              value={reservationEntity?.arrivalDate}
+              type="date"
+              format={APP_LOCAL_DATE_FORMAT}
+            />{' '}
+            Date de départ :{' '}
+            <TextFormat
+              value={reservationEntity?.departureDate}
+              type="date"
+              format={APP_LOCAL_DATE_FORMAT}
+            />
           </p>
           <p>Nombre de personnes à héberger : {reservationEntity.personNumber}</p>
         </Col>
       </Row>
       <Row className="justify-content-center" style={{ marginBottom: '2rem' }}>
         <Col md={{ size: 2, order: 0, offset: 2 }}>
-          <Heading size={"md"}>Filtre par lieu</Heading>
+          <Heading size={'md'}>Filtre par lieu</Heading>
           <Select
             className="block"
             id="place"
@@ -278,25 +287,23 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
             data-cy="place"
             style={{ padding: '0.4rem', borderRadius: '0.3rem' }}
             onChange={e => {
-              getOnePlace(e.target.value);
-              filterBedPlace(Number(e.target.value));
+              getOnePlace(e.target.value)
+              filterBedPlace(Number(e.target.value))
             }}
           >
             <option value={0}>Aucun</option>
-            {places ? (
-              places?.map(p => (
+            {places ?
+              (places?.map(p => (
                 <option value={p.id} key={p.id}>
                   {p.name}
                 </option>
-              ))
-            ) : (
-              <option value="" key="0" />
-            )}
+              ))) :
+              <option value="" key="0" />}
           </Select>
           <PlaceModal {...placeImage} />
         </Col>
         <Col md={{ size: 4, order: 1 }}>
-        <Heading size={"md"}>Filtre par type de chambre</Heading>
+          <Heading size={'md'}>Filtre par type de chambre</Heading>
           <Select
             className="block"
             id="roomKind"
@@ -304,33 +311,31 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
             data-cy="roomKind"
             style={{ padding: '0.4rem', borderRadius: '0.3rem' }}
             onChange={e => {
-              filterBedRoomKind(Number(e.target.value));
+              filterBedRoomKind(Number(e.target.value))
             }}
           >
             <option value={null}>Aucune</option>
-            {roomKinds ? (
-              roomKinds.map((p, index) => (
+            {roomKinds ?
+              (roomKinds.map((p, index) => (
                 <option value={p?.id} key={index}>
                   {p?.name}
                 </option>
-              ))
-            ) : (
-              <option value="" key="0" />
-            )}
+              ))) :
+              <option value="" key="0" />}
           </Select>
         </Col>
       </Row>
       <Row className="justify-content-center">
         <Col md="8">
           <p>
-            {'Numéros des lit réservés : ' +
-              places
+            {'Numéros des lit réservés : '
+              + places
                 ?.flatMap(place => {
                   return place.rooms?.flatMap(room => {
                     return room.beds.map(bed => {
-                      return bedsToBook?.includes(bed.id) ? `${bed.number}, ` : '';
-                    });
-                  });
+                      return bedsToBook?.includes(bed.id) ? `${bed.number}, ` : ''
+                    })
+                  })
                 })
                 .join('')}
           </p>
@@ -342,12 +347,11 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
 
       <Row className="justify-content-center">
         <Col md="8">
-          {loading ? (
-            <p>Chargement...</p>
-          ) : (
+          {loading ? <p>Chargement...</p> : (
             <FormProvider {...form}>
               <form onSubmit={form.handleSubmit(saveEntity)}>
-                <Beds rooms={rooms} bedsToBook={bedsToBook} checkBedsToBook={checkBedsToBook}></Beds>
+                <Beds rooms={rooms} bedsToBook={bedsToBook} checkBedsToBook={checkBedsToBook}>
+                </Beds>
                 <CustomValidatedField
                   label="Moyen de paiement"
                   id="reservation-paymentMode"
@@ -356,10 +360,16 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
                   type="text"
                   registerOptions={{
                     minLength: { value: 2, message: 'Minimum 2.' },
-                    maxLength: { value: 40, message: 'Maximum 40.' },
+                    maxLength: { value: 40, message: 'Maximum 40.' }
                   }}
                 />
-                <CustomValidatedField label="Réservation payée ?" id="reservation-isPaid" name="isPaid" data-cy="isPaid" type="checkbox" />
+                <CustomValidatedField
+                  label="Réservation payée ?"
+                  id="reservation-isPaid"
+                  name="isPaid"
+                  data-cy="isPaid"
+                  type="checkbox"
+                />
                 <br />
                 <CustomValidatedField
                   label={`Réservation confirmée si cochée ? ${
@@ -372,7 +382,12 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
                   style={{ fontWeight: 'bold', fontSize: '1.3em', color: 'red' }}
                 />
                 <br />
-                <Button onClick={() => back(form.getValues())} id="cancel-save" data-cy="entityCreateCancelButton" color="info">
+                <Button
+                  onClick={() => back(form.getValues())}
+                  id="cancel-save"
+                  data-cy="entityCreateCancelButton"
+                  color="info"
+                >
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">Retour</span>
@@ -388,7 +403,7 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
         </Col>
       </Row>
     </div>
-  );
-};
+  )
+}
 
-export default ReservationBedsUpdate;
+export default ReservationBedsUpdate

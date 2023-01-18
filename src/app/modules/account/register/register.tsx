@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { ValidatedField, ValidatedForm, isEmail } from 'react-jhipster';
-import { Row, Col, Alert, Button } from 'reactstrap';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from 'react'
+import { isEmail, ValidatedField, ValidatedForm } from 'react-jhipster'
+import { toast } from 'react-toastify'
+import { Alert, Button, Col, Row } from 'reactstrap'
 
-import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar';
-import { useAppDispatch, useAppSelector } from 'app/config/store';
-import { handleRegister, reset } from './register.reducer';
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar'
+import { handleRegister, reset } from './register.reducer'
 
 export const RegisterPage = () => {
-  const [password, setPassword] = useState('');
-  const dispatch = useAppDispatch();
+  const [password, setPassword] = useState('')
+  const dispatch = useAppDispatch()
 
   useEffect(
-    () => () => {
-      dispatch(reset());
-    },
+    () =>
+      () => {
+        dispatch(reset())
+      },
     []
-  );
+  )
 
   const handleValidSubmit = ({ username, email, firstPassword }) => {
     dispatch(
@@ -24,20 +25,20 @@ export const RegisterPage = () => {
         login: username,
         email,
         password: firstPassword,
-        langKey: 'en',
+        langKey: 'en'
       })
-    );
-  };
+    )
+  }
 
-  const updatePassword = event => setPassword(event.target.value);
+  const updatePassword = event => setPassword(event.target.value)
 
-  const successMessage = useAppSelector(state => state.register.successMessage);
+  const successMessage = useAppSelector(state => state.register.successMessage)
 
   useEffect(() => {
     if (successMessage) {
-      toast.success(successMessage);
+      toast.success(successMessage)
     }
-  }, [successMessage]);
+  }, [successMessage])
 
   return (
     <div>
@@ -58,20 +59,21 @@ export const RegisterPage = () => {
               validate={{
                 required: {
                   value: true,
-                  message: "Votre nom d'utilisateur est obligatoire.",
+                  message: "Votre nom d'utilisateur est obligatoire."
                 },
                 pattern: {
-                  value: /^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$/,
-                  message: "Votre nom d'utilisateur n'est valide.",
+                  value:
+                    /^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$/,
+                  message: "Votre nom d'utilisateur n'est valide."
                 },
                 minLength: {
                   value: 2,
-                  message: "Votre nom d'utilisateur doit comporter au moins 2 caractère.",
+                  message: "Votre nom d'utilisateur doit comporter au moins 2 caractère."
                 },
                 maxLength: {
                   value: 50,
-                  message: "Votre nom d'utilisateur ne doit pas comporter plus de 50 caractères.",
-                },
+                  message: "Votre nom d'utilisateur ne doit pas comporter plus de 50 caractères."
+                }
               }}
               data-cy="username"
             />
@@ -83,17 +85,17 @@ export const RegisterPage = () => {
               validate={{
                 required: {
                   value: true,
-                  message: 'Votre email est obligatoire.',
+                  message: 'Votre email est obligatoire.'
                 },
                 minLength: {
                   value: 5,
-                  message: "Votre email d'utilisateur doit comporter au moins 2 caractère.",
+                  message: "Votre email d'utilisateur doit comporter au moins 2 caractère."
                 },
                 maxLength: {
                   value: 254,
-                  message: 'Votre email ne doit pas comporter plus de 254 caractères.',
+                  message: 'Votre email ne doit pas comporter plus de 254 caractères.'
                 },
-                validate: v => isEmail(v) || "Votre email n'est pas valide.",
+                validate: v => isEmail(v) || "Votre email n'est pas valide."
               }}
               data-cy="email"
             />
@@ -106,16 +108,16 @@ export const RegisterPage = () => {
               validate={{
                 required: {
                   value: true,
-                  message: 'Votre mot de passe est obligatoire.',
+                  message: 'Votre mot de passe est obligatoire.'
                 },
                 minLength: {
                   value: 4,
-                  message: 'Votre mot de passe ne doit pas comporter moins de 4 caractères.',
+                  message: 'Votre mot de passe ne doit pas comporter moins de 4 caractères.'
                 },
                 maxLength: {
                   value: 50,
-                  message: 'Votre mot de passe ne doit pas comporter plus de 50 caractères.',
-                },
+                  message: 'Votre mot de passe ne doit pas comporter plus de 50 caractères.'
+                }
               }}
               data-cy="firstPassword"
             />
@@ -128,17 +130,20 @@ export const RegisterPage = () => {
               validate={{
                 required: {
                   value: true,
-                  message: 'La confirmation du mot de passe est obligatoire.',
+                  message: 'La confirmation du mot de passe est obligatoire.'
                 },
                 minLength: {
                   value: 4,
-                  message: 'Votre confirmation de mot de passe ne doit pas comporter moins de 4 caractères.',
+                  message:
+                    'Votre confirmation de mot de passe ne doit pas comporter moins de 4 caractères.'
                 },
                 maxLength: {
                   value: 50,
-                  message: 'Votre confirmation de mot de passe ne doit pas comporter plus de 50 caractères.',
+                  message:
+                    'Votre confirmation de mot de passe ne doit pas comporter plus de 50 caractères.'
                 },
-                validate: v => v === password || 'Le mot de passe et la confirmation ne correspondent pas.',
+                validate: v =>
+                  v === password || 'Le mot de passe et la confirmation ne correspondent pas.'
               }}
               data-cy="secondPassword"
             />
@@ -149,7 +154,7 @@ export const RegisterPage = () => {
         </Col>
       </Row>
     </div>
-  );
-};
+  )
+}
 
-export default RegisterPage;
+export default RegisterPage

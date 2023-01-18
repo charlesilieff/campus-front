@@ -5,18 +5,18 @@ Cypress.Commands.add('getManagementInfo', () => {
   return cy
     .request({
       method: 'GET',
-      url: '/management/info',
+      url: '/management/info'
     })
-    .then(response => response.body);
-});
+    .then(response => response.body)
+})
 
 declare global {
   namespace Cypress {
-    interface Chainable<Subject> {
-      getManagementInfo(): Cypress.Chainable;
+    interface Chainable<Subject,> {
+      getManagementInfo(): Cypress.Chainable
     }
   }
 }
 
 // Convert this to a module instead of script (allows import/export)
-export {};
+export {}

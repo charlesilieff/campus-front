@@ -1,15 +1,15 @@
-import { getDateKey } from 'app/shared/util/date-utils';
-import { Dayjs } from 'dayjs';
-import React from 'react';
-import { Day } from './day';
+import { getDateKey } from 'app/shared/util/date-utils'
+import { Dayjs } from 'dayjs'
+import React from 'react'
+import { Day } from './day'
 
-import Months from './months';
+import Months from './months'
 
 interface IProps {
-  date: Dayjs;
-  totalDays: number;
-  isButtonPressed: () => void;
-  numberOfDays: number;
+  date: Dayjs
+  totalDays: number
+  isButtonPressed: () => void
+  numberOfDays: number
 }
 
 /**
@@ -20,16 +20,18 @@ interface IProps {
  *        - régime classique
  *  - Repas du soir.
  */
-const MealsPlanning = ({ date, totalDays, isButtonPressed: isButtonPressed, numberOfDays }: IProps) => {
+const MealsPlanning = (
+  { date, totalDays, isButtonPressed: isButtonPressed, numberOfDays }: IProps
+) => {
   // On souhaite afficher 31 jours => Tableau de 31 élements.
-  const monthDays = Array.from({ length: numberOfDays });
+  const monthDays = Array.from({ length: numberOfDays })
 
   // Objets contenant la position en x dans la grille des jours.
-  const positionX = {};
+  const positionX = {}
 
   // Objets contenant la position en y dans la grille des lits.
-  const positionY = {};
-  const positionYEnd = {};
+  const positionY = {}
+  const positionYEnd = {}
 
   return (
     <div className="grid-container" style={gridFormatStyle(numberOfDays)}>
@@ -41,21 +43,32 @@ const MealsPlanning = ({ date, totalDays, isButtonPressed: isButtonPressed, numb
       <div className="diet classicdietdinner">Classique</div>
       <Months date={date} month={0} totalDays={totalDays}></Months>
 
-      {date.date() + numberOfDays - 1 > totalDays && <Months date={date} month={1} totalDays={totalDays}></Months>}
+      {date.date() + numberOfDays - 1 > totalDays && (
+        <Months date={date} month={1} totalDays={totalDays}></Months>
+      )}
 
       {monthDays.map((_, index) => {
-        const gridColumnStart = 8 + index;
+        const gridColumnStart = 8 + index
         // On construit l'objet qui va permettre de récuperer la bonne position en X pour afficher les réservations.
-        const dateDay = date.add(index, 'day');
-        const dateKey = getDateKey(dateDay);
-        positionX[dateKey] = gridColumnStart;
-        return <Day positionX={gridColumnStart} key={dateKey} date={dateDay} index={index} isButtonPressed={() => isButtonPressed()}></Day>;
+        const dateDay = date.add(index, 'day')
+        const dateKey = getDateKey(dateDay)
+        positionX[dateKey] = gridColumnStart
+        return (
+          <Day
+            positionX={gridColumnStart}
+            key={dateKey}
+            date={dateDay}
+            index={index}
+            isButtonPressed={() => isButtonPressed()}
+          >
+          </Day>
+        )
       })}
     </div>
-  );
-};
+  )
+}
 
-export default MealsPlanning;
+export default MealsPlanning
 
 /**
  * Style of the grid according to the number of days.
@@ -63,10 +76,10 @@ export default MealsPlanning;
  * @returns
  */
 function gridFormatStyle(numberOfDays: number) {
-  const style = {} as React.CSSProperties;
+  const style = {} as React.CSSProperties
   if (numberOfDays === 15) {
-    style.borderLeftWidth = '0.2em';
-    style.gridTemplateColumns = '3em repeat(21, minmax(20px, 1fr))';
+    style.borderLeftWidth = '0.2em'
+    style.gridTemplateColumns = '3em repeat(21, minmax(20px, 1fr))'
   }
-  return style;
+  return style
 }
