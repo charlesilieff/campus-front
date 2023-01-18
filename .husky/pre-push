@@ -9,8 +9,8 @@ if [ -n "$(git status -s)" ]; then
   exit 1;
 fi
 
-echo "Npm i" && npm i 
-echo "Check Dedupe.." && npm dedupe
+# echo "Npm i" && npm i 
+# echo "Check Dedupe.." && npm dedupe
 
 echo "linting.." && npm run lint
 echo "PrePush Done!"
