@@ -1,6 +1,6 @@
 import 'react-toastify/dist/ReactToastify.css'
 import './app.scss'
-import './config/dayjs.ts'
+import './config/dayjs'
 
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'

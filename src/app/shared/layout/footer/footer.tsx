@@ -5,7 +5,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Col, Row } from 'reactstrap'
 
-const Footer = props => (
+const Footer = _ => (
   <div className="footer page-content">
     <Row>
       <Col md="12">

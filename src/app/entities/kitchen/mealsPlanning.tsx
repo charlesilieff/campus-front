@@ -29,10 +29,6 @@ const MealsPlanning = (
   // Objets contenant la position en x dans la grille des jours.
   const positionX = {}
 
-  // Objets contenant la position en y dans la grille des lits.
-  const positionY = {}
-  const positionYEnd = {}
-
   return (
     <div className="grid-container" style={gridFormatStyle(numberOfDays)}>
       <div className="time lunch">Midi</div>

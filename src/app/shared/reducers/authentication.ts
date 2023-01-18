@@ -4,6 +4,7 @@ import { Storage } from 'react-jhipster'
 import { serializeAxiosError } from './reducer.utils'
 
 import { AppThunk } from 'app/config/store'
+import { IUser } from '../model/user.model'
 
 const AUTH_TOKEN_KEY = 'jhi-authenticationToken'
 
@@ -13,7 +14,7 @@ export const initialState = {
   loginSuccess: false,
   loginError: false, // Errors returned from server side
   showModalLogin: false,
-  account: {} as any,
+  account: {} as IUser,
   errorMessage: null as unknown as string, // Errors returned from server side
   redirectMessage: null as unknown as string,
   sessionHasBeenFetched: false,

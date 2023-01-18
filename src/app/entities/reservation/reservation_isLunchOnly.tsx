@@ -11,7 +11,7 @@ import { Button, Table } from 'reactstrap'
 
 const apiUrlReservations = 'api/reservations/lunch-only'
 
-export const ReservationLunchOnly = (props: RouteComponentProps<{ url: string }>) => {
+export const ReservationLunchOnly = (_: RouteComponentProps<{ url: string }>) => {
   const [reservations, setReservations] = useState([] as IReservation[])
   const [date, setDate] = useState(dayjs())
   const loading = useAppSelector(state => state.reservation.loading)

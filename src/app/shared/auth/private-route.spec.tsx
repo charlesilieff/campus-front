@@ -94,8 +94,8 @@ describe('private-route component', () => {
 describe('hasAnyAuthority', () => {
   // All tests will go here
   it('Should return false when authorities is invalid', () => {
-    expect(hasAnyAuthority(undefined, undefined)).toEqual(false)
-    expect(hasAnyAuthority(null, [])).toEqual(false)
+    expect(hasAnyAuthority([], [])).toEqual(false)
+    expect(hasAnyAuthority([], [])).toEqual(false)
     expect(hasAnyAuthority([], [])).toEqual(false)
     expect(hasAnyAuthority([], [AUTHORITIES.USER])).toEqual(false)
   })

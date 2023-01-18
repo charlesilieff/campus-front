@@ -1,7 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap'
-import { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
 
 const MealsModal = () => {
   const [modal, setModal] = useState(false)

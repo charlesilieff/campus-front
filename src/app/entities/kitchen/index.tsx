@@ -100,7 +100,6 @@ const Index = () => {
 
   let resultTotalMeals: number[]
   let mealsDataDays: IMeal[] = new Array(numberOfDays)
-
   ;({ mealsDataDays, resultTotalMeals } = calculateAccordingToNumberOfDays(
     mealsDataDays,
     numberOfDays,
@@ -110,7 +109,8 @@ const Index = () => {
   ))
 
   useEffect(() => {
-    ({ mealsDataDays, resultTotalMeals } = calculateAccordingToNumberOfDays(
+    // eslint-disable-next-line @typescript-eslint/no-extra-semi
+    ;({ mealsDataDays, resultTotalMeals } = calculateAccordingToNumberOfDays(
       mealsDataDays,
       numberOfDays,
       mealsData,
@@ -300,24 +300,24 @@ function displayTotalMeals(resultTotalMeals: number[]) {
  */
 function totalMealsCalculation(mealsData: IMeal[], totalMeals: (table: number[]) => any) {
   // regularLunchToCook: calculation of total.
-  let table: number[] = mealsData.map((meals, index) => {
+  let table: number[] = mealsData.map(meals => {
     return meals.regularLunchToCook
   })
   const totalRegularLunchToCook: number = totalMeals(table)
 
-  table = mealsData.map((meals, index) => {
+  table = mealsData.map(meals => {
     return meals.regularDinnerToCook
   })
   const totalRegularDinnerToCook: number = totalMeals(table)
 
   // specialLunchToCook: calculation of total.
-  table = mealsData.map((meals, index) => {
+  table = mealsData.map(meals => {
     return meals.specialLunchToCook
   })
   const totalSpecialLunchToCook: number = totalMeals(table)
 
   // specialDinnerToCook: calculation of total.
-  table = mealsData.map((meals, index) => {
+  table = mealsData.map(meals => {
     return meals.specialDinnerToCook
   })
   const totalSpecialDinnerToCook: number = totalMeals(table)

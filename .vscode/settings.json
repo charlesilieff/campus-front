@@ -8,6 +8,7 @@
     "fortawesome",
     "gestionhebergement",
     "reduxjs",
+    "RESPHEBERGEMENT",
     "toastify"
   ],
   "editor.defaultFormatter": "dprint.dprint",

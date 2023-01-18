@@ -7,7 +7,7 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 export const RGPDAnonymizeData = () => {
   const [isCustomersToAnonymize, setIsCustomersToAnonymize] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
-  const [customers, setCustomers] = useState(null as ICustomer[])
+  const [customers, setCustomers] = useState([] as ICustomer[])
   const requestUrl = `/api/anonymizecustomers`
 
   const getIsCustomersToAnonymize = async () => {

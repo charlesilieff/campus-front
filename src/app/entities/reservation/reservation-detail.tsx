@@ -4,7 +4,7 @@ import { TextFormat } from 'react-jhipster'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Col, Row, UncontrolledTooltip } from 'reactstrap'
 
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
+import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntity } from './reservation.reducer'
 

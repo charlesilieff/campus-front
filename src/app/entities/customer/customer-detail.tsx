@@ -1,10 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect } from 'react'
+import {} from 'react-jhipster'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Col, Row, UncontrolledTooltip } from 'reactstrap'
-import {} from 'react-jhipster'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntity } from './customer.reducer'
 

@@ -2,13 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useState } from 'react'
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { Button, Col, FormText, Row, UncontrolledTooltip } from 'reactstrap'
+import { Button, Col, Row } from 'reactstrap'
 
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import { ICustomer } from 'app/shared/model/customer.model'
-import { convertDateTimeFromServer, convertDateTimeToServer,
-  displayDefaultDateTime } from 'app/shared/util/date-utils'
-import { mapIdList } from 'app/shared/util/entity-utils'
 import { createEntity, getEntity, reset, updateEntity } from './customer.reducer'
 
 export const CustomerUpdate = (props: RouteComponentProps<{ id: string }>) => {

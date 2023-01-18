@@ -13,7 +13,7 @@ export const BrandIcon = props => (
   </div>
 )
 
-export const Brand = props => (
+export const Brand = _ => (
   <NavbarBrand tag={Link} to="/" className="brand-logo">
     <BrandIcon />
     <span className="brand-title">Gestion de l&apos;hébergement</span>
@@ -21,7 +21,7 @@ export const Brand = props => (
   </NavbarBrand>
 )
 
-export const Home = props => (
+export const Home = _ => (
   <ChakraLink>
     <NavLink tag={Link} to="/" className="d-flex align-items-center">
       <FontAwesomeIcon icon="home" />
