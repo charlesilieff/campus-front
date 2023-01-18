@@ -15,6 +15,12 @@ pipeline {
                 sh "npm install"
             }
         }
+        stage('Lint') {
+            steps {
+                echo "Linting..."
+                sh "npm lint"
+            }
+        }
         stage('Package') {
             steps {
                 echo "Compiling with parcel..."
