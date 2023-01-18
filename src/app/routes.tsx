@@ -45,7 +45,7 @@ const Routes = () => {
         <PrivateRoute
           path="/kitchen/planning"
           component={Kitchen}
-          hasAnyAuthorities={[AUTHORITIES.COOKER]}
+          hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.COOKER]}
         />
         <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
         <PrivateRoute

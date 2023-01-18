@@ -8,7 +8,7 @@ import Months from './months'
 interface IProps {
   date: Dayjs
   totalDays: number
-  isButtonPressed: () => void
+
   numberOfDays: number
 }
 
@@ -20,9 +20,7 @@ interface IProps {
  *        - régime classique
  *  - Repas du soir.
  */
-const MealsPlanning = (
-  { date, totalDays, isButtonPressed: isButtonPressed, numberOfDays }: IProps
-) => {
+const MealsPlanning = ({ date, totalDays, numberOfDays }: IProps) => {
   // On souhaite afficher 31 jours => Tableau de 31 élements.
   const monthDays = Array.from({ length: numberOfDays })
 
@@ -49,15 +47,7 @@ const MealsPlanning = (
         const dateDay = date.add(index, 'day')
         const dateKey = getDateKey(dateDay)
         positionX[dateKey] = gridColumnStart
-        return (
-          <Day
-            positionX={gridColumnStart}
-            key={dateKey}
-            date={dateDay}
-            index={index}
-            isButtonPressed={() => isButtonPressed()}
-          />
-        )
+        return <Day positionX={gridColumnStart} key={dateKey} date={dateDay} index={index}></Day>
       })}
     </div>
   )

@@ -8,7 +8,6 @@ import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap'
 import { IMealsNumber } from './IMealsNumber'
 import MealContext from './mealsContext'
 import MealsPlanning from './mealsPlanning'
-import KitchenSummary from './mealsSummary'
 
 const apiUrlMealsDateFor31Daus = 'api/meals/date'
 interface IShowSavingProps {
@@ -20,8 +19,6 @@ const Index = () => {
   const [date, setDate] = useState(dayjs())
 
   const [mealsData, setMealsData] = useState([] as IMeal[])
-  const [toggle, setToggle] = useState(false)
-  const [isPressed, setPressed] = useState(false as boolean)
 
   const defaultSavingPopupProps: IShowSavingProps = { isShow: false, message: '' }
   const [showSavingPopup, setShowSavingPopup] = useState(defaultSavingPopupProps)
@@ -44,10 +41,6 @@ const Index = () => {
     }
   }, [showSavingPopup])
 
-  const changePage = () => {
-    setToggle(!toggle)
-  }
-
   const newDatePlanning = (dateStart: any) => {
     setDate(dayjs(dateStart.target.value))
   }
@@ -62,10 +55,6 @@ const Index = () => {
     }`
     const { data } = await axios.get<IMeal[]>(requestUrl)
     setMealsData(data)
-  }
-
-  const isButtonPressed: () => void = () => {
-    setPressed(true)
   }
 
   /**
@@ -120,23 +109,6 @@ const Index = () => {
   }, [mealsData, numberOfDays])
 
   /**
-   * Save meals and display a state message : saving ok or on error.
-   * PUT command is send to the back-end.
-   */
-  const saveMeals = async () => {
-    const apiUrlMealsToCookFor31Daus = 'api/meals/all'
-    try {
-      await axios.put<IMeal[]>(apiUrlMealsToCookFor31Daus, mealsData)
-      setShowSavingPopup({ isShow: true, message: 'Sauvegarde effectuée.' })
-    } catch (error) {
-      setShowSavingPopup({
-        isShow: true,
-        message: 'Problème de communication entre la page et le serveur!!! => ' + error
-      })
-    }
-  }
-
-  /**
    * 15 days display or 31 days.
    */
   const toggleNumberOfDays = () => {
@@ -161,29 +133,9 @@ const Index = () => {
           >
           </ValidatedField>
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-          {!toggle && isPressed && (
-            <div className="float-right">
-              <Button
-                color="success"
-                id="save-meals-to-cook"
-                data-cy="entitySaveToCookButton"
-                onClick={() => saveMeals()}
-              >
-                <FontAwesomeIcon icon="save" />
-                &nbsp; Sauvegarder
-              </Button>
-            </div>
-          )}
+
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-          <Button
-            color="primary"
-            id="summary-meals-to-cook"
-            data-cy="entitySummaryToCookButton"
-            onClick={() => changePage()}
-          >
-            <FontAwesomeIcon icon="utensils" />
-            &nbsp; {toggle ? 'Repas prévus' : 'Résumé'}
-          </Button>
+
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
           {/* sur 15 jours */}
           <Button
@@ -196,16 +148,8 @@ const Index = () => {
             &nbsp; {numberOfDays === 31 ? '15 jours' : '31 jours'}
           </Button>
         </div>
-        {toggle ?
-          <KitchenSummary date={date} totalDays={totalDays} numberOfDays={numberOfDays} /> :
-          (
-            <MealsPlanning
-              date={date}
-              totalDays={totalDays}
-              isButtonPressed={() => isButtonPressed()}
-              numberOfDays={numberOfDays}
-            />
-          )}
+
+        <MealsPlanning date={date} totalDays={totalDays} numberOfDays={numberOfDays} />
       </div>
       {displayTotalMeals(resultTotalMeals)}
 

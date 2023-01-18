@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IMeal } from 'app/shared/model/meal.model'
 import dayjs, { Dayjs } from 'dayjs'
 import React, { useContext, useEffect, useState } from 'react'
@@ -10,10 +9,9 @@ interface IProps {
   positionX: number
   date: Dayjs
   index: number
-  isButtonPressed: () => void
 }
 
-export const Day = ({ positionX, date, index, isButtonPressed: isButtonPressed }: IProps) => {
+export const Day = ({ positionX, date, index }: IProps) => {
   const dayWeek = date.day()
   const dayMonth = date.date()
 
@@ -96,67 +94,6 @@ export const Day = ({ positionX, date, index, isButtonPressed: isButtonPressed }
     setMealsNumber(theNewMealsNumber)
   }, [mealsContext])
 
-  /**
-   * Increment and decrement counter.
-   * @param plusMinus : 'plus' or 'minus'
-   * @param time : 'lunchtime' or 'dinner'
-   * @param diet : 'specialDiet' or 'classicDiet'
-   */
-  const counterNumber = (
-    plusMinus: 'plus' | 'minus',
-    time: 'lunchtime' | 'dinner',
-    diet: 'specialDiet' | 'classicDiet'
-  ) => {
-    const newMealsNumber: IMealsNumber = {
-      lunchtime: {
-        specialDiet: mealsNumber.lunchtime.specialDiet,
-        classicDiet: mealsNumber.lunchtime.classicDiet
-      },
-      dinner: {
-        specialDiet: mealsNumber.dinner.specialDiet,
-        classicDiet: mealsNumber.dinner.classicDiet
-      },
-      comment: mealsNumber?.comment
-    }
-
-    isButtonPressed()
-
-    if (diet === 'specialDiet') {
-      if (time === 'lunchtime') {
-        if (plusMinus === 'minus' && newMealsNumber.lunchtime.specialDiet > 0) {
-          newMealsNumber.lunchtime.specialDiet = newMealsNumber.lunchtime.specialDiet - 1
-        } else if (plusMinus === 'plus') {
-          newMealsNumber.lunchtime.specialDiet = newMealsNumber.lunchtime.specialDiet + 1
-        }
-      } else {
-        if (plusMinus === 'minus' && newMealsNumber.dinner.specialDiet > 0) {
-          newMealsNumber.dinner.specialDiet = newMealsNumber.dinner.specialDiet - 1
-        } else if (plusMinus === 'plus') {
-          newMealsNumber.dinner.specialDiet = newMealsNumber.dinner.specialDiet + 1
-        }
-      }
-    } else {
-      if (time === 'lunchtime') {
-        if (plusMinus === 'minus' && newMealsNumber.lunchtime.classicDiet > 0) {
-          newMealsNumber.lunchtime.classicDiet = newMealsNumber.lunchtime.classicDiet - 1
-        }
-        if (plusMinus === 'plus') {
-          newMealsNumber.lunchtime.classicDiet = newMealsNumber.lunchtime.classicDiet + 1
-        }
-      } else {
-        if (plusMinus === 'minus' && newMealsNumber.dinner.classicDiet > 0) {
-          newMealsNumber.dinner.classicDiet = newMealsNumber.dinner.classicDiet - 1
-        }
-        if (plusMinus === 'plus') {
-          newMealsNumber.dinner.classicDiet = newMealsNumber.dinner.classicDiet + 1
-        }
-      }
-    }
-
-    setMealsNumber(newMealsNumber)
-    setMealsContext(newMealsNumber, index)
-  }
-
   const colorNumber = (time: 'lunchtime' | 'dinner', diet: 'specialDiet' | 'classicDiet') => {
     let color: string
     let referentialColor: number
@@ -212,7 +149,6 @@ export const Day = ({ positionX, date, index, isButtonPressed: isButtonPressed }
 
   const changeCommentPopup = (value: string) => {
     setCommentPopup(value)
-    isButtonPressed()
   }
 
   return (
@@ -231,16 +167,11 @@ export const Day = ({ positionX, date, index, isButtonPressed: isButtonPressed }
           gridRowEnd: 5,
           borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
           borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
-          borderTopStyle: 'solid'
+          borderTopStyle: 'solid',
+          borderBottomWidth: '0.01em',
+          borderBottomStyle: 'solid'
         } as React.CSSProperties}
       >
-        <Button
-          onClick={() => counterNumber('plus', 'lunchtime', 'classicDiet')}
-          color="none"
-          className="kitchenBtn"
-        >
-          <FontAwesomeIcon icon="plus-circle" size="1x" color="green" />
-        </Button>
         <div
           style={{
             color: colorNumber('lunchtime', 'classicDiet')
@@ -248,13 +179,6 @@ export const Day = ({ positionX, date, index, isButtonPressed: isButtonPressed }
         >
           {mealsNumber?.lunchtime.classicDiet}
         </div>
-        <Button
-          onClick={() => counterNumber('minus', 'lunchtime', 'classicDiet')}
-          color="none"
-          className="kitchenBtn"
-        >
-          <FontAwesomeIcon icon="minus-circle" size="1x" color="red" />
-        </Button>
       </div>
 
       <div
@@ -267,16 +191,12 @@ export const Day = ({ positionX, date, index, isButtonPressed: isButtonPressed }
           gridRowEnd: 6,
           borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
           borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
-          borderTopStyle: 'solid'
+          borderTopStyle: 'solid',
+          borderBottomWidth: '0.1em',
+          borderBottomStyle: 'solid',
+          borderBottomColor: 'black'
         } as React.CSSProperties}
       >
-        <Button
-          onClick={() => counterNumber('plus', 'lunchtime', 'specialDiet')}
-          className="bouton"
-          color="none"
-        >
-          <FontAwesomeIcon icon="plus-circle" size="1x" color="green" />
-        </Button>
         <div
           style={{
             color: colorNumber('lunchtime', 'specialDiet')
@@ -284,13 +204,6 @@ export const Day = ({ positionX, date, index, isButtonPressed: isButtonPressed }
         >
           {mealsNumber?.lunchtime.specialDiet}
         </div>
-        <Button
-          onClick={() => counterNumber('minus', 'lunchtime', 'specialDiet')}
-          color="none"
-          className="kitchenBtn"
-        >
-          <FontAwesomeIcon icon="minus-circle" size="1x" color="red" />
-        </Button>
       </div>
 
       <div
@@ -303,16 +216,11 @@ export const Day = ({ positionX, date, index, isButtonPressed: isButtonPressed }
           gridRowEnd: 7,
           borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
           borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
-          borderTopStyle: 'solid'
+          borderTopStyle: 'solid',
+          borderBottomWidth: '0.01em',
+          borderBottomStyle: 'solid'
         } as React.CSSProperties}
       >
-        <Button
-          onClick={() => counterNumber('plus', 'dinner', 'classicDiet')}
-          color="none"
-          className="kitchenBtn"
-        >
-          <FontAwesomeIcon icon="plus-circle" size="1x" color="green" />
-        </Button>
         <div
           style={{
             color: colorNumber('dinner', 'classicDiet')
@@ -320,13 +228,6 @@ export const Day = ({ positionX, date, index, isButtonPressed: isButtonPressed }
         >
           {mealsNumber?.dinner.classicDiet}
         </div>
-        <Button
-          onClick={() => counterNumber('minus', 'dinner', 'classicDiet')}
-          color="none"
-          className="kitchenBtn"
-        >
-          <FontAwesomeIcon icon="minus-circle" size="1x" color="red" />
-        </Button>
       </div>
 
       <div
@@ -342,13 +243,6 @@ export const Day = ({ positionX, date, index, isButtonPressed: isButtonPressed }
           borderTopStyle: 'solid'
         } as React.CSSProperties}
       >
-        <Button
-          onClick={() => counterNumber('plus', 'dinner', 'specialDiet')}
-          color="none"
-          className="kitchenBtn"
-        >
-          <FontAwesomeIcon icon="plus-circle" size="1x" color="green" />
-        </Button>
         <div
           style={{
             color: colorNumber('dinner', 'specialDiet')
@@ -356,13 +250,6 @@ export const Day = ({ positionX, date, index, isButtonPressed: isButtonPressed }
         >
           {mealsNumber?.dinner.specialDiet}
         </div>
-        <Button
-          onClick={() => counterNumber('minus', 'dinner', 'specialDiet')}
-          color="none"
-          className="kitchenBtn"
-        >
-          <FontAwesomeIcon icon="minus-circle" size="1x" color="red" />
-        </Button>
       </div>
 
       {commentPopupFunction(
