@@ -1,8 +1,8 @@
+import { expect } from '@jest/globals'
 import axios from 'axios'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import sinon from 'sinon'
-
 import administration, {
   changeLogLevel,
   getConfigurations,
@@ -19,6 +19,7 @@ describe('Administration reducer tests', () => {
     if (element instanceof Array) {
       return element.length === 0
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       return Object.keys(element).length === 0
     }
   }

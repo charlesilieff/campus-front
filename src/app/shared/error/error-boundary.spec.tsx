@@ -1,10 +1,10 @@
 /**
  * @jest-environment jsdom
  */
+import { expect } from '@jest/globals'
 import { render } from '@testing-library/react'
-import React from 'react'
-
 import ErrorBoundary from 'app/shared/error/error-boundary'
+import React from 'react'
 
 const ErrorComp = () => {
   throw new Error('test')

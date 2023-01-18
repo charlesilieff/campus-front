@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, { useEffect, useState } from 'react'
 import { ValidatedField, ValidatedForm } from 'react-jhipster'
 import { toast } from 'react-toastify'

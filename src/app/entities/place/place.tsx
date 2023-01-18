@@ -1,12 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useState } from 'react'
-import { byteSize, openFile, Translate } from 'react-jhipster'
+import React, { useEffect } from 'react'
+import { byteSize, openFile } from 'react-jhipster'
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { Button, Col, Row, Table } from 'reactstrap'
+import { Button, Table } from 'reactstrap'
 
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import { IPlace } from 'app/shared/model/place.model'
 import { getEntities } from './place.reducer'
 
 export const Place = (props: RouteComponentProps<{ url: string }>) => {
@@ -16,11 +14,11 @@ export const Place = (props: RouteComponentProps<{ url: string }>) => {
   const loading = useAppSelector(state => state.place.loading)
 
   useEffect(() => {
-    dispatch(getEntities({}))
+    dispatch(getEntities())
   }, [])
 
   const handleSyncList = () => {
-    dispatch(getEntities({}))
+    dispatch(getEntities())
   }
 
   const { match } = props

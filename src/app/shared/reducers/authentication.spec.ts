@@ -1,12 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import axios from 'axios'
-import { Storage } from 'react-jhipster'
-import configureStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import sinon from 'sinon'
-
+import { expect } from '@jest/globals'
 import authentication, {
   authenticate,
   authError,
@@ -20,9 +15,14 @@ import authentication, {
   logout,
   logoutSession
 } from 'app/shared/reducers/authentication'
+import axios from 'axios'
+import { Storage } from 'react-jhipster'
+import configureStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import sinon from 'sinon'
 
 describe('Authentication reducer tests', () => {
-  function isAccountEmpty(state): boolean {
+  function isAccountEmpty(state: { account: [] }): boolean {
     return Object.keys(state.account).length === 0
   }
 

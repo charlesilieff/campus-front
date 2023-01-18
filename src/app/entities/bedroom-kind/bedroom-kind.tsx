@@ -13,11 +13,11 @@ export const BedroomKind = (props: RouteComponentProps<{ url: string }>) => {
   const loading = useAppSelector(state => state.bedroomKind.loading)
 
   useEffect(() => {
-    dispatch(getEntities({}))
+    dispatch(getEntities())
   }, [])
 
   const handleSyncList = () => {
-    dispatch(getEntities({}))
+    dispatch(getEntities())
   }
 
   const { match } = props

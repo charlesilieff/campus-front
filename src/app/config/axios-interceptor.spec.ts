@@ -1,9 +1,9 @@
 /**
  * @jest-environment jsdom
  */
+import { expect } from '@jest/globals'
 import axios from 'axios'
 import sinon from 'sinon'
-
 import setupAxiosInterceptors from './axios-interceptor'
 
 describe('Axios Interceptor', () => {
@@ -25,6 +25,7 @@ describe('Axios Interceptor', () => {
       })
     })
     it('onResponseError is called on rejected response', () => {
+      // eslint-disable-next-line @typescript-eslint/no-extra-semi
       ;(client.interceptors.response as any).handlers[0].rejected({
         response: {
           statusText: 'NotFound',

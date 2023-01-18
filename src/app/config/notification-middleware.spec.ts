@@ -1,7 +1,7 @@
+import { expect } from '@jest/globals'
 import * as toastify from 'react-toastify' // synthetic default import doesn't work here due to mocking.
 import { applyMiddleware, createStore } from 'redux'
 import sinon from 'sinon'
-
 import notificationMiddleware from './notification-middleware'
 
 describe('Notification Middleware', () => {
@@ -159,8 +159,8 @@ describe('Notification Middleware', () => {
   })
 
   afterEach(() => {
-    ;(toastify.toast as any).error.restore()
-    ;(toastify.toast as any).success.restore()
+    // eslint-disable-next-line @typescript-eslint/no-extra-semi
+    ;(toastify.toast as any).error.restore(), (toastify.toast as any).success.restore()
   })
 
   it('should not trigger a toast message but should return action', () => {

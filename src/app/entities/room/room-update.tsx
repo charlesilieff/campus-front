@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getBedroomKinds } from 'app/entities/bedroom-kind/bedroom-kind.reducer'
 import { getEntities as getPlaces } from 'app/entities/place/place.reducer'
+import { IRoom } from 'app/shared/model/room.model'
 import React, { useEffect, useState } from 'react'
 import { ValidatedField, ValidatedForm } from 'react-jhipster'
 import { Link, RouteComponentProps } from 'react-router-dom'
@@ -31,8 +32,8 @@ export const RoomUpdate = (props: RouteComponentProps<{ id: string }>) => {
       dispatch(getEntity(props.match.params.id))
     }
 
-    dispatch(getPlaces({}))
-    dispatch(getBedroomKinds({}))
+    dispatch(getPlaces())
+    dispatch(getBedroomKinds())
   }, [])
 
   useEffect(() => {
@@ -42,7 +43,7 @@ export const RoomUpdate = (props: RouteComponentProps<{ id: string }>) => {
   }, [updateSuccess])
 
   const saveEntity = values => {
-    const entity = {
+    const entity: IRoom = {
       ...roomEntity,
       ...values,
       place: places.find(it => it.id.toString() === values.placeId.toString()),

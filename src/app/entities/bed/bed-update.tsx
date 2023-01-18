@@ -6,6 +6,7 @@ import { Button, Col, Row, UncontrolledTooltip } from 'reactstrap'
 
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getRooms } from 'app/entities/room/room.reducer'
+import { IBed } from 'app/shared/model/bed.model'
 import { createEntity, getEntity, reset, updateEntity } from './bed.reducer'
 
 export const BedUpdate = (props: RouteComponentProps<{ id: string }>) => {
@@ -30,7 +31,7 @@ export const BedUpdate = (props: RouteComponentProps<{ id: string }>) => {
       dispatch(getEntity(props.match.params.id))
     }
 
-    dispatch(getRooms({}))
+    dispatch(getRooms())
   }, [])
 
   useEffect(() => {
@@ -40,7 +41,7 @@ export const BedUpdate = (props: RouteComponentProps<{ id: string }>) => {
   }, [updateSuccess])
 
   const saveEntity = values => {
-    const entity = {
+    const entity: IBed = {
       ...bedEntity,
       ...values,
       room: rooms.find(it => it.id.toString() === values.roomId.toString())

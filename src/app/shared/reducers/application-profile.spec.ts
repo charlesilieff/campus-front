@@ -1,8 +1,8 @@
+import { expect } from '@jest/globals'
 import axios from 'axios'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import sinon from 'sinon'
-
 import profile, { getProfile } from './application-profile'
 
 describe('Profile reducer tests', () => {

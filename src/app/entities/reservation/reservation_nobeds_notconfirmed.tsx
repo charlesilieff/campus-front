@@ -3,22 +3,22 @@ import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { TextFormat } from 'react-jhipster'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Button, Table } from 'reactstrap'
 import { getReservationsNoBedsNotConfirmed } from './reservation.reducer'
 
-export const Reservation = (props: RouteComponentProps<{ url: string }>) => {
+export const Reservation = () => {
   const dispatch = useAppDispatch()
 
   const reservationList = useAppSelector(state => state.reservation.entities)
   const loading = useAppSelector(state => state.reservation.loading)
 
   useEffect(() => {
-    dispatch(getReservationsNoBedsNotConfirmed({}))
+    dispatch(getReservationsNoBedsNotConfirmed())
   }, [])
 
   const handleSyncList = () => {
-    dispatch(getReservationsNoBedsNotConfirmed({}))
+    dispatch(getReservationsNoBedsNotConfirmed())
   }
 
   return (

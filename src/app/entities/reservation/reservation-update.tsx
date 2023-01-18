@@ -34,9 +34,9 @@ export const ReservationUpdate = (props: RouteComponentProps<{ id: string }>) =>
       dispatch(getEntity(props.match.params.id))
     }
 
-    dispatch(getPricings({}))
-    dispatch(getBeds({}))
-    dispatch(getCustomers({}))
+    dispatch(getPricings())
+    dispatch(getBeds())
+    dispatch(getCustomers())
   }, [])
 
   useEffect(() => {
@@ -54,14 +54,17 @@ export const ReservationUpdate = (props: RouteComponentProps<{ id: string }>) =>
     const entity = {
       ...reservationEntity,
       ...values,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       beds: mapIdList(values.beds),
       pricing: pricing.find(it => it.id.toString() === values.pricingId.toString()),
       customer: customers.find(it => it.id.toString() === values.customerId.toString())
     }
 
     if (isNew) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       dispatch(createEntity(entity))
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       dispatch(updateEntity(entity))
     }
   }

@@ -1,12 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useState } from 'react'
-import { Translate } from 'react-jhipster'
+import React, { useEffect } from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { Button, Col, Row, Table } from 'reactstrap'
+import { Button, Table } from 'reactstrap'
 
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import { ICustomer } from 'app/shared/model/customer.model'
 import { getEntities } from './customer.reducer'
 
 export const Customer = (props: RouteComponentProps<{ url: string }>) => {
@@ -16,11 +13,11 @@ export const Customer = (props: RouteComponentProps<{ url: string }>) => {
   const loading = useAppSelector(state => state.customer.loading)
 
   useEffect(() => {
-    dispatch(getEntities({}))
+    dispatch(getEntities())
   }, [])
 
   const handleSyncList = () => {
-    dispatch(getEntities({}))
+    dispatch(getEntities())
   }
 
   const { match } = props

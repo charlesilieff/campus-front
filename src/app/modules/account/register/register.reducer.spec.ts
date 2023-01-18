@@ -1,8 +1,8 @@
+import { expect } from '@jest/globals'
 import axios from 'axios'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import sinon from 'sinon'
-
 import register, { handleRegister, reset } from './register.reducer'
 
 describe('Creating account tests', () => {

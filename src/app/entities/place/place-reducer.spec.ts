@@ -1,11 +1,11 @@
 import axios from 'axios'
 
+import { expect } from '@jest/globals'
+import { defaultValue, IPlace } from 'app/shared/model/place.model'
+import { EntityState } from 'app/shared/reducers/reducer.utils'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import sinon from 'sinon'
-
-import { defaultValue, IPlace } from 'app/shared/model/place.model'
-import { EntityState } from 'app/shared/reducers/reducer.utils'
 import reducer, { createEntity, deleteEntity, getEntities, getEntity, partialUpdateEntity, reset,
   updateEntity } from './place.reducer'
 
@@ -14,6 +14,7 @@ describe('Entities reducer tests', () => {
     if (element instanceof Array) {
       return element.length === 0
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       return Object.keys(element).length === 0
     }
   }
@@ -194,7 +195,7 @@ describe('Entities reducer tests', () => {
           payload: resolvedObject
         }
       ]
-      await store.dispatch(getEntities({}))
+      await store.dispatch(getEntities())
       expect(store.getActions()[0]).toMatchObject(expectedActions[0])
       expect(store.getActions()[1]).toMatchObject(expectedActions[1])
     })

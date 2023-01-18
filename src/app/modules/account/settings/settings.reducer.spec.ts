@@ -1,12 +1,12 @@
 /**
  * @jest-environment jsdom
  */
+import { expect } from '@jest/globals'
+import { getAccount } from 'app/shared/reducers/authentication'
 import axios from 'axios'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import sinon from 'sinon'
-
-import { getAccount } from 'app/shared/reducers/authentication'
 import account, { reset, saveAccountSettings, updateAccount } from './settings.reducer'
 
 describe('Settings reducer tests', () => {

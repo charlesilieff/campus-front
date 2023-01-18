@@ -34,7 +34,7 @@ export const ReservationCustomerUpdate = (props: RouteComponentProps<{ id: strin
       }
     }
 
-    dispatch(getPricings({}))
+    dispatch(getPricings())
   }, [])
 
   useEffect(() => {
