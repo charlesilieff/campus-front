@@ -7,6 +7,9 @@ remote.allowAnyHosts = true
 
 pipeline {
     agent any
+    options {
+            ansiColor('gnome-terminal')
+        }
     stages {
         stage('Install') {
             steps {
