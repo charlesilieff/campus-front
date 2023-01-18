@@ -46,6 +46,9 @@ export const RoomUpdate = (props: RouteComponentProps<{ id: string }>) => {
     const entity: IRoom = {
       ...roomEntity,
       ...values,
+      // this is so bad
+      placeId: values.placeId === '' ? undefined : values.placeId,
+      bedroomKindId: values.bedroomKindId === '' ? undefined : values.bedroomKindId,
       place: places.find(it => it.id.toString() === values.placeId.toString()),
       bedroomKind: bedroomKinds.find(it => it.id.toString() === values.bedroomKindId.toString())
     }

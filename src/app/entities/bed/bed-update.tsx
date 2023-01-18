@@ -44,6 +44,7 @@ export const BedUpdate = (props: RouteComponentProps<{ id: string }>) => {
     const entity: IBed = {
       ...bedEntity,
       ...values,
+      // this is very important but  very bad, otherwise the backend will not be able to find the room
       roomId: values.roomId === '' ? undefined : values.roomId,
       room: rooms.find(it => it.id.toString() === values.roomId.toString())
     }
