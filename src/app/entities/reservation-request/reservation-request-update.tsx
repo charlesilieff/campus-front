@@ -24,8 +24,14 @@ export const ReservationUpdate = (props: RouteComponentProps<{ id: string }>) =>
   const saveEntity = (values: IReservation) => {
     const entity: IReservationRequest = {
       reservation: { ...reservationEntity, ...values, isLunchOnly: false },
-      customer: customerEntity
+
+      customer: {
+        ...customerEntity,
+        // @ts-expect-error : age is "" if not set
+        age: customerEntity.age === '' ? undefined : customerEntity.age
+      }
     }
+
     if (isNew) {
       dispatch(createEntity(entity))
     } else {

@@ -18,7 +18,7 @@ pipeline {
         stage('Lint') {
             steps {
                 echo "Linting..."
-                sh "npm lint"
+                sh "npm run lint"
             }
         }
         stage('Package') {

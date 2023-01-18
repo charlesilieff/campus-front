@@ -50,14 +50,15 @@ export const ReservationUpdate = (props: RouteComponentProps<{ id: string }>) =>
     if (values.specialDietNumber > values.personNumber) {
       values.specialDietNumber = values.personNumber
     }
-
+    const customer = customers.find(it => it.id.toString() === values.customerId.toString())
     const entity = {
       ...reservationEntity,
       ...values,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       beds: mapIdList(values.beds),
       pricing: pricing.find(it => it.id.toString() === values.pricingId.toString()),
-      customer: customers.find(it => it.id.toString() === values.customerId.toString())
+      // @ts-expect-error : age is "" if not set
+      customer: { ...customer, age: customer.age === '' ? undefined : customer.age }
     }
 
     if (isNew) {
