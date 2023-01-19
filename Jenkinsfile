@@ -11,7 +11,7 @@ pipeline {
             ansiColor('xterm')
         }
     environment {
-            DOCKER_IMAGE_NAME = "campus-back-dev"
+            DOCKER_IMAGE_NAME = "campus-front-dev"
         }    
     stages {
         stage('Install') {
@@ -21,7 +21,7 @@ pipeline {
                          echo "WARNING PROD DEPLOYMENT !!!!"
                          remote.host = '192.168.1.25'
                          remote.name = 'campusProd'
-                         env.DOCKER_IMAGE_NAME = "campus-back"
+                         env.DOCKER_IMAGE_NAME = "campus-front"
                          echo "Docker image name is now: ${DOCKER_IMAGE_NAME}"
                          }
                       }
