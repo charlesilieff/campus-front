@@ -21,7 +21,7 @@ pipeline {
                          echo "WARNING PROD DEPLOYMENT !!!!"
                          remote.host = '192.168.1.25'
                          remote.name = 'campusProd'
-                         env.DOCKER_IMAGE_NAME = "campus-front"
+                         DOCKER_IMAGE_NAME = "campus-front"
                          echo "Docker image name is now: ${DOCKER_IMAGE_NAME}"
                          }
                       }
