@@ -1,6 +1,6 @@
 def remote = [:]
-remote.name = 'campusTest'
-remote.host = '192.168.1.25'
+remote.name = 'campusDev'
+remote.host = '192.168.1.26'
 remote.user = 'debian'
 remote.password = PASSWORD_LXC_TEST_CAMPUS
 remote.allowAnyHosts = true
@@ -10,9 +10,21 @@ pipeline {
     options {
             ansiColor('xterm')
         }
+    environment {
+            DOCKER_IMAGE_NAME = "campus-back-dev"
+        }    
     stages {
         stage('Install') {
             steps {
+                script { if (env.GIT_BRANCH == "origin/main")
+                        {
+                         echo "WARNING PROD DEPLOYMENT !!!!"
+                         remote.host = '192.168.1.25'
+                         remote.name = 'campusProd'
+                         env.DOCKER_IMAGE_NAME = "campus-back"
+                         echo "Docker image name is now: ${DOCKER_IMAGE_NAME}"
+                         }
+                      }
                 echo "Npm install..."
                 sh "npm install"
             }
@@ -32,18 +44,18 @@ pipeline {
         stage('Docker push'){
             steps {
                 echo "Building docker..."
-                sh "docker build . -t docker.ilieff.fr/campus-front"
+                sh "docker build . -t docker.ilieff.fr/${DOCKER_IMAGE_NAME}"
                 echo "Login to Ilieff docker repo"
                 sh "docker login docker.ilieff.fr -u charles -p${DOCKER_REPO_PASSWORD}"
                 echo "Push docker..."
-                sh "docker push docker.ilieff.fr/campus-front"
+                sh "docker push docker.ilieff.fr/${DOCKER_IMAGE_NAME}"
             }
        }
        stage('Deploy') {
             steps {
-                sshCommand remote: remote, command: "docker stop campus-front"
-                sshCommand remote: remote, command: "docker rm campus-front"
-                sshCommand remote: remote, command: "docker run -d --restart unless-stopped --name campus-front --pull=always -p 80:80 docker.ilieff.fr/campus-front:latest"
+                sshCommand remote: remote, command: "docker stop ${DOCKER_IMAGE_NAME}"
+                sshCommand remote: remote, command: "docker rm ${DOCKER_IMAGE_NAME}"
+                sshCommand remote: remote, command: "docker run -d --restart unless-stopped --name ${DOCKER_IMAGE_NAME} --pull=always -p 80:80 docker.ilieff.fr/${DOCKER_IMAGE_NAME}:latest"
             }
         }
    }
