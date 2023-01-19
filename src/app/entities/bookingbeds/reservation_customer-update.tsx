@@ -172,7 +172,7 @@ export const ReservationCustomerUpdate = (props: RouteComponentProps<{ id: strin
                   validate={{
                     min: { value: 1, message: 'Age minimum: 1 an.' },
                     max: { value: 125, message: 'Age maximum: 125 ans.' },
-                    validate: v => isNumber(v) || 'Ce champ doit contenir un nombre'
+                    validate: v => isNumber(v) || 'Ce champ doit contenir un nombre.'
                   }}
                 />
                 <ValidatedField
