@@ -195,7 +195,7 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
       ...reservationLast,
       ...{
         ...customerReservation,
-        age: customerReservation.age === '' ? undefined : customerReservation.age
+        age: customerReservation.age === '' ? null : customerReservation.age
       },
       beds
     }

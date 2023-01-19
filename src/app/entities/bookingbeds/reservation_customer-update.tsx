@@ -168,7 +168,7 @@ export const ReservationCustomerUpdate = (props: RouteComponentProps<{ id: strin
                   id="customer-age"
                   name="age"
                   data-cy="age"
-                  type="text"
+                  type="number"
                   validate={{
                     min: { value: 1, message: 'Age minimum: 1 an.' },
                     max: { value: 125, message: 'Age maximum: 125 ans.' },
