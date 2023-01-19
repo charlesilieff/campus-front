@@ -13,6 +13,8 @@
     "usernamehw.errorlens",
     "gruntfuggly.todo-tree",
     "streetsidesoftware.code-spell-checker",
-    "kisstkondoros.vscode-gutter-preview"
+    "kisstkondoros.vscode-gutter-preview",
+    "rangav.vscode-thunder-client",
+    "ms-vsliveshare.vsliveshare"
   ]
 }
