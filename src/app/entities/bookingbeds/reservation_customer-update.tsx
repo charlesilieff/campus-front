@@ -48,7 +48,8 @@ export const ReservationCustomerUpdate = (props: RouteComponentProps<{ id: strin
       id: reservationEntity?.customer?.id,
       firstname: values.firstname,
       lastname: values.lastname,
-      age: values.age,
+      // @ts-expect-error : age is a number
+      age: values.age === '' ? undefined : values.age,
       isFemal: true,
       comment: values.customerComment,
       email: values.email,
@@ -174,16 +175,6 @@ export const ReservationCustomerUpdate = (props: RouteComponentProps<{ id: strin
                     validate: v => isNumber(v) || 'Ce champ doit contenir un nombre.'
                   }}
                 />
-                {
-                  /* <ValidatedField label="Genre" id="customer-isFemal" name="isFemal" data-cy="isFemal" type="select">
-                <option value="true" key="0">
-                  Femme
-                </option>
-                <option value="false" key="1">
-                  Homme
-                </option>
-              </ValidatedField> */
-                }
                 <ValidatedField
                   label="Téléphone"
                   id="customer-phoneNumber"

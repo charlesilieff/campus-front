@@ -7,7 +7,8 @@ const adminMenuItems = (
     <MenuItem icon="users" to="/admin/user-management">
       Gestion des utilisateurs
     </MenuItem>
-    <MenuItem icon="tachometer-alt" to="/admin/metrics">
+    {
+      /* <MenuItem icon="tachometer-alt" to="/admin/metrics">
       Métriques
     </MenuItem>
     <MenuItem icon="heart" to="/admin/health">
@@ -18,7 +19,8 @@ const adminMenuItems = (
     </MenuItem>
     <MenuItem icon="tasks" to="/admin/logs">
       Logs
-    </MenuItem>
+    </MenuItem> */
+    }
     {/* jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here */}
   </>
 )
