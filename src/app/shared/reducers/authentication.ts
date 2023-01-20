@@ -26,10 +26,9 @@ export type AuthenticationState = Readonly<typeof initialState>
 
 // Actions
 
-export const getSession = (): AppThunk =>
-  dispatch => {
-    dispatch(getAccount())
-  }
+export const getSession = (): AppThunk => dispatch => {
+  dispatch(getAccount())
+}
 
 export const getAccount = createAsyncThunk(
   'authentication/get_account',
@@ -58,21 +57,21 @@ export const login: (username: string, password: string, rememberMe?: boolean) =
   password,
   rememberMe = false
 ) =>
-  async dispatch => {
-    const result = await dispatch(authenticate({ username, password, rememberMe }))
-    console.log(result)
-    const response = result.payload as AxiosResponse
-    const bearerToken = response?.headers?.authorization
-    if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
-      const jwt = bearerToken.slice(7, bearerToken.length)
-      if (rememberMe) {
-        Storage.local.set(AUTH_TOKEN_KEY, jwt)
-      } else {
-        Storage.session.set(AUTH_TOKEN_KEY, jwt)
-      }
+async dispatch => {
+  const result = await dispatch(authenticate({ username, password, rememberMe }))
+  console.log(result)
+  const response = result.payload as AxiosResponse
+  const bearerToken = response?.headers?.authorization
+  if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
+    const jwt = bearerToken.slice(7, bearerToken.length)
+    if (rememberMe) {
+      Storage.local.set(AUTH_TOKEN_KEY, jwt)
+    } else {
+      Storage.session.set(AUTH_TOKEN_KEY, jwt)
     }
-    dispatch(getSession())
   }
+  dispatch(getSession())
+}
 
 export const clearAuthToken = () => {
   if (Storage.local.get(AUTH_TOKEN_KEY)) {
@@ -83,18 +82,16 @@ export const clearAuthToken = () => {
   }
 }
 
-export const logout: () => AppThunk = () =>
-  dispatch => {
-    clearAuthToken()
-    dispatch(logoutSession())
-  }
+export const logout: () => AppThunk = () => dispatch => {
+  clearAuthToken()
+  dispatch(logoutSession())
+}
 
-export const clearAuthentication = messageKey =>
-  dispatch => {
-    clearAuthToken()
-    dispatch(authError(messageKey))
-    dispatch(clearAuth())
-  }
+export const clearAuthentication = messageKey => dispatch => {
+  clearAuthToken()
+  dispatch(authError(messageKey))
+  dispatch(clearAuth())
+}
 
 export const AuthenticationSlice = createSlice({
   name: 'authentication',

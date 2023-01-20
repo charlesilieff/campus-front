@@ -25,11 +25,10 @@ export const HealthPage = () => {
     }
   }
 
-  const getSystemHealthInfo = (name, healthObj) =>
-    () => {
-      setShowModal(true)
-      setHealthObject({ ...healthObj, name })
-    }
+  const getSystemHealthInfo = (name, healthObj) => () => {
+    setShowModal(true)
+    setHealthObject({ ...healthObj, name })
+  }
 
   const handleClose = () => setShowModal(false)
 

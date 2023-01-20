@@ -65,8 +65,8 @@ export const setLoggers = createAsyncThunk(
   }
 )
 
-export const changeLogLevel: (name, configuredLevel) => AppThunk = (name, configuredLevel) =>
-  async dispatch => {
+export const changeLogLevel: (name, configuredLevel) => AppThunk =
+  (name, configuredLevel) => async dispatch => {
     await dispatch(setLoggers({ name, configuredLevel }))
     dispatch(getLoggers())
   }

@@ -12,10 +12,9 @@ export const RegisterPage = () => {
   const dispatch = useAppDispatch()
 
   useEffect(
-    () =>
-      () => {
-        dispatch(reset())
-      },
+    () => () => {
+      dispatch(reset())
+    },
     []
   )
 

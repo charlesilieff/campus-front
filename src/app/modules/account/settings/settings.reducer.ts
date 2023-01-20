@@ -18,12 +18,11 @@ export type SettingsState = Readonly<typeof initialState>
 // Actions
 const apiUrl = 'api/account'
 
-export const saveAccountSettings: (account: any) => AppThunk = account =>
-  async dispatch => {
-    await dispatch(updateAccount(account))
+export const saveAccountSettings: (account: any) => AppThunk = account => async dispatch => {
+  await dispatch(updateAccount(account))
 
-    dispatch(getSession())
-  }
+  dispatch(getSession())
+}
 
 export const updateAccount = createAsyncThunk(
   'settings/update_account',

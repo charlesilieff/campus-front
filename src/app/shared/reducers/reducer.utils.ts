@@ -115,7 +115,7 @@ export const createEntitySlice = <T, Reducers extends SliceCaseReducers<EntitySt
        * Common rejection logic is handled here.
        * If you want to add your own rejcetion logic, pass `skipRejectionHandling: true`
        * while calling `createEntitySlice`
-       * */
+       */
       if (!skipRejectionHandling) {
         builder.addMatcher(isRejectedAction, (state, action) => {
           state.loading = false

@@ -14,10 +14,9 @@ export const PasswordResetFinishPage = (props: RouteComponentProps<{ key: string
   const dispatch = useAppDispatch()
 
   useEffect(
-    () =>
-      () => {
-        dispatch(reset())
-      },
+    () => () => {
+      dispatch(reset())
+    },
     []
   )
   const history = useHistory()

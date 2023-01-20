@@ -53,13 +53,12 @@ export const UserManagement = (props: RouteComponentProps<any>) => {
     }
   }, [props.location.search])
 
-  const sort = p =>
-    () =>
-      setPagination({
-        ...pagination,
-        order: pagination.order === ASC ? DESC : ASC,
-        sort: p
-      })
+  const sort = p => () =>
+    setPagination({
+      ...pagination,
+      order: pagination.order === ASC ? DESC : ASC,
+      sort: p
+    })
 
   const handlePagination = currentPage =>
     setPagination({
@@ -71,14 +70,13 @@ export const UserManagement = (props: RouteComponentProps<any>) => {
     getUsersFromProps()
   }
 
-  const toggleActive = user =>
-    () =>
-      dispatch(
-        updateUser({
-          ...user,
-          activated: !user.activated
-        })
-      )
+  const toggleActive = user => () =>
+    dispatch(
+      updateUser({
+        ...user,
+        activated: !user.activated
+      })
+    )
 
   const { match } = props
   const account = useAppSelector(state => state.authentication.account)

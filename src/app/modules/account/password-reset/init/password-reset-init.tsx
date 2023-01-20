@@ -10,10 +10,9 @@ export const PasswordResetInit = () => {
   const dispatch = useAppDispatch()
 
   useEffect(
-    () =>
-      () => {
-        dispatch(reset())
-      },
+    () => () => {
+      dispatch(reset())
+    },
     []
   )
 
