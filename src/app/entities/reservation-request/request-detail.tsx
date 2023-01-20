@@ -16,6 +16,8 @@ export const CustomerDetail = (props: RouteComponentProps<{ id: string }>) => {
 
   const customerEntity = useAppSelector(state => state.requestReservation.entity.customer)
   const reservationEntity = useAppSelector(state => state.requestReservation.entity.reservation)
+  const rooms = reservationEntity?.beds?.map(b => b?.room?.name)
+  const uniqueRooms = rooms?.filter((v, i, a) => a.indexOf(v) === i)
   return (
     <Row>
       <Col md="8">
@@ -117,12 +119,12 @@ export const CustomerDetail = (props: RouteComponentProps<{ id: string }>) => {
 
           <dt>Chambres réservées à votre nom</dt>
           <dd>
-            {reservationEntity?.rooms?.length === 0 || reservationEntity?.rooms === undefined ?
+            {uniqueRooms.length === 0 || uniqueRooms === undefined ?
               "Vous n'avez pas encore de chambres attribuées." :
-              reservationEntity?.rooms.map((val, i) => (
+              uniqueRooms.map((val, i) => (
                 <span key={val}>
                   <a>{val}</a>
-                  {reservationEntity.rooms && i === reservationEntity.rooms.length - 1 ? '' : ', '}
+                  {uniqueRooms && i === uniqueRooms.length - 1 ? '' : ', '}
                 </span>
               ))}
           </dd>
