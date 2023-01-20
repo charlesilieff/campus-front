@@ -8,7 +8,11 @@ import { isNumber } from 'react-jhipster'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 import { CustomValidatedField } from '../../shared/util/cross-validation-form'
-import { backToOne, createEntity, partialUpdateEntity } from './reservation-request.reducer'
+import {
+  backToOne,
+  createEntity,
+  updateEntity
+} from './reservation-request.reducer'
 
 export const ReservationUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const dispatch = useAppDispatch()
@@ -35,7 +39,7 @@ export const ReservationUpdate = (props: RouteComponentProps<{ id: string }>) =>
     if (isNew) {
       dispatch(createEntity(entity))
     } else {
-      dispatch(partialUpdateEntity({ ReservationRequest: entity, UUID: props.match.params.id }))
+      dispatch(updateEntity({ ReservationRequest: entity, UUID: props.match.params.id }))
     }
   }
 

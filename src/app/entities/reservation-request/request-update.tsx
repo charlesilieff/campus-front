@@ -6,7 +6,7 @@ import { useAppSelector } from 'app/config/store'
 import CustomerUpdate from './customer-request-update'
 import ReservationUpdate from './reservation-request-update'
 
-export const DemandUpdate = (props: RouteComponentProps<{ id: string }>) => {
+export const DemandUpdate = (props: RouteComponentProps<{ id: string }>): JSX.Element => {
   const stepOne = useAppSelector(state => state.requestReservation.stepOne)
 
   return (
