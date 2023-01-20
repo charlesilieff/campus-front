@@ -54,12 +54,12 @@ export const createEntity = createAsyncThunk(
 
 export const updateEntity = createAsyncThunk(
   'bookingBeds/update_entity',
-  async (entity: IReservation, thunkAPI) => {
+  async (entity: IReservation) => {
     const result = await axios.put<IBookingBeds>(
       `${apiUrlBookingBeds}/${entity.id}`,
       cleanEntity(entity)
     )
-    thunkAPI.dispatch(getEntities())
+    // thunkAPI.dispatch(getEntities())
     return result
   },
   { serializeError: serializeAxiosError }
@@ -67,9 +67,9 @@ export const updateEntity = createAsyncThunk(
 
 export const partialUpdateEntity = createAsyncThunk(
   'bookingBeds/partial_update_entity',
-  async (entity: IReservation, thunkAPI) => {
+  async (entity: IReservation) => {
     const result = await axios.patch<IBookingBeds>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
-    thunkAPI.dispatch(getEntities())
+    // thunkAPI.dispatch(getEntities())
     return result
   },
   { serializeError: serializeAxiosError }
@@ -77,10 +77,10 @@ export const partialUpdateEntity = createAsyncThunk(
 
 export const deleteEntity = createAsyncThunk(
   'bookingBeds/delete_entity',
-  async (id: string | number, thunkAPI) => {
+  async (id: string | number) => {
     const requestUrl = `${apiUrlBookingBeds}/${id}`
     const result = await axios.delete<IReservation>(requestUrl)
-    thunkAPI.dispatch(getEntities())
+    // thunkAPI.dispatch(getEntities())
     return result
   },
   { serializeError: serializeAxiosError }
