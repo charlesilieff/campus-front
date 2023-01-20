@@ -6,9 +6,19 @@ export default config
 
 const BACK_END_PORT = 8080
 
-export const SERVER_API_URL = window.location.hostname === 'localhost' ?
-  `http://localhost:${BACK_END_PORT}` :
-  `https://backend.campus.ilieff.fr`
+export const SERVER_API_URL = (() => {
+  switch (window.location.hostname) {
+    case 'localhost':
+      return `http://localhost:${BACK_END_PORT}`
+
+    case 'prod.campus.ilieff.fr':
+      return `https://prod.backend.campus.ilieff.fr`
+
+    default:
+      return `https://dev.backend.campus.ilieff.fr`
+  }
+})()
+
 console.log(SERVER_API_URL)
 export const AUTHORITIES = {
   ADMIN: 'ROLE_ADMIN',

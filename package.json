@@ -29,7 +29,6 @@
     "prepare": "husky install"
   },
   "config": {
-    "backend_port": "8080",
     "default_environment": "prod",
     "packaging": "jar"
   },

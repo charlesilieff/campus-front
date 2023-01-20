@@ -25,7 +25,7 @@ export const ReservationUpdate = (props: RouteComponentProps<{ id: string }>) =>
   const updateSuccess = useAppSelector(state => state.requestReservation.updateSuccess)
   const today = new Date().setHours(0) as unknown as Date
 
-  const saveEntity = (values: IReservation) => {
+  const saveEntity = (values: IReservation): void => {
     const entity: IReservationRequest = {
       reservation: { ...reservationEntity, ...values, isLunchOnly: false },
 
