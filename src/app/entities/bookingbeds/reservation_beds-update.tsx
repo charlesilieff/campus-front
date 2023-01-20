@@ -24,7 +24,7 @@ import { backToOne, createEntity, updateEntity } from './reservation.reducer'
 const apiUrlPlacesWithoutImage = 'api/places/noimage'
 const apiUrlAllPlaces = 'api/planning/places'
 
-export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>) => {
+export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>): JSX.Element => {
   const dispatch = useAppDispatch()
 
   const reservationEntity = useAppSelector(state => state.bookingBeds.entity)
@@ -43,7 +43,7 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
   const [bedsToBook, setBedsToBook] = useState([] as number[])
   const [placeImage, setPlace] = useState(null as IPlace)
 
-  const getPlaces = async () => {
+  const getPlaces = async (): Promise<void> => {
     const requestUrl = `${apiUrlPlacesWithoutImage}?cacheBuster=${new Date().getTime()}`
     const { data } = await axios.get<IPlace[]>(requestUrl)
 
@@ -82,11 +82,11 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
     }
   }, [updateSuccess])
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     props.history.push('/planning')
   }
 
-  const getBookingBeds = async () => {
+  const getBookingBeds = async (): Promise<void> => {
     const reservationId = isNew ? '' : `/${reservationEntity.id}`
     const requestUrl = `${apiUrlPlaces}${reservationId}?cacheBuster=${new Date().getTime()}`
     const { data } = await axios.get<IPlace[]>(requestUrl)
@@ -113,7 +113,7 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
     )
   }
 
-  const filterBedPlace = (idPlace: number) => {
+  const filterBedPlace = (idPlace: number): void => {
     if (isNaN(idPlace) || idPlace === 0) {
       setRooms(
         places?.flatMap(place => {
@@ -133,7 +133,7 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
     }
   }
 
-  const filterBedRoomKind = (idRoomKind: number) => {
+  const filterBedRoomKind = (idRoomKind: number): void => {
     if (isNaN(idRoomKind)) {
       setRooms(
         places?.flatMap(place => {
@@ -153,7 +153,7 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
     }
   }
 
-  const back = (formValues: IBookingBeds) => {
+  const back = (formValues: IBookingBeds): void => {
     formValues.beds = mapIdList(bedsToBook)
 
     dispatch(backToOne(formValues))
@@ -171,7 +171,7 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
     setBedsToBook(updatedbedsToBook)
   }
 
-  const saveEntity = (values: IBookingBeds) => {
+  const saveEntity = (values: IBookingBeds): void => {
     // On selectionne et on créer une liste d'object bed (id seulement comme atribut)
     const bedsId = Object.keys(values).map(key => {
       return Number(key) && values[key] ? Number(key) : ''

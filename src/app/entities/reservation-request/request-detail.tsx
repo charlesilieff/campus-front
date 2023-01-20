@@ -7,7 +7,7 @@ import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 import { getEntity } from './reservation-request.reducer'
 
-export const CustomerDetail = (props: RouteComponentProps<{ id: string }>) => {
+export const CustomerDetail = (props: RouteComponentProps<{ id: string }>): JSX.Element => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -119,7 +119,7 @@ export const CustomerDetail = (props: RouteComponentProps<{ id: string }>) => {
 
           <dt>Chambres réservées à votre nom</dt>
           <dd>
-            {uniqueRooms.length === 0 || uniqueRooms === undefined ?
+            {uniqueRooms === undefined || uniqueRooms?.length === 0 ?
               "Vous n'avez pas encore de chambres attribuées." :
               uniqueRooms.map((val, i) => (
                 <span key={val}>
