@@ -15,17 +15,24 @@ export type RegisterState = Readonly<typeof initialState>
 
 // Actions
 
+interface IRegister {
+  login: string
+  email: string
+  password: string
+  langKey?: string
+}
+
 export const handleRegister = createAsyncThunk(
   'register/create_account',
   async (data: { login: string; email: string; password: string; langKey?: string }) =>
-    axios.post<any>('api/register', data),
+    axios.post<IRegister>('api/register', data),
   { serializeError: serializeAxiosError }
 )
 
 export const handleIntermittentRegister = createAsyncThunk(
   'register/create_account',
   async (data: { login: string; email: string; password: string; langKey?: string }) =>
-    axios.post<any>('api/register/intermittent', data),
+    axios.post<IRegister>('api/register/intermittent', data),
   { serializeError: serializeAxiosError }
 )
 
