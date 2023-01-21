@@ -5,9 +5,10 @@ import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+
 import { createEntity, getEntity, reset, updateEntity } from './customer.reducer'
 
-export const CustomerUpdate = (props: RouteComponentProps<{ id: string }>) => {
+export const CustomerUpdate = (props: RouteComponentProps<{ id: string }>): JSX.Element => {
   const dispatch = useAppDispatch()
 
   const [isNew] = useState(!props.match.params || !props.match.params.id)
@@ -17,7 +18,7 @@ export const CustomerUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const updating = useAppSelector(state => state.customer.updating)
   const updateSuccess = useAppSelector(state => state.customer.updateSuccess)
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     props.history.push('/customer')
   }
 
@@ -115,7 +116,7 @@ export const CustomerUpdate = (props: RouteComponentProps<{ id: string }>) => {
                   id="customer-age"
                   name="age"
                   data-cy="age"
-                  type="text"
+                  type="number"
                   validate={{
                     min: { value: 1, message: 'This field should be at least 1.' },
                     max: { value: 125, message: 'This field cannot be more than 125.' },

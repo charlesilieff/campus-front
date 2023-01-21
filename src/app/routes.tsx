@@ -9,6 +9,7 @@ import Activate from './modules/account/activate/activate'
 import PasswordResetFinish from './modules/account/password-reset/finish/password-reset-finish'
 import PasswordResetInit from './modules/account/password-reset/init/password-reset-init'
 import Register from './modules/account/register/register'
+import RegisterIntermittent from './modules/account/register/register-intermittent'
 import Home from './modules/home/home'
 import Login from './modules/login/login'
 import Logout from './modules/login/logout'
@@ -34,6 +35,10 @@ const Routes = () => {
         <ErrorBoundaryRoute path="/rgpd" component={RGPD} />
         <ErrorBoundaryRoute path="/login" component={Login} />
         <ErrorBoundaryRoute path="/logout" component={Logout} />
+        <ErrorBoundaryRoute
+          path="/account/register-intermittent"
+          component={RegisterIntermittent}
+        />
         <ErrorBoundaryRoute path="/account/register" component={Register} />
         <ErrorBoundaryRoute path="/account/activate/:key?" component={Activate} />
         <ErrorBoundaryRoute path="/account/reset/request" component={PasswordResetInit} />

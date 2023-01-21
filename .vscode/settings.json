@@ -4,10 +4,12 @@
     "chakra",
     "dayjs",
     "dprint",
+    "firstname",
     "fontawesome",
     "fortawesome",
     "gestionhebergement",
     "ilieff",
+    "lastname",
     "reduxjs",
     "RESPHEBERGEMENT",
     "toastify"
