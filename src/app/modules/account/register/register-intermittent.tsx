@@ -57,7 +57,6 @@ export const RegisterIntermittentPage = (): JSX.Element => {
         langKey: 'en'
       })
     ).then(e => {
-      console.log('e', e)
       return e.type === 'register/create_account/fulfilled'
         && dispatch(
           createCustomerEntity({
