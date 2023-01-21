@@ -1,35 +1,53 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { Box, Button, Heading, VStack } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  Input,
+  VStack
+} from '@chakra-ui/react'
+import * as O from '@effect-ts/core/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar'
-import React, { useEffect, useState } from 'react'
-import { isEmail, isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
+import React, { useEffect, useRef } from 'react'
+import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { createEntity as createCustomerEntity } from './../../../entities/customer/customer.reducer'
 import { handleIntermittentRegister, reset } from './register.reducer'
-export const RegisterIntermittentPage = () => {
-  const [password, setPassword] = useState('')
-  const dispatch = useAppDispatch()
 
+interface FormValues {
+  username: string
+  email: string
+  firstPassword: string
+  secondPassword: string
+  firstname: string
+  lastname: string
+  phoneNumber: string
+  age: O.Option<number>
+}
+
+export const RegisterIntermittentPage = (): JSX.Element => {
+  const dispatch = useAppDispatch()
+  const {
+    handleSubmit,
+    watch,
+    register,
+    formState: { errors, isSubmitting }
+  } = useForm<FormValues>()
   useEffect(
     () => (): void => {
       dispatch(reset())
     },
     []
   )
-
-  interface SubmitType {
-    username: string
-    email: string
-    firstPassword: string
-    firstname: string
-    lastname: string
-    phoneNumber: string
-    age?: number
-  }
+  const password = useRef({})
+  password.current = watch('firstPassword', '')
 
   const handleValidSubmit = (
-    { age, email, firstname, firstPassword, lastname, phoneNumber, username }: SubmitType
+    { age, email, firstname, firstPassword, lastname, phoneNumber, username }: FormValues
   ): void => {
     dispatch(
       handleIntermittentRegister({
@@ -38,21 +56,21 @@ export const RegisterIntermittentPage = () => {
         password: firstPassword,
         langKey: 'en'
       })
-    )
-    dispatch(
-      createCustomerEntity({
-        age,
-        isFemal: true,
-        email,
-        firstname,
-        lastname,
-        phoneNumber
-      })
-    )
+    ).then(e => {
+      console.log('e', e)
+      return e.type === 'register/create_account/fulfilled'
+        && dispatch(
+          createCustomerEntity({
+            age: O.toNullable(age),
+            isFemal: true,
+            email,
+            firstname,
+            lastname,
+            phoneNumber
+          })
+        )
+    })
   }
-
-  const updatePassword = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setPassword(event.target.value)
 
   const successMessage = useAppSelector(state => state.register.successMessage)
 
@@ -72,175 +90,208 @@ export const RegisterIntermittentPage = () => {
 
       <VStack>
         <Box minW={'500px'}>
-          <ValidatedForm
-            onSubmit={handleValidSubmit}
+          <form
+            onSubmit={handleSubmit(handleValidSubmit)}
           >
-            <ValidatedField
-              name="username"
-              label="Nom d'utilisateur"
-              placeholder={"Nom d'utilisateur"}
-              validate={{
-                required: {
-                  value: true,
-                  message: "Votre nom d'utilisateur est obligatoire."
-                },
-                pattern: {
-                  value:
-                    /^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$/,
-                  message: "Votre nom d'utilisateur n'est valide."
-                },
-                minLength: {
-                  value: 2,
-                  message: "Votre nom d'utilisateur doit comporter au moins 2 caractère."
-                },
-                maxLength: {
-                  value: 50,
-                  message: "Votre nom d'utilisateur ne doit pas comporter plus de 50 caractères."
-                }
-              }}
-              data-cy="username"
-            />
-            <ValidatedField
-              name="email"
-              label="Email"
-              placeholder={'Votre email'}
-              type="email"
-              validate={{
-                required: {
-                  value: true,
-                  message: 'Votre email est obligatoire.'
-                },
-                minLength: {
-                  value: 5,
-                  message: "Votre email d'utilisateur doit comporter au moins 2 caractère."
-                },
-                maxLength: {
-                  value: 254,
-                  message: 'Votre email ne doit pas comporter plus de 254 caractères.'
-                },
-                validate: v => isEmail(v) || "Votre email n'est pas valide."
-              }}
-              data-cy="email"
-            />
-            <ValidatedField
-              name="firstPassword"
-              label="Nouveau mot de passe"
-              placeholder={'Mot de passe'}
-              type="password"
-              onChange={updatePassword}
-              validate={{
-                required: {
-                  value: true,
-                  message: 'Votre mot de passe est obligatoire.'
-                },
-                minLength: {
-                  value: 4,
-                  message: 'Votre mot de passe ne doit pas comporter moins de 4 caractères.'
-                },
-                maxLength: {
-                  value: 50,
-                  message: 'Votre mot de passe ne doit pas comporter plus de 50 caractères.'
-                }
-              }}
-              data-cy="firstPassword"
-            />
-            <PasswordStrengthBar password={password} />
-            <ValidatedField
-              name="secondPassword"
-              label="Confirmation du mot de passe"
-              placeholder="Confirmez votre mot de passe"
-              type="password"
-              validate={{
-                required: {
-                  value: true,
-                  message: 'La confirmation du mot de passe est obligatoire.'
-                },
-                minLength: {
-                  value: 4,
-                  message:
-                    'Votre confirmation de mot de passe ne doit pas comporter moins de 4 caractères.'
-                },
-                maxLength: {
-                  value: 50,
-                  message:
-                    'Votre confirmation de mot de passe ne doit pas comporter plus de 50 caractères.'
-                },
-                validate: v =>
-                  v === password || 'Le mot de passe et la confirmation ne correspondent pas.'
-              }}
-              data-cy="secondPassword"
-            />
+            <FormControl isRequired isInvalid={errors.username !== undefined} mb={4}>
+              <FormLabel htmlFor="username">{"Nom d'utilisateur"}</FormLabel>
+              <Input
+                id="username"
+                placeholder="Nom d'utilisateur"
+                {...register('username', {
+                  required: "Votre nom d'utilisateur est obligatoire.",
+                  minLength: {
+                    value: 2,
+                    message: "Votre nom d'utilisateur doit comporter au moins 2 caractères."
+                  },
+                  maxLength: {
+                    value: 50,
+                    message: "Votre nom d'utilisateur ne doit pas comporter plus de 50 caractères."
+                  },
+                  pattern: {
+                    value:
+                      /^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$/,
+                    message: "Votre nom d'utilisateur n'est valide."
+                  }
+                })}
+              />
 
-            <ValidatedField
-              label="Prénom"
-              placeholder={'Prénom'}
-              id="customer-firstname"
-              name="firstname"
-              type="text"
-              validate={{
-                required: { value: true, message: 'This field is required.' },
-                minLength: {
-                  value: 1,
-                  message: 'This field is required to be at least 1 characters.'
-                },
-                maxLength: {
-                  value: 50,
-                  message: 'This field cannot be longer than 50 characters.'
-                }
-              }}
-            />
-            <ValidatedField
-              label="Nom"
-              id="customer-lastname"
-              name="lastname"
-              placeholder={'Nom'}
-              data-cy="lastname"
-              type="text"
-              validate={{
-                required: { value: true, message: 'This field is required.' },
-                minLength: {
-                  value: 1,
-                  message: 'This field is required to be at least 1 characters.'
-                },
-                maxLength: {
-                  value: 50,
-                  message: 'This field cannot be longer than 50 characters.'
-                }
-              }}
-            />
-            <ValidatedField
-              label="Age"
-              placeholder={'Age'}
-              id="customer-age"
-              name="age"
-              data-cy="age"
-              type="number"
-              validate={{
-                min: { value: 1, message: 'This field should be at least 1.' },
-                max: { value: 125, message: 'This field cannot be more than 125.' },
-                validate(v) {
-                  console.log(v)
-                  return isNumber(v as number) || 'This field should be a number.'
-                }
-              }}
-            />
-            <ValidatedField
-              label="Téléphone"
-              id="customer-phoneNumber"
-              placeholder={'Téléphone'}
-              name="phoneNumber"
-              data-cy="phoneNumber"
-              type="text"
-              validate={{
-                required: { value: true, message: 'Le numéro de téléphone est obligatoire.' },
-                minLength: { value: 10, message: 'Minimum 10' },
-                maxLength: { value: 16, message: 'Maximum 16' }
-              }}
-            />
-            <Button id="register-submit" color="primary" type="submit" data-cy="submit">
+              <FormErrorMessage>
+                {errors.username && errors.username.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isRequired isInvalid={errors.email !== undefined} mb={4}>
+              <FormLabel htmlFor="email">Email</FormLabel>
+              <Input
+                id="email"
+                placeholder="Email"
+                {...register('email', {
+                  required: 'Votre email est obligatoire.',
+                  minLength: {
+                    value: 5,
+                    message: "Votre email d'utilisateur doit comporter au moins 5 caractères."
+                  },
+                  maxLength: {
+                    value: 254,
+                    message: 'Votre email ne doit pas comporter plus de 254 caractères.'
+                  },
+                  pattern: {
+                    value: /^[^@]+@[^@]+\.[^@]+$/,
+                    message: "Votre email n'est pas valide."
+                  }
+                })}
+              />
+              <FormErrorMessage>
+                {errors.email && errors.email.message}
+              </FormErrorMessage>
+            </FormControl>
+
+            <FormControl isRequired isInvalid={errors.firstPassword !== undefined} mb={4}>
+              <FormLabel htmlFor="firstPassword">Nouveau mot de passe</FormLabel>
+              <Input
+                id="firstPassword"
+                placeholder="Mot de passe"
+                type="password"
+                {...register('firstPassword', {
+                  required: 'Votre mot de passe est obligatoire.',
+                  minLength: {
+                    value: 4,
+                    message: 'Votre mot de passe ne doit pas comporter moins de 4 caractères.'
+                  },
+                  maxLength: {
+                    value: 50,
+                    message: 'Votre mot de passe ne doit pas comporter plus de 50 caractères.'
+                  }
+                })}
+              />
+              <FormErrorMessage>
+                {errors.firstPassword && errors.firstPassword.message}
+              </FormErrorMessage>
+            </FormControl>
+
+            <PasswordStrengthBar password={password.current} />
+
+            <FormControl isRequired isInvalid={errors.secondPassword !== undefined} mb={10}>
+              <FormLabel htmlFor="secondPassword">Confirmation du mot de passe</FormLabel>
+              <Input
+                id="secondPassword"
+                placeholder="Confirmez votre mot de passe"
+                type="password"
+                {...register('secondPassword', {
+                  required: 'La confirmation du mot de passe est obligatoire.',
+                  minLength: {
+                    value: 4,
+                    message:
+                      'Votre confirmation de mot de passe ne doit pas comporter moins de 4 caractères.'
+                  },
+                  maxLength: {
+                    value: 50,
+                    message:
+                      'Votre confirmation de mot de passe ne doit pas comporter plus de 50 caractères.'
+                  },
+                  validate: v =>
+                    v === password.current
+                    || 'Le mot de passe et la confirmation ne correspondent pas.'
+                })}
+              />
+              <FormErrorMessage>
+                {errors.secondPassword && errors.secondPassword.message}
+              </FormErrorMessage>
+            </FormControl>
+
+            <FormControl isRequired isInvalid={errors.firstname !== undefined} mb={4}>
+              <FormLabel htmlFor="firstname">Prénom</FormLabel>
+              <Input
+                id="firstname"
+                placeholder="Prénom"
+                type="text"
+                {...register('firstname', {
+                  required: 'Votre prénom est obligatoire.',
+                  minLength: {
+                    value: 1,
+                    message: 'Votre prénom doit comporter au moins 1 caractère.'
+                  },
+                  maxLength: {
+                    value: 50,
+                    message: 'Votre prénom ne doit pas comporter plus de 50 caractères.'
+                  }
+                })}
+              />
+              <FormErrorMessage>
+                {errors.firstname && errors.firstname.message}
+              </FormErrorMessage>
+            </FormControl>
+
+            <FormControl isRequired isInvalid={errors.lastname !== undefined} mb={4}>
+              <FormLabel htmlFor="lastname">Nom</FormLabel>
+              <Input
+                id="lastname"
+                placeholder="Nom"
+                type="text"
+                {...register('lastname', {
+                  required: 'Votre nom est obligatoire.',
+                  minLength: {
+                    value: 1,
+                    message: 'Votre nom doit comporter au moins 1 caractère.'
+                  },
+                  maxLength: {
+                    value: 50,
+                    message: 'Votre nom ne doit pas comporter plus de 50 caractères.'
+                  }
+                })}
+              />
+            </FormControl>
+
+            <FormControl isInvalid={errors.age !== undefined} mb={4}>
+              <FormLabel htmlFor="age">Age</FormLabel>
+              <Input
+                id="age"
+                placeholder="Age"
+                type="number"
+                {...register('age', {
+                  minLength: {
+                    value: 1,
+                    message: 'Votre age doit comporter au moins 1 caractère.'
+                  },
+                  maxLength: {
+                    value: 3,
+                    message: 'Votre age ne doit pas comporter plus de 3 caractères.'
+                  }
+                })}
+              />
+              <FormErrorMessage>
+                {errors.age && errors.age.message}
+              </FormErrorMessage>
+            </FormControl>
+
+            <FormControl isRequired isInvalid={errors.phoneNumber !== undefined}>
+              <FormLabel htmlFor="phoneNumber">Téléphone</FormLabel>
+              <Input
+                id="phoneNumber"
+                placeholder="Téléphone"
+                type="text"
+                {...register('phoneNumber', {
+                  required: 'Votre numéro de téléphone est obligatoire.',
+                  minLength: {
+                    value: 10,
+                    message: 'Votre numéro de téléphone doit comporter au moins 10 caractères.'
+                  },
+                  maxLength: {
+                    value: 16,
+                    message:
+                      'Votre numéro de téléphone ne doit pas comporter plus de 16 caractères.'
+                  }
+                })}
+              />
+              <FormErrorMessage>
+                {errors.phoneNumber && errors.phoneNumber.message}
+              </FormErrorMessage>
+            </FormControl>
+
+            <Button color="primary" type="submit" isLoading={isSubmitting} my={8}>
               Enregistrez-vous
             </Button>
-          </ValidatedForm>
+          </form>
         </Box>
       </VStack>
     </VStack>

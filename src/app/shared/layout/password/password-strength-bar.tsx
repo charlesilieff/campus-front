@@ -3,10 +3,10 @@ import './password-strength-bar.scss'
 import React from 'react'
 
 export interface IPasswordStrengthBarProps {
-  password: string
+  password: string | unknown
 }
 
-export const PasswordStrengthBar = ({ password }: IPasswordStrengthBarProps) => {
+export const PasswordStrengthBar = ({ password }: IPasswordStrengthBarProps): JSX.Element => {
   const colors = ['#F00', '#F90', '#FF0', '#9F0', '#0F0']
 
   const measureStrength = (p: string): number => {
@@ -36,7 +36,7 @@ export const PasswordStrengthBar = ({ password }: IPasswordStrengthBarProps) => 
     return force
   }
 
-  const getColor = (s: number): any => {
+  const getColor = (s: number): { idx: number; col: string } => {
     let idx = 0
     if (s > 10) {
       if (s <= 20) {
@@ -66,7 +66,7 @@ export const PasswordStrengthBar = ({ password }: IPasswordStrengthBarProps) => 
     return pts
   }
 
-  const strength = getColor(measureStrength(password))
+  const strength = typeof password === 'string' ? getColor(measureStrength(password)) : 0
   const points = getPoints(strength)
 
   return (
