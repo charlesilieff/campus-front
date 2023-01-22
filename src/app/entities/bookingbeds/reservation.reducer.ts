@@ -52,6 +52,16 @@ export const createEntity = createAsyncThunk(
   { serializeError: serializeAxiosError }
 )
 
+export const createIntermittentReservation = createAsyncThunk(
+  'bookingBeds/create_entity',
+  async (entity: IReservation) => {
+    const result = await axios.post<IBookingBeds>(apiUrlBookingBeds, cleanEntity(entity))
+
+    return result
+  },
+  { serializeError: serializeAxiosError }
+)
+
 export const updateEntity = createAsyncThunk(
   'bookingBeds/update_entity',
   async (entity: IReservation) => {

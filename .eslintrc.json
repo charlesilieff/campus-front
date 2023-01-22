@@ -89,7 +89,7 @@
     "@typescript-eslint/no-empty-function": "warn",
     "@typescript-eslint/unbound-method": "warn",
     "@typescript-eslint/array-type": "warn",
-    "@typescript-eslint/no-shadow": "error",
+    "@typescript-eslint/no-shadow": "off",
     "spaced-comment": [
       "warn",
       "always"

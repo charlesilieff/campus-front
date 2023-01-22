@@ -96,6 +96,7 @@ export const RegisterIntermittentPage = (): JSX.Element => {
               <FormLabel htmlFor="username">{"Nom d'utilisateur"}</FormLabel>
               <Input
                 id="username"
+                type="text"
                 placeholder="Nom d'utilisateur"
                 {...register('username', {
                   required: "Votre nom d'utilisateur est obligatoire.",
@@ -123,6 +124,7 @@ export const RegisterIntermittentPage = (): JSX.Element => {
               <FormLabel htmlFor="email">Email</FormLabel>
               <Input
                 id="email"
+                type="email"
                 placeholder="Email"
                 {...register('email', {
                   required: 'Votre email est obligatoire.',
