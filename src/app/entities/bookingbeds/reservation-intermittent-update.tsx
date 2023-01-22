@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
-
-import { Heading } from '@chakra-ui/react'
+import { CheckIcon } from '@chakra-ui/icons'
+import { Button, Heading, HStack, Stack } from '@chakra-ui/react'
 import { pipe } from '@effect-ts/core'
 import * as A from '@effect-ts/core/Collections/Immutable/Array'
 import * as O from '@effect-ts/core/Option'
+import { BsTrash } from '@react-icons/all-files/bs/BsTrash'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import { useDispatch } from 'react-redux'
-import { getEntity } from './../customer/customer.reducer'
+import React, { useEffect, useState } from 'react'
+import { RouteComponentProps } from 'react-router-dom'
+
+import { getEntity as getCustomerEntity } from './../customer/customer.reducer'
+import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
 import { DatesAndMealsChoices } from './dates-and-meals-choices-intermittent'
 import { DatesAndMealsSummary } from './dates-and-meals-summary-intermittent'
@@ -37,7 +39,7 @@ export const ReservationIntermittentUpdate = (props: RouteComponentProps<{ id: s
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getEntity(1))
+    dispatch(getCustomerEntity(1))
   }, [])
   const customer: Customer = pipe(
     useAppSelector(state => state.customer.entity),
@@ -51,7 +53,8 @@ export const ReservationIntermittentUpdate = (props: RouteComponentProps<{ id: s
   )
   const [datesAndMeal, setDatesAndMeal] = useState<O.Option<DatesAndMeals>>(O.none)
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
-  const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
+
+  const [bedId, setBedId] = useState<O.Option<number>>(O.none)
 
   const testValue = {
     arrivalDate: '22/02/2021',
@@ -63,20 +66,23 @@ export const ReservationIntermittentUpdate = (props: RouteComponentProps<{ id: s
     isDepartureDinner: false,
     comment: 'test'
   }
-
+  console.log(datesAndMeal)
+  console.log('updateDatesAndMeals', updateDatesAndMeals)
+  console.log(bedId)
+  console.log((O.isSome(datesAndMeal) || updateDatesAndMeals) && O.isSome(bedId))
   return (
-    <div>
+    <Stack>
       <Heading size={'lg'} m={4}>
         Votre réservation
       </Heading>
       <CustomerSummary
         customer={customer}
-        setUpdate={setUpdateCustomer}
       />
       {O.isNone(datesAndMeal) || updateDatesAndMeals ?
         (
           <DatesAndMealsChoices
-            datesAndMeals={O.some(testValue)}
+            datesAndMeals={datesAndMeal}
+            setUpdateDatesAndMeals={setUpdateDatesAndMeals}
             setDatesAndMeal={setDatesAndMeal}
           />
         ) :
@@ -86,7 +92,35 @@ export const ReservationIntermittentUpdate = (props: RouteComponentProps<{ id: s
             setUpdate={setUpdateDatesAndMeals}
           />
         )}
-    </div>
+      {O.isSome(datesAndMeal) && !updateDatesAndMeals ?
+        (
+          <BedsChoices
+            datesAndMeals={datesAndMeal}
+            setSelectedBedId={setBedId}
+          />
+        ) :
+        (
+          <Heading
+            p={4}
+            borderRadius={8}
+            borderColor={'#D9D9D9'}
+            border={'solid'}
+            fontWeight={'bold'}
+            fontSize={'25'}
+            color={'#C4C4C4'}
+          >
+            {'Choix des lits'}
+          </Heading>
+        )}
+      {(O.isSome(datesAndMeal) || updateDatesAndMeals) && O.isSome(bedId) ?
+        (
+          <HStack justifyContent={'end'}>
+            <Button colorScheme={'red'} rightIcon={<BsTrash />}>Annuler</Button>
+            <Button colorScheme={'blue'} rightIcon={<CheckIcon />}>Finaliser la réservation</Button>
+          </HStack>
+        ) :
+        null}
+    </Stack>
   )
 }
 

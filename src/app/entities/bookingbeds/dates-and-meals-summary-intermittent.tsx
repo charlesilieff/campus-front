@@ -5,11 +5,10 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
-
 import { BsPencil } from '@react-icons/all-files/bs/BsPencil'
 import React from 'react'
-
 import { DatesAndMeals } from './reservation-intermittent-update'
+
 interface DatesAndMealsSummaryProps {
   datesAndMeals: DatesAndMeals
   setUpdate: (update: boolean) => void
@@ -30,8 +29,6 @@ export const DatesAndMealsSummary = (
     setUpdate
   }: DatesAndMealsSummaryProps
 ): JSX.Element => {
-  console.log('DatesAndMealsSummary', specialDiet)
-
   const mealSelected = (isDinner: boolean, isLunch: boolean): string => {
     if (isDinner && isLunch) {
       return 'déjeuner et dîner'
@@ -47,6 +44,7 @@ export const DatesAndMealsSummary = (
   return (
     <VStack
       alignItems={'flex-start'}
+      w={'100%'}
       border={'solid'}
       p={4}
       borderRadius={8}

@@ -8,7 +8,7 @@ const PlaceModal = (place: IPlace) => {
 
   const toggle = () => setModal(!modal)
   return (
-    <div className="inline-block">
+    <div>
       {place.image ?
         (
           <Button

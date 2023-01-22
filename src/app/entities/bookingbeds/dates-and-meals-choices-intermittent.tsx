@@ -16,19 +16,19 @@ import {
 } from '@chakra-ui/react'
 
 import * as O from '@effect-ts/core/Option'
-import React, { useState } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { DatesAndMeals } from './reservation-intermittent-update'
 
 interface DatesAndMealsChoicesProps {
   setDatesAndMeal: (datesAndMeal: O.Option<DatesAndMeals>) => void
+  setUpdateDatesAndMeals: (updateDatesAndMeals: boolean) => void
   datesAndMeals: O.Option<DatesAndMeals>
 }
 
 export const DatesAndMealsChoices = (
   props: DatesAndMealsChoicesProps
 ): JSX.Element => {
-  const [loading, setLoading] = useState(false)
   const {
     handleSubmit,
     register,
@@ -40,13 +40,9 @@ export const DatesAndMealsChoices = (
   const handleValidDateAndMealSubmit = (
     datesAndMeal: DatesAndMeals
   ): void => {
-    setLoading(true)
-    alert(JSON.stringify(datesAndMeal))
-
+    console.log('datesAndMeal form', datesAndMeal)
+    props.setUpdateDatesAndMeals(false)
     props.setDatesAndMeal(O.some(datesAndMeal))
-    // dispatch(
-    //   createIntermittentReservation(reservation)
-    // )
   }
 
   return (
@@ -148,8 +144,7 @@ export const DatesAndMealsChoices = (
                 </FormErrorMessage>
               </FormControl>
               <Button
-                leftIcon={<CheckIcon />}
-                isLoading={true}
+                rightIcon={<CheckIcon />}
                 colorScheme={'green'}
                 alignSelf={'flex-start'}
                 type="submit"

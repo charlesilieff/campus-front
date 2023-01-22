@@ -1,4 +1,5 @@
 import { Heading, HStack, Select, Text } from '@chakra-ui/react'
+import * as A from '@effect-ts/core/Collections/Immutable/Array'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
@@ -20,9 +21,7 @@ import { Button, Col, Row } from 'reactstrap'
 import PlaceModal from '../place/placeModal'
 import Beds from './beds'
 import { backToOne, createEntity, updateEntity } from './reservation.reducer'
-
-const apiUrlPlacesWithoutImage = 'api/places/noimage'
-const apiUrlAllPlaces = 'api/planning/places'
+import { getOnePlace, getPlaces } from './utils'
 
 export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>): JSX.Element => {
   const dispatch = useAppDispatch()
@@ -43,21 +42,8 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
   const [bedsToBook, setBedsToBook] = useState([] as number[])
   const [placeImage, setPlace] = useState(null as IPlace)
 
-  const getPlaces = async (): Promise<void> => {
-    const requestUrl = `${apiUrlPlacesWithoutImage}?cacheBuster=${new Date().getTime()}`
-    const { data } = await axios.get<IPlace[]>(requestUrl)
-
-    setPlaces(data)
-  }
-
-  const getOnePlace = async (id: string) => {
-    const requestUrl = `${apiUrlAllPlaces}/${id}?cacheBuster=${new Date().getTime()}`
-    const { data } = await axios.get<IPlace>(requestUrl)
-    setPlace(data)
-  }
-
   useEffect(() => {
-    getPlaces()
+    getPlaces().then(data => setPlaces(A.toMutable(data)))
     getBookingBeds()
     let updatedbedsToBook: number[]
 
@@ -282,7 +268,7 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
       </Row>
       <Row className="justify-content-center" style={{ marginBottom: '2rem' }}>
         <Col md={{ size: 2, order: 0, offset: 2 }}>
-          <Heading size={'md'}>Filtre par lieu</Heading>
+          <Heading size={'md'}>Filtrer par lieu</Heading>
           <Select
             className="block"
             id="place"
@@ -290,7 +276,7 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
             data-cy="place"
             style={{ padding: '0.4rem', borderRadius: '0.3rem' }}
             onChange={e => {
-              getOnePlace(e.target.value)
+              getOnePlace(e.target.value).then(res => setPlace(res))
               filterBedPlace(Number(e.target.value))
             }}
           >

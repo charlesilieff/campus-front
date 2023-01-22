@@ -33,6 +33,9 @@
     "packaging": "jar"
   },
   "dependencies": {
+    "@js-joda/core": "^5.5.2",
+    "@js-joda/locale_fr": "^4.8.6",
+    "@js-joda/timezone": "^2.17.2",
     "@chakra-ui/icons": "^2.0.17",
     "@chakra-ui/react": "^2.4.9",
     "@react-icons/all-files": "^4.1.0",

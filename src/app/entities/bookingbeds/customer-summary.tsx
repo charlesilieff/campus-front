@@ -10,7 +10,6 @@ import React from 'react'
 import { Customer } from './reservation-intermittent-update'
 interface CustomerSummaryProps {
   customer: Customer
-  setUpdate: (update: boolean) => void
 }
 
 export const CustomerSummary = (
@@ -21,12 +20,9 @@ export const CustomerSummary = (
       firstname,
       lastname,
       phoneNumber
-    },
-    setUpdate: _
+    }
   }: CustomerSummaryProps
 ): JSX.Element => {
-  console.log('DatesAndMealsSummary', firstname)
-
   return (
     <VStack
       alignItems={'flex-start'}
