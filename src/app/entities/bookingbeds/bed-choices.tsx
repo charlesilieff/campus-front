@@ -1,7 +1,6 @@
 import {
   Heading,
   Spinner,
-  Text,
   VStack
 } from '@chakra-ui/react'
 import * as A from '@effect-ts/core/Collections/Immutable/Array'

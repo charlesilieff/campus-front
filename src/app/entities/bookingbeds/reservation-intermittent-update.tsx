@@ -37,7 +37,7 @@ export type BedIds = A.Array<{ id: number }>
 
 export const ReservationIntermittentUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const dispatch = useAppDispatch()
-
+  console.log(props)
   useEffect(() => {
     dispatch(getCustomerEntity(1))
   }, [])
@@ -56,16 +56,16 @@ export const ReservationIntermittentUpdate = (props: RouteComponentProps<{ id: s
 
   const [bedId, setBedId] = useState<O.Option<number>>(O.none)
 
-  const testValue = {
-    arrivalDate: '22/02/2021',
-    departureDate: '22/02/2021',
-    specialDiet: 'false' as const,
-    isArrivalLunch: true,
-    isArrivalDinner: false,
-    isDepartureLunch: true,
-    isDepartureDinner: false,
-    comment: 'test'
-  }
+  // const testValue = {
+  //   arrivalDate: '22/02/2021',
+  //   departureDate: '22/02/2021',
+  //   specialDiet: 'false' as const,
+  //   isArrivalLunch: true,
+  //   isArrivalDinner: false,
+  //   isDepartureLunch: true,
+  //   isDepartureDinner: false,
+  //   comment: 'test'
+  // }
   console.log(datesAndMeal)
   console.log('updateDatesAndMeals', updateDatesAndMeals)
   console.log(bedId)

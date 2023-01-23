@@ -1,4 +1,4 @@
-import { Radio, RadioGroup, Stack, Text, VStack } from '@chakra-ui/react'
+import { Radio, RadioGroup, Text, VStack } from '@chakra-ui/react'
 import * as O from '@effect-ts/core/Option'
 import { IRoom } from 'app/shared/model/room.model'
 import React, { FunctionComponent } from 'react'
