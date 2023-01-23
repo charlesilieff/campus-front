@@ -40,7 +40,7 @@ export const PlaceIntermittent = () => {
 
   return (
     <VStack alignContent={'flex-start'} w={'100%'}>
-      <Heading size={'lg'}>
+      <Heading size={'lg'} mb={4}>
         Choisissez les lieux pour les intermittents
       </Heading>
       <CheckboxGroup
