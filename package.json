@@ -7,7 +7,7 @@
   "scripts": {
     "parcel": "npx parcel --no-cache src/main.html",
     "lint": "eslint . --ext .ts,.tsx && npx tsc --noEmit",
-    "lint:fix": "npm run lint --fix",
+    "lint:fix": "eslint . --ext .ts,.tsx && npx tsc --noEmit --fix",
     "cleanup": "rimraf target/classes/static/",
     "clean-www": "rimraf target/classes/static/app/{src,target/}",
     "e2e": "npm run e2e:cypress",
