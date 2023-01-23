@@ -1,12 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { getEntities as getRooms } from 'app/entities/room/room.reducer'
+import { IBed } from 'app/shared/model/bed.model'
 import React, { useEffect, useState } from 'react'
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Col, Row, UncontrolledTooltip } from 'reactstrap'
 
-import { useAppDispatch, useAppSelector } from 'app/config/store'
-import { getEntities as getRooms } from 'app/entities/room/room.reducer'
-import { IBed } from 'app/shared/model/bed.model'
 import { createEntity, getEntity, reset, updateEntity } from './bed.reducer'
 
 export const BedUpdate = (props: RouteComponentProps<{ id: string }>) => {

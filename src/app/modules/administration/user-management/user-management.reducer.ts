@@ -1,13 +1,12 @@
 import { createAsyncThunk, createSlice, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit'
-import axios from 'axios'
-
 import { defaultValue, IUser } from 'app/shared/model/user.model'
 import { IQueryParams, serializeAxiosError } from 'app/shared/reducers/reducer.utils'
+import axios from 'axios'
 
 const initialState = {
   loading: false,
   errorMessage: null,
-  users: [] as ReadonlyArray<IUser>,
+  users: [] as readonly IUser[],
   authorities: [] as any[],
   user: defaultValue,
   updating: false,

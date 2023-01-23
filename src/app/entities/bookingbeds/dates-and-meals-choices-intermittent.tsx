@@ -14,10 +14,10 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
-
 import * as O from '@effect-ts/core/Option'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+
 import { DatesAndMeals } from './reservation-intermittent-update'
 
 interface DatesAndMealsChoicesProps {

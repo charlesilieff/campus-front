@@ -43,7 +43,7 @@ export function isFulfilledAction(action: AnyAction) {
   return action.type.endsWith('/fulfilled')
 }
 
-const commonErrorProperties: Array<keyof SerializedError> = ['name', 'message', 'stack', 'code']
+const commonErrorProperties: (keyof SerializedError)[] = ['name', 'message', 'stack', 'code']
 
 /**
  * serialize function used for async action errors,
@@ -70,7 +70,7 @@ export const serializeAxiosError = (value: any): AxiosError | SerializedError =>
 export interface EntityState<T,> {
   loading: boolean
   errorMessage: string | null
-  entities: ReadonlyArray<T>
+  entities: readonly T[]
   entity: T
   links?: any
   updating: boolean

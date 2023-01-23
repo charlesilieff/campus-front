@@ -1,8 +1,8 @@
 import { getDateKey } from 'app/shared/util/date-utils'
 import { Dayjs } from 'dayjs'
 import React from 'react'
-import { Day } from './day'
 
+import { Day } from './day'
 import Months from './months'
 
 interface IProps {

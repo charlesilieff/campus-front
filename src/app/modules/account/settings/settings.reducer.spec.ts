@@ -7,6 +7,7 @@ import axios from 'axios'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import sinon from 'sinon'
+
 import account, { reset, saveAccountSettings, updateAccount } from './settings.reducer'
 
 describe('Settings reducer tests', () => {

@@ -1,10 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { deleteEntity, getEntity } from './place.reducer'
 
 export const PlaceDeleteDialog = (props: RouteComponentProps<{ id: string }>) => {

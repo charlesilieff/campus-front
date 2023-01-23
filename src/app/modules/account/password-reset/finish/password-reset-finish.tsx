@@ -1,11 +1,11 @@
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar'
 import React, { useEffect, useState } from 'react'
 import { getUrlParameter, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { RouteComponentProps, useHistory } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Button, Col, Row } from 'reactstrap'
 
-import { useAppDispatch, useAppSelector } from 'app/config/store'
-import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar'
 import { handlePasswordResetFinish, reset } from '../password-reset.reducer'
 
 export const PasswordResetFinishPage = (props: RouteComponentProps<{ key: string }>) => {

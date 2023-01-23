@@ -10,6 +10,7 @@ import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
 import { hasAnyAuthority, PrivateRouteComponent } from './private-route'
 
 const TestComp = () => <div>Test</div>

@@ -1,13 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { APP_DATE_FORMAT } from 'app/config/constants'
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils'
+import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.constants'
 import React, { useEffect, useState } from 'react'
 import { getSortState, JhiItemCount, JhiPagination, TextFormat } from 'react-jhipster'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Badge, Button, Row, Table } from 'reactstrap'
 
-import { APP_DATE_FORMAT } from 'app/config/constants'
-import { useAppDispatch, useAppSelector } from 'app/config/store'
-import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils'
-import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.constants'
 import { getUsersAsAdmin, updateUser } from './user-management.reducer'
 
 export const UserManagement = (props: RouteComponentProps<any>) => {

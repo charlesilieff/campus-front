@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify'
+
 import { isFulfilledAction, isRejectedAction } from '../shared/reducers/reducer.utils'
 
 const addErrorAlert = (message: string, key?: string, data?: string) => {

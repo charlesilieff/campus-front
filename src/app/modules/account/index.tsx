@@ -1,6 +1,5 @@
-import React from 'react'
-
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
+import React from 'react'
 
 import Password from './password/password'
 import Settings from './settings/settings'

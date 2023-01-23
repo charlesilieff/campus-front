@@ -8,6 +8,7 @@ import * as O from '@effect-ts/core/Option'
 import React from 'react'
 
 import { Customer } from './reservation-intermittent-update'
+
 interface CustomerSummaryProps {
   customer: Customer
 }

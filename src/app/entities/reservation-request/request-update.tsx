@@ -1,7 +1,6 @@
+import { useAppSelector } from 'app/config/store'
 import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-
-import { useAppSelector } from 'app/config/store'
 
 import CustomerUpdate from './customer-request-update'
 import ReservationUpdate from './reservation-request-update'

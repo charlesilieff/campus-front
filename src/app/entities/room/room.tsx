@@ -4,6 +4,7 @@ import { PlaceMenu } from 'app/shared/layout/menus/placeMenu'
 import React, { useEffect } from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Table } from 'reactstrap'
+
 import { getEntities } from './room.reducer'
 
 export const Room = (props: RouteComponentProps<{ url: string }>) => {

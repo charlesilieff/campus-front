@@ -1,9 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import axios from 'axios'
-
 import { AppThunk } from 'app/config/store'
 import { getSession } from 'app/shared/reducers/authentication'
 import { serializeAxiosError } from 'app/shared/reducers/reducer.utils'
+import axios from 'axios'
 
 const initialState = {
   loading: false,

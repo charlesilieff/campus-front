@@ -1,11 +1,11 @@
-import axios from 'axios'
-
 import { expect } from '@jest/globals'
 import { defaultValue, IBedroomKind } from 'app/shared/model/bedroom-kind.model'
 import { EntityState } from 'app/shared/reducers/reducer.utils'
+import axios from 'axios'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import sinon from 'sinon'
+
 import reducer, {
   createEntity,
   deleteEntity,

@@ -4,7 +4,6 @@ import {
   VStack
 } from '@chakra-ui/react'
 import * as A from '@effect-ts/core/Collections/Immutable/Array'
-
 import * as O from '@effect-ts/core/Option'
 import { IRoom } from 'app/shared/model/room.model'
 import React, { useEffect, useState } from 'react'

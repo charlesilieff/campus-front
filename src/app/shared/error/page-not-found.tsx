@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { Alert } from 'reactstrap'
 
 class PageNotFound extends React.Component {

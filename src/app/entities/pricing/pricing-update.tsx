@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect, useState } from 'react'
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
-import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { createEntity, getEntity, reset, updateEntity } from './pricing.reducer'
 
 export const PricingUpdate = (props: RouteComponentProps<{ id: string }>) => {

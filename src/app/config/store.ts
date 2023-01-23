@@ -1,7 +1,7 @@
 import { AnyAction, configureStore, ThunkAction } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-
 import { loadingBarMiddleware } from 'react-redux-loading-bar'
+
 import reducer from '../shared/reducers'
 import errorMiddleware from './error-middleware'
 import loggerMiddleware from './logger-middleware'

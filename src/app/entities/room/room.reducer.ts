@@ -1,6 +1,4 @@
 import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit'
-import axios from 'axios'
-
 import { defaultValue, IRoom } from 'app/shared/model/room.model'
 import {
   createEntitySlice,
@@ -8,6 +6,7 @@ import {
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
 import { cleanEntity } from 'app/shared/util/entity-utils'
+import axios from 'axios'
 
 const initialState: EntityState<IRoom> = {
   loading: false,

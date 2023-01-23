@@ -7,6 +7,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { isNumber } from 'react-jhipster'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
+
 import { CustomValidatedField } from '../../shared/util/cross-validation-form'
 import {
   backToOne,

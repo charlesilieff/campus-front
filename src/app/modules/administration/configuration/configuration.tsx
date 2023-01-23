@@ -1,7 +1,7 @@
+import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect, useState } from 'react'
 import { Badge, Col, Input, Row, Table } from 'reactstrap'
 
-import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getConfigurations, getEnv } from '../administration.reducer'
 
 export const ConfigurationPage = () => {

@@ -3,7 +3,9 @@ import dayjs from 'dayjs'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap'
+
 import { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
+
 interface IProps {
   reservation: IReservationsPlanning
 }

@@ -4,6 +4,7 @@ import React, { useEffect } from 'react'
 import {} from 'react-jhipster'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
+
 import { getEntity } from './bed.reducer'
 
 export const BedDetail = (props: RouteComponentProps<{ id: string }>) => {

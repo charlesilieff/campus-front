@@ -2,6 +2,7 @@ import { IMeal } from 'app/shared/model/meal.model'
 import dayjs, { Dayjs } from 'dayjs'
 import React, { useContext, useEffect, useState } from 'react'
 import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap'
+
 import { IMealsNumber } from './IMealsNumber'
 import MealContext from './mealsContext'
 

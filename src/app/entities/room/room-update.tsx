@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react'
 import { ValidatedField, ValidatedForm } from 'react-jhipster'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
+
 import { createEntity, getEntity, reset, updateEntity } from './room.reducer'
 
 export const RoomUpdate = (props: RouteComponentProps<{ id: string }>) => {

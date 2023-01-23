@@ -1,6 +1,8 @@
-import { APP_LOCAL_DATETIME_FORMAT } from 'app/config/constants'
 import 'dayjs/locale/fr'
+
+import { APP_LOCAL_DATETIME_FORMAT } from 'app/config/constants'
 import dayjs, { Dayjs } from 'dayjs'
+
 dayjs.locale('fr')
 export const convertDateTimeFromServer = (
   date: string | undefined

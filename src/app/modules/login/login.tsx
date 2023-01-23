@@ -1,8 +1,8 @@
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { login } from 'app/shared/reducers/authentication'
 import React, { useEffect, useState } from 'react'
 import { Redirect, RouteComponentProps } from 'react-router-dom'
 
-import { useAppDispatch, useAppSelector } from 'app/config/store'
-import { login } from 'app/shared/reducers/authentication'
 import LoginModal from './login-modal'
 
 export const Login = (props: RouteComponentProps<any>) => {

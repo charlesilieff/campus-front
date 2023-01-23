@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { RouteComponentProps } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
+
 import { getEntity, reset, setData } from './reservation-request.reducer'
 
 export const CustomerUpdate = (props: RouteComponentProps<{ id: string }>) => {

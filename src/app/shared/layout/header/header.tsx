@@ -1,9 +1,11 @@
+import './header.scss'
+
 import React from 'react'
 import LoadingBar from 'react-redux-loading-bar'
 import { Nav, Navbar } from 'reactstrap'
+
 import { AccountMenu, AdminMenu, EntitiesMenu } from '../menus'
 import { Brand, Help, Home } from './header-components'
-import './header.scss'
 
 export interface IHeaderProps {
   isCooker: boolean

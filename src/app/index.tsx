@@ -3,6 +3,7 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { bindActionCreators } from 'redux'
+
 import AppComponent from './app'
 import setupAxiosInterceptors from './config/axios-interceptor'
 import { loadIcons } from './config/icon-loader'

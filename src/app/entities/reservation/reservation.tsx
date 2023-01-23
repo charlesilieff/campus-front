@@ -5,6 +5,7 @@ import React, { useEffect } from 'react'
 import { TextFormat } from 'react-jhipster'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Table } from 'reactstrap'
+
 import { getEntities } from './reservation.reducer'
 
 export const Reservation = (props: RouteComponentProps<{ url: string }>) => {

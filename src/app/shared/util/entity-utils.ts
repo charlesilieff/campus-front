@@ -22,7 +22,7 @@ export const cleanEntity = entity => {
  * @param idList Elements to map.
  * @returns The list of objects with mapped ids.
  */
-export const mapIdList = (idList: ReadonlyArray<any>) =>
+export const mapIdList = (idList: readonly any[]) =>
   idList.filter((id: any) => id !== '').map((id: any) => ({ id }))
 
 export const overridePaginationStateWithQueryParams = (

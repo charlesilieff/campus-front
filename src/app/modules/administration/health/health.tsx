@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import React, { useEffect, useState } from 'react'
 import { Badge, Button, Col, Row, Table } from 'reactstrap'
 
-import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getSystemHealth } from '../administration.reducer'
 import HealthModal from './health-modal'
 

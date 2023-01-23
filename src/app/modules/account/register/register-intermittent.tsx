@@ -15,6 +15,7 @@ import PasswordStrengthBar from 'app/shared/layout/password/password-strength-ba
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
+
 import { createEntity as createCustomerEntity } from './../../../entities/customer/customer.reducer'
 import { handleIntermittentRegister, reset } from './register.reducer'
 

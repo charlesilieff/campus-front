@@ -7,7 +7,7 @@
   "scripts": {
     "parcel": "npx parcel --no-cache src/main.html",
     "lint": "eslint . --ext .ts,.tsx && npx tsc --noEmit",
-    "lint:fix": "npm run lint -- --fix",
+    "lint:fix": "npm run lint --fix",
     "cleanup": "rimraf target/classes/static/",
     "clean-www": "rimraf target/classes/static/app/{src,target/}",
     "e2e": "npm run e2e:cypress",
@@ -33,22 +33,24 @@
     "packaging": "jar"
   },
   "dependencies": {
-    "@js-joda/core": "^5.5.2",
-    "@js-joda/locale_fr": "^4.8.6",
-    "@js-joda/timezone": "^2.17.2",
     "@chakra-ui/icons": "^2.0.17",
     "@chakra-ui/react": "^2.4.9",
-    "@react-icons/all-files": "^4.1.0",
+    "@effect-ts/core": "^0.60.5",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fortawesome/fontawesome-svg-core": "1.2.35",
     "@fortawesome/free-solid-svg-icons": "5.15.3",
     "@fortawesome/react-fontawesome": "0.1.14",
+    "@js-joda/core": "^5.5.2",
+    "@js-joda/locale_fr": "^4.8.6",
+    "@js-joda/timezone": "^2.17.2",
+    "@react-icons/all-files": "^4.1.0",
     "@reduxjs/toolkit": "^1.6.1",
     "axios": "0.21.3",
     "bootstrap": "4.6.0",
     "bootswatch": "5.0.1",
     "dayjs": "1.10.5",
+    "eslint-plugin-simple-import-sort": "^9.0.0",
     "framer-motion": "^7.6.4",
     "loaders.css": "0.1.2",
     "lodash": "4.17.21",
@@ -67,8 +69,7 @@
     "redux": "4.1.0",
     "redux-thunk": "2.3.0",
     "tslib": "2.3.0",
-    "uuid": "8.3.2",
-    "@effect-ts/core": "^0.60.5"
+    "uuid": "8.3.2"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.7.0",

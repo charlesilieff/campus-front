@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect, useState } from 'react'
 import { isEmail, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Col, FormText, Row } from 'reactstrap'
 
-import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { createUser, getRoles, getUser, reset, updateUser } from './user-management.reducer'
 
 export const UserManagementUpdate = (props: RouteComponentProps<{ login: string }>) => {

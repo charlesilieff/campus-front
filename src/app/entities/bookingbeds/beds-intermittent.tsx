@@ -2,6 +2,7 @@ import { Radio, RadioGroup, Text, VStack } from '@chakra-ui/react'
 import * as O from '@effect-ts/core/Option'
 import { IRoom } from 'app/shared/model/room.model'
 import React, { FunctionComponent } from 'react'
+
 interface IProps {
   rooms: IRoom[]
   selectedBedId: (bedId: O.Option<number>) => void

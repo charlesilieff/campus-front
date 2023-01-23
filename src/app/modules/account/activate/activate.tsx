@@ -1,9 +1,9 @@
+import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { getUrlParameter } from 'react-jhipster'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Alert, Col, Row } from 'reactstrap'
 
-import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { activateAction, reset } from './activate.reducer'
 
 const successAlert = (

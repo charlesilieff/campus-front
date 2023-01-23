@@ -1,6 +1,4 @@
 import { createAsyncThunk, isFulfilled, isPending, PayloadAction } from '@reduxjs/toolkit'
-import axios from 'axios'
-
 import { defaultValue, IBookingBeds } from 'app/shared/model/bookingBeds.model'
 import { IReservation } from 'app/shared/model/reservation.model'
 import {
@@ -9,6 +7,7 @@ import {
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
 import { cleanEntity } from 'app/shared/util/entity-utils'
+import axios from 'axios'
 
 const initialState: EntityState<IBookingBeds> = {
   loading: false,

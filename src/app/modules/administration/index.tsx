@@ -1,6 +1,6 @@
+import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
 import React from 'react'
 
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
 import Configuration from './configuration/configuration'
 import Docs from './docs/docs'
 import Health from './health/health'

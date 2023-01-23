@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react'
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
+
 import { createEntity, getEntity, reset, updateEntity } from './reservation.reducer'
 
 export const ReservationUpdate = (props: RouteComponentProps<{ id: string }>) => {

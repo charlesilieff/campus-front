@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react'
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
+
 import { IBookingBeds } from '../../shared/model/bookingBeds.model'
 import { getEntity, reset, setData } from './reservation.reducer'
 

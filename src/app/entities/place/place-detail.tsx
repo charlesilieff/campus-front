@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { byteSize, openFile } from 'react-jhipster'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
-import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntity } from './place.reducer'
 
 export const PlaceDetail = (props: RouteComponentProps<{ id: string }>) => {

@@ -1,9 +1,8 @@
-import React from 'react'
-
 import { InfoOutlineIcon } from '@chakra-ui/icons'
 import { Link as ChakraLink } from '@chakra-ui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import appConfig from 'app/config/constants'
+import React from 'react'
 import { NavLink as Link } from 'react-router-dom'
 import { NavbarBrand, NavLink } from 'reactstrap'
 

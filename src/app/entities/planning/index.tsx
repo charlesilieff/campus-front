@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react'
 import { ValidatedField } from 'react-jhipster'
 import { Link } from 'react-router-dom'
 import { Button } from 'reactstrap'
+
 import { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
 import PlaceModal from '../place/placeModal'
 import Planning from './planning'

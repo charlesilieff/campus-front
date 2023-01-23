@@ -4,6 +4,7 @@
 import { expect } from '@jest/globals'
 import axios from 'axios'
 import sinon from 'sinon'
+
 import setupAxiosInterceptors from './axios-interceptor'
 
 describe('Axios Interceptor', () => {

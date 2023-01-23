@@ -7,6 +7,7 @@ import {
 } from '@chakra-ui/react'
 import { BsPencil } from '@react-icons/all-files/bs/BsPencil'
 import React from 'react'
+
 import { DatesAndMeals } from './reservation-intermittent-update'
 
 interface DatesAndMealsSummaryProps {

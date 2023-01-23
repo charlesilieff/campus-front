@@ -1,7 +1,6 @@
+import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
 import React from 'react'
 import { Switch } from 'react-router-dom'
-
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
 
 import Reservation from './reservation'
 import ReservationDeleteDialog from './reservation-delete-dialog'

@@ -1,6 +1,7 @@
 import React from 'react'
 import Loadable from 'react-loadable'
 import { Switch } from 'react-router-dom'
+
 import { AUTHORITIES } from './config/constants'
 import Entities from './entities'
 import Kitchen from './entities/kitchen'

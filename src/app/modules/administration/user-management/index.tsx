@@ -1,7 +1,7 @@
+import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
 import React from 'react'
 import { Switch } from 'react-router-dom'
 
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
 import UserManagement from './user-management'
 import UserManagementDeleteDialog from './user-management-delete-dialog'
 import UserManagementDetail from './user-management-detail'

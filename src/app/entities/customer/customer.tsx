@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Table } from 'reactstrap'
 
-import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities } from './customer.reducer'
 
 export const Customer = (props: RouteComponentProps<{ url: string }>) => {

@@ -1,9 +1,8 @@
+import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
 import React from 'react'
 import { Switch } from 'react-router-dom'
 
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
 import { ReservationRequestDetail, ReservationRequestUpdate } from './request'
-
 import ReservationRequestDeleteDialog from './request-delete-dialog'
 
 const Routes = ({ match }) => (

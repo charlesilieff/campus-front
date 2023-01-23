@@ -1,5 +1,4 @@
 import * as A from '@effect-ts/core/Collections/Immutable/Array'
-
 import { IPlace } from 'app/shared/model/place.model'
 import axios from 'axios'
 

@@ -2,6 +2,7 @@ import { expect } from '@jest/globals'
 import * as toastify from 'react-toastify' // synthetic default import doesn't work here due to mocking.
 import { applyMiddleware, createStore } from 'redux'
 import sinon from 'sinon'
+
 import notificationMiddleware from './notification-middleware'
 
 describe('Notification Middleware', () => {

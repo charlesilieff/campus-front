@@ -1,11 +1,11 @@
+import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
 import React from 'react'
 import { Switch } from 'react-router-dom'
-
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
 
 import ReservationDeleteDialog from './reservation-delete-dialog'
 import ReservationDetail from './reservation-detail'
 import ReservationUpdate, { ReservationIntermittentUpdate } from './reservation-intermittent-update'
+
 interface Match {
   url: string
 }

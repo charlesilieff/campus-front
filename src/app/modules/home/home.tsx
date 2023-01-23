@@ -1,14 +1,13 @@
 import './home.scss'
 
-import React from 'react'
-import { Link } from 'react-router-dom'
-
-import { Alert, Button, Col, Row } from 'reactstrap'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { AUTHORITIES } from 'app/config/constants'
 import { useAppSelector } from 'app/config/store'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { Alert, Button, Col, Row } from 'reactstrap'
+
 import RGPDAnonymizeData from '../rgpd/rgpdAnonymizeData'
 
 export const Home = () => {

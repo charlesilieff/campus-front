@@ -1,10 +1,10 @@
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar'
 import React, { useEffect, useState } from 'react'
 import { isEmail, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { toast } from 'react-toastify'
 import { Button, Col, Row } from 'reactstrap'
 
-import { useAppDispatch, useAppSelector } from 'app/config/store'
-import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar'
 import { handleRegister, reset } from './register.reducer'
 
 export const RegisterPage = () => {

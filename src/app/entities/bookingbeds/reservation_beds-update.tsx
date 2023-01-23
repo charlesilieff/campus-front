@@ -18,6 +18,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { TextFormat } from 'react-jhipster'
 import { RouteComponentProps } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
+
 import PlaceModal from '../place/placeModal'
 import Beds from './beds'
 import { backToOne, createEntity, updateEntity } from './reservation.reducer'

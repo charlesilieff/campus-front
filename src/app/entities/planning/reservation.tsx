@@ -3,6 +3,7 @@ import { IReservationsPlanning } from 'app/shared/model/reservationsPlanning.mod
 import { getDateKey } from 'app/shared/util/date-utils'
 import dayjs, { Dayjs } from 'dayjs'
 import React from 'react'
+
 import ReservationBed from './reservationBed'
 
 interface IProps {

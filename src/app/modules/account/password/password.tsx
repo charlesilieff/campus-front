@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar'
+import { getSession } from 'app/shared/reducers/authentication'
 import React, { useEffect, useState } from 'react'
 import { ValidatedField, ValidatedForm } from 'react-jhipster'
 import { toast } from 'react-toastify'
 import { Button, Col, Row } from 'reactstrap'
 
-import { useAppDispatch, useAppSelector } from 'app/config/store'
-import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar'
-import { getSession } from 'app/shared/reducers/authentication'
 import { reset, savePassword } from './password.reducer'
 
 export const PasswordPage = () => {

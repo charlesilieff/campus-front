@@ -1,8 +1,7 @@
-import React from 'react'
-import { Redirect, Route, RouteProps } from 'react-router-dom'
-
 import { useAppSelector } from 'app/config/store'
 import ErrorBoundary from 'app/shared/error/error-boundary'
+import React from 'react'
+import { Redirect, Route, RouteProps } from 'react-router-dom'
 
 interface IOwnProps extends RouteProps {
   hasAnyAuthorities?: string[]

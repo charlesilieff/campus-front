@@ -1,9 +1,9 @@
+import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { isEmail, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { toast } from 'react-toastify'
 import { Alert, Button, Col, Row } from 'reactstrap'
 
-import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { handlePasswordResetInit, reset } from '../password-reset.reducer'
 
 export const PasswordResetInit = () => {
