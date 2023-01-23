@@ -1,4 +1,3 @@
-import * as O from '@effect-ts/core/Option'
 import { expect } from '@jest/globals'
 import { AUTHORITIES } from 'app/config/constants'
 import { defaultValue } from 'app/shared/model/user.model'
@@ -307,7 +306,7 @@ describe('User management reducer tests', () => {
           payload: resolvedObject
         }
       ]
-      await store.dispatch(createUser({ customerId: O.none }))
+      await store.dispatch(createUser({}))
       expect(store.getActions()[0]).toMatchObject(expectedActions[0])
       expect(store.getActions()[1]).toMatchObject(expectedActions[1])
       expect(store.getActions()[2]).toMatchObject(expectedActions[2])
@@ -326,7 +325,7 @@ describe('User management reducer tests', () => {
           payload: resolvedObject
         }
       ]
-      await store.dispatch(updateUser({ login: username, customerId: O.none }))
+      await store.dispatch(updateUser({ login: username }))
       expect(store.getActions()[0]).toMatchObject(expectedActions[0])
       expect(store.getActions()[1]).toMatchObject(expectedActions[1])
       expect(store.getActions()[2]).toMatchObject(expectedActions[2])
