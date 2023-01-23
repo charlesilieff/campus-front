@@ -15,8 +15,12 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect-ts/core'
 import * as O from '@effect-ts/core/Option'
-import React from 'react'
+import { LocalDate } from '@js-joda/core'
+import { BsPencil } from '@react-icons/all-files/bs/BsPencil'
+import { identity } from 'lodash'
+import React, { useRef } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { DatesAndMeals } from './reservation-intermittent-update'
@@ -33,10 +37,42 @@ export const DatesAndMealsChoices = (
   const {
     handleSubmit,
     register,
+    watch,
     formState: { errors }
   } = useForm<DatesAndMeals>({
     defaultValues: O.isSome(props.datesAndMeals) ? props.datesAndMeals.value : {}
   })
+
+  const departureDate = useRef({})
+  departureDate.current = watch('departureDate', '')
+
+  const isArrivalDateIsBeforeDepartureDate = (d1: string, d2: string): boolean => {
+    const arrivalDate = pipe(
+      d1 === '' ? O.none : O.some(d1),
+      O.map(d => LocalDate.parse(d))
+    )
+    const departureDate = pipe(
+      d2 === '' ? O.none : O.some(d2),
+      O.map(d => LocalDate.parse(d))
+    )
+    return pipe(
+      O.struct({ arrivalDate, departureDate }),
+      O.map(d => d.arrivalDate.isBefore(d.departureDate)),
+      O.exists(identity)
+    )
+  }
+
+  const isDateBeforeNow = (date: string): boolean => {
+    const dateToCheck = pipe(
+      date === '' ? O.none : O.some(date),
+      O.map(d => LocalDate.parse(d))
+    )
+    return pipe(
+      dateToCheck,
+      O.map(d => d.isBefore(LocalDate.now())),
+      O.exists(identity)
+    )
+  }
 
   const handleValidDateAndMealSubmit = (
     datesAndMeal: DatesAndMeals
@@ -59,6 +95,7 @@ export const DatesAndMealsChoices = (
           <Heading size={'md'}>
             Date et repas
           </Heading>
+          <BsPencil size={'30px'} color={'black'}></BsPencil>
         </HStack>
         <Box minW={'500px'}>
           <form
@@ -68,21 +105,34 @@ export const DatesAndMealsChoices = (
               <HStack spacing={12} minW={600} my={4}>
                 <FormControl isRequired isInvalid={errors.arrivalDate !== undefined}>
                   <FormLabel htmlFor="arrivalDate" fontWeight={'bold'}>
-                    {'Date de départ'}
+                    {"Date d'arrivée"}
                   </FormLabel>
                   <Input
                     id="username"
                     type="date"
                     placeholder="Date d'arrivée'"
                     {...register('arrivalDate', {
-                      required: "la date d'arrivée' est obligatoire"
+                      required: "la date d'arrivée' est obligatoire",
+                      validate(v) {
+                        if (
+                          !isArrivalDateIsBeforeDepartureDate(v, departureDate.current.toString())
+                        ) {
+                          return "La date d'arrivée doit être avant la date de départ"
+                        }
+                        if (isDateBeforeNow(v)) {
+                          return "La date d'arrivée doit être après aujourd’hui"
+                        } else {
+                          return true
+                        }
+                      }
                     })}
                   />
 
                   <FormErrorMessage>
-                    {errors.departureDate && errors.departureDate.message}
+                    {errors.arrivalDate && errors.arrivalDate.message}
                   </FormErrorMessage>
                 </FormControl>
+
                 <FormControl isRequired isInvalid={errors.departureDate !== undefined}>
                   <FormLabel htmlFor="departureDate" fontWeight={'bold'}>
                     {'Date de départ'}

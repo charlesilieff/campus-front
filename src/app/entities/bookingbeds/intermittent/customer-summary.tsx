@@ -1,3 +1,4 @@
+import { CheckCircleIcon } from '@chakra-ui/icons'
 import {
   Heading,
   HStack,
@@ -7,7 +8,7 @@ import {
 import * as O from '@effect-ts/core/Option'
 import React from 'react'
 
-import { Customer } from './intermittent/reservation-intermittent-update'
+import { Customer } from './reservation-intermittent-update'
 
 interface CustomerSummaryProps {
   customer: Customer
@@ -33,9 +34,11 @@ export const CustomerSummary = (
       borderColor={'#D9D9D9'}
       my={4}
     >
-      <Heading size={'lg'} marginBottom={4}>
-        Informations personnelles
-      </Heading>
+      <HStack>
+        <Heading size={'lg'} marginBottom={4}>
+          Informations personnelles <CheckCircleIcon color={'green'}></CheckCircleIcon>
+        </Heading>
+      </HStack>
 
       <HStack py={2}>
         <Text fontWeight={'bold'}>{'Nom :'}</Text>

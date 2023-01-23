@@ -11,9 +11,9 @@ import React, { useEffect, useState } from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
 import { getEntity as getCustomerEntity } from '../../customer/customer.reducer'
-import { createEntity } from '../booking-beds.reducer'
-import { CustomerSummary } from '../customer-summary'
+import { createEntity, reset } from '../booking-beds.reducer'
 import { BedsChoices } from './bed-choices'
+import { CustomerSummary } from './customer-summary'
 import { DatesAndMealsChoices } from './dates-and-meals-choices-intermittent'
 import { DatesAndMealsSummary } from './dates-and-meals-summary-intermittent'
 
@@ -41,6 +41,7 @@ export type BedIds = A.Array<{ id: number }>
 export const ReservationIntermittentUpdate = (
   props: RouteComponentProps<{ id: string }>
 ): JSX.Element => {
+  const [isLoading, setIsLoading] = useState(false)
   const dispatch = useAppDispatch()
   const toast = useToast()
   const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
@@ -88,7 +89,8 @@ export const ReservationIntermittentUpdate = (
   const handleSubmitReservation = (): void => {
     const reservation = createIReservation(customer, datesAndMeal, bedId)
     if (O.isSome(reservation)) {
-      dispatch(createEntity(reservation.value))
+      setIsLoading(true)
+      dispatch(createEntity(reservation.value)).then(() => setIsLoading(false))
     } else {
       alert('Veuillez remplir tous les champs')
     }
@@ -114,6 +116,7 @@ export const ReservationIntermittentUpdate = (
 
   useEffect(() => {
     if (updateSuccess) {
+      dispatch(reset())
       toast({
         position: 'top',
         title: 'Réservation crée !',
@@ -125,16 +128,16 @@ export const ReservationIntermittentUpdate = (
       props.history.push('/planning')
     }
   }, [updateSuccess])
-  const testValue = {
-    arrivalDate: '2021-22-02',
-    departureDate: '2021-22-03',
-    specialDiet: 'false' as const,
-    isArrivalLunch: true,
-    isArrivalDinner: false,
-    isDepartureLunch: true,
-    isDepartureDinner: false,
-    comment: 'test'
-  }
+  // const testValue = {
+  //   arrivalDate: '2021-22-02',
+  //   departureDate: '2021-22-03',
+  //   specialDiet: 'false' as const,
+  //   isArrivalLunch: true,
+  //   isArrivalDinner: false,
+  //   isDepartureLunch: true,
+  //   isDepartureDinner: false,
+  //   comment: 'test'
+  // }
 
   return (
     <Stack>
@@ -147,7 +150,7 @@ export const ReservationIntermittentUpdate = (
       {O.isNone(datesAndMeal) || updateDatesAndMeals ?
         (
           <DatesAndMealsChoices
-            datesAndMeals={O.some(testValue)}
+            datesAndMeals={datesAndMeal}
             setUpdateDatesAndMeals={setUpdateDatesAndMeals}
             setDatesAndMeal={setDatesAndMeal}
           />
@@ -183,6 +186,7 @@ export const ReservationIntermittentUpdate = (
           <HStack justifyContent={'end'}>
             <Button as={Link} to={''} colorScheme={'red'} rightIcon={<BsTrash />}>Annuler</Button>
             <Button
+              isLoading={isLoading}
               colorScheme={'blue'}
               rightIcon={<CheckIcon />}
               onClick={() => handleSubmitReservation()}
