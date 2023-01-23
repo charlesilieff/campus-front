@@ -1,4 +1,4 @@
-import { CheckCircleIcon, CheckIcon } from '@chakra-ui/icons'
+import { CheckIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
@@ -11,6 +11,7 @@ import {
   Input,
   Radio,
   RadioGroup,
+  Text,
   Textarea,
   VStack
 } from '@chakra-ui/react'
@@ -58,7 +59,6 @@ export const DatesAndMealsChoices = (
           <Heading size={'md'}>
             Date et repas
           </Heading>
-          <CheckCircleIcon color={'orange'} />
         </HStack>
         <Box minW={'500px'}>
           <form
@@ -105,11 +105,16 @@ export const DatesAndMealsChoices = (
                 <FormLabel htmlFor="selectionRepas" fontWeight={'bold'}>
                   {'Sélection des repas :'}
                 </FormLabel>
-
-                <Checkbox {...register('isArrivalLunch')}>isArrivalLunch</Checkbox>
-                <Checkbox {...register('isArrivalDinner')}>isArrivalDiner</Checkbox>
-                <Checkbox {...register('isDepartureLunch')}>isDepartureLunch</Checkbox>
-                <Checkbox {...register('isDepartureDinner')}>isDepartureDinner</Checkbox>
+                <HStack>
+                  <Text fontWeight={'bold'}>{"Jour d'arrivée :"}</Text>
+                  <Checkbox {...register('isArrivalLunch')}>déjeuner</Checkbox>
+                  <Checkbox {...register('isArrivalDinner')}>dîner</Checkbox>
+                </HStack>
+                <HStack>
+                  <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>
+                  <Checkbox {...register('isDepartureLunch')}>déjeuner</Checkbox>
+                  <Checkbox {...register('isDepartureDinner')}>dîner</Checkbox>
+                </HStack>
               </FormControl>
               <FormControl isRequired isInvalid={errors.specialDiet !== undefined}>
                 <FormLabel htmlFor="selectionRepas" fontWeight={'bold'}>

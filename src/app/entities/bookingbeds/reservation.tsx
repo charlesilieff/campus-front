@@ -6,7 +6,7 @@ import { TextFormat } from 'react-jhipster'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Table } from 'reactstrap'
 
-import { getEntities } from './reservation.reducer'
+import { getEntities } from './booking-beds.reducer'
 
 export const Reservation = (props: RouteComponentProps<{ url: string }>) => {
   const dispatch = useAppDispatch()

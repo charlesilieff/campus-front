@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
-import { deleteEntity, getEntity } from './reservation.reducer'
+import { deleteEntity, getEntity } from './booking-beds.reducer'
 
 export const ReservationDeleteDialog = (props: RouteComponentProps<{ id: string }>) => {
   const dispatch = useAppDispatch()

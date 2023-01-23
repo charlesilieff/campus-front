@@ -1,3 +1,5 @@
+import * as O from '@effect-ts/core/Option'
+
 export interface IUser {
   id?: any
   login?: string
@@ -12,6 +14,7 @@ export interface IUser {
   lastModifiedBy?: string
   lastModifiedDate?: Date | null
   password?: string
+  customerId?: string
 }
 
 export const defaultValue: Readonly<IUser> = {
@@ -27,5 +30,6 @@ export const defaultValue: Readonly<IUser> = {
   createdDate: null,
   lastModifiedBy: '',
   lastModifiedDate: null,
-  password: ''
+  password: '',
+  customerId: null
 }

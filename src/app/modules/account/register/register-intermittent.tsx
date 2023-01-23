@@ -16,7 +16,6 @@ import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
-import { createEntity as createCustomerEntity } from './../../../entities/customer/customer.reducer'
 import { handleIntermittentRegister, reset } from './register.reducer'
 
 interface FormValues {
@@ -31,12 +30,13 @@ interface FormValues {
 }
 
 export const RegisterIntermittentPage = (): JSX.Element => {
+  const [isLoading, setIsLoading] = React.useState(false)
   const dispatch = useAppDispatch()
   const {
     handleSubmit,
     watch,
     register,
-    formState: { errors, isSubmitting }
+    formState: { errors }
   } = useForm<FormValues>()
   useEffect(
     () => (): void => {
@@ -50,25 +50,20 @@ export const RegisterIntermittentPage = (): JSX.Element => {
   const handleValidSubmit = (
     { age, email, firstname, firstPassword, lastname, phoneNumber, username }: FormValues
   ): void => {
+    setIsLoading(true)
     dispatch(
       handleIntermittentRegister({
         login: username,
         email,
         password: firstPassword,
-        langKey: 'en'
+        langKey: 'en',
+        firstname,
+        lastname,
+        phoneNumber,
+        age: O.toNullable(age)
       })
-    ).then(e => {
-      return e.type === 'register/create_account/fulfilled'
-        && dispatch(
-          createCustomerEntity({
-            age: O.toNullable(age),
-            isFemal: true,
-            email,
-            firstname,
-            lastname,
-            phoneNumber
-          })
-        )
+    ).then(() => {
+      setIsLoading(false)
     })
   }
 
@@ -290,7 +285,7 @@ export const RegisterIntermittentPage = (): JSX.Element => {
               </FormErrorMessage>
             </FormControl>
 
-            <Button color="primary" type="submit" isLoading={isSubmitting} my={8}>
+            <Button colorScheme={'green'} type="submit" isLoading={isLoading} my={8}>
               Enregistrez-vous
             </Button>
           </form>

@@ -6,7 +6,7 @@ import bed from '../../entities/bed/bed.reducer'
 // prettier-ignore
 import bedroomKind from '../../entities/bedroom-kind/bedroom-kind.reducer'
 // prettier-ignore
-import bookingBeds from '../../entities/bookingbeds/reservation.reducer'
+import bookingBeds from '../../entities/bookingbeds/booking-beds.reducer'
 // prettier-ignore
 import customer from '../../entities/customer/customer.reducer'
 // prettier-ignore

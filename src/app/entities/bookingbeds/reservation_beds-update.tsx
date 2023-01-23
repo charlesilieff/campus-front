@@ -21,7 +21,7 @@ import { Button, Col, Row } from 'reactstrap'
 
 import PlaceModal from '../place/placeModal'
 import Beds from './beds'
-import { backToOne, createEntity, updateEntity } from './reservation.reducer'
+import { backToOne, createEntity, updateEntity } from './booking-beds.reducer'
 import { getOnePlace, getPlaces } from './utils'
 
 export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>): JSX.Element => {

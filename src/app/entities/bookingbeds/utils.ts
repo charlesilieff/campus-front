@@ -48,15 +48,19 @@ export const filterBedRoomKind = (places: A.Array<IPlace>, idRoomKind: number): 
       })
   }
 }
-
-export const getPlaceWithFreeBeds = async (
+export const getPlaceWithFreeBeds = (isIntermittent: boolean) =>
+async (
   arrivalDate: string,
   departureDate: string
 ): Promise<A.Array<IPlace>> => {
-  const apiUrlPlaces = `api/bookingbeds/${arrivalDate}/${departureDate}`
+  const apiUrlPlaces = `api/bookingbeds/${
+    isIntermittent ? 'intermittent/' : ''
+  }${arrivalDate}/${departureDate}`
   const requestUrl = `${apiUrlPlaces}`
   const { data } = await axios.get<IPlace[]>(requestUrl)
 
   data.forEach(place => place.rooms.sort((room1, room2) => room1.name.localeCompare(room2.name)))
   return data
 }
+
+export const getIntermittentPlaceWithFreeBeds = getPlaceWithFreeBeds(true)

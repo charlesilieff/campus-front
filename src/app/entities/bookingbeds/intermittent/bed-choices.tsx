@@ -8,7 +8,7 @@ import * as O from '@effect-ts/core/Option'
 import { IRoom } from 'app/shared/model/room.model'
 import React, { useEffect, useState } from 'react'
 
-import { getPlaceWithFreeBeds } from '../utils'
+import { getIntermittentPlaceWithFreeBeds } from '../utils'
 import { IntermittentBeds } from './beds-intermittent'
 import { DatesAndMeals } from './reservation-intermittent-update'
 
@@ -30,7 +30,7 @@ export const BedsChoices = (
 
     setLoading(true)
     if (O.isSome(props.datesAndMeals)) {
-      getPlaceWithFreeBeds(
+      getIntermittentPlaceWithFreeBeds(
         props.datesAndMeals.value.arrivalDate,
         props.datesAndMeals.value.departureDate
       ).then(data => {
@@ -101,12 +101,12 @@ export const BedsChoices = (
           <Spinner alignSelf={'center'} /> :
           (
             <VStack spacing={10} alignItems={'flex-start'}>
-              <Heading fontWeight={'bold'} fontSize={'25'}>
-                {'Choisissez le lit :'}
+              <Heading fontWeight={'bold'} fontSize={'30'}>
+                {'Choisissez votre lit :'}
               </Heading>
 
               <IntermittentBeds
-                rooms={A.toMutable(rooms)}
+                rooms={rooms}
                 selectedBedId={props.setSelectedBedId}
               />
             </VStack>

@@ -20,6 +20,12 @@ interface IRegister {
   password: string
   langKey?: string
 }
+interface IRegisterIntermittent extends IRegister {
+  firstname: string
+  lastname: string
+  phoneNumber: string
+  age?: number
+}
 
 export const handleRegister = createAsyncThunk(
   'register/create_account',
@@ -30,8 +36,8 @@ export const handleRegister = createAsyncThunk(
 
 export const handleIntermittentRegister = createAsyncThunk(
   'register/create_account',
-  async (data: { login: string; email: string; password: string; langKey?: string }) =>
-    axios.post<IRegister>('api/register/intermittent', data),
+  async (data: IRegisterIntermittent) =>
+    axios.post<IRegisterIntermittent>('api/register/intermittent', data),
   { serializeError: serializeAxiosError }
 )
 

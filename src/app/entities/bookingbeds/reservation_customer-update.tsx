@@ -9,7 +9,7 @@ import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
 import { IBookingBeds } from '../../shared/model/bookingBeds.model'
-import { getEntity, reset, setData } from './reservation.reducer'
+import { getEntity, reset, setData } from './booking-beds.reducer'
 
 export const ReservationCustomerUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const dispatch = useAppDispatch()
