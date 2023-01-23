@@ -8,9 +8,9 @@ import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 
-import { getEntity as getCustomerEntity } from './../customer/customer.reducer'
+import { getEntity as getCustomerEntity } from '../../customer/customer.reducer'
+import { CustomerSummary } from '../customer-summary'
 import { BedsChoices } from './bed-choices'
-import { CustomerSummary } from './customer-summary'
 import { DatesAndMealsChoices } from './dates-and-meals-choices-intermittent'
 import { DatesAndMealsSummary } from './dates-and-meals-summary-intermittent'
 
@@ -35,11 +35,13 @@ export interface Customer {
 
 export type BedIds = A.Array<{ id: number }>
 
-export const ReservationIntermittentUpdate = (props: RouteComponentProps<{ id: string }>) => {
+export const ReservationIntermittentUpdate = (
+  props: RouteComponentProps<{ id: string }>
+): JSX.Element => {
   const dispatch = useAppDispatch()
   console.log(props)
   useEffect(() => {
-    dispatch(getCustomerEntity(1))
+    dispatch(getCustomerEntity(props.match.params.id))
   }, [])
   const customer: Customer = pipe(
     useAppSelector(state => state.customer.entity),
@@ -66,10 +68,7 @@ export const ReservationIntermittentUpdate = (props: RouteComponentProps<{ id: s
   //   isDepartureDinner: false,
   //   comment: 'test'
   // }
-  console.log(datesAndMeal)
-  console.log('updateDatesAndMeals', updateDatesAndMeals)
-  console.log(bedId)
-  console.log((O.isSome(datesAndMeal) || updateDatesAndMeals) && O.isSome(bedId))
+
   return (
     <Stack>
       <Heading size={'lg'} m={4}>

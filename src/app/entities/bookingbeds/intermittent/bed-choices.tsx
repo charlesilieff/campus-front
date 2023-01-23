@@ -8,9 +8,9 @@ import * as O from '@effect-ts/core/Option'
 import { IRoom } from 'app/shared/model/room.model'
 import React, { useEffect, useState } from 'react'
 
+import { getPlaceWithFreeBeds } from '../utils'
 import { IntermittentBeds } from './beds-intermittent'
 import { DatesAndMeals } from './reservation-intermittent-update'
-import { getPlaceWithFreeBeds } from './utils'
 
 interface DatesAndMealsChoicesProps {
   setSelectedBedId: (bedId: O.Option<number>) => void
@@ -27,7 +27,7 @@ export const BedsChoices = (
   const [loading, setLoading] = useState(false)
   useEffect(() => {
     // getPlaces().then(data => setPlaces(A.toMutable(data)))
-    console.log('coucocu')
+
     setLoading(true)
     if (O.isSome(props.datesAndMeals)) {
       getPlaceWithFreeBeds(
@@ -38,7 +38,7 @@ export const BedsChoices = (
         const roomsData = data?.flatMap(place => {
           return place.rooms
         })
-        console.log('coucocu2222')
+
         setLoading(false)
 
         setRooms(roomsData)

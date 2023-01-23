@@ -40,7 +40,6 @@ export const DatesAndMealsChoices = (
   const handleValidDateAndMealSubmit = (
     datesAndMeal: DatesAndMeals
   ): void => {
-    console.log('datesAndMeal form', datesAndMeal)
     props.setUpdateDatesAndMeals(false)
     props.setDatesAndMeal(O.some(datesAndMeal))
   }

@@ -7,7 +7,7 @@ import {
 import * as O from '@effect-ts/core/Option'
 import React from 'react'
 
-import { Customer } from './reservation-intermittent-update'
+import { Customer } from './intermittent/reservation-intermittent-update'
 
 interface CustomerSummaryProps {
   customer: Customer
@@ -48,8 +48,14 @@ export const CustomerSummary = (
           (
             <HStack py={2}>
               <Text fontWeight={'bold'}>{'Age :'}</Text>
-              <Text>{age.value}</Text>
-              <Text>{' '}ans</Text>
+              {age.value ?
+                (
+                  <>
+                    <Text>{age.value}</Text>
+                    <Text>{' '}ans</Text>
+                  </>
+                ) :
+                <Text>Non renseigné</Text>}
             </HStack>
           ) :
           null}
