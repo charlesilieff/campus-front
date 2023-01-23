@@ -1,4 +1,4 @@
-import { Button, Checkbox, CheckboxGroup, Heading, VStack } from '@chakra-ui/react'
+import { Button, Checkbox, CheckboxGroup, Heading, useToast, VStack } from '@chakra-ui/react'
 import * as A from '@effect-ts/core/Collections/Immutable/Array'
 import { IPlace } from 'app/shared/model/place.model'
 import axios from 'axios'
@@ -13,11 +13,25 @@ export const PlaceIntermittent = () => {
     const requestUrl = `${apiUrl}`
     return axios.get<A.Array<IPlace>>(requestUrl)
   }
-
+  const toast = useToast()
   const saveIntermittentPlaces = async (selectedPlaceIds: A.Array<string>) => {
     const requestUrl = `api/places/intermittent`
     setIsLoading(true)
-    return axios.post(requestUrl, selectedPlaceIds).then(() => setIsLoading(false)).catch(() => {
+    return axios.post(requestUrl, selectedPlaceIds).then(() => {
+      const placesUpdatedNames = places.filter(place =>
+        selectedPlaceIds.includes(place.id.toString())
+      ).map(place => place.name).join(', ')
+      toast({
+        position: 'top',
+        title: 'Lieux modifiés',
+        description: `Les intermittents peuvent réserver ces lieux : ${placesUpdatedNames}`,
+        status: 'success',
+        duration: 9000,
+        isClosable: true
+      })
+
+      setIsLoading(false)
+    }).catch(() => {
       alert('Une erreur est survenue')
       setIsLoading(false)
     })
