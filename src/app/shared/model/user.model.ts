@@ -1,5 +1,3 @@
-import * as O from '@effect-ts/core/Option'
-
 export interface IUser {
   id?: any
   login?: string
