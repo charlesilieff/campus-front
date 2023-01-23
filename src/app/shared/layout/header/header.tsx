@@ -4,7 +4,8 @@ import React from 'react'
 import LoadingBar from 'react-redux-loading-bar'
 import { Nav, Navbar } from 'reactstrap'
 
-import { AccountMenu, AdminMenu, EntitiesMenu } from '../menus'
+import { AdminMenu, EntitiesMenu } from '../menus'
+import { AccountMenu2 } from '../menus/account-new'
 import { Brand, Help, Home } from './header-components'
 
 export interface IHeaderProps {
@@ -47,7 +48,7 @@ const Header = (props: IHeaderProps) => {
             <AdminMenu showOpenAPI={props.isOpenAPIEnabled} />
           )}
           {!window.location.pathname.endsWith('reservation-request/new') && (
-            <AccountMenu isAuthenticated={props.isAuthenticated} />
+            <AccountMenu2 isAuthenticated={props.isAuthenticated} />
           )}
         </Nav>
       </Navbar>

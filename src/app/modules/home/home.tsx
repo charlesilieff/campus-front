@@ -80,6 +80,7 @@ export const Home = (): JSX.Element => {
               as={Link}
               to={reservationCreationIntermittentUrl.value}
               colorScheme={'green'}
+              _hover={{ textDecoration: 'none', color: 'gray.900', backgroundColor: 'green.300' }}
             >
               Nouvelle réservation
             </Button>

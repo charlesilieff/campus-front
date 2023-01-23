@@ -7,6 +7,7 @@ export interface IPlace {
   imageContentType?: string | null
   image?: string | null
   rooms?: IRoom[] | null
+  intermittentAllowed?: boolean
 }
 
 export const defaultValue: Readonly<IPlace> = {}
