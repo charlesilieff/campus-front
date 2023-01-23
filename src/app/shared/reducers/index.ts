@@ -1,3 +1,4 @@
+/* eslint-disable simple-import-sort/imports */
 import { loadingBarReducer as loadingBar } from 'react-redux-loading-bar'
 
 // prettier-ignore

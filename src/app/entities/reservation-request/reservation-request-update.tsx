@@ -1,3 +1,4 @@
+/* eslint-disable simple-import-sort/imports */
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { IReservationRequest } from 'app/shared/model/reservation-request.model'
