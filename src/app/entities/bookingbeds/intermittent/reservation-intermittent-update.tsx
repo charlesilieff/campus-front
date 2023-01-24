@@ -3,11 +3,11 @@ import { Button, Heading, HStack, Stack, useToast } from '@chakra-ui/react'
 import { pipe } from '@effect-ts/core'
 import * as A from '@effect-ts/core/Collections/Immutable/Array'
 import * as O from '@effect-ts/core/Option'
-import { BsTrash } from '@react-icons/all-files/bs/BsTrash'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { ICustomer } from 'app/shared/model/customer.model'
 import { IReservation } from 'app/shared/model/reservation.model'
 import React, { useEffect, useState } from 'react'
+import { BsTrash } from 'react-icons/bs'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
 import { getEntity as getCustomerEntity } from '../../customer/customer.reducer'
@@ -54,6 +54,7 @@ export const ReservationIntermittentUpdate = (
       return O.none
     } else {
       const Icustomer: ICustomer = {
+        id: isNaN(+props.match.params.id) ? +props.match.params.id : undefined,
         firstname: customer.firstname,
         lastname: customer.lastname,
         email: customer.email,

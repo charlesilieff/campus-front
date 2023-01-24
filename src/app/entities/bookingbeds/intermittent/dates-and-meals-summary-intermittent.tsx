@@ -5,8 +5,8 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
-import { BsPencil } from '@react-icons/all-files/bs/BsPencil'
 import React from 'react'
+import { BsPencil } from 'react-icons/bs'
 
 import { DatesAndMeals } from './reservation-intermittent-update'
 

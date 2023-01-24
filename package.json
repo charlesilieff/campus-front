@@ -44,7 +44,7 @@
     "@js-joda/core": "^5.5.2",
     "@js-joda/locale_fr": "^4.8.6",
     "@js-joda/timezone": "^2.17.2",
-    "@react-icons/all-files": "^4.1.0",
+    "react-icons": "^4.7.1",
     "@reduxjs/toolkit": "^1.6.1",
     "axios": "0.21.3",
     "bootstrap": "4.6.0",
@@ -72,7 +72,9 @@
     "uuid": "8.3.2"
   },
   "devDependencies": {
-    "@parcel/transformer-sass": "^2.7.0",
+    "@parcel/reporter-bundle-analyzer": "^2.8.3",
+    "@parcel/reporter-bundle-buddy": "^2.8.3",
+    "@parcel/transformer-sass": "^2.8.3",
     "@testing-library/react": "11.2.7",
     "@types/jest": "29.2.5",
     "@types/lodash": "4.14.170",
@@ -113,7 +115,7 @@
     "lighthouse": "8.0.0",
     "lint-staged": "11.0.0",
     "mini-css-extract-plugin": "1.6.0",
-    "parcel": "^2.7.0",
+    "parcel": "^2.8.3",
     "parcel-reporter-static-files-copy": "^1.4.0",
     "postcss-loader": "6.1.0",
     "prettier": "2.3.1",

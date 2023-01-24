@@ -18,10 +18,10 @@ import {
 import { pipe } from '@effect-ts/core'
 import * as O from '@effect-ts/core/Option'
 import { LocalDate } from '@js-joda/core'
-import { BsPencil } from '@react-icons/all-files/bs/BsPencil'
 import { identity } from 'lodash'
 import React, { useRef } from 'react'
 import { useForm } from 'react-hook-form'
+import { BsPencil } from 'react-icons/bs'
 
 import { DatesAndMeals } from './reservation-intermittent-update'
 

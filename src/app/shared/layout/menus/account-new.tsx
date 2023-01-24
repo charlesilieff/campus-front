@@ -1,7 +1,7 @@
 import { Button, Menu, MenuButton, MenuList } from '@chakra-ui/react'
-import { GoTriangleDown } from '@react-icons/all-files/go/GoTriangleDown'
-import { HiUser } from '@react-icons/all-files/hi/HiUser'
 import React from 'react'
+import { GoTriangleDown } from 'react-icons/go'
+import { HiUser } from 'react-icons/hi'
 
 import MenuItem2 from './menu-item-2'
 
