@@ -2,16 +2,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import {} from 'react-jhipster'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
 import { getEntity } from './bed.reducer'
 
-export const BedDetail = (props: RouteComponentProps<{ id: string }>) => {
+export const BedDetail = () => {
   const dispatch = useAppDispatch()
-
+  const { id } = useParams<'id'>()
   useEffect(() => {
-    dispatch(getEntity(props.match.params.id))
+    dispatch(getEntity(id))
   }, [])
 
   const bedEntity = useAppSelector(state => state.bed.entity)

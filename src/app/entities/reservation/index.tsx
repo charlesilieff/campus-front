@@ -1,26 +1,25 @@
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
+import { ErrorBoundaryRoutes } from 'app/shared/error/error-boundary-routes'
 import React from 'react'
-import { Switch } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 
 import Reservation from './reservation'
 import ReservationDeleteDialog from './reservation-delete-dialog'
 import ReservationDetail from './reservation-detail'
 import ReservationUpdate from './reservation-update'
 
-const Routes = ({ match }) => (
-  <>
-    <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/new`} component={ReservationUpdate} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={ReservationUpdate} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={ReservationDetail} />
-      <ErrorBoundaryRoute path={match.url} component={Reservation} />
-    </Switch>
-    <ErrorBoundaryRoute
-      exact
-      path={`${match.url}/:id/delete`}
-      component={ReservationDeleteDialog}
-    />
-  </>
+const Routes = () => (
+  <ErrorBoundaryRoutes>
+    <Route path={`new`} element={<ReservationUpdate />} />
+    <Route index element={<Reservation />} />
+    <Route path=":id">
+      <Route path={`edit`} element={<ReservationUpdate />} />
+      <Route
+        path={`delete`}
+        element={<ReservationDeleteDialog />}
+      />
+      <Route index element={<ReservationDetail />} />
+    </Route>
+  </ErrorBoundaryRoutes>
 )
 
 export default Routes

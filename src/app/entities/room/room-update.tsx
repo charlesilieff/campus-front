@@ -3,18 +3,19 @@ import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getBedroomKinds } from 'app/entities/bedroom-kind/bedroom-kind.reducer'
 import { getEntities as getPlaces } from 'app/entities/place/place.reducer'
 import { IRoom } from 'app/shared/model/room.model'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { ValidatedField, ValidatedForm } from 'react-jhipster'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
 import { createEntity, getEntity, reset, updateEntity } from './room.reducer'
 
-export const RoomUpdate = (props: RouteComponentProps<{ id: string }>) => {
+export const RoomUpdate = () => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
-  const [isNew] = useState(!props.match.params || !props.match.params.id)
-
+  const { id } = useParams<'id'>()
+  const isNew = id === undefined
   const places = useAppSelector(state => state.place.entities)
   const bedroomKinds = useAppSelector(state => state.bedroomKind.entities)
   const roomEntity = useAppSelector(state => state.room.entity)
@@ -23,14 +24,14 @@ export const RoomUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const updateSuccess = useAppSelector(state => state.room.updateSuccess)
 
   const handleClose = () => {
-    props.history.push('/room')
+    navigate('/room')
   }
 
   useEffect(() => {
     if (isNew) {
       dispatch(reset())
     } else {
-      dispatch(getEntity(props.match.params.id))
+      dispatch(getEntity(id))
     }
 
     dispatch(getPlaces())

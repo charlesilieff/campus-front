@@ -1,5 +1,6 @@
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
+import { ErrorBoundaryRoutes } from 'app/shared/error/error-boundary-routes'
 import React from 'react'
+import { Route } from 'react-router-dom'
 
 import Configuration from './configuration/configuration'
 import Docs from './docs/docs'
@@ -8,15 +9,17 @@ import Logs from './logs/logs'
 import Metrics from './metrics/metrics'
 import UserManagement from './user-management'
 
-const Routes = ({ match }) => (
+const AdministrationRoutes = () => (
   <div>
-    <ErrorBoundaryRoute path={`${match.url}/user-management`} component={UserManagement} />
-    <ErrorBoundaryRoute exact path={`${match.url}/health`} component={Health} />
-    <ErrorBoundaryRoute exact path={`${match.url}/metrics`} component={Metrics} />
-    <ErrorBoundaryRoute exact path={`${match.url}/configuration`} component={Configuration} />
-    <ErrorBoundaryRoute exact path={`${match.url}/logs`} component={Logs} />
-    <ErrorBoundaryRoute exact path={`${match.url}/docs`} component={Docs} />
+    <ErrorBoundaryRoutes>
+      <Route path="user-management/*" element={<UserManagement />} />
+      <Route path="health" element={<Health />} />
+      <Route path="metrics" element={<Metrics />} />
+      <Route path="configuration" element={<Configuration />} />
+      <Route path="logs" element={<Logs />} />
+      <Route path="docs" element={<Docs />} />
+    </ErrorBoundaryRoutes>
   </div>
 )
 
-export default Routes
+export default AdministrationRoutes

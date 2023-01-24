@@ -3,37 +3,59 @@
  */
 import { expect } from '@jest/globals'
 import { render } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
 import React from 'react'
-import { Router } from 'react-router-dom'
+import { MemoryRouter, Route } from 'react-router-dom'
 
-import ErrorBoundaryRoute from './error-boundary-route'
+import { ErrorBoundaryRoutes } from './error-boundary-routes'
 
-const ErrorComp = () => {
+const ErrorComp = (): JSX.Element => {
   throw new Error('test')
 }
 
-describe('error-boundary-route component', () => {
+const NoErrorComp = (): JSX.Element => {
+  return <div>No error</div>
+}
+
+describe('error-boundary-routes component', () => {
   beforeEach(() => {
     // ignore console and jsdom errors
     jest.spyOn((window as any)._virtualConsole, 'emit').mockImplementation(() => false)
     jest.spyOn((window as any).console, 'error').mockImplementation(() => false)
   })
 
-  // All tests will go here
-  it('Should throw error when no component is provided', () => {
-    expect(() => render(<ErrorBoundaryRoute />)).toThrow(Error)
-  })
-
-  it('Should render fallback component when an uncaught error is thrown from component', () => {
-    const history = createMemoryHistory()
+  it('Should render fallback component when an uncaught error is thrown in route', () => {
     const { container } = render(
-      <Router history={history}>
-        <ErrorBoundaryRoute component={ErrorComp} path="/" />
-      </Router>
+      <MemoryRouter>
+        <ErrorBoundaryRoutes>
+          <Route path="*" element={<ErrorComp />} />
+        </ErrorBoundaryRoutes>
+      </MemoryRouter>
     )
     expect(container.innerHTML).toEqual(
       '<div><h2 class="error">An unexpected error has occurred.</h2></div>'
     )
+  })
+
+  it('Should not render fallback component when route with uncaught error is not matched', () => {
+    const { container } = render(
+      <MemoryRouter initialEntries={['/path']}>
+        <ErrorBoundaryRoutes>
+          <Route path="/path" element={<NoErrorComp />} />
+          <Route path="*" element={<ErrorComp />} />
+        </ErrorBoundaryRoutes>
+      </MemoryRouter>
+    )
+    expect(container.innerHTML).toEqual('<div>No error</div>')
+  })
+
+  it('Should not render fallback component when no uncaught error is thrown', () => {
+    const { container } = render(
+      <MemoryRouter>
+        <ErrorBoundaryRoutes>
+          <Route path="*" element={<NoErrorComp />} />
+        </ErrorBoundaryRoutes>
+      </MemoryRouter>
+    )
+    expect(container.innerHTML).toEqual('<div>No error</div>')
   })
 })

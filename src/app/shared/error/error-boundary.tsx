@@ -1,7 +1,7 @@
 import React from 'react'
 
 interface IErrorBoundaryProps {
-  readonly children: JSX.Element | JSX.Element[]
+  readonly children: React.ReactNode
 }
 
 interface IErrorBoundaryState {
@@ -9,7 +9,7 @@ interface IErrorBoundaryState {
   readonly errorInfo: any
 }
 
-class ErrorBoundary extends React.Component<IErrorBoundaryProps, IErrorBoundaryState> {
+export class ErrorBoundary extends React.Component<IErrorBoundaryProps, IErrorBoundaryState> {
   readonly state: IErrorBoundaryState = { error: undefined, errorInfo: undefined }
 
   componentDidCatch(error, errorInfo) {
@@ -21,8 +21,9 @@ class ErrorBoundary extends React.Component<IErrorBoundaryProps, IErrorBoundaryS
 
   render() {
     const { error, errorInfo } = this.state
+    const DEVELOPMENT = process.env.NODE_ENV
     if (errorInfo) {
-      const errorDetails = process.env.NODE_ENV === 'development' ?
+      const errorDetails = DEVELOPMENT ?
         (
           <details className="preserve-space">
             {error && error.toString()}
@@ -41,5 +42,3 @@ class ErrorBoundary extends React.Component<IErrorBoundaryProps, IErrorBoundaryS
     return this.props.children
   }
 }
-
-export default ErrorBoundary

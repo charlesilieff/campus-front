@@ -24,7 +24,7 @@ export const Home = (): JSX.Element => {
   const reservationCreationIntermittentUrl = pipe(
     account.customerId,
     O.fromNullable,
-    O.map(customerId => `bookingbeds/new/intermittent/${customerId}`)
+    O.map(customerId => `bookingbeds/${customerId}/new/intermittent`)
   )
   const reservationRequestUrl = 'reservation-request/new'
 

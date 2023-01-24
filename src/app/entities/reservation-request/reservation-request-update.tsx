@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { IReservationRequest } from 'app/shared/model/reservation-request.model'
 import { IReservation } from 'app/shared/model/reservation.model'
-import React, { useState } from 'react'
+import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { isNumber } from 'react-jhipster'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
 import { CustomValidatedField } from '../../shared/util/cross-validation-form'
@@ -16,10 +16,11 @@ import {
   updateEntity
 } from './reservation-request.reducer'
 
-export const ReservationUpdate = (props: RouteComponentProps<{ id: string }>) => {
+export const ReservationUpdate = () => {
   const dispatch = useAppDispatch()
+  const { id } = useParams<'id'>()
 
-  const [isNew] = useState(!props.match.params || !props.match.params.id)
+  const isNew = id === undefined
 
   const customerEntity = useAppSelector(state => state.requestReservation.entity.customer)
   const reservationEntity = useAppSelector(state => state.requestReservation.entity.reservation)
@@ -41,7 +42,7 @@ export const ReservationUpdate = (props: RouteComponentProps<{ id: string }>) =>
     if (isNew) {
       dispatch(createEntity(entity))
     } else {
-      dispatch(updateEntity({ ReservationRequest: entity, UUID: props.match.params.id }))
+      dispatch(updateEntity({ ReservationRequest: entity, UUID: id }))
     }
   }
 
@@ -86,7 +87,7 @@ export const ReservationUpdate = (props: RouteComponentProps<{ id: string }>) =>
                     <Link
                       to={isNew ?
                         `/reservation-request/${reservationEntity?.reservationNumber}` :
-                        `/reservation-request/${props.match.params.id}`}
+                        `/reservation-request/${id}`}
                       data-cy="reservationRequest"
                     >
                       ici

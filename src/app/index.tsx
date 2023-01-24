@@ -8,7 +8,7 @@ import AppComponent from './app'
 import setupAxiosInterceptors from './config/axios-interceptor'
 import { loadIcons } from './config/icon-loader'
 import getStore from './config/store'
-import ErrorBoundary from './shared/error/error-boundary'
+import { ErrorBoundary } from './shared/error/error-boundary'
 import { clearAuthentication } from './shared/reducers/authentication'
 
 const store = getStore()

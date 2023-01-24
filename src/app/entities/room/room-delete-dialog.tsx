@@ -1,24 +1,24 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect, useState } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
 import { deleteEntity, getEntity } from './room.reducer'
 
-export const RoomDeleteDialog = (props: RouteComponentProps<{ id: string }>) => {
+export const RoomDeleteDialog = () => {
   const dispatch = useAppDispatch()
-
+  const { id } = useParams<'id'>()
   useEffect(() => {
-    dispatch(getEntity(props.match.params.id))
+    dispatch(getEntity(id))
   }, [])
-
+  const navigate = useNavigate()
   const roomEntity = useAppSelector(state => state.room.entity)
   const updateSuccess = useAppSelector(state => state.room.updateSuccess)
   const errorMessage = useAppSelector(state => state.room.errorMessage)
   const [showError, setShowError] = useState(false)
   const handleClose = () => {
-    props.history.push('/room')
+    navigate('/room')
   }
 
   useEffect(() => {

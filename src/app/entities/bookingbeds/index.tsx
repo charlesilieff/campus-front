@@ -1,34 +1,30 @@
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
+import { ErrorBoundaryRoutes } from 'app/shared/error/error-boundary-routes'
 import React from 'react'
-import { Switch } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 
 import ReservationUpdate from '../reservation/reservation-update'
 import { ReservationIntermittentUpdate } from './intermittent/reservation-intermittent-update'
+import { BookingBedsUpdate } from './new-reservation'
 import ReservationDeleteDialog from './reservation-delete-dialog'
 import ReservationDetail from './reservation-detail'
 
-interface Match {
-  url: string
-}
-const Routes = (data: { match: Match }): JSX.Element => (
-  <>
-    <Switch>
-      <ErrorBoundaryRoute exact path={`${data.match.url}/new`} component={ReservationUpdate} />
+const Routes = (): JSX.Element => (
+  <ErrorBoundaryRoutes>
+    <Route path={`new`} element={<ReservationUpdate />} />
 
-      <ErrorBoundaryRoute exact path={`${data.match.url}/:id/edit`} component={ReservationUpdate} />
-      <ErrorBoundaryRoute exact path={`${data.match.url}/:id`} component={ReservationDetail} />
-      <ErrorBoundaryRoute
-        exact
-        path={`${data.match.url}/new/intermittent/:id`}
-        component={ReservationIntermittentUpdate}
+    <Route path=":id">
+      <Route
+        path={`new/intermittent`}
+        element={<ReservationIntermittentUpdate />}
       />
-    </Switch>
-    <ErrorBoundaryRoute
-      exact
-      path={`${data.match.url}/:id/delete`}
-      component={ReservationDeleteDialog}
-    />
-  </>
+      <Route path={`edit`} element={<BookingBedsUpdate />} />
+      <Route index element={<ReservationDetail />} />
+      <Route
+        path={`delete`}
+        element={<ReservationDeleteDialog />}
+      />
+    </Route>
+  </ErrorBoundaryRoutes>
 )
 
 export default Routes

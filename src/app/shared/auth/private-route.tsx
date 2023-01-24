@@ -1,56 +1,57 @@
 import { useAppSelector } from 'app/config/store'
-import ErrorBoundary from 'app/shared/error/error-boundary'
+import { ErrorBoundary } from 'app/shared/error/error-boundary'
 import React from 'react'
-import { Redirect, Route, RouteProps } from 'react-router-dom'
+import { Translate } from 'react-jhipster'
+import { Navigate, RouteProps, useLocation } from 'react-router-dom'
 
 interface IOwnProps extends RouteProps {
   hasAnyAuthorities?: string[]
+  children: React.ReactNode
 }
 
-export const PrivateRouteComponent = (
-  { component: Component, hasAnyAuthorities = [], ...rest }: IOwnProps
-) => {
+export const PrivateRoute = ({ children, hasAnyAuthorities = [], ...rest }: IOwnProps) => {
   const isAuthenticated = useAppSelector(state => state.authentication.isAuthenticated)
   const sessionHasBeenFetched = useAppSelector(state => state.authentication.sessionHasBeenFetched)
   const account = useAppSelector(state => state.authentication.account)
   const isAuthorized = hasAnyAuthority(account.authorities, hasAnyAuthorities)
+  const location = useLocation()
 
-  const checkAuthorities = props =>
-    isAuthorized ?
-      (
-        <ErrorBoundary>
-          <Component {...props} />
-        </ErrorBoundary>
-      ) :
-      (
-        <div className="insufficient-authority">
-          <div className="alert alert-danger">You are not authorized to access this page.</div>
-        </div>
-      )
-
-  const renderRedirect = props => {
-    if (!sessionHasBeenFetched) {
-      return <div></div>
-    } else {
-      return isAuthenticated ? (checkAuthorities(props)) : (
-        <Redirect
-          to={{
-            pathname: '/login',
-            search: props.location.search,
-            state: { from: props.location }
-          }}
-        />
-      )
-    }
-  }
-
-  if (!Component) {
+  if (!children) {
     throw new Error(
       `A component needs to be specified for private route for path ${(rest as any).path}`
     )
   }
 
-  return <Route {...rest} render={renderRedirect} />
+  if (!sessionHasBeenFetched) {
+    return <div></div>
+  }
+
+  if (isAuthenticated) {
+    if (isAuthorized) {
+      return <ErrorBoundary>{children}</ErrorBoundary>
+    }
+
+    return (
+      <div className="insufficient-authority">
+        <div className="alert alert-danger">
+          <Translate contentKey="error.http.403">
+            You are not authorized to access this page.
+          </Translate>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <Navigate
+      to={{
+        pathname: '/login',
+        search: location.search
+      }}
+      replace
+      state={{ from: location }}
+    />
+  )
 }
 
 export const hasAnyAuthority = (authorities: string[], hasAnyAuthorities: string[]) => {
@@ -62,10 +63,3 @@ export const hasAnyAuthority = (authorities: string[], hasAnyAuthorities: string
   }
   return false
 }
-
-/**
- * A route wrapped in an authentication check so that routing happens only when you are authenticated.
- * Accepts same props as React router Route.
- * The route also checks for authorization if hasAnyAuthorities is specified.
- */
-export default PrivateRouteComponent

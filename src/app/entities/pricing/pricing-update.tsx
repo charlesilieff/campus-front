@@ -1,16 +1,17 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
 import { createEntity, getEntity, reset, updateEntity } from './pricing.reducer'
 
-export const PricingUpdate = (props: RouteComponentProps<{ id: string }>) => {
+export const PricingUpdate = () => {
   const dispatch = useAppDispatch()
-
-  const [isNew] = useState(!props.match.params || !props.match.params.id)
+  const { id } = useParams<'id'>()
+  const navigate = useNavigate()
+  const isNew = id === undefined
 
   const pricingEntity = useAppSelector(state => state.pricing.entity)
   const loading = useAppSelector(state => state.pricing.loading)
@@ -18,14 +19,14 @@ export const PricingUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const updateSuccess = useAppSelector(state => state.pricing.updateSuccess)
 
   const handleClose = () => {
-    props.history.push('/pricing')
+    navigate('/pricing')
   }
 
   useEffect(() => {
     if (isNew) {
       dispatch(reset())
     } else {
-      dispatch(getEntity(props.match.params.id))
+      dispatch(getEntity(id))
     }
   }, [])
 

@@ -1,17 +1,18 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { ICustomer } from 'app/shared/model/customer.model'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
-import { RouteComponentProps } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
 import { getEntity, reset, setData } from './reservation-request.reducer'
 
-export const CustomerUpdate = (props: RouteComponentProps<{ id: string }>) => {
+export const CustomerUpdate = () => {
   const dispatch = useAppDispatch()
+  const { id } = useParams<'id'>()
 
-  const [isNew] = useState(!props.match.params || !props.match.params.id)
+  const isNew = id === undefined
 
   const customerEntity = useAppSelector(state => state.requestReservation.entity.customer)
   const loading = useAppSelector(state => state.requestReservation.loading)
@@ -20,7 +21,7 @@ export const CustomerUpdate = (props: RouteComponentProps<{ id: string }>) => {
     if (isNew) {
       dispatch(reset())
     } else {
-      dispatch(getEntity(props.match.params.id))
+      dispatch(getEntity(id))
     }
   }, [])
 

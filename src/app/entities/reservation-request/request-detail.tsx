@@ -3,16 +3,17 @@ import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { TextFormat } from 'react-jhipster'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
 import { getEntity } from './reservation-request.reducer'
 
-export const CustomerDetail = (props: RouteComponentProps<{ id: string }>): JSX.Element => {
+export const CustomerDetail = (): JSX.Element => {
   const dispatch = useAppDispatch()
+  const { id } = useParams<'id'>()
 
   useEffect(() => {
-    dispatch(getEntity(props.match.params.id))
+    dispatch(getEntity(id))
   }, [])
 
   const customerEntity = useAppSelector(state => state.requestReservation.entity.customer)
@@ -132,7 +133,7 @@ export const CustomerDetail = (props: RouteComponentProps<{ id: string }>): JSX.
         </dl>
         <Button
           tag={Link}
-          to={`/reservation-request/${props.match.params.id}/delete`}
+          to={`/reservation-request/${id}/delete`}
           replace
           color="info"
           data-cy="entityDetailsBackButton"
@@ -144,7 +145,7 @@ export const CustomerDetail = (props: RouteComponentProps<{ id: string }>): JSX.
         <Button
           data-cy="entityEditButton"
           tag={Link}
-          to={`/reservation-request/${props.match.params.id}/edit`}
+          to={`/reservation-request/${id}/edit`}
           replace
           color="primary"
         >

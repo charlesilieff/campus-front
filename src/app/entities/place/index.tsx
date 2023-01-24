@@ -1,6 +1,6 @@
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
+import { ErrorBoundaryRoutes } from 'app/shared/error/error-boundary-routes'
 import React from 'react'
-import { Switch } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 
 import Place from './place'
 import PlaceDeleteDialog from './place-delete-dialog'
@@ -8,17 +8,15 @@ import PlaceDetail from './place-detail'
 import { PlaceIntermittent } from './place-intermittent'
 import PlaceUpdate from './place-update'
 
-const Routes = ({ match }) => (
-  <>
-    <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/new`} component={PlaceUpdate} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={PlaceUpdate} />
-      <ErrorBoundaryRoute exact path={`${match.url}/intermittent`} component={PlaceIntermittent} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={PlaceDetail} />
-      <ErrorBoundaryRoute path={match.url} component={Place} />
-    </Switch>
-    <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={PlaceDeleteDialog} />
-  </>
+export const PlaceRoutes = () => (
+  <ErrorBoundaryRoutes>
+    <Route path={`new`} element={<PlaceUpdate />} />
+    <Route path={`intermittent`} element={<PlaceIntermittent />} />
+    <Route index element={<Place />} />
+    <Route path=":id">
+      <Route path={`delete`} element={<PlaceDeleteDialog />} />
+      <Route path={`edit`} element={<PlaceUpdate />} />
+      <Route index element={<PlaceDetail />} />
+    </Route>
+  </ErrorBoundaryRoutes>
 )
-
-export default Routes

@@ -1,12 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Button, Table } from 'reactstrap'
 
 import { getEntities } from './customer.reducer'
 
-export const Customer = (props: RouteComponentProps<{ url: string }>) => {
+export const Customer = () => {
   const dispatch = useAppDispatch()
 
   const customerList = useAppSelector(state => state.customer.entities)
@@ -20,18 +20,16 @@ export const Customer = (props: RouteComponentProps<{ url: string }>) => {
     dispatch(getEntities())
   }
 
-  const { match } = props
-
   return (
     <div>
       <h2 id="customer-heading" data-cy="CustomerHeading">
         Clients
         <div className="d-flex justify-content-end">
           <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon="sync" spin={loading} /> Rafraichîr la liste
+            <FontAwesomeIcon icon="sync" spin={loading} /> Rafraîchir la liste
           </Button>
           <Link
-            to={`${match.url}/new`}
+            to={`new`}
             className="btn btn-primary jh-create-entity"
             id="jh-create-entity"
             data-cy="entityCreateButton"
@@ -66,7 +64,7 @@ export const Customer = (props: RouteComponentProps<{ url: string }>) => {
                     {/* <td>{customer.isFemal ? 'Femme' : 'Homme'}</td> */}
                     <td>{customer.phoneNumber}</td>
                     <td>
-                      <Button tag={Link} to={`${match.url}/${customer.id}`} color="link" size="sm">
+                      <Button tag={Link} to={`${customer.id}`} color="link" size="sm">
                         {customer.email}
                       </Button>
                     </td>
@@ -75,7 +73,7 @@ export const Customer = (props: RouteComponentProps<{ url: string }>) => {
                       <div className="btn-group flex-btn-group-container">
                         <Button
                           tag={Link}
-                          to={`${match.url}/${customer.id}`}
+                          to={`${customer.id}`}
                           color="info"
                           size="sm"
                           data-cy="entityDetailsButton"
@@ -85,7 +83,7 @@ export const Customer = (props: RouteComponentProps<{ url: string }>) => {
                         </Button>
                         <Button
                           tag={Link}
-                          to={`${match.url}/${customer.id}/edit`}
+                          to={`${customer.id}/edit`}
                           color="primary"
                           size="sm"
                           data-cy="entityEditButton"
@@ -95,7 +93,7 @@ export const Customer = (props: RouteComponentProps<{ url: string }>) => {
                         </Button>
                         <Button
                           tag={Link}
-                          to={`${match.url}/${customer.id}/delete`}
+                          to={`${customer.id}/delete`}
                           color="danger"
                           size="sm"
                           data-cy="entityDeleteButton"

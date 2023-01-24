@@ -3,12 +3,12 @@ import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { TextFormat } from 'react-jhipster'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Button, Table } from 'reactstrap'
 
 import { getEntities } from './booking-beds.reducer'
 
-export const Reservation = (props: RouteComponentProps<{ url: string }>) => {
+export const Reservation = () => {
   const dispatch = useAppDispatch()
 
   const reservationList = useAppSelector(state => state.reservation.entities)
@@ -22,8 +22,6 @@ export const Reservation = (props: RouteComponentProps<{ url: string }>) => {
     dispatch(getEntities())
   }
 
-  const { match } = props
-
   return (
     <div>
       <h2 id="reservation-heading" data-cy="ReservationHeading">
@@ -33,7 +31,7 @@ export const Reservation = (props: RouteComponentProps<{ url: string }>) => {
             <FontAwesomeIcon icon="sync" spin={loading} /> Rafraichîr la liste
           </Button>
           <Link
-            to={`${match.url}/new`}
+            to={`reservation/new`}
             className="btn btn-primary jh-create-entity"
             id="jh-create-entity"
             data-cy="entityCreateButton"
@@ -75,7 +73,7 @@ export const Reservation = (props: RouteComponentProps<{ url: string }>) => {
                     <td>
                       <Button
                         tag={Link}
-                        to={`${match.url}/${reservation.id}`}
+                        to={`reservation/${reservation.id}`}
                         color="link"
                         size="sm"
                       >
@@ -147,7 +145,7 @@ export const Reservation = (props: RouteComponentProps<{ url: string }>) => {
                       <div className="btn-group flex-btn-group-container">
                         <Button
                           tag={Link}
-                          to={`${match.url}/${reservation.id}`}
+                          to={`reservation/${reservation.id}`}
                           color="info"
                           size="sm"
                           data-cy="entityDetailsButton"
@@ -157,7 +155,7 @@ export const Reservation = (props: RouteComponentProps<{ url: string }>) => {
                         </Button>
                         <Button
                           tag={Link}
-                          to={`${match.url}/${reservation.id}/edit`}
+                          to={`reservation/${reservation.id}/edit`}
                           color="primary"
                           size="sm"
                           data-cy="entityEditButton"
@@ -167,7 +165,7 @@ export const Reservation = (props: RouteComponentProps<{ url: string }>) => {
                         </Button>
                         <Button
                           tag={Link}
-                          to={`${match.url}/${reservation.id}/delete`}
+                          to={`reservation/${reservation.id}/delete`}
                           color="danger"
                           size="sm"
                           data-cy="entityDeleteButton"

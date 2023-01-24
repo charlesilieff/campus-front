@@ -5,18 +5,21 @@ import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-u
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.constants'
 import React, { useEffect, useState } from 'react'
 import { getSortState, JhiItemCount, JhiPagination, TextFormat } from 'react-jhipster'
-import { Link, RouteComponentProps } from 'react-router-dom'
-import { Badge, Button, Row, Table } from 'reactstrap'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Badge, Button, Table } from 'reactstrap'
 
 import { getUsersAsAdmin, updateUser } from './user-management.reducer'
 
-export const UserManagement = (props: RouteComponentProps<any>) => {
+export const UserManagement = () => {
   const dispatch = useAppDispatch()
+
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const [pagination, setPagination] = useState(
     overridePaginationStateWithQueryParams(
-      getSortState(props.location, ITEMS_PER_PAGE, 'id'),
-      props.location.search
+      getSortState(location, ITEMS_PER_PAGE, 'id'),
+      location.search
     )
   )
 
@@ -29,8 +32,8 @@ export const UserManagement = (props: RouteComponentProps<any>) => {
       })
     )
     const endURL = `?page=${pagination.activePage}&sort=${pagination.sort},${pagination.order}`
-    if (props.location.search !== endURL) {
-      props.history.push(`${props.location.pathname}${endURL}`)
+    if (location.search !== endURL) {
+      navigate(`${location.pathname}${endURL}`)
     }
   }
 
@@ -39,7 +42,7 @@ export const UserManagement = (props: RouteComponentProps<any>) => {
   }, [pagination.activePage, pagination.order, pagination.sort])
 
   useEffect(() => {
-    const params = new URLSearchParams(props.location.search)
+    const params = new URLSearchParams(location.search)
     const page = params.get('page')
     const sortParam = params.get(SORT)
     if (page && sortParam) {
@@ -51,7 +54,7 @@ export const UserManagement = (props: RouteComponentProps<any>) => {
         order: sortSplit[1]
       })
     }
-  }, [props.location.search])
+  }, [location.search])
 
   const sort = p => () =>
     setPagination({
@@ -70,15 +73,15 @@ export const UserManagement = (props: RouteComponentProps<any>) => {
     getUsersFromProps()
   }
 
-  const toggleActive = user => () =>
+  const toggleActive = user => () => {
     dispatch(
       updateUser({
         ...user,
         activated: !user.activated
       })
     )
+  }
 
-  const { match } = props
   const account = useAppSelector(state => state.authentication.account)
   const users = useAppSelector(state => state.userManagement.users)
   const totalItems = useAppSelector(state => state.userManagement.totalItems)
@@ -89,11 +92,11 @@ export const UserManagement = (props: RouteComponentProps<any>) => {
       <h2 id="user-management-page-heading" data-cy="userManagementPageHeading">
         Utilisateurs
         <div className="d-flex justify-content-end">
-          <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon="sync" spin={loading} /> Rafraichîr la liste
+          <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
+            <FontAwesomeIcon icon="sync" spin={loading} /> Actualiser la liste
           </Button>
-          <Link to={`${match.url}/new`} className="btn btn-primary jh-create-entity">
-            <FontAwesomeIcon icon="plus" /> Créez un nouvel utilisateur
+          <Link to="new" className="btn btn-primary jh-create-entity">
+            <FontAwesomeIcon icon="plus" /> Créer un nouvel utilisateur
           </Link>
         </div>
       </h2>
@@ -113,17 +116,17 @@ export const UserManagement = (props: RouteComponentProps<any>) => {
               <FontAwesomeIcon icon="sort" />
             </th>
             <th />
-            <th>Profiles</th>
+            <th>Droits</th>
             <th className="hand" onClick={sort('createdDate')}>
-              Date de création
+              Créé le
               <FontAwesomeIcon icon="sort" />
             </th>
             <th className="hand" onClick={sort('lastModifiedBy')}>
-              Dernière modification par
+              Modifié par
               <FontAwesomeIcon icon="sort" />
             </th>
             <th id="modified-date-sort" className="hand" onClick={sort('lastModifiedDate')}>
-              Date de la dernière modification
+              Modifié le
               <FontAwesomeIcon icon="sort" />
             </th>
             <th />
@@ -133,7 +136,7 @@ export const UserManagement = (props: RouteComponentProps<any>) => {
           {users.map((user, i) => (
             <tr id={user.login} key={`user-${i}`}>
               <td>
-                <Button tag={Link} to={`${match.url}/${user.login}`} color="link" size="sm">
+                <Button tag={Link} to={user.login} color="link" size="sm">
                   {user.id}
                 </Button>
               </td>
@@ -186,29 +189,24 @@ export const UserManagement = (props: RouteComponentProps<any>) => {
                   ) :
                   null}
               </td>
-              <td className="text-right">
+              <td className="text-end">
                 <div className="btn-group flex-btn-group-container">
-                  <Button tag={Link} to={`${match.url}/${user.login}`} color="info" size="sm">
+                  <Button tag={Link} to={user.login} color="info" size="sm">
                     <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir</span>
                   </Button>
-                  <Button
-                    tag={Link}
-                    to={`${match.url}/${user.login}/edit`}
-                    color="primary"
-                    size="sm"
-                  >
+                  <Button tag={Link} to={`${user.login}/edit`} color="primary" size="sm">
                     <FontAwesomeIcon icon="pencil-alt" />{' '}
-                    <span className="d-none d-md-inline">Modifier</span>
+                    <span className="d-none d-md-inline">Editer</span>
                   </Button>
                   <Button
                     tag={Link}
-                    to={`${match.url}/${user.login}/delete`}
+                    to={`${user.login}/delete`}
                     color="danger"
                     size="sm"
                     disabled={account.login === user.login}
                   >
                     <FontAwesomeIcon icon="trash" />{' '}
-                    <span className="d-none d-md-inline">Suppimer</span>
+                    <span className="d-none d-md-inline">Supprimer</span>
                   </Button>
                 </div>
               </td>
@@ -218,16 +216,16 @@ export const UserManagement = (props: RouteComponentProps<any>) => {
       </Table>
       {totalItems ?
         (
-          <div className={users && users.length > 0 ? '' : 'd-none'}>
-            <Row className="justify-content-center">
+          <div className={users?.length > 0 ? '' : 'd-none'}>
+            <div className="justify-content-center d-flex">
               <JhiItemCount
                 page={pagination.activePage}
                 total={totalItems}
                 itemsPerPage={pagination.itemsPerPage}
                 i18nEnabled
               />
-            </Row>
-            <Row className="justify-content-center">
+            </div>
+            <div className="justify-content-center d-flex">
               <JhiPagination
                 activePage={pagination.activePage}
                 onSelect={handlePagination}
@@ -235,7 +233,7 @@ export const UserManagement = (props: RouteComponentProps<any>) => {
                 itemsPerPage={pagination.itemsPerPage}
                 totalItems={totalItems}
               />
-            </Row>
+            </div>
           </div>
         ) :
         ('')}

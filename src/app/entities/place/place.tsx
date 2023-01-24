@@ -2,12 +2,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { byteSize, openFile } from 'react-jhipster'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Button, Table } from 'reactstrap'
 
 import { getEntities } from './place.reducer'
 
-export const Place = (props: RouteComponentProps<{ url: string }>) => {
+export const Place = () => {
   const dispatch = useAppDispatch()
 
   const placeList = useAppSelector(state => state.place.entities)
@@ -21,8 +21,6 @@ export const Place = (props: RouteComponentProps<{ url: string }>) => {
     dispatch(getEntities())
   }
 
-  const { match } = props
-
   return (
     <div>
       <h2 id="place-heading" data-cy="PlaceHeading">
@@ -32,7 +30,7 @@ export const Place = (props: RouteComponentProps<{ url: string }>) => {
             <FontAwesomeIcon icon="sync" spin={loading} /> Rafraichîr la liste
           </Button>
           <Link
-            to={`${match.url}/new`}
+            to={`new`}
             className="btn btn-primary jh-create-entity"
             id="jh-create-entity"
             data-cy="entityCreateButton"
@@ -58,7 +56,7 @@ export const Place = (props: RouteComponentProps<{ url: string }>) => {
                 {placeList.map((place, i) => (
                   <tr key={`entity-${i}`} data-cy="entityTable">
                     <td>
-                      <Button tag={Link} to={`${match.url}/${place.id}`} color="link" size="sm">
+                      <Button tag={Link} to={`${place.id}`} color="link" size="sm">
                         {place.name}
                       </Button>
                     </td>
@@ -89,7 +87,7 @@ export const Place = (props: RouteComponentProps<{ url: string }>) => {
                       <div className="btn-group flex-btn-group-container">
                         <Button
                           tag={Link}
-                          to={`${match.url}/${place.id}`}
+                          to={`${place.id}`}
                           color="info"
                           size="sm"
                           data-cy="entityDetailsButton"
@@ -99,7 +97,7 @@ export const Place = (props: RouteComponentProps<{ url: string }>) => {
                         </Button>
                         <Button
                           tag={Link}
-                          to={`${match.url}/${place.id}/edit`}
+                          to={`${place.id}/edit`}
                           color="primary"
                           size="sm"
                           data-cy="entityEditButton"
@@ -109,7 +107,7 @@ export const Place = (props: RouteComponentProps<{ url: string }>) => {
                         </Button>
                         <Button
                           tag={Link}
-                          to={`${match.url}/${place.id}/delete`}
+                          to={`${place.id}/delete`}
                           color="danger"
                           size="sm"
                           data-cy="entityDeleteButton"

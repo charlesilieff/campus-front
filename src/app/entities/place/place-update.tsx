@@ -1,16 +1,17 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { ValidatedBlobField, ValidatedField, ValidatedForm } from 'react-jhipster'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
 import { createEntity, getEntity, reset, updateEntity } from './place.reducer'
 
-export const PlaceUpdate = (props: RouteComponentProps<{ id: string }>) => {
+export const PlaceUpdate = () => {
   const dispatch = useAppDispatch()
-
-  const [isNew] = useState(!props.match.params || !props.match.params.id)
+  const { id } = useParams<'id'>()
+  const navigate = useNavigate()
+  const isNew = id === undefined
 
   const placeEntity = useAppSelector(state => state.place.entity)
   const loading = useAppSelector(state => state.place.loading)
@@ -18,14 +19,14 @@ export const PlaceUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const updateSuccess = useAppSelector(state => state.place.updateSuccess)
 
   const handleClose = () => {
-    props.history.push('/place')
+    navigate('/place')
   }
 
   useEffect(() => {
     if (isNew) {
       dispatch(reset())
     } else {
-      dispatch(getEntity(props.match.params.id))
+      dispatch(getEntity(id))
     }
   }, [])
 

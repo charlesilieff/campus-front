@@ -1,23 +1,24 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
 import { deleteEntity, getEntity } from './reservation.reducer'
 
-export const ReservationDeleteDialog = (props: RouteComponentProps<{ id: string }>) => {
+export const ReservationDeleteDialog = () => {
   const dispatch = useAppDispatch()
-
+  const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
   useEffect(() => {
-    dispatch(getEntity(props.match.params.id))
+    dispatch(getEntity(id))
   }, [])
 
   const reservationEntity = useAppSelector(state => state.reservation.entity)
   const updateSuccess = useAppSelector(state => state.reservation.updateSuccess)
 
   const handleClose = () => {
-    props.history.push('/reservation')
+    navigate('/reservation')
   }
 
   useEffect(() => {

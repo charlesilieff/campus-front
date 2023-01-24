@@ -3,16 +3,16 @@ import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { TextFormat } from 'react-jhipster'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Button, Col, Row, UncontrolledTooltip } from 'reactstrap'
 
 import { getEntity } from './reservation.reducer'
 
-export const ReservationDetail = (props: RouteComponentProps<{ id: string }>) => {
+export const ReservationDetail = () => {
   const dispatch = useAppDispatch()
-
+  const { id } = useParams<{ id: string }>()
   useEffect(() => {
-    dispatch(getEntity(props.match.params.id))
+    dispatch(getEntity(id))
   }, [])
 
   const reservationEntity = useAppSelector(state => state.reservation.entity)

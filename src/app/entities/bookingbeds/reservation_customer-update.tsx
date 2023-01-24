@@ -3,18 +3,19 @@ import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getPricings } from 'app/entities/pricing/pricing.reducer'
 import { ICustomer } from 'app/shared/model/customer.model'
 import { IReservation } from 'app/shared/model/reservation.model'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
 import { IBookingBeds } from '../../shared/model/bookingBeds.model'
 import { getEntity, reset, setData } from './booking-beds.reducer'
 
-export const ReservationCustomerUpdate = (props: RouteComponentProps<{ id: string }>) => {
+export const ReservationCustomerUpdate = () => {
   const dispatch = useAppDispatch()
-
-  const [isNew] = useState(!props.match.params || !props.match.params.id)
+  const { id } = useParams<'id'>()
+  const navigate = useNavigate()
+  const isNew = id === undefined
 
   const creating = useAppSelector(state => state.bookingBeds.creating)
   const pricing = useAppSelector(state => state.pricing.entities)
@@ -23,7 +24,7 @@ export const ReservationCustomerUpdate = (props: RouteComponentProps<{ id: strin
   const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
 
   const handleClose = () => {
-    props.history.push('/planning')
+    navigate('/planning')
   }
 
   useEffect(() => {
@@ -31,7 +32,7 @@ export const ReservationCustomerUpdate = (props: RouteComponentProps<{ id: strin
       if (isNew) {
         dispatch(reset())
       } else {
-        dispatch(getEntity(props.match.params.id))
+        dispatch(getEntity(id))
       }
     }
 

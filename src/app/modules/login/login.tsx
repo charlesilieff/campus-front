@@ -1,16 +1,18 @@
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { login } from 'app/shared/reducers/authentication'
 import React, { useEffect, useState } from 'react'
-import { Redirect, RouteComponentProps } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 
 import LoginModal from './login-modal'
 
-export const Login = (props: RouteComponentProps<any>) => {
+export const Login = () => {
   const dispatch = useAppDispatch()
   const isAuthenticated = useAppSelector(state => state.authentication.isAuthenticated)
   const loginError = useAppSelector(state => state.authentication.loginError)
   const showModalLogin = useAppSelector(state => state.authentication.showModalLogin)
   const [showModal, setShowModal] = useState(showModalLogin)
+  const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
     setShowModal(true)
@@ -21,13 +23,12 @@ export const Login = (props: RouteComponentProps<any>) => {
 
   const handleClose = () => {
     setShowModal(false)
-    props.history.push('/')
+    navigate('/')
   }
-
-  const { location } = props
-  const { from } = (location.state as any) || { from: { pathname: '/', search: location.search } }
+  // @ts-expect-error from is not defined
+  const { from } = (location.state) || { from: { pathname: '/', search: location.search } }
   if (isAuthenticated) {
-    return <Redirect to={from} />
+    return <Navigate to={from} replace />
   }
   return (
     <LoginModal

@@ -34,7 +34,7 @@ const accountMenuItems = (
   </>
 )
 
-export const AccountMenu2 = ({ isAuthenticated = false }) => (
+export const AccountMenu = ({ isAuthenticated = false }) => (
   <Menu>
     <MenuButton
       as={Button}

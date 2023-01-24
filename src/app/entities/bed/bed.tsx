@@ -2,12 +2,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { PlaceMenu } from 'app/shared/layout/menus/placeMenu'
 import React, { useEffect } from 'react'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Button, Table } from 'reactstrap'
 
 import { getEntities } from './bed.reducer'
 
-export const Bed = (props: RouteComponentProps<{ url: string }>) => {
+export const Bed = () => {
   const dispatch = useAppDispatch()
 
   const bedList = useAppSelector(state => state.bed.entities)
@@ -21,8 +21,6 @@ export const Bed = (props: RouteComponentProps<{ url: string }>) => {
     dispatch(getEntities())
   }
 
-  const { match } = props
-
   return (
     <div>
       <h2 id="bed-heading" data-cy="BedHeading">
@@ -32,7 +30,7 @@ export const Bed = (props: RouteComponentProps<{ url: string }>) => {
             <FontAwesomeIcon icon="sync" spin={loading} /> Rafraichîr la liste
           </Button>
           <Link
-            to={`${match.url}/new`}
+            to={`new`}
             className="btn btn-primary jh-create-entity"
             id="jh-create-entity"
             data-cy="entityCreateButton"
@@ -63,20 +61,20 @@ export const Bed = (props: RouteComponentProps<{ url: string }>) => {
                   <tr key={`entity-${i}`} data-cy="entityTable">
                     <td>{bed.kind}</td>
                     <td>
-                      <Button tag={Link} to={`${match.url}/${bed.id}`} color="link" size="sm">
+                      <Button tag={Link} to={`${bed.id}`} color="link" size="sm">
                         {bed.number}
                       </Button>
                     </td>
 
                     <td>{bed.numberOfPlaces}</td>
                     <td>
-                      {bed.room ? <Link to={`room/${bed.room.id}`}>{bed.room.name}</Link> : ''}
+                      {bed.room ? <Link to={`/room/${bed.room.id}`}>{bed.room.name}</Link> : ''}
                     </td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
                         <Button
                           tag={Link}
-                          to={`${match.url}/${bed.id}`}
+                          to={`${bed.id}`}
                           color="info"
                           size="sm"
                           data-cy="entityDetailsButton"
@@ -86,7 +84,7 @@ export const Bed = (props: RouteComponentProps<{ url: string }>) => {
                         </Button>
                         <Button
                           tag={Link}
-                          to={`${match.url}/${bed.id}/edit`}
+                          to={`${bed.id}/edit`}
                           color="primary"
                           size="sm"
                           data-cy="entityEditButton"
@@ -96,7 +94,7 @@ export const Bed = (props: RouteComponentProps<{ url: string }>) => {
                         </Button>
                         <Button
                           tag={Link}
-                          to={`${match.url}/${bed.id}/delete`}
+                          to={`${bed.id}/delete`}
                           color="danger"
                           size="sm"
                           data-cy="entityDeleteButton"

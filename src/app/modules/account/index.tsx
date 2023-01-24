@@ -1,14 +1,17 @@
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
+import { ErrorBoundaryRoutes } from 'app/shared/error/error-boundary-routes'
 import React from 'react'
+import { Route } from 'react-router-dom'
 
 import Password from './password/password'
 import Settings from './settings/settings'
 
-const Routes = ({ match }) => (
+const AccountRoutes = () => (
   <div>
-    <ErrorBoundaryRoute path={`${match.url}/settings`} component={Settings} />
-    <ErrorBoundaryRoute path={`${match.url}/password`} component={Password} />
+    <ErrorBoundaryRoutes>
+      <Route path="settings" element={<Settings />} />
+      <Route path="password" element={<Password />} />
+    </ErrorBoundaryRoutes>
   </div>
 )
 
-export default Routes
+export default AccountRoutes

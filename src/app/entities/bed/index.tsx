@@ -1,22 +1,20 @@
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
+import { ErrorBoundaryRoutes } from 'app/shared/error/error-boundary-routes'
 import React from 'react'
-import { Switch } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 
 import Bed from './bed'
 import BedDeleteDialog from './bed-delete-dialog'
 import BedDetail from './bed-detail'
 import BedUpdate from './bed-update'
 
-const Routes = ({ match }) => (
-  <>
-    <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/new`} component={BedUpdate} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={BedUpdate} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={BedDetail} />
-      <ErrorBoundaryRoute path={match.url} component={Bed} />
-    </Switch>
-    <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={BedDeleteDialog} />
-  </>
+export const BedRoutes = () => (
+  <ErrorBoundaryRoutes>
+    <Route path={`new`} element={<BedUpdate />} />
+    <Route index element={<Bed />} />
+    <Route path=":id">
+      <Route path={`delete`} element={<BedDeleteDialog />} />
+      <Route path={`edit`} element={<BedUpdate />} />
+      <Route index element={<BedDetail />} />
+    </Route>
+  </ErrorBoundaryRoutes>
 )
-
-export default Routes

@@ -1,23 +1,24 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
 import { deleteEntity, getEntity } from './bedroom-kind.reducer'
 
-export const BedroomKindDeleteDialog = (props: RouteComponentProps<{ id: string }>) => {
+export const BedroomKindDeleteDialog = () => {
   const dispatch = useAppDispatch()
-
+  const { id } = useParams<'id'>()
+  const navigate = useNavigate()
   useEffect(() => {
-    dispatch(getEntity(props.match.params.id))
+    dispatch(getEntity(id))
   }, [])
 
   const bedroomKindEntity = useAppSelector(state => state.bedroomKind.entity)
   const updateSuccess = useAppSelector(state => state.bedroomKind.updateSuccess)
 
   const handleClose = () => {
-    props.history.push('/bedroom-kind')
+    navigate('/bedroom-kind')
   }
 
   useEffect(() => {

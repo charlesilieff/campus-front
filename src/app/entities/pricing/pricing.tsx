@@ -1,12 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Button, Table } from 'reactstrap'
 
 import { getEntities } from './pricing.reducer'
 
-export const Pricing = (props: RouteComponentProps<{ url: string }>) => {
+export const Pricing = () => {
   const dispatch = useAppDispatch()
 
   const pricingList = useAppSelector(state => state.pricing.entities)
@@ -20,8 +20,6 @@ export const Pricing = (props: RouteComponentProps<{ url: string }>) => {
     dispatch(getEntities())
   }
 
-  const { match } = props
-
   return (
     <div>
       <h2 id="pricing-heading" data-cy="PricingHeading">
@@ -31,7 +29,7 @@ export const Pricing = (props: RouteComponentProps<{ url: string }>) => {
             <FontAwesomeIcon icon="sync" spin={loading} /> Rafraichîr la liste
           </Button>
           <Link
-            to={`${match.url}/new`}
+            to={`new`}
             className="btn btn-primary jh-create-entity"
             id="jh-create-entity"
             data-cy="entityCreateButton"
@@ -57,7 +55,7 @@ export const Pricing = (props: RouteComponentProps<{ url: string }>) => {
                 {pricingList.map((pricing, i) => (
                   <tr key={`entity-${i}`} data-cy="entityTable">
                     <td>
-                      <Button tag={Link} to={`${match.url}/${pricing.id}`} color="link" size="sm">
+                      <Button tag={Link} to={`${pricing.id}`} color="link" size="sm">
                         {pricing.wording}
                       </Button>
                     </td>
@@ -67,7 +65,7 @@ export const Pricing = (props: RouteComponentProps<{ url: string }>) => {
                       <div className="btn-group flex-btn-group-container">
                         <Button
                           tag={Link}
-                          to={`${match.url}/${pricing.id}`}
+                          to={`${pricing.id}`}
                           color="info"
                           size="sm"
                           data-cy="entityDetailsButton"
@@ -77,7 +75,7 @@ export const Pricing = (props: RouteComponentProps<{ url: string }>) => {
                         </Button>
                         <Button
                           tag={Link}
-                          to={`${match.url}/${pricing.id}/edit`}
+                          to={`${pricing.id}/edit`}
                           color="primary"
                           size="sm"
                           data-cy="entityEditButton"
@@ -87,7 +85,7 @@ export const Pricing = (props: RouteComponentProps<{ url: string }>) => {
                         </Button>
                         <Button
                           tag={Link}
-                          to={`${match.url}/${pricing.id}/delete`}
+                          to={`${pricing.id}/delete`}
                           color="danger"
                           size="sm"
                           data-cy="entityDeleteButton"

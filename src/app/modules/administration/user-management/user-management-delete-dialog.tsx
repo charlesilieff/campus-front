@@ -1,21 +1,24 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
 import { deleteUser, getUser } from './user-management.reducer'
 
-export const UserManagementDeleteDialog = (props: RouteComponentProps<{ login: string }>) => {
+export const UserManagementDeleteDialog = () => {
   const dispatch = useAppDispatch()
 
+  const navigate = useNavigate()
+  const { login } = useParams<'login'>()
+
   useEffect(() => {
-    dispatch(getUser(props.match.params.login))
+    dispatch(getUser(login))
   }, [])
 
   const handleClose = event => {
     event.stopPropagation()
-    props.history.push('/admin/user-management')
+    navigate('/admin/user-management')
   }
 
   const user = useAppSelector(state => state.userManagement.user)
@@ -27,12 +30,14 @@ export const UserManagementDeleteDialog = (props: RouteComponentProps<{ login: s
 
   return (
     <Modal isOpen toggle={handleClose}>
-      <ModalHeader toggle={handleClose}>Confirmer l&apos;opération de suppression</ModalHeader>
-      <ModalBody>Êtes-vous sûr de vouloir supprimer cet utilisateur ?</ModalBody>
+      <ModalHeader toggle={handleClose}>Confirmation de suppression</ModalHeader>
+      <ModalBody>
+        Etes-vous certain de vouloir supprimer l&apos;utilisateur {user.login} ?
+      </ModalBody>
       <ModalFooter>
         <Button color="secondary" onClick={handleClose}>
           <FontAwesomeIcon icon="ban" />
-          &nbsp; Retour
+          &nbsp; Annuler
         </Button>
         <Button color="danger" onClick={confirmDelete}>
           <FontAwesomeIcon icon="trash" />

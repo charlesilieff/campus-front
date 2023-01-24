@@ -1,22 +1,20 @@
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
+import { ErrorBoundaryRoutes } from 'app/shared/error/error-boundary-routes'
 import React from 'react'
-import { Switch } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 
 import Room from './room'
 import RoomDeleteDialog from './room-delete-dialog'
 import RoomDetail from './room-detail'
 import RoomUpdate from './room-update'
 
-const Routes = ({ match }) => (
-  <>
-    <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/new`} component={RoomUpdate} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={RoomUpdate} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={RoomDetail} />
-      <ErrorBoundaryRoute path={match.url} component={Room} />
-    </Switch>
-    <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={RoomDeleteDialog} />
-  </>
+export const RoomRoutes = () => (
+  <ErrorBoundaryRoutes>
+    <Route path={`new`} element={<RoomUpdate />} />
+    <Route index element={<Room />} />
+    <Route path=":id">
+      <Route path={`edit`} element={<RoomUpdate />} />
+      <Route index element={<RoomDetail />} />
+      <Route path={`delete`} element={<RoomDeleteDialog />} />
+    </Route>
+  </ErrorBoundaryRoutes>
 )
-
-export default Routes

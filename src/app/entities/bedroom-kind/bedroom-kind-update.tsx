@@ -1,16 +1,17 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { ValidatedField, ValidatedForm } from 'react-jhipster'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
 import { createEntity, getEntity, reset, updateEntity } from './bedroom-kind.reducer'
 
-export const BedroomKindUpdate = (props: RouteComponentProps<{ id: string }>) => {
+export const BedroomKindUpdate = () => {
   const dispatch = useAppDispatch()
-
-  const [isNew] = useState(!props.match.params || !props.match.params.id)
+  const { id } = useParams<'id'>()
+  const navigate = useNavigate()
+  const isNew = id === undefined
 
   const bedroomKindEntity = useAppSelector(state => state.bedroomKind.entity)
   const loading = useAppSelector(state => state.bedroomKind.loading)
@@ -18,14 +19,14 @@ export const BedroomKindUpdate = (props: RouteComponentProps<{ id: string }>) =>
   const updateSuccess = useAppSelector(state => state.bedroomKind.updateSuccess)
 
   const handleClose = () => {
-    props.history.push('/bedroom-kind')
+    navigate('/bedroom-kind')
   }
 
   useEffect(() => {
     if (isNew) {
       dispatch(reset())
     } else {
-      dispatch(getEntity(props.match.params.id))
+      dispatch(getEntity(id))
     }
   }, [])
 

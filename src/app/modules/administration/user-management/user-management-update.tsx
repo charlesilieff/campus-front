@@ -1,30 +1,34 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { isEmail, ValidatedField, ValidatedForm } from 'react-jhipster'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Button, Col, FormText, Row } from 'reactstrap'
 
 import { createUser, getRoles, getUser, reset, updateUser } from './user-management.reducer'
 
-export const UserManagementUpdate = (props: RouteComponentProps<{ login: string }>) => {
-  const [isNew] = useState(!props.match.params || !props.match.params.login)
+export const UserManagementUpdate = () => {
   const dispatch = useAppDispatch()
+
+  const navigate = useNavigate()
+
+  const { login } = useParams<'login'>()
+  const isNew = login === undefined
 
   useEffect(() => {
     if (isNew) {
       dispatch(reset())
     } else {
-      dispatch(getUser(props.match.params.login))
+      dispatch(getUser(login))
     }
     dispatch(getRoles())
     return () => {
       dispatch(reset())
     }
-  }, [props.match.params.login])
+  }, [login])
 
   const handleClose = () => {
-    props.history.push('/admin/user-management')
+    navigate('/admin/user-management')
   }
 
   const saveUser = values => {
@@ -46,13 +50,25 @@ export const UserManagementUpdate = (props: RouteComponentProps<{ login: string 
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h1>Créez ou modifiez un utilisateur</h1>
+          <h1>Créer ou éditer un utilisateur</h1>
         </Col>
       </Row>
       <Row className="justify-content-center">
         <Col md="8">
-          {loading ? <p>Chargement...</p> : (
+          {loading ? <p>Loading...</p> : (
             <ValidatedForm onSubmit={saveUser} defaultValues={user}>
+              {user.id ?
+                (
+                  <ValidatedField
+                    type="text"
+                    name="id"
+                    required
+                    readOnly
+                    label="ID"
+                    validate={{ required: true }}
+                  />
+                ) :
+                null}
               <ValidatedField
                 type="text"
                 name="login"
@@ -60,42 +76,42 @@ export const UserManagementUpdate = (props: RouteComponentProps<{ login: string 
                 validate={{
                   required: {
                     value: true,
-                    message: 'Your username is required.'
+                    message: "Votre nom d'utilisateur est obligatoire."
                   },
                   pattern: {
                     value:
                       /^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$/,
-                    message: 'Your username is invalid.'
+                    message: "Votre nom d'utilisateur est invalide."
                   },
                   minLength: {
                     value: 1,
-                    message: 'Your username is required to be at least 1 character.'
+                    message: "Votre nom d'utilisateur doit contenir plus d'un caractère."
                   },
                   maxLength: {
                     value: 50,
-                    message: 'Your username cannot be longer than 50 characters.'
+                    message: "Votre nom d'utilisateur ne peut pas contenir plus de 50 caractères."
                   }
                 }}
               />
               <ValidatedField
                 type="text"
                 name="firstName"
-                label="First name"
+                label="Prénom"
                 validate={{
                   maxLength: {
                     value: 50,
-                    message: 'This field cannot be longer than 50 characters.'
+                    message: 'Ce champ doit faire moins de 50 caractères.'
                   }
                 }}
               />
               <ValidatedField
                 type="text"
                 name="lastName"
-                label="Last name"
+                label="Nom"
                 validate={{
                   maxLength: {
                     value: 50,
-                    message: 'This field cannot be longer than 50 characters.'
+                    message: 'Ce champ doit faire moins de 50 caractères.'
                   }
                 }}
               />
@@ -103,22 +119,22 @@ export const UserManagementUpdate = (props: RouteComponentProps<{ login: string 
               <ValidatedField
                 name="email"
                 label="Email"
-                placeholder={'Your email'}
+                placeholder="Votre email"
                 type="email"
                 validate={{
                   required: {
                     value: true,
-                    message: 'Your email is required.'
+                    message: 'Votre email est requis.'
                   },
                   minLength: {
                     value: 5,
-                    message: 'Your email is required to be at least 5 characters.'
+                    message: 'Votre email doit comporter au moins 5 caractères.'
                   },
                   maxLength: {
                     value: 254,
-                    message: 'Your email cannot be longer than 50 characters.'
+                    message: 'Votre email ne doit pas comporter plus de 50 caractères.'
                   },
-                  validate: v => isEmail(v) || 'Your email is invalid.'
+                  validate: v => isEmail(v) || "Votre email n'est pas valide."
                 }}
               />
               <ValidatedField
@@ -127,9 +143,9 @@ export const UserManagementUpdate = (props: RouteComponentProps<{ login: string 
                 check
                 value={true}
                 disabled={!user.id}
-                label="Activated"
+                label="Activé"
               />
-              <ValidatedField type="select" name="authorities" multiple label="Profiles">
+              <ValidatedField type="select" name="authorities" multiple label="Droits">
                 {authorities.map(role => (
                   <option value={role} key={role}>
                     {role}

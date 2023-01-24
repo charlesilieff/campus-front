@@ -1,29 +1,28 @@
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
+import { ErrorBoundaryRoutes } from 'app/shared/error/error-boundary-routes'
 import React from 'react'
-import { Switch } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 
 import UserManagement from './user-management'
 import UserManagementDeleteDialog from './user-management-delete-dialog'
 import UserManagementDetail from './user-management-detail'
 import UserManagementUpdate from './user-management-update'
 
-const Routes = ({ match }) => (
-  <>
-    <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/new`} component={UserManagementUpdate} />
-      <ErrorBoundaryRoute
-        exact
-        path={`${match.url}/:login/edit`}
-        component={UserManagementUpdate}
+const Routes = () => (
+  <ErrorBoundaryRoutes>
+    <Route path={`new`} element={<UserManagementUpdate />} />
+    <Route index element={<UserManagement />} />
+    <Route path=":login">
+      <Route index element={<UserManagementDetail />} />
+      <Route
+        path={`edit`}
+        element={<UserManagementUpdate />}
       />
-      <ErrorBoundaryRoute exact path={`${match.url}/:login`} component={UserManagementDetail} />
-      <ErrorBoundaryRoute path={match.url} component={UserManagement} />
-    </Switch>
-    <ErrorBoundaryRoute
-      path={`${match.url}/:login/delete`}
-      component={UserManagementDeleteDialog}
-    />
-  </>
+      <Route
+        path={`delete`}
+        element={<UserManagementDeleteDialog />}
+      />
+    </Route>
+  </ErrorBoundaryRoutes>
 )
 
 export default Routes

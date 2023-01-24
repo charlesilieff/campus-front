@@ -1,16 +1,15 @@
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
-import { getUrlParameter } from 'react-jhipster'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { Alert, Col, Row } from 'reactstrap'
 
 import { activateAction, reset } from './activate.reducer'
 
 const successAlert = (
   <Alert color="success">
-    <strong>Votre compte a bien été activé.</strong> S&apos;il-vous-plaît{' '}
+    <strong>Votre compte utilisateur a été activé.</strong> Merci de vous
     <Link to="/login" className="alert-link">
-      connectez-vous
+      connecter
     </Link>
     .
   </Alert>
@@ -18,14 +17,19 @@ const successAlert = (
 
 const failureAlert = (
   <Alert color="danger">
-    <strong>Your user could not be activated.</strong> Please use the registration form to sign up.
+    <strong>Votre compte utilisateur n&apos;a pas pu être activé.</strong>{' '}
+    Utilisez le formulaire d&apos;enregistrement pour en créer un nouveau.
   </Alert>
 )
 
-export const ActivatePage = (props: RouteComponentProps<{ key: any }>) => {
+export const ActivatePage = () => {
   const dispatch = useAppDispatch()
+
+  const [searchParams] = useSearchParams()
+
   useEffect(() => {
-    const key = getUrlParameter('key', props.location.search)
+    const key = searchParams.get('key')
+
     dispatch(activateAction(key))
     return () => {
       dispatch(reset())

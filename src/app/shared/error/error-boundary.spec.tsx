@@ -3,7 +3,7 @@
  */
 import { expect } from '@jest/globals'
 import { render } from '@testing-library/react'
-import ErrorBoundary from 'app/shared/error/error-boundary'
+import { ErrorBoundary } from 'app/shared/error/error-boundary'
 import React from 'react'
 
 const ErrorComp = () => {
@@ -17,7 +17,7 @@ describe('error component', () => {
     jest.spyOn((window as any).console, 'error').mockImplementation(() => false)
   })
 
-  it('Should throw an error when componnet is not enclosed in Error Boundary', () => {
+  it('Should throw an error when component is not enclosed in Error Boundary', () => {
     expect(() => render(<ErrorComp />)).toThrow(Error)
   })
 

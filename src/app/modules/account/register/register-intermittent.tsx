@@ -294,5 +294,3 @@ export const RegisterIntermittentPage = (): JSX.Element => {
     </VStack>
   )
 }
-
-export default RegisterIntermittentPage

@@ -1,17 +1,20 @@
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar'
 import React, { useEffect, useState } from 'react'
-import { getUrlParameter, ValidatedField, ValidatedForm } from 'react-jhipster'
-import { RouteComponentProps, useHistory } from 'react-router-dom'
+import { ValidatedField, ValidatedForm } from 'react-jhipster'
+import { useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Button, Col, Row } from 'reactstrap'
 
 import { handlePasswordResetFinish, reset } from '../password-reset.reducer'
 
-export const PasswordResetFinishPage = (props: RouteComponentProps<{ key: string }>) => {
-  const [password, setPassword] = useState('')
-  const [key] = useState(getUrlParameter('key', props.location.search))
+export const PasswordResetFinishPage = () => {
   const dispatch = useAppDispatch()
+
+  const [searchParams] = useSearchParams()
+  const key = searchParams.get('key')
+
+  const [password, setPassword] = useState('')
 
   useEffect(
     () => () => {
@@ -19,12 +22,9 @@ export const PasswordResetFinishPage = (props: RouteComponentProps<{ key: string
     },
     []
   )
-  const history = useHistory()
 
-  const handleValidSubmit = ({ newPassword }) => {
+  const handleValidSubmit = ({ newPassword }) =>
     dispatch(handlePasswordResetFinish({ key, newPassword }))
-    history.push('/login')
-  }
 
   const updatePassword = event => setPassword(event.target.value)
 
@@ -33,16 +33,19 @@ export const PasswordResetFinishPage = (props: RouteComponentProps<{ key: string
       <ValidatedForm onSubmit={handleValidSubmit}>
         <ValidatedField
           name="newPassword"
-          label="New password"
-          placeholder={'New password'}
+          label="Nouveau mot de passe"
+          placeholder="Nouveau mot de passe"
           type="password"
           validate={{
-            required: { value: true, message: 'Your password is required.' },
+            required: { value: true, message: 'Votre mot de passe est requis.' },
             minLength: {
               value: 4,
-              message: 'Your password is required to be at least 4 characters.'
+              message: 'Votre mot de passe doit comporter au moins 4 caractères.'
             },
-            maxLength: { value: 50, message: 'Your password cannot be longer than 50 characters.' }
+            maxLength: {
+              value: 50,
+              message: 'Votre mot de passe ne doit pas comporter plus de 50 caractères.'
+            }
           }}
           onChange={updatePassword}
           data-cy="resetPassword"
@@ -50,25 +53,27 @@ export const PasswordResetFinishPage = (props: RouteComponentProps<{ key: string
         <PasswordStrengthBar password={password} />
         <ValidatedField
           name="confirmPassword"
-          label="New password confirmation"
-          placeholder="Confirm the new password"
+          label="Confirmation du nouveau mot de passe"
+          placeholder="Confirmation du nouveau mot de passe"
           type="password"
           validate={{
-            required: { value: true, message: 'Your confirmation password is required.' },
+            required: { value: true, message: 'Votre confirmation du mot de passe est requise.' },
             minLength: {
               value: 4,
-              message: 'Your confirmation password is required to be at least 4 characters.'
+              message: 'Votre confirmation du mot de passe doit comporter au moins 4 caractères.'
             },
             maxLength: {
               value: 50,
-              message: 'Your confirmation password cannot be longer than 50 characters.'
+              message:
+                'Votre confirmation du mot de passe ne doit pas comporter plus de 50 caractères.'
             },
-            validate: v => v === password || 'The password and its confirmation do not match!'
+            validate: v =>
+              v === password || 'Le nouveau mot de passe et sa confirmation ne sont pas égaux !'
           }}
           data-cy="confirmResetPassword"
         />
         <Button color="success" type="submit" data-cy="submit">
-          Valider le nouveau mot de passe
+          Réinitialiser le mot de passe
         </Button>
       </ValidatedForm>
     )
@@ -86,7 +91,7 @@ export const PasswordResetFinishPage = (props: RouteComponentProps<{ key: string
     <div>
       <Row className="justify-content-center">
         <Col md="4">
-          <h1>Reset password</h1>
+          <h1>Réinitialisation du mot de passe</h1>
           <div>{key ? getResetForm() : null}</div>
         </Col>
       </Row>

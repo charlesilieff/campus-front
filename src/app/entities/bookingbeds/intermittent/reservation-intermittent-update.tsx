@@ -8,7 +8,7 @@ import { ICustomer } from 'app/shared/model/customer.model'
 import { IReservation } from 'app/shared/model/reservation.model'
 import React, { useEffect, useState } from 'react'
 import { BsTrash } from 'react-icons/bs'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { getEntity as getCustomerEntity } from '../../customer/customer.reducer'
 import { createEntity, reset } from '../booking-beds.reducer'
@@ -29,6 +29,7 @@ export interface DatesAndMeals {
 }
 
 export interface Customer {
+  id: number
   firstname: string
   lastname: string
   email: string
@@ -38,10 +39,10 @@ export interface Customer {
 
 export type BedIds = A.Array<{ id: number }>
 
-export const ReservationIntermittentUpdate = (
-  props: RouteComponentProps<{ id: string }>
-): JSX.Element => {
+export const ReservationIntermittentUpdate = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false)
+  const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const toast = useToast()
   const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
@@ -54,7 +55,7 @@ export const ReservationIntermittentUpdate = (
       return O.none
     } else {
       const Icustomer: ICustomer = {
-        id: isNaN(+props.match.params.id) ? +props.match.params.id : undefined,
+        id: customer.id,
         firstname: customer.firstname,
         lastname: customer.lastname,
         email: customer.email,
@@ -98,11 +99,12 @@ export const ReservationIntermittentUpdate = (
   }
 
   useEffect(() => {
-    dispatch(getCustomerEntity(props.match.params.id))
+    dispatch(getCustomerEntity(id))
   }, [])
   const customer: Customer = pipe(
     useAppSelector(state => state.customer.entity),
     c => ({
+      id: c?.id,
       firstname: c?.firstname,
       lastname: c?.lastname,
       email: c?.email,
@@ -126,7 +128,7 @@ export const ReservationIntermittentUpdate = (
         duration: 9000,
         isClosable: true
       })
-      props.history.push('/planning')
+      navigate('/planning')
     }
   }, [updateSuccess])
   // const testValue = {

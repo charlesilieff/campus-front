@@ -2,12 +2,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { PlaceMenu } from 'app/shared/layout/menus/placeMenu'
 import React, { useEffect } from 'react'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Button, Table } from 'reactstrap'
 
 import { getEntities } from './bedroom-kind.reducer'
 
-export const BedroomKind = (props: RouteComponentProps<{ url: string }>) => {
+export const BedroomKind = () => {
   const dispatch = useAppDispatch()
 
   const bedroomKindList = useAppSelector(state => state.bedroomKind.entities)
@@ -21,8 +21,6 @@ export const BedroomKind = (props: RouteComponentProps<{ url: string }>) => {
     dispatch(getEntities())
   }
 
-  const { match } = props
-
   return (
     <div>
       <h2 id="bedroom-kind-heading" data-cy="BedroomKindHeading">
@@ -32,7 +30,7 @@ export const BedroomKind = (props: RouteComponentProps<{ url: string }>) => {
             <FontAwesomeIcon icon="sync" spin={loading} /> Rafraichîr la liste
           </Button>
           <Link
-            to={`${match.url}/new`}
+            to={`new`}
             className="btn btn-primary jh-create-entity"
             id="jh-create-entity"
             data-cy="entityCreateButton"
@@ -60,7 +58,7 @@ export const BedroomKind = (props: RouteComponentProps<{ url: string }>) => {
                     <td>
                       <Button
                         tag={Link}
-                        to={`${match.url}/${bedroomKind.id}`}
+                        to={`${bedroomKind.id}`}
                         color="link"
                         size="sm"
                       >
@@ -73,7 +71,7 @@ export const BedroomKind = (props: RouteComponentProps<{ url: string }>) => {
                       <div className="btn-group flex-btn-group-container">
                         <Button
                           tag={Link}
-                          to={`${match.url}/${bedroomKind.id}`}
+                          to={`${bedroomKind.id}`}
                           color="info"
                           size="sm"
                           data-cy="entityDetailsButton"
@@ -83,7 +81,7 @@ export const BedroomKind = (props: RouteComponentProps<{ url: string }>) => {
                         </Button>
                         <Button
                           tag={Link}
-                          to={`${match.url}/${bedroomKind.id}/edit`}
+                          to={`${bedroomKind.id}/edit`}
                           color="primary"
                           size="sm"
                           data-cy="entityEditButton"
@@ -93,7 +91,7 @@ export const BedroomKind = (props: RouteComponentProps<{ url: string }>) => {
                         </Button>
                         <Button
                           tag={Link}
-                          to={`${match.url}/${bedroomKind.id}/delete`}
+                          to={`${bedroomKind.id}/delete`}
                           color="danger"
                           size="sm"
                           data-cy="entityDeleteButton"

@@ -1,40 +1,36 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route'
+import { ErrorBoundaryRoutes } from 'app/shared/error/error-boundary-routes'
 import React from 'react'
-import { Switch } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 
-import Bed from './bed'
-import BedroomKind from './bedroom-kind'
+import { BedRoutes } from './bed'
+import { BedroomKindRoutes } from './bedroom-kind'
 import BookingBeds from './bookingbeds'
-import Customer from './customer'
-import Place from './place'
+import { CustomerRoutes } from './customer'
+import { PlaceRoutes } from './place'
 import Planning from './planning'
-import Pricing from './pricing'
+import { PricingRoutes } from './pricing'
 import Reservation from './reservation'
 import ReservationLunchOnly from './reservation/reservation_isLunchOnly'
 import ReservationNotConfirmed from './reservation/reservation_nobeds_notconfirmed'
-import Room from './room'
+import { RoomRoutes } from './room'
+
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
-const Routes = ({ match }) => (
+export const EntitiesRoutes = () => (
   <div>
-    <Switch>
-      {/* prettier-ignore */}
-      <ErrorBoundaryRoute path={'/reservation/not-confirmed'} component={ReservationNotConfirmed} />
-      <ErrorBoundaryRoute path={'/reservation/lunch-only'} component={ReservationLunchOnly} />
-      <ErrorBoundaryRoute path={`${match.url}bookingbeds`} component={BookingBeds} />
-      <ErrorBoundaryRoute path={`${match.url}reservation`} component={Reservation} />
-      <ErrorBoundaryRoute path={`${match.url}customer`} component={Customer} />
-      <ErrorBoundaryRoute path={`${match.url}pricing`} component={Pricing} />
-      <ErrorBoundaryRoute path={`${match.url}bed`} component={Bed} />
-      <ErrorBoundaryRoute path={`${match.url}room`} component={Room} />
-      <ErrorBoundaryRoute path={`${match.url}bedroom-kind`} component={BedroomKind} />
-      <ErrorBoundaryRoute path={`${match.url}planning`} component={Planning} />
-      <ErrorBoundaryRoute path={`${match.url}place`} component={Place} />
-
-      {/* jhipster-needle-add-route-path - JHipster will add routes here */}
-    </Switch>
+    <ErrorBoundaryRoutes>
+      <Route path={'reservation/not-confirmed'} element={<ReservationNotConfirmed />} />
+      <Route path={'reservation/lunch-only'} element={<ReservationLunchOnly />} />
+      <Route path={`bookingbeds/*`} element={<BookingBeds />} />
+      <Route path={`reservation/*`} element={<Reservation />} />
+      <Route path={`customer/*`} element={<CustomerRoutes />} />
+      <Route path={`pricing/*`} element={<PricingRoutes />} />
+      <Route path={`bed/*`} element={<BedRoutes />} />
+      <Route path={`room/*`} element={<RoomRoutes />} />
+      <Route path={`bedroom-kind/*`} element={<BedroomKindRoutes />} />
+      <Route path={`planning/*`} element={<Planning />} />
+      <Route path={`place/*`} element={<PlaceRoutes />} />
+    </ErrorBoundaryRoutes>
   </div>
 )
-
-export default Routes

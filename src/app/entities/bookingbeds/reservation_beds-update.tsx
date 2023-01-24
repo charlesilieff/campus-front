@@ -16,7 +16,7 @@ import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { TextFormat } from 'react-jhipster'
-import { RouteComponentProps } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
 import PlaceModal from '../place/placeModal'
@@ -24,9 +24,10 @@ import Beds from './beds'
 import { backToOne, createEntity, updateEntity } from './booking-beds.reducer'
 import { getOnePlace, getPlaces } from './utils'
 
-export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>): JSX.Element => {
+export const ReservationBedsUpdate = (): JSX.Element => {
   const dispatch = useAppDispatch()
-
+  const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
   const reservationEntity = useAppSelector(state => state.bookingBeds.entity)
   const loading = useAppSelector(state => state.bookingBeds.loading)
   const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
@@ -36,7 +37,7 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
 
   const apiUrlPlaces = `api/bookingbeds/${arrivalDate}/${departureDate}`
 
-  const [isNew] = useState(!props.match.params || !props.match.params.id)
+  const isNew = id === undefined
   const [places, setPlaces] = useState([] as IPlace[])
   const [roomKinds, setRoomKinds] = useState([] as IBedroomKind[])
   const [rooms, setRooms] = useState([] as IRoom[])
@@ -70,7 +71,7 @@ export const ReservationBedsUpdate = (props: RouteComponentProps<{ id: string }>
   }, [updateSuccess])
 
   const handleClose = (): void => {
-    props.history.push('/planning')
+    navigate('/planning')
   }
 
   const getBookingBeds = async (): Promise<void> => {

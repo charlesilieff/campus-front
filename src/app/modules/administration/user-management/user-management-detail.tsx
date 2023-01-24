@@ -3,16 +3,16 @@ import { APP_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { TextFormat } from 'react-jhipster'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Badge, Button, Row } from 'reactstrap'
 
 import { getUser } from './user-management.reducer'
 
-export const UserManagementDetail = (props: RouteComponentProps<{ login: string }>) => {
+export const UserManagementDetail = () => {
   const dispatch = useAppDispatch()
-
+  const { login } = useParams<'login'>()
   useEffect(() => {
-    dispatch(getUser(props.match.params.login))
+    dispatch(getUser(login))
   }, [])
 
   const user = useAppSelector(state => state.userManagement.user)

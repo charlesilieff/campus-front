@@ -1,11 +1,11 @@
 import './header.scss'
 
-import React from 'react'
+import React, { useState } from 'react'
+import { Translate } from 'react-jhipster'
 import LoadingBar from 'react-redux-loading-bar'
-import { Nav, Navbar } from 'reactstrap'
+import { Collapse, Nav, Navbar, NavbarToggler } from 'reactstrap'
 
-import { AdminMenu, EntitiesMenu } from '../menus'
-import { AccountMenu2 } from '../menus/account-new'
+import { AccountMenu, AdminMenu, EntitiesMenu } from '../menus'
 import { Brand, Help, Home } from './header-components'
 
 export interface IHeaderProps {
@@ -20,14 +20,20 @@ export interface IHeaderProps {
 }
 
 const Header = (props: IHeaderProps) => {
+  const [menuOpen, setMenuOpen] = useState(false)
+
   const renderDevRibbon = () =>
     props.isInProduction === false ?
       (
         <div className="ribbon dev">
-          <a href="">Development</a>
+          <a href="">
+            <Translate contentKey={`global.ribbon.${props.ribbonEnv}`} />
+          </a>
         </div>
       ) :
       null
+
+  const toggleMenu = () => setMenuOpen(!menuOpen)
 
   /* jhipster-needle-add-element-to-menu - JHipster will add new menu items here */
 
@@ -35,22 +41,25 @@ const Header = (props: IHeaderProps) => {
     <div id="app-header">
       {renderDevRibbon()}
       <LoadingBar className="loading-bar" />
-      <Navbar data-cy="navbar" dark expand="sm" fixed="top" className="bg-primary">
+      <Navbar data-cy="navbar" expand="md" fixed="top" className="jh-navbar" color={'primary'} dark>
+        <NavbarToggler aria-label="Menu" onClick={toggleMenu} />
         <Brand />
-        <Nav id="header-tabs" className="ml-auto" navbar>
-          {!window.location.pathname.endsWith('reservation-request/new') && <Help />}
-          {!window.location.pathname.endsWith('reservation-request/new') && <Home />}
+        <Collapse isOpen={menuOpen} navbar>
+          <Nav id="header-tabs" className="ml-auto" navbar>
+            {!window.location.pathname.endsWith('reservation-request/new') && <Help />}
+            {!window.location.pathname.endsWith('reservation-request/new') && <Home />}
 
-          {props.isAuthenticated && (
-            <EntitiesMenu isResp={props.isResp} isCooker={props.isCooker} isUser={props.isUser} />
-          )}
-          {props.isAuthenticated && props.isAdmin && (
-            <AdminMenu showOpenAPI={props.isOpenAPIEnabled} />
-          )}
-          {!window.location.pathname.endsWith('reservation-request/new') && (
-            <AccountMenu2 isAuthenticated={props.isAuthenticated} />
-          )}
-        </Nav>
+            {props.isAuthenticated && (
+              <EntitiesMenu isResp={props.isResp} isCooker={props.isCooker} isUser={props.isUser} />
+            )}
+            {props.isAuthenticated && props.isAdmin && (
+              <AdminMenu showOpenAPI={props.isOpenAPIEnabled} />
+            )}
+            {!window.location.pathname.endsWith('reservation-request/new') && (
+              <AccountMenu isAuthenticated={props.isAuthenticated} />
+            )}
+          </Nav>
+        </Collapse>
       </Navbar>
     </div>
   )

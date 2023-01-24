@@ -38,7 +38,7 @@ export const EntitiesMenu = props => (
           Lieux
         </MenuItem>
         <MenuItem icon="map-marked-alt" to="/place/intermittent">
-          Lieux intermittent
+          Intermittent
         </MenuItem>
       </>
     )}

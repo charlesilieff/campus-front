@@ -5,18 +5,20 @@ import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
 import React, { useEffect } from 'react'
 import { TextFormat } from 'react-jhipster'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
 import { getEntity } from './booking-beds.reducer'
 
-export const ReservationDetail = (props: RouteComponentProps<{ id: string }>) => {
+export const ReservationDetail = () => {
   const dispatch = useAppDispatch()
+  const { id } = useParams<{ id: string }>()
+
   const isAdmin = useAppSelector(state =>
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.ADMIN])
   )
   useEffect(() => {
-    dispatch(getEntity(props.match.params.id))
+    dispatch(getEntity(id))
   }, [])
 
   const reservationEntity = useAppSelector(state => state.bookingBeds.entity)

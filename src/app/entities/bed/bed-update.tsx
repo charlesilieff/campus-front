@@ -2,17 +2,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getRooms } from 'app/entities/room/room.reducer'
 import { IBed } from 'app/shared/model/bed.model'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Button, Col, Row, UncontrolledTooltip } from 'reactstrap'
 
 import { createEntity, getEntity, reset, updateEntity } from './bed.reducer'
 
-export const BedUpdate = (props: RouteComponentProps<{ id: string }>) => {
+export const BedUpdate = () => {
   const dispatch = useAppDispatch()
-
-  const [isNew] = useState(!props.match.params || !props.match.params.id)
+  const { id } = useParams<'id'>()
+  const navigate = useNavigate()
+  const isNew = id === undefined
 
   const rooms = useAppSelector(state => state.room.entities)
   const bedEntity = useAppSelector(state => state.bed.entity)
@@ -21,14 +22,14 @@ export const BedUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const updateSuccess = useAppSelector(state => state.bed.updateSuccess)
 
   const handleClose = () => {
-    props.history.push('/bed')
+    navigate('/bed')
   }
 
   useEffect(() => {
     if (isNew) {
       dispatch(reset())
     } else {
-      dispatch(getEntity(props.match.params.id))
+      dispatch(getEntity(id))
     }
 
     dispatch(getRooms())

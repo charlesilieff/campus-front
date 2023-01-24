@@ -6,12 +6,12 @@ import axios from 'axios'
 import dayjs, { Dayjs } from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { TextFormat } from 'react-jhipster'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Button, Table } from 'reactstrap'
 
 const apiUrlReservations = 'api/reservations/lunch-only'
 
-export const ReservationLunchOnly = (_: RouteComponentProps<{ url: string }>) => {
+export const ReservationLunchOnly = () => {
   const [reservations, setReservations] = useState([] as IReservation[])
   const [date, setDate] = useState(dayjs())
   const loading = useAppSelector(state => state.reservation.loading)
