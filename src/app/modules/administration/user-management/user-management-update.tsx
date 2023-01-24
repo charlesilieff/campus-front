@@ -1,3 +1,5 @@
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft'
+import { faSave } from '@fortawesome/free-solid-svg-icons/faSave'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
@@ -153,13 +155,13 @@ export const UserManagementUpdate = () => {
                 ))}
               </ValidatedField>
               <Button tag={Link} to="/admin/user-management" replace color="info">
-                <FontAwesomeIcon icon="arrow-left" />
+                <FontAwesomeIcon icon={faArrowLeft} />
                 &nbsp;
                 <span className="d-none d-md-inline">Retour</span>
               </Button>
               &nbsp;
               <Button color="primary" type="submit" disabled={isInvalid || updating}>
-                <FontAwesomeIcon icon="save" />
+                <FontAwesomeIcon icon={faSave} />
                 &nbsp; Sauvegarder
               </Button>
             </ValidatedForm>

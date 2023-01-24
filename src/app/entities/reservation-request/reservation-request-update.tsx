@@ -1,4 +1,5 @@
 /* eslint-disable simple-import-sort/imports */
+import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { IReservationRequest } from 'app/shared/model/reservation-request.model'
@@ -210,7 +211,7 @@ export const ReservationUpdate = () => {
                     data-cy="entityCreateCancelButton"
                     color="info"
                   >
-                    <FontAwesomeIcon icon="arrow-left" />
+                    <FontAwesomeIcon icon={faArrowLeft} />
                     &nbsp;
                     <span className="d-none d-md-inline">Retour</span>
                   </Button>
@@ -221,7 +222,7 @@ export const ReservationUpdate = () => {
                     data-cy="entityCreateSaveButton"
                     type="submit"
                   >
-                    <FontAwesomeIcon icon="save" />
+                    <FontAwesomeIcon icon={faSave} />
                     &nbsp; Envoyer la demande
                   </Button>
                 </form>

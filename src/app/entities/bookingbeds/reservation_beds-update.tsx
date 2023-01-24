@@ -1,5 +1,6 @@
 import { Heading, HStack, Select, Text } from '@chakra-ui/react'
 import * as A from '@effect-ts/core/Collections/Immutable/Array'
+import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
@@ -378,13 +379,13 @@ export const ReservationBedsUpdate = (): JSX.Element => {
                   data-cy="entityCreateCancelButton"
                   color="info"
                 >
-                  <FontAwesomeIcon icon="arrow-left" />
+                  <FontAwesomeIcon icon={faArrowLeft} />
                   &nbsp;
                   <span className="d-none d-md-inline">Retour</span>
                 </Button>
                 &nbsp;
                 <Button color="primary" id="save-entity" data-cy="stepTwo" type="submit">
-                  <FontAwesomeIcon icon="save" />
+                  <FontAwesomeIcon icon={faSave} />
                   &nbsp; Enregistrer
                 </Button>
               </form>

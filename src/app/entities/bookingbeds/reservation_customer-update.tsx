@@ -1,3 +1,4 @@
+import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getPricings } from 'app/entities/pricing/pricing.reducer'
@@ -126,7 +127,7 @@ export const ReservationCustomerUpdate = () => {
                 </Button>
                 &nbsp;
                 <Button color="primary" id="save-entity" data-cy="stepTwo" type="submit">
-                  <FontAwesomeIcon icon="save" />
+                  <FontAwesomeIcon icon={faSave} />
                   &nbsp; Suivant
                 </Button>
                 <ValidatedField
@@ -343,7 +344,7 @@ export const ReservationCustomerUpdate = () => {
                       color="info"
                     >
                       &nbsp;
-                      <FontAwesomeIcon icon="arrow-left" />
+                      <FontAwesomeIcon icon={faArrowLeft} />
                       <span className="d-none d-md-inline">Retour</span>
                     </Button>
                   ) :
@@ -362,7 +363,7 @@ export const ReservationCustomerUpdate = () => {
                 </Button>
                 &nbsp;
                 <Button color="primary" id="save-entity" data-cy="stepTwo" type="submit">
-                  <FontAwesomeIcon icon="save" />
+                  <FontAwesomeIcon icon={faSave} />
                   &nbsp; Suivant
                 </Button>
               </ValidatedForm>

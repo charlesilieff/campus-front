@@ -1,3 +1,4 @@
+import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { AUTHORITIES } from 'app/config/constants'
@@ -35,7 +36,7 @@ export const ReservationDetail = () => {
                 color="danger"
                 data-cy="entityDeleteButton"
               >
-                <FontAwesomeIcon icon="trash" />{' '}
+                <FontAwesomeIcon icon={faTrash} />{' '}
                 <span className="d-none d-md-inline">Annuler la réservation</span>
               </Button>
               &nbsp;
@@ -45,7 +46,7 @@ export const ReservationDetail = () => {
                 replace
                 color="primary"
               >
-                <FontAwesomeIcon icon="pencil-alt" />{' '}
+                <FontAwesomeIcon icon={faPencilAlt} />{' '}
                 <span className="d-none d-md-inline">Modifier la réservation</span>
               </Button>
             </>
@@ -183,7 +184,7 @@ export const ReservationDetail = () => {
                 color="danger"
                 data-cy="entityDeleteButton"
               >
-                <FontAwesomeIcon icon="trash" />{' '}
+                <FontAwesomeIcon icon={faTrash} />{' '}
                 <span className="d-none d-md-inline">Annuler la réservation</span>
               </Button>
               &nbsp;
@@ -193,7 +194,7 @@ export const ReservationDetail = () => {
                 replace
                 color="primary"
               >
-                <FontAwesomeIcon icon="pencil-alt" />{' '}
+                <FontAwesomeIcon icon={faPencilAlt} />{' '}
                 <span className="d-none d-md-inline">Modifier la réservation</span>
               </Button>
             </>

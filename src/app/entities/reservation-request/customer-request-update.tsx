@@ -1,3 +1,4 @@
+import { faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { ICustomer } from 'app/shared/model/customer.model'
@@ -141,7 +142,7 @@ export const CustomerUpdate = () => {
                 />
                 &nbsp;
                 <Button color="primary" id="save-entity" data-cy="stepTwo" type="submit">
-                  <FontAwesomeIcon icon="save" />
+                  <FontAwesomeIcon icon={faSave} />
                   &nbsp; Suivant
                 </Button>
               </ValidatedForm>

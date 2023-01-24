@@ -1,3 +1,4 @@
+import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
@@ -180,7 +181,7 @@ export const CustomerUpdate = (): JSX.Element => {
                   replace
                   color="info"
                 >
-                  <FontAwesomeIcon icon="arrow-left" />
+                  <FontAwesomeIcon icon={faArrowLeft} />
                   &nbsp;
                   <span className="d-none d-md-inline">Retour</span>
                 </Button>
@@ -192,7 +193,7 @@ export const CustomerUpdate = (): JSX.Element => {
                   type="submit"
                   disabled={updating}
                 >
-                  <FontAwesomeIcon icon="save" />
+                  <FontAwesomeIcon icon={faSave} />
                   &nbsp; Sauvegarder
                 </Button>
               </ValidatedForm>

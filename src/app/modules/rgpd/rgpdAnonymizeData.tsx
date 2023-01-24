@@ -1,3 +1,4 @@
+import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ICustomer } from 'app/shared/model/customer.model'
 import axios from 'axios'
@@ -67,7 +68,7 @@ export const RGPDAnonymizeData = () => {
             color="danger"
             onClick={() => anonymizeCustomers()}
           >
-            <FontAwesomeIcon icon="trash" />
+            <FontAwesomeIcon icon={faTrash} />
             &nbsp; Confirmer
           </Button>
         </ModalFooter>
@@ -81,7 +82,7 @@ export const RGPDAnonymizeData = () => {
             color="danger"
             onClick={() => setIsOpen(true)}
           >
-            <FontAwesomeIcon icon="trash" />
+            <FontAwesomeIcon icon={faTrash} />
             &nbsp; Anonymiser les données clients.
           </Button>
         ) :

@@ -1,3 +1,4 @@
+import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
@@ -51,7 +52,7 @@ export const ReservationDeleteDialog = () => {
           color="danger"
           onClick={confirmDelete}
         >
-          <FontAwesomeIcon icon="trash" />
+          <FontAwesomeIcon icon={faTrash} />
           &nbsp; Supprimer
         </Button>
       </ModalFooter>

@@ -11,7 +11,6 @@ import ReservationDetail from './reservation-detail'
 const Routes = (): JSX.Element => (
   <ErrorBoundaryRoutes>
     <Route path={`new`} element={<ReservationUpdate />} />
-
     <Route path=":id">
       <Route
         path={`new/intermittent`}

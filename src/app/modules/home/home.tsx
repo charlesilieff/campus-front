@@ -31,7 +31,12 @@ export const Home = (): JSX.Element => {
   async function copyLink(): Promise<void> {
     await navigator.clipboard.writeText(location.href + reservationRequestUrl)
   }
-
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Happy developing!')
+  }
+  if (process.env.NODE_ENV === 'production') {
+    console.log('Happy production!')
+  }
   return (
     <HStack>
       <Box>

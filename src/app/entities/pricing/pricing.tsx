@@ -1,3 +1,4 @@
+import { faEye, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
@@ -26,7 +27,7 @@ export const Pricing = () => {
         Tarifs
         <div className="d-flex justify-content-end">
           <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon="sync" spin={loading} /> Rafraichîr la liste
+            <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraichîr la liste
           </Button>
           <Link
             to={`new`}
@@ -34,7 +35,7 @@ export const Pricing = () => {
             id="jh-create-entity"
             data-cy="entityCreateButton"
           >
-            <FontAwesomeIcon icon="plus" />
+            <FontAwesomeIcon icon={faPlus} />
             &nbsp; Créez un nouveau tarif
           </Link>
         </div>
@@ -70,7 +71,7 @@ export const Pricing = () => {
                           size="sm"
                           data-cy="entityDetailsButton"
                         >
-                          <FontAwesomeIcon icon="eye" />{' '}
+                          <FontAwesomeIcon icon={faEye} />{' '}
                           <span className="d-none d-md-inline">Voir</span>
                         </Button>
                         <Button
@@ -80,7 +81,7 @@ export const Pricing = () => {
                           size="sm"
                           data-cy="entityEditButton"
                         >
-                          <FontAwesomeIcon icon="pencil-alt" />{' '}
+                          <FontAwesomeIcon icon={faPencilAlt} />{' '}
                           <span className="d-none d-md-inline">Modifier</span>
                         </Button>
                         <Button
@@ -90,7 +91,7 @@ export const Pricing = () => {
                           size="sm"
                           data-cy="entityDeleteButton"
                         >
-                          <FontAwesomeIcon icon="trash" />{' '}
+                          <FontAwesomeIcon icon={faTrash} />{' '}
                           <span className="d-none d-md-inline">Suppimer</span>
                         </Button>
                       </div>

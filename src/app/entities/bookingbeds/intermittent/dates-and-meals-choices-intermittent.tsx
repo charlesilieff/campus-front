@@ -18,7 +18,6 @@ import {
 import { pipe } from '@effect-ts/core'
 import * as O from '@effect-ts/core/Option'
 import { LocalDate } from '@js-joda/core'
-import { identity } from 'lodash'
 import React, { useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
@@ -58,7 +57,7 @@ export const DatesAndMealsChoices = (
     return pipe(
       O.struct({ arrivalDate, departureDate }),
       O.map(d => d.arrivalDate.isBefore(d.departureDate)),
-      O.exists(identity)
+      O.exists(x => x)
     )
   }
 
@@ -70,7 +69,7 @@ export const DatesAndMealsChoices = (
     return pipe(
       dateToCheck,
       O.map(d => d.isBefore(LocalDate.now())),
-      O.exists(identity)
+      O.exists(x => x)
     )
   }
 

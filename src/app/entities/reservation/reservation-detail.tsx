@@ -1,3 +1,4 @@
+import { faArrowLeft, faPencilAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
@@ -118,11 +119,12 @@ export const ReservationDetail = () => {
           <dd>{reservationEntity.customer ? reservationEntity.customer.email : ''}</dd>
         </dl>
         <Button tag={Link} to="/reservation" replace color="info" data-cy="entityDetailsBackButton">
-          <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Retour</span>
+          <FontAwesomeIcon icon={faArrowLeft} /> <span className="d-none d-md-inline">Retour</span>
         </Button>
         &nbsp;
         <Button tag={Link} to={`/reservation/${reservationEntity.id}/edit`} replace color="primary">
-          <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Modifier</span>
+          <FontAwesomeIcon icon={faPencilAlt} />{' '}
+          <span className="d-none d-md-inline">Modifier</span>
         </Button>
       </Col>
     </Row>

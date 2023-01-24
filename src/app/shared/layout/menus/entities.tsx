@@ -1,3 +1,5 @@
+import { faBed, faCalendar, faEuroSign, faIgloo, faMapMarkedAlt, faPersonBooth, faSnowman,
+  faUtensils } from '@fortawesome/free-solid-svg-icons'
 import MenuItem from 'app/shared/layout/menus/menu-item'
 import React from 'react'
 
@@ -19,36 +21,36 @@ export const EntitiesMenu = props => (
     }
     {props.isResp && (
       <>
-        <MenuItem icon="snowman" to="/customer">
+        <MenuItem icon={faSnowman} to="/customer">
           Clients
         </MenuItem>
-        <MenuItem icon="euro-sign" to="/pricing">
+        <MenuItem icon={faEuroSign} to="/pricing">
           Tarifications
         </MenuItem>
-        <MenuItem icon="bed" to="/bed">
+        <MenuItem icon={faBed} to="/bed">
           Lits
         </MenuItem>
-        <MenuItem icon="person-booth" to="/room">
+        <MenuItem icon={faPersonBooth} to="/room">
           Chambres
         </MenuItem>
-        <MenuItem icon="igloo" to="/bedroom-kind">
+        <MenuItem icon={faIgloo} to="/bedroom-kind">
           Type de chambres
         </MenuItem>
-        <MenuItem icon="map-marked-alt" to="/place">
+        <MenuItem icon={faMapMarkedAlt} to="/place">
           Lieux
         </MenuItem>
-        <MenuItem icon="map-marked-alt" to="/place/intermittent">
+        <MenuItem icon={faMapMarkedAlt} to="/place/intermittent">
           Intermittent
         </MenuItem>
       </>
     )}
     {
-      <MenuItem icon="utensils" to="/kitchen/planning">
+      <MenuItem icon={faUtensils} to="/kitchen/planning">
         Repas
       </MenuItem>
     }
     {(props.isResp || props.isUser) && (
-      <MenuItem icon="calendar-day" to="/planning">
+      <MenuItem icon={faCalendar} to="/planning">
         Planning
       </MenuItem>
     )}

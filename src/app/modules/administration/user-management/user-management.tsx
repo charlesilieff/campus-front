@@ -1,3 +1,4 @@
+import { faEye, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { APP_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
@@ -93,10 +94,10 @@ export const UserManagement = () => {
         Utilisateurs
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon="sync" spin={loading} /> Actualiser la liste
+            <FontAwesomeIcon icon={faSync} spin={loading} /> Actualiser la liste
           </Button>
           <Link to="new" className="btn btn-primary jh-create-entity">
-            <FontAwesomeIcon icon="plus" /> Créer un nouvel utilisateur
+            <FontAwesomeIcon icon={faPlus} /> Créer un nouvel utilisateur
           </Link>
         </div>
       </h2>
@@ -192,10 +193,11 @@ export const UserManagement = () => {
               <td className="text-end">
                 <div className="btn-group flex-btn-group-container">
                   <Button tag={Link} to={user.login} color="info" size="sm">
-                    <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">Voir</span>
+                    <FontAwesomeIcon icon={faEye} />{' '}
+                    <span className="d-none d-md-inline">Voir</span>
                   </Button>
                   <Button tag={Link} to={`${user.login}/edit`} color="primary" size="sm">
-                    <FontAwesomeIcon icon="pencil-alt" />{' '}
+                    <FontAwesomeIcon icon={faPencilAlt} />{' '}
                     <span className="d-none d-md-inline">Editer</span>
                   </Button>
                   <Button
@@ -205,7 +207,7 @@ export const UserManagement = () => {
                     size="sm"
                     disabled={account.login === user.login}
                   >
-                    <FontAwesomeIcon icon="trash" />{' '}
+                    <FontAwesomeIcon icon={faTrash} />{' '}
                     <span className="d-none d-md-inline">Supprimer</span>
                   </Button>
                 </div>

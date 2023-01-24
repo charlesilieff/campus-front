@@ -1,3 +1,4 @@
+import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
@@ -138,7 +139,7 @@ export const CustomerDetail = (): JSX.Element => {
           color="info"
           data-cy="entityDetailsBackButton"
         >
-          <FontAwesomeIcon icon="trash" />{' '}
+          <FontAwesomeIcon icon={faTrash} />{' '}
           <span className="d-none d-md-inline">Annuler la réservation</span>
         </Button>
         &nbsp;
@@ -149,7 +150,7 @@ export const CustomerDetail = (): JSX.Element => {
           replace
           color="primary"
         >
-          <FontAwesomeIcon icon="pencil-alt" />{' '}
+          <FontAwesomeIcon icon={faPencilAlt} />{' '}
           <span className="d-none d-md-inline">Modifier la réservation</span>
         </Button>
       </Col>

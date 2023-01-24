@@ -1,7 +1,7 @@
+import { faArrowLeft, faPencilAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
-import {} from 'react-jhipster'
 import { Link, useParams } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
@@ -34,11 +34,12 @@ export const PricingDetail = () => {
           <dd>{pricingEntity.comment}</dd>
         </dl>
         <Button tag={Link} to="/pricing" replace color="info" data-cy="entityDetailsBackButton">
-          <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Retour</span>
+          <FontAwesomeIcon icon={faArrowLeft} /> <span className="d-none d-md-inline">Retour</span>
         </Button>
         &nbsp;
         <Button tag={Link} to={`/pricing/${pricingEntity.id}/edit`} replace color="primary">
-          <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Modifier</span>
+          <FontAwesomeIcon icon={faPencilAlt} />{' '}
+          <span className="d-none d-md-inline">Modifier</span>
         </Button>
       </Col>
     </Row>

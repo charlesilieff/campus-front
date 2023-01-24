@@ -1,3 +1,4 @@
+import { faEye, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { PlaceMenu } from 'app/shared/layout/menus/placeMenu'
@@ -27,7 +28,7 @@ export const Room = () => {
         Chambres / Lieux de couchage
         <div className="d-flex justify-content-end">
           <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon="sync" spin={loading} /> Rafraîchir
+            <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraîchir
           </Button>
           <Link
             to={`room/new`}
@@ -35,7 +36,7 @@ export const Room = () => {
             id="jh-create-entity"
             data-cy="entityCreateButton"
           >
-            <FontAwesomeIcon icon="plus" />
+            <FontAwesomeIcon icon={faPlus} />
             &nbsp; Créer une chambre
           </Link>
         </div>
@@ -89,7 +90,7 @@ export const Room = () => {
                           size="sm"
                           data-cy="entityDetailsButton"
                         >
-                          <FontAwesomeIcon icon="eye" />{' '}
+                          <FontAwesomeIcon icon={faEye} />{' '}
                           <span className="d-none d-md-inline">Voir</span>
                         </Button>
                         <Button
@@ -99,7 +100,7 @@ export const Room = () => {
                           size="sm"
                           data-cy="entityEditButton"
                         >
-                          <FontAwesomeIcon icon="pencil-alt" />{' '}
+                          <FontAwesomeIcon icon={faPencilAlt} />{' '}
                           <span className="d-none d-md-inline">Editer</span>
                         </Button>
                         <Button
@@ -109,7 +110,7 @@ export const Room = () => {
                           size="sm"
                           data-cy="entityDeleteButton"
                         >
-                          <FontAwesomeIcon icon="trash" />{' '}
+                          <FontAwesomeIcon icon={faTrash} />{' '}
                           <span className="d-none d-md-inline">Supprimer</span>
                         </Button>
                       </div>
