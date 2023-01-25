@@ -1,12 +1,11 @@
 import './home.scss'
 
 import { Box, Button, HStack, Image, Text, VStack } from '@chakra-ui/react'
-import { pipe } from '@effect-ts/core'
-import * as O from '@effect-ts/core/Option'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { AUTHORITIES } from 'app/config/constants'
 import { useAppSelector } from 'app/config/store'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
+import { Option as O, pipe } from 'effect'
 import React from 'react'
 import { Link } from 'react-router-dom'
 

@@ -9,7 +9,7 @@ import { Button, Col, Row } from 'reactstrap'
 
 import { getEntity } from './reservation-request.reducer'
 
-export const CustomerDetail = (): JSX.Element => {
+export const ReservationRequestDetail = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const { id } = useParams<'id'>()
 
@@ -157,5 +157,3 @@ export const CustomerDetail = (): JSX.Element => {
     </Row>
   )
 }
-
-export default CustomerDetail

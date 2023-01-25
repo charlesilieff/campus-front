@@ -13,5 +13,3 @@ export const DemandUpdate = (): JSX.Element => {
     </div>
   )
 }
-
-export default DemandUpdate

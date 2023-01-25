@@ -1,11 +1,10 @@
 import { Radio, RadioGroup, Text, VStack } from '@chakra-ui/react'
-import * as A from '@effect-ts/core/Collections/Immutable/Array'
-import * as O from '@effect-ts/core/Option'
 import { IRoom } from 'app/shared/model/room.model'
+import { Option as O } from 'effect'
 import React, { FunctionComponent } from 'react'
 
 interface IProps {
-  rooms: A.Array<IRoom>
+  rooms: ReadonlyArray<IRoom>
   selectedBedId: (bedId: O.Option<number>) => void
 }
 export const IntermittentBeds: FunctionComponent<IProps> = (

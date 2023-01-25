@@ -1,20 +1,20 @@
 import { Button, Checkbox, CheckboxGroup, Heading, useToast, VStack } from '@chakra-ui/react'
-import * as A from '@effect-ts/core/Collections/Immutable/Array'
 import { IPlace } from 'app/shared/model/place.model'
 import axios from 'axios'
+import * as A from 'fp-ts/lib/ReadonlyArray'
 import React, { useEffect, useState } from 'react'
 
 export const PlaceIntermittent = () => {
-  const [places, setPlaces] = useState<A.Array<IPlace>>(A.empty)
-  const [selectedPlaceIds, setSelectedPlaceIds] = useState<A.Array<string>>(A.empty)
+  const [places, setPlaces] = useState<ReadonlyArray<IPlace>>(A.empty)
+  const [selectedPlaceIds, setSelectedPlaceIds] = useState<ReadonlyArray<string>>(A.empty)
   const apiUrl = 'api/places/noimage'
   const [isLoading, setIsLoading] = useState(false)
   const getPlaces = async () => {
     const requestUrl = `${apiUrl}`
-    return axios.get<A.Array<IPlace>>(requestUrl)
+    return axios.get<ReadonlyArray<IPlace>>(requestUrl)
   }
   const toast = useToast()
-  const saveIntermittentPlaces = async (selectedPlaceIds: A.Array<string>) => {
+  const saveIntermittentPlaces = async (selectedPlaceIds: ReadonlyArray<string>) => {
     const requestUrl = `api/places/intermittent`
     setIsLoading(true)
     return axios.post(requestUrl, selectedPlaceIds).then(() => {
@@ -59,7 +59,7 @@ export const PlaceIntermittent = () => {
       </Heading>
       <CheckboxGroup
         onChange={e => setSelectedPlaceIds(e.map(e => e.toString()))}
-        value={A.toMutable(selectedPlaceIds)}
+        value={A.toArray(selectedPlaceIds)}
       >
         <VStack alignContent={'flex-start'} w={'100%'}>
           {places.map(place => {

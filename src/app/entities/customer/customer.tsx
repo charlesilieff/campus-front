@@ -1,9 +1,10 @@
+import { Button, Heading, HStack, VStack } from '@chakra-ui/react'
 import { faEye, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Table } from 'reactstrap'
+import { Table } from 'reactstrap'
 
 import { getEntities } from './customer.reducer'
 
@@ -22,24 +23,27 @@ export const Customer = () => {
   }
 
   return (
-    <div>
-      <h2 id="customer-heading" data-cy="CustomerHeading">
-        Clients
-        <div className="d-flex justify-content-end">
-          <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraîchir la liste
-          </Button>
-          <Link
-            to={`new`}
-            className="btn btn-primary jh-create-entity"
-            id="jh-create-entity"
-            data-cy="entityCreateButton"
-          >
-            <FontAwesomeIcon icon={faPlus} />
-            &nbsp; Créez un nouveau client
-          </Link>
-        </div>
-      </h2>
+    <VStack>
+      <Heading>Clients</Heading>
+      <HStack alignSelf={'right'}>
+        <Button
+          onClick={handleSyncList}
+          disabled={loading}
+          isLoading={loading}
+          leftIcon={<FontAwesomeIcon icon={faSync} />}
+        >
+          Rafraîchir la liste
+        </Button>
+        <Link
+          to={`new`}
+          className="btn btn-primary jh-create-entity"
+          id="jh-create-entity"
+          data-cy="entityCreateButton"
+        >
+          <FontAwesomeIcon icon={faPlus} />
+          &nbsp; Créez un nouveau client
+        </Link>
+      </HStack>
       <div className="table-responsive">
         {customerList && customerList.length > 0 ?
           (
@@ -62,10 +66,9 @@ export const Customer = () => {
                     <td>{customer.firstname}</td>
                     <td>{customer.lastname}</td>
                     <td>{customer.age}</td>
-                    {/* <td>{customer.isFemal ? 'Femme' : 'Homme'}</td> */}
                     <td>{customer.phoneNumber}</td>
                     <td>
-                      <Button tag={Link} to={`${customer.id}`} color="link" size="sm">
+                      <Button as={Link} to={`${customer.id}`} color="link" size="sm">
                         {customer.email}
                       </Button>
                     </td>
@@ -73,7 +76,7 @@ export const Customer = () => {
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
                         <Button
-                          tag={Link}
+                          as={Link}
                           to={`${customer.id}`}
                           color="info"
                           size="sm"
@@ -83,7 +86,7 @@ export const Customer = () => {
                           <span className="d-none d-md-inline">Voir</span>
                         </Button>
                         <Button
-                          tag={Link}
+                          as={Link}
                           to={`${customer.id}/edit`}
                           color="primary"
                           size="sm"
@@ -93,7 +96,7 @@ export const Customer = () => {
                           <span className="d-none d-md-inline">Modifier</span>
                         </Button>
                         <Button
-                          tag={Link}
+                          as={Link}
                           to={`${customer.id}/delete`}
                           color="danger"
                           size="sm"
@@ -111,7 +114,7 @@ export const Customer = () => {
           ) :
           (!loading && <div className="alert alert-warning">Aucun client trouvé</div>)}
       </div>
-    </div>
+    </VStack>
   )
 }
 

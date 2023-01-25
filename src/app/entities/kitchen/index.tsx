@@ -192,7 +192,7 @@ function displayTotalMeals(resultTotalMeals: number[]) {
     <div className="row">
       <div className="col-4">
         <div id="total" className="col">
-          {'Total repas classiques de midi: ' + resultTotalMeals[0]}
+          {`Total repas classiques de midi: ${resultTotalMeals[0]}`}
         </div>
         <div id="total" className="col">
           {'Total repas classiques du soir: ' + resultTotalMeals[1]}

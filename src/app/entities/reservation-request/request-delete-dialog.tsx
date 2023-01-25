@@ -53,5 +53,3 @@ export const RequestDeleteDialog = () => {
     ) :
     <div>Votre réservation a bien été annulée, vous allez recevoir un email de confirmation.</div>
 }
-
-export default RequestDeleteDialog

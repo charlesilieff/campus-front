@@ -5,7 +5,9 @@ import { Route } from 'react-router-dom'
 import { AUTHORITIES } from './config/constants'
 import { EntitiesRoutes } from './entities'
 import Kitchen from './entities/kitchen'
-import { ReservationRequestRoutes } from './entities/reservation-request'
+import { RequestDeleteDialog } from './entities/reservation-request/request-delete-dialog'
+import { ReservationRequestDetail } from './entities/reservation-request/request-detail'
+import { DemandUpdate as ReservationRequestUpdate } from './entities/reservation-request/request-update'
 import Activate from './modules/account/activate/activate'
 import PasswordResetFinish from './modules/account/password-reset/finish/password-reset-finish'
 import PasswordResetInit from './modules/account/password-reset/init/password-reset-init'
@@ -37,7 +39,21 @@ const Routes = () => {
         <Route path="rgpd" element={<RGPD />} />
         <Route path="login" element={<Login />} />
         <Route path="logout" element={<Logout />} />
-        <Route path="reservation-request" element={<ReservationRequestRoutes />} />
+
+        <Route path="reservation-request">
+          <Route path="new" element={<ReservationRequestUpdate />}></Route>
+          <Route path={`:id`}>
+            <Route
+              path={`edit`}
+              element={<ReservationRequestUpdate />}
+            />
+            <Route index element={<ReservationRequestDetail />} />
+            <Route
+              path={`delete`}
+              element={<RequestDeleteDialog />}
+            />
+          </Route>
+        </Route>
         <Route path="account">
           <Route
             path="register-intermittent"

@@ -97,7 +97,7 @@
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/no-empty-function": "warn",
     "@typescript-eslint/unbound-method": "warn",
-    "@typescript-eslint/array-type": "warn",
+    "@typescript-eslint/array-type": "off",
     "@typescript-eslint/no-shadow": "off",
     "spaced-comment": [
       "warn",

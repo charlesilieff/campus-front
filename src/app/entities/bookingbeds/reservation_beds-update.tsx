@@ -1,5 +1,4 @@
 import { Heading, HStack, Select, Text } from '@chakra-ui/react'
-import * as A from '@effect-ts/core/Collections/Immutable/Array'
 import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
@@ -14,6 +13,7 @@ import { CustomValidatedField } from 'app/shared/util/cross-validation-form'
 import { mapIdList } from 'app/shared/util/entity-utils'
 import axios from 'axios'
 import dayjs from 'dayjs'
+import * as A from 'fp-ts/lib/ReadonlyArray'
 import React, { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { TextFormat } from 'react-jhipster'
@@ -46,7 +46,7 @@ export const ReservationBedsUpdate = (): JSX.Element => {
   const [placeImage, setPlace] = useState(null as IPlace)
 
   useEffect(() => {
-    getPlaces().then(data => setPlaces(A.toMutable(data)))
+    getPlaces().then(data => setPlaces(A.toArray(data)))
     getBookingBeds()
     let updatedbedsToBook: number[]
 

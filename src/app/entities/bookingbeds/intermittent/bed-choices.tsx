@@ -3,15 +3,16 @@ import {
   Spinner,
   VStack
 } from '@chakra-ui/react'
-import * as A from '@effect-ts/core/Collections/Immutable/Array'
-import * as O from '@effect-ts/core/Option'
 import { IRoom } from 'app/shared/model/room.model'
+import { Option as O } from 'effect'
+import { consNonEmptyReadonlyArray } from 'effect/index/Optic'
 import React, { useEffect, useState } from 'react'
 
 import { getIntermittentPlaceWithFreeBeds } from '../utils'
 import { IntermittentBeds } from './beds-intermittent'
 import { DatesAndMeals } from './reservation-intermittent-update'
 
+consNonEmptyReadonlyArray
 interface DatesAndMealsChoicesProps {
   setSelectedBedId: (bedId: O.Option<number>) => void
   datesAndMeals: O.Option<DatesAndMeals>
@@ -21,9 +22,9 @@ export const BedsChoices = (
   props: DatesAndMealsChoicesProps
 ): JSX.Element => {
   // const [loading, setLoading] = useState(false)
-  // const [places, setPlaces] = useState<A.Array<IPlace>>([])
-  const [rooms, setRooms] = useState<A.Array<IRoom>>([])
-  // const [roomKinds, setRoomKinds] = useState<A.Array<IBedroomKind>>([])
+  // const [places, setPlaces] = useState<ReadonlyArray<IPlace>>([])
+  const [rooms, setRooms] = useState<ReadonlyArray<IRoom>>([])
+  // const [roomKinds, setRoomKinds] = useState<ReadonlyArray<IBedroomKind>>([])
   const [loading, setLoading] = useState(false)
   useEffect(() => {
     // getPlaces().then(data => setPlaces(A.toMutable(data)))

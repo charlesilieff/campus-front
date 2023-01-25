@@ -5,7 +5,7 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
-import * as O from '@effect-ts/core/Option'
+import { Option as O } from 'effect'
 import React from 'react'
 
 import { Customer } from './reservation-intermittent-update'

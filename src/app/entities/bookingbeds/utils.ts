@@ -1,4 +1,3 @@
-import * as A from '@effect-ts/core/Collections/Immutable/Array'
 import { IPlace } from 'app/shared/model/place.model'
 import axios from 'axios'
 
@@ -10,30 +9,34 @@ export const getOnePlace = async (id: string): Promise<IPlace> => {
   return data
 }
 
-export const getPlaces = async (): Promise<A.Array<IPlace>> => {
+export const getPlaces = async (): Promise<ReadonlyArray<IPlace>> => {
   const requestUrl = `${apiUrlPlacesWithoutImage}?cacheBuster=${new Date().getTime()}`
   const { data } = await axios.get<IPlace[]>(requestUrl)
 
   return data
 }
 
-export const filterBedPlace = (places: A.Array<IPlace>) => (idPlace: number): A.Array<IPlace> => {
-  if (isNaN(idPlace) || idPlace === 0) {
-    return places?.flatMap(place => {
-      return place.rooms
-    })
-  } else {
-    return places
-      ?.filter(place => {
-        return place.id === idPlace
-      })
-      ?.flatMap(place => {
+export const filterBedPlace =
+  (places: ReadonlyArray<IPlace>) => (idPlace: number): ReadonlyArray<IPlace> => {
+    if (isNaN(idPlace) || idPlace === 0) {
+      return places?.flatMap(place => {
         return place.rooms
       })
+    } else {
+      return places
+        ?.filter(place => {
+          return place.id === idPlace
+        })
+        ?.flatMap(place => {
+          return place.rooms
+        })
+    }
   }
-}
 
-export const filterBedRoomKind = (places: A.Array<IPlace>, idRoomKind: number): A.Array<IPlace> => {
+export const filterBedRoomKind = (
+  places: ReadonlyArray<IPlace>,
+  idRoomKind: number
+): ReadonlyArray<IPlace> => {
   if (isNaN(idRoomKind)) {
     return places?.flatMap(place => {
       return place.rooms
@@ -52,7 +55,7 @@ export const getPlaceWithFreeBeds = (isIntermittent: boolean) =>
 async (
   arrivalDate: string,
   departureDate: string
-): Promise<A.Array<IPlace>> => {
+): Promise<ReadonlyArray<IPlace>> => {
   const apiUrlPlaces = `api/bookingbeds/${
     isIntermittent ? 'intermittent/' : ''
   }${arrivalDate}/${departureDate}`

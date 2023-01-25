@@ -1,11 +1,10 @@
 import { CheckIcon } from '@chakra-ui/icons'
 import { Button, Heading, HStack, Stack, useToast } from '@chakra-ui/react'
-import { pipe } from '@effect-ts/core'
-import * as A from '@effect-ts/core/Collections/Immutable/Array'
-import * as O from '@effect-ts/core/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { ICustomer } from 'app/shared/model/customer.model'
 import { IReservation } from 'app/shared/model/reservation.model'
+import { pipe } from 'effect'
+import { Option as O } from 'effect'
 import React, { useEffect, useState } from 'react'
 import { BsTrash } from 'react-icons/bs'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -37,7 +36,7 @@ export interface Customer {
   age: O.Option<number>
 }
 
-export type BedIds = A.Array<{ id: number }>
+export type BedIds = ReadonlyArray<{ id: number }>
 
 export const ReservationIntermittentUpdate = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false)
@@ -60,7 +59,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
         lastname: customer.lastname,
         email: customer.email,
         phoneNumber: customer.phoneNumber,
-        age: O.toUndefined(customer.age),
+        age: O.getOrUndefined(customer.age),
         isFemal: false
       }
 
