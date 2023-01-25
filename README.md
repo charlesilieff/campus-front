@@ -87,25 +87,26 @@ To get a local copy up and running follow these simple steps.
 This is an example of how to list things you need to test the software and how to install them.
 
 - npm
+
   ```sh
   npm install npm@latest -g
   ```
 
-
 ### Installation
 
 1. Clone the repo
+
    ```sh
    git clone https://github.com/Carlolis/gestionhebergement.git
    ```
+
 2. Install NPM packages
+
    ```sh
    npm install
    ```
+
    //TODO
-
-
-
 
 ## Roadmap
 
@@ -156,5 +157,8 @@ Project Link: [https://github.com/Carlolis/gestionhebergement](https://github.co
 [license-url]: https://github.com/Carlolis/gestionhebergement/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/charles-ilieff-3b286a39/
-[openjdk]: images/openjdk.png
 [product-screenshot]: images/product_example.png
+
+TODO:
+
+- security issue intermittent should not be able to access <http://localhost:1234/bookingbeds/new/intermittent/:id> if id is not the id of the user

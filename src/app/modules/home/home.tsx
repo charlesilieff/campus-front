@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { AUTHORITIES } from 'app/config/constants'
 import { useAppSelector } from 'app/config/store'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
-import { Option as O, pipe } from 'effect'
+import { pipe } from 'effect'
+import * as O from 'fp-ts/lib/Option'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
@@ -18,13 +19,18 @@ export const Home = (): JSX.Element => {
   const isIntermittent = useAppSelector(state =>
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.INTERMITTENT])
   )
+  console.log(isIntermittent)
   const account = useAppSelector(state => state.authentication.account)
-
+  console.log(account)
   const reservationCreationIntermittentUrl = pipe(
     account.customerId,
     O.fromNullable,
-    O.map(customerId => `bookingbeds/${customerId}/new/intermittent`)
+    O.fold(
+      () => `bookingbeds/new/intermittent`,
+      customerId => `bookingbeds/new/intermittent/${customerId}`
+    )
   )
+  console.log(reservationCreationIntermittentUrl)
   const reservationRequestUrl = 'reservation-request/new'
 
   async function copyLink(): Promise<void> {
@@ -78,11 +84,11 @@ export const Home = (): JSX.Element => {
             </Box>
           ) :
           null}
-        {isIntermittent && O.isSome(reservationCreationIntermittentUrl) ?
+        {isIntermittent ?
           (
             <Button
               as={Link}
-              to={reservationCreationIntermittentUrl.value}
+              to={reservationCreationIntermittentUrl}
               colorScheme={'green'}
               _hover={{ textDecoration: 'none', color: 'gray.900', backgroundColor: 'green.300' }}
             >

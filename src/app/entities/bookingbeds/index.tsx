@@ -6,16 +6,20 @@ import ReservationUpdate from '../reservation/reservation-update'
 import { ReservationIntermittentUpdate } from './intermittent/reservation-intermittent-update'
 import { BookingBedsUpdate } from './new-reservation'
 import ReservationDeleteDialog from './reservation-delete-dialog'
-import ReservationDetail from './reservation-detail'
+import { ReservationDetail } from './reservation-detail'
 
-const Routes = (): JSX.Element => (
+const BookingBedsRoutes = (): JSX.Element => (
   <ErrorBoundaryRoutes>
     <Route path={`new`} element={<ReservationUpdate />} />
+    <Route
+      path={`new/intermittent`}
+      element={<ReservationIntermittentUpdate />}
+    />
+    <Route
+      path={`new/intermittent/:id`}
+      element={<ReservationIntermittentUpdate />}
+    />
     <Route path=":id">
-      <Route
-        path={`new/intermittent`}
-        element={<ReservationIntermittentUpdate />}
-      />
       <Route path={`edit`} element={<BookingBedsUpdate />} />
       <Route index element={<ReservationDetail />} />
       <Route
@@ -26,4 +30,4 @@ const Routes = (): JSX.Element => (
   </ErrorBoundaryRoutes>
 )
 
-export default Routes
+export default BookingBedsRoutes
