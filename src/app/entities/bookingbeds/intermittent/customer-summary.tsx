@@ -1,5 +1,6 @@
 import { CheckCircleIcon } from '@chakra-ui/icons'
 import {
+  Button,
   Heading,
   HStack,
   Text,
@@ -7,11 +8,13 @@ import {
 } from '@chakra-ui/react'
 import { Option as O } from 'effect'
 import React from 'react'
+import { BsPencil } from 'react-icons/bs'
 
 import { Customer } from './reservation-intermittent-update'
 
 interface CustomerSummaryProps {
   customer: Customer
+  setUpdateCustomer: (updateCustomer: boolean) => void
 }
 
 export const CustomerSummary = (
@@ -22,7 +25,8 @@ export const CustomerSummary = (
       firstname,
       lastname,
       phoneNumber
-    }
+    },
+    setUpdateCustomer
   }: CustomerSummaryProps
 ): JSX.Element => {
   return (
@@ -69,16 +73,15 @@ export const CustomerSummary = (
         <Text pl={12} fontWeight={'bold'}>{'Téléphone :'}</Text>
         <Text>{phoneNumber}</Text>
       </HStack>
-      {
-        /* <Button
+
+      <Button
         colorScheme="blue"
         rightIcon={<BsPencil />}
-        onClick={() => setUpdate(true)}
+        onClick={() => setUpdateCustomer(true)}
         disabled={true}
       >
         Modifier
-      </Button> */
-      }
+      </Button>
     </VStack>
   )
 }

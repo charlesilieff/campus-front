@@ -1,10 +1,8 @@
 import { CheckIcon } from '@chakra-ui/icons'
 import { Button, Heading, HStack, Stack, useToast } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import { ICustomer } from 'app/shared/model/customer.model'
 import { IReservation } from 'app/shared/model/reservation.model'
-import { pipe } from 'effect'
-import { Option as O } from 'effect'
+import { Option as O, pipe } from 'effect'
 import React, { useEffect, useState } from 'react'
 import { BsTrash } from 'react-icons/bs'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -13,6 +11,7 @@ import { getEntity as getCustomerEntity } from '../../customer/customer.reducer'
 import { createEntity, reset } from '../booking-beds.reducer'
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
+import { CustomerUpdate } from './customer-update'
 import { DatesAndMealsChoices } from './dates-and-meals-choices-intermittent'
 import { DatesAndMealsSummary } from './dates-and-meals-summary-intermittent'
 
@@ -45,49 +44,52 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const toast = useToast()
   const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
+
   const createIReservation = (
-    customer: Customer,
+    customer: O.Option<Customer>,
     datesAndMeals: O.Option<DatesAndMeals>,
     bedId: O.Option<number>
-  ): O.Option<IReservation> => {
-    if (O.isNone(datesAndMeals) || O.isNone(bedId)) {
-      return O.none
-    } else {
-      const Icustomer: ICustomer = {
-        id: customer.id,
-        firstname: customer.firstname,
-        lastname: customer.lastname,
-        email: customer.email,
-        phoneNumber: customer.phoneNumber,
-        age: O.getOrUndefined(customer.age),
-        isFemal: false
-      }
+  ): O.Option<IReservation> =>
+    pipe(
+      O.struct({ customer, datesAndMeals, bedId }),
+      O.map(({ customer, datesAndMeals, bedId }) => {
+        const reservation: IReservation = {
+          // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
+          arrivalDate: datesAndMeals.arrivalDate,
+          // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
+          departureDate: datesAndMeals.departureDate,
+          specialDietNumber: datesAndMeals.specialDiet === 'true' ? 1 : 0,
+          isArrivalLunch: datesAndMeals.isArrivalLunch,
+          isArrivalDiner: datesAndMeals.isArrivalDinner,
+          isDepartureLunch: datesAndMeals.isDepartureLunch,
+          isDepartureDiner: datesAndMeals.isDepartureDinner,
+          comment: datesAndMeals.comment,
+          beds: [{ id: bedId }],
+          isConfirmed: true,
+          isPaid: false,
+          isLunchOnly: false,
+          paymentMode: '',
+          personNumber: 1,
+          customer: {
+            id: customer.id,
+            firstname: customer.firstname,
+            lastname: customer.lastname,
+            email: customer.email,
+            phoneNumber: customer.phoneNumber,
+            age: O.getOrUndefined(customer.age),
+            isFemal: false
+          }
+        }
 
-      const reservation: IReservation = {
-        // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
-        arrivalDate: datesAndMeals.value.arrivalDate,
-        // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
-        departureDate: datesAndMeals.value.departureDate,
-        specialDietNumber: datesAndMeals.value.specialDiet === 'true' ? 1 : 0,
-        isArrivalLunch: datesAndMeals.value.isArrivalLunch,
-        isArrivalDiner: datesAndMeals.value.isArrivalDinner,
-        isDepartureLunch: datesAndMeals.value.isDepartureLunch,
-        isDepartureDiner: datesAndMeals.value.isDepartureDinner,
-        comment: datesAndMeals.value.comment,
-        beds: [{ id: bedId.value }],
-        isConfirmed: true,
-        isPaid: false,
-        isLunchOnly: false,
-        paymentMode: '',
-        personNumber: 1,
-        customer: Icustomer
-      }
+        return reservation
+      })
+    )
 
-      return O.some(reservation)
-    }
-  }
-
-  const handleSubmitReservation = (): void => {
+  const handleSubmitReservation = (
+    datesAndMeal: O.Option<DatesAndMeals>,
+    bedId: O.Option<number>,
+    customer: O.Option<Customer>
+  ): void => {
     const reservation = createIReservation(customer, datesAndMeal, bedId)
     if (O.isSome(reservation)) {
       setIsLoading(true)
@@ -98,21 +100,29 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
   }
 
   useEffect(() => {
-    dispatch(getCustomerEntity(id))
+    id !== undefined ? dispatch(getCustomerEntity(id)) : null
+    pipe(
+      id,
+      O.fromNullable,
+      O.map(id => dispatch(getCustomerEntity(id))),
+      O.map(_ => useAppSelector(state => state.customer.entity)),
+      O.map(c =>
+        setCustomer(O.some({
+          id: c?.id,
+          firstname: c?.firstname,
+          lastname: c?.lastname,
+          email: c?.email,
+          phoneNumber: c?.phoneNumber,
+          age: O.some(c?.age)
+        }))
+      )
+    )
   }, [])
-  const customer: Customer = pipe(
-    useAppSelector(state => state.customer.entity),
-    c => ({
-      id: c?.id,
-      firstname: c?.firstname,
-      lastname: c?.lastname,
-      email: c?.email,
-      phoneNumber: c?.phoneNumber,
-      age: O.some(c?.age)
-    })
-  )
+
   const [datesAndMeal, setDatesAndMeal] = useState<O.Option<DatesAndMeals>>(O.none)
+  const [customer, setCustomer] = useState<O.Option<Customer>>(O.none)
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
+  const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
 
   const [bedId, setBedId] = useState<O.Option<number>>(O.none)
 
@@ -146,9 +156,20 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
       <Heading size={'lg'} m={4}>
         Votre réservation
       </Heading>
-      <CustomerSummary
-        customer={customer}
-      />
+      {O.isNone(customer) || updateCustomer ?
+        (
+          <CustomerUpdate
+            customer={customer}
+            setUpdateCustomer={setUpdateCustomer}
+            setCustomer={setCustomer}
+          />
+        ) :
+        (
+          <CustomerSummary
+            setUpdateCustomer={setUpdateCustomer}
+            customer={customer.value}
+          />
+        )}
       {O.isNone(datesAndMeal) || updateDatesAndMeals ?
         (
           <DatesAndMealsChoices
@@ -183,7 +204,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
             {'Choix des lits'}
           </Heading>
         )}
-      {(O.isSome(datesAndMeal) || updateDatesAndMeals) && O.isSome(bedId) ?
+      {O.isSome(customer) && O.isSome(datesAndMeal) && O.isSome(bedId) ?
         (
           <HStack justifyContent={'end'}>
             <Button as={Link} to={''} colorScheme={'red'} rightIcon={<BsTrash />}>Annuler</Button>
@@ -191,7 +212,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
               isLoading={isLoading}
               colorScheme={'blue'}
               rightIcon={<CheckIcon />}
-              onClick={() => handleSubmitReservation()}
+              onClick={() => handleSubmitReservation(datesAndMeal, bedId, customer)}
             >
               Finaliser la réservation
             </Button>
