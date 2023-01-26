@@ -46,7 +46,7 @@ interface IAuthParams {
 
 export const authenticate = createAsyncThunk(
   'authentication/login',
-  async (auth: IAuthParams) => axios.post<any>('api/authenticate', auth),
+  async (auth: IAuthParams) => axios.post<IAuthParams>('api/authenticate', auth),
   {
     serializeError: serializeAxiosError
   }
@@ -59,7 +59,7 @@ export const login: (username: string, password: string, rememberMe?: boolean) =
 ) =>
 async dispatch => {
   const result = await dispatch(authenticate({ username, password, rememberMe }))
-  console.log(result)
+
   const response = result.payload as AxiosResponse
   const bearerToken = response?.headers?.authorization
   if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {

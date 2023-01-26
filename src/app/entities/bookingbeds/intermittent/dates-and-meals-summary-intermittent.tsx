@@ -5,6 +5,7 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
+import * as O from 'fp-ts/lib/Option'
 import React from 'react'
 import { BsPencil } from 'react-icons/bs'
 
@@ -13,6 +14,7 @@ import { DatesAndMeals } from './reservation-intermittent-update'
 interface DatesAndMealsSummaryProps {
   datesAndMeals: DatesAndMeals
   setUpdate: (update: boolean) => void
+  setBedId: (bedId: O.Option<number>) => void
 }
 
 export const DatesAndMealsSummary = (
@@ -27,7 +29,8 @@ export const DatesAndMealsSummary = (
       isDepartureLunch,
       specialDiet
     },
-    setUpdate
+    setUpdate,
+    setBedId
   }: DatesAndMealsSummaryProps
 ): JSX.Element => {
   const mealSelected = (isDinner: boolean, isLunch: boolean): string => {
@@ -82,7 +85,14 @@ export const DatesAndMealsSummary = (
         <Text fontWeight={'bold'}>Commentaire :</Text>
         <Text>{comment}</Text>
       </VStack>
-      <Button colorScheme={'orange'} rightIcon={<BsPencil />} onClick={() => setUpdate(true)}>
+      <Button
+        colorScheme="blue"
+        rightIcon={<BsPencil />}
+        onClick={() => {
+          setBedId(O.none)
+          setUpdate(true)
+        }}
+      >
         Modifier
       </Button>
     </VStack>

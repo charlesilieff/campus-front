@@ -1,9 +1,9 @@
+import { Button } from '@chakra-ui/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { ValidatedField } from 'react-jhipster'
 import { Link } from 'react-router-dom'
-import { Alert, Button, Col, Form, Modal, ModalBody, ModalFooter, ModalHeader,
-  Row } from 'reactstrap'
+import { Alert, Col, Form, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap'
 
 export interface ILoginModalProps {
   showModal: boolean
@@ -13,7 +13,9 @@ export interface ILoginModalProps {
 }
 
 const LoginModal = (props: ILoginModalProps) => {
-  const login = ({ username, password, rememberMe }) => {
+  const login = (
+    { username, password, rememberMe }: { username: string; password: string; rememberMe: boolean }
+  ) => {
     props.handleLogin(username, password, rememberMe)
   }
 
@@ -103,9 +105,9 @@ const LoginModal = (props: ILoginModalProps) => {
         </ModalBody>
         <ModalFooter>
           <Button color="secondary" onClick={handleClose} tabIndex={1}>
-            Annnuler
+            Annuler
           </Button>{' '}
-          <Button color="primary" type="submit" data-cy="submit">
+          <Button backgroundColor={'#17a2b8'} color={'white'} type="submit" data-cy="submit">
             Se connecter
           </Button>
         </ModalFooter>

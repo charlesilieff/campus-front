@@ -170,7 +170,21 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
             customer={customer.value}
           />
         )}
-      {O.isNone(datesAndMeal) || updateDatesAndMeals ?
+      {O.isNone(customer) || (updateCustomer && O.isNone(datesAndMeal)) ?
+        (
+          <Heading
+            p={4}
+            borderRadius={8}
+            borderColor={'#D9D9D9'}
+            border={'solid'}
+            fontWeight={'bold'}
+            fontSize={'25'}
+            color={'#C4C4C4'}
+          >
+            {'Date et repas'}
+          </Heading>
+        ) :
+        O.isNone(datesAndMeal) || updateDatesAndMeals ?
         (
           <DatesAndMealsChoices
             datesAndMeals={datesAndMeal}
@@ -182,6 +196,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
           <DatesAndMealsSummary
             datesAndMeals={datesAndMeal.value}
             setUpdate={setUpdateDatesAndMeals}
+            setBedId={setBedId}
           />
         )}
       {O.isSome(datesAndMeal) && !updateDatesAndMeals ?
