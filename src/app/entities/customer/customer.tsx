@@ -3,6 +3,7 @@ import { faEye, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-s
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
+import { HiRefresh } from 'react-icons/hi'
 import { Link } from 'react-router-dom'
 import { Table } from 'reactstrap'
 
@@ -15,7 +16,7 @@ export const Customer = () => {
   const loading = useAppSelector(state => state.customer.loading)
 
   useEffect(() => {
-    dispatch(getEntities())
+    handleSyncList()
   }, [])
 
   const handleSyncList = () => {
@@ -25,12 +26,13 @@ export const Customer = () => {
   return (
     <VStack>
       <Heading>Clients</Heading>
-      <HStack alignSelf={'right'}>
+      <HStack alignSelf={'flex-end'}>
         <Button
-          onClick={handleSyncList}
-          disabled={loading}
+          onClick={() => {
+            handleSyncList
+          }}
           isLoading={loading}
-          leftIcon={<FontAwesomeIcon icon={faSync} />}
+          leftIcon={<HiRefresh size={'25px'} />}
         >
           Rafraîchir la liste
         </Button>

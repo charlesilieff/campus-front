@@ -44,8 +44,7 @@ export const AccountMenu = ({ isAuthenticated = false }) => (
     >
       Compte
     </MenuButton>
-    <MenuList>
-      <MenuList>{isAuthenticated ? accountMenuItemsAuthenticated : accountMenuItems}</MenuList>
-    </MenuList>
+
+    <MenuList>{isAuthenticated ? accountMenuItemsAuthenticated : accountMenuItems}</MenuList>
   </Menu>
 )
