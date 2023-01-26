@@ -48,10 +48,8 @@ export const Reservation = () => {
             <Table responsive>
               <thead>
                 <tr>
-                  <th>Id</th>
                   <th>Nombre de personnes</th>
-                  <th>Moyen de paiement</th>
-                  <th>Payé</th>
+
                   <th>Confirmé</th>
                   <th>Nombre de régime spéciaux</th>
                   <th>Dort au Campus</th>
@@ -62,7 +60,7 @@ export const Reservation = () => {
                   <th>Date d&apos;arrivée</th>
                   <th>Date de départ</th>
                   <th>Commentaire</th>
-                  <th>Tarif</th>
+
                   <th>Lits</th>
                   <th>Client</th>
                   <th />
@@ -71,19 +69,8 @@ export const Reservation = () => {
               <tbody>
                 {reservationList.map((reservation, i) => (
                   <tr key={`entity-${i}`} data-cy="entityTable">
-                    <td>
-                      <Button
-                        tag={Link}
-                        to={`/bookingbeds/${reservation.id}`}
-                        color="link"
-                        size="sm"
-                      >
-                        {reservation.id}
-                      </Button>
-                    </td>
                     <td>{reservation.personNumber}</td>
-                    <td>{reservation.paymentMode}</td>
-                    <td>{reservation.isPaid ? 'Oui' : 'Non'}</td>
+
                     <td>{reservation.isConfirmed ? 'Oui' : 'Non'}</td>
                     <td>{reservation.specialDietNumber}</td>
                     <td>{reservation.isLunchOnly ? 'Non' : 'Oui'}</td>
@@ -114,15 +101,7 @@ export const Reservation = () => {
                         null}
                     </td>
                     <td>{reservation.comment}</td>
-                    <td>
-                      {reservation.pricing ?
-                        (
-                          <Link to={`pricing/${reservation.pricing.id}`}>
-                            {reservation.pricing.wording}
-                          </Link>
-                        ) :
-                        ('Pas de tarif associé.')}
-                    </td>
+
                     <td>
                       {reservation.beds ?
                         reservation.beds.map((val, j) => (

@@ -1,3 +1,4 @@
+import { Heading } from '@chakra-ui/react'
 import { faEye, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
@@ -25,7 +26,7 @@ export const Bed = () => {
   return (
     <div>
       <h2 id="bed-heading" data-cy="BedHeading">
-        Liste des lits
+        <Heading>Liste des lits</Heading>
         <div className="d-flex justify-content-end">
           <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
             <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraichîr la liste

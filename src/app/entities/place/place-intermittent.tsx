@@ -21,11 +21,14 @@ export const PlaceIntermittent = () => {
       const placesUpdatedNames = places.filter(place =>
         selectedPlaceIds.includes(place.id.toString())
       ).map(place => place.name).join(', ')
+      const message = placesUpdatedNames.length > 0 ?
+        `Les intermittents peuvent réserver ces lieux : ${placesUpdatedNames}` :
+        "Aucun lieu n'est disponible pour les intermittents"
       toast({
         position: 'top',
         title: 'Lieux modifiés',
-        description: `Les intermittents peuvent réserver ces lieux : ${placesUpdatedNames}`,
-        status: 'success',
+        description: message,
+        status: placesUpdatedNames.length > 0 ? 'success' : 'warning',
         duration: 9000,
         isClosable: true
       })
@@ -50,18 +53,17 @@ export const PlaceIntermittent = () => {
 
     setSelectedPlaceIds(places2)
   }, [places])
-  console.log(selectedPlaceIds)
 
   return (
-    <VStack alignContent={'flex-start'} w={'100%'}>
-      <Heading size={'lg'} mb={4}>
+    <VStack alignContent={'flex-start'} w={'100%'} spacing={8}>
+      <Heading size={'lg'}>
         Choisissez les lieux pour les intermittents
       </Heading>
       <CheckboxGroup
         onChange={e => setSelectedPlaceIds(e.map(e => e.toString()))}
         value={A.toArray(selectedPlaceIds)}
       >
-        <VStack alignContent={'flex-start'} w={'100%'}>
+        <VStack>
           {places.map(place => {
             return (
               <Checkbox

@@ -1,8 +1,7 @@
 import { Button, Heading, HStack, VStack } from '@chakra-ui/react'
-import { faEye, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
+import { FaEye, FaPencilAlt, FaPlus, FaTrash } from 'react-icons/fa'
 import { HiRefresh } from 'react-icons/hi'
 import { Link } from 'react-router-dom'
 import { Table } from 'reactstrap'
@@ -25,26 +24,29 @@ export const Customer = () => {
 
   return (
     <VStack>
-      <Heading>Clients</Heading>
+      <Heading alignSelf={'flex-start'}>Clients</Heading>
       <HStack alignSelf={'flex-end'}>
         <Button
-          onClick={() => {
-            handleSyncList
-          }}
+          onClick={handleSyncList}
           isLoading={loading}
           leftIcon={<HiRefresh size={'25px'} />}
+          backgroundColor={'#17a2b8'}
+          color={'white'}
         >
           Rafraîchir la liste
         </Button>
-        <Link
+        <Button
+          as={Link}
+          color={'white'}
+          backgroundColor={'#e95420'}
+          _hover={{ textDecoration: 'none', color: 'orange' }}
           to={`new`}
-          className="btn btn-primary jh-create-entity"
           id="jh-create-entity"
           data-cy="entityCreateButton"
+          leftIcon={<FaPlus />}
         >
-          <FontAwesomeIcon icon={faPlus} />
-          &nbsp; Créez un nouveau client
-        </Link>
+          Créez un nouveau client
+        </Button>
       </HStack>
       <div className="table-responsive">
         {customerList && customerList.length > 0 ?
@@ -79,33 +81,42 @@ export const Customer = () => {
                       <div className="btn-group flex-btn-group-container">
                         <Button
                           as={Link}
+                          color={'white'}
+                          backgroundColor={'#17a2b8'}
                           to={`${customer.id}`}
-                          color="info"
                           size="sm"
                           data-cy="entityDetailsButton"
+                          leftIcon={<FaEye />}
+                          borderRightRadius={0}
+                          _hover={{ textDecoration: 'none', color: 'orange' }}
                         >
-                          <FontAwesomeIcon icon={faEye} />{' '}
-                          <span className="d-none d-md-inline">Voir</span>
+                          Voir
                         </Button>
                         <Button
                           as={Link}
+                          color={'white'}
+                          backgroundColor={'#e95420'}
                           to={`${customer.id}/edit`}
-                          color="primary"
                           size="sm"
                           data-cy="entityEditButton"
+                          borderRadius={0}
+                          leftIcon={<FaPencilAlt />}
+                          _hover={{ textDecoration: 'none', color: 'orange' }}
                         >
-                          <FontAwesomeIcon icon={faPencilAlt} />{' '}
-                          <span className="d-none d-md-inline">Modifier</span>
+                          Modifier
                         </Button>
                         <Button
                           as={Link}
+                          color={'white'}
+                          backgroundColor={'#df382c'}
                           to={`${customer.id}/delete`}
-                          color="danger"
                           size="sm"
                           data-cy="entityDeleteButton"
+                          borderLeftRadius={0}
+                          leftIcon={<FaTrash />}
+                          _hover={{ textDecoration: 'none', color: 'orange' }}
                         >
-                          <FontAwesomeIcon icon={faTrash} />{' '}
-                          <span className="d-none d-md-inline">Suppimer</span>
+                          Supprimer
                         </Button>
                       </div>
                     </td>
