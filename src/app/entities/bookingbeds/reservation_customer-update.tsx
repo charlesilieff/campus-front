@@ -69,7 +69,7 @@ export const ReservationCustomerUpdate = () => {
       arrivalDate: values.arrivalDate,
       departureDate: values.departureDate,
       isArrivalDiner: values.isArrivalDiner,
-      isArrivalLunch: values.isArrivalDiner,
+      isArrivalLunch: values.isArrivalLunch,
       isDepartureDiner: values.isDepartureDiner,
       isDepartureLunch: values.isDepartureLunch,
       comment: values.reservationComment,
@@ -243,7 +243,8 @@ export const ReservationCustomerUpdate = () => {
                     validate: value => isNumber(value) || 'Tapez un nombre'
                   }}
                 />
-                <ValidatedField
+                {
+                  /* <ValidatedField
                   label="Mange uniquement le midi, et n'est pas hébérgé au campus."
                   id="reservation-isLunchOnly"
                   name="isLunchOnly"
@@ -254,7 +255,8 @@ export const ReservationCustomerUpdate = () => {
                 <p style={{ color: 'red' }}>
                   Si l&apos;option est cochée, alors les options de repas ci-dessous n&apos;ont
                   aucun effet.
-                </p>
+                </p> */
+                }
                 <ValidatedField
                   label="Prévoir le repas du midi, d'arrivée"
                   id="reservation-isArrivalLunch"

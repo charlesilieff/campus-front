@@ -8,7 +8,7 @@ import { BsTrash } from 'react-icons/bs'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { getEntity as getCustomerEntity } from '../../customer/customer.reducer'
-import { createEntity, reset } from '../booking-beds.reducer'
+import { createIntermittentReservation, reset } from '../booking-beds.reducer'
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
 import { CustomerUpdate } from './customer-update'
@@ -46,61 +46,49 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
   const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
 
   const createIReservation = (
-    customer: O.Option<Customer>,
-    datesAndMeals: O.Option<DatesAndMeals>,
-    bedId: O.Option<number>
-  ): O.Option<IReservation> =>
-    pipe(
-      O.struct({ customer, datesAndMeals, bedId }),
-      O.map(({ customer, datesAndMeals, bedId }) => {
-        const reservation: IReservation = {
-          // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
-          arrivalDate: datesAndMeals.arrivalDate,
-          // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
-          departureDate: datesAndMeals.departureDate,
-          specialDietNumber: datesAndMeals.specialDiet === 'true' ? 1 : 0,
-          isArrivalLunch: datesAndMeals.isArrivalLunch,
-          isArrivalDiner: datesAndMeals.isArrivalDinner,
-          isDepartureLunch: datesAndMeals.isDepartureLunch,
-          isDepartureDiner: datesAndMeals.isDepartureDinner,
-          comment: datesAndMeals.comment,
-          beds: [{ id: bedId }],
-          isConfirmed: true,
-          isPaid: false,
-          isLunchOnly: false,
-          paymentMode: '',
-          personNumber: 1,
-          customer: {
-            id: customer.id,
-            firstname: customer.firstname,
-            lastname: customer.lastname,
-            email: customer.email,
-            phoneNumber: customer.phoneNumber,
-            age: O.getOrUndefined(customer.age),
-            isFemal: false
-          }
-        }
-
-        return reservation
-      })
-    )
+    customer: Customer,
+    datesAndMeals: DatesAndMeals,
+    bedId: number
+  ): IReservation => ({
+    // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
+    arrivalDate: datesAndMeals.arrivalDate,
+    // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
+    departureDate: datesAndMeals.departureDate,
+    specialDietNumber: datesAndMeals.specialDiet === 'true' ? 1 : 0,
+    isArrivalLunch: datesAndMeals.isArrivalLunch,
+    isArrivalDiner: datesAndMeals.isArrivalDinner,
+    isDepartureLunch: datesAndMeals.isDepartureLunch,
+    isDepartureDiner: datesAndMeals.isDepartureDinner,
+    comment: datesAndMeals.comment,
+    beds: [{ id: bedId }],
+    isConfirmed: true,
+    isPaid: false,
+    isLunchOnly: false,
+    paymentMode: '',
+    personNumber: 1,
+    customer: {
+      id: customer.id,
+      firstname: customer.firstname,
+      lastname: customer.lastname,
+      email: customer.email,
+      phoneNumber: customer.phoneNumber,
+      age: O.getOrUndefined(customer.age),
+      isFemal: false
+    }
+  })
 
   const handleSubmitReservation = (
-    datesAndMeal: O.Option<DatesAndMeals>,
-    bedId: O.Option<number>,
-    customer: O.Option<Customer>
+    datesAndMeal: DatesAndMeals,
+    bedId: number,
+    customer: Customer
   ): void => {
     const reservation = createIReservation(customer, datesAndMeal, bedId)
-    if (O.isSome(reservation)) {
-      setIsLoading(true)
-      dispatch(createEntity(reservation.value)).then(() => setIsLoading(false))
-    } else {
-      alert('Veuillez remplir tous les champs')
-    }
+
+    setIsLoading(true)
+    dispatch(createIntermittentReservation(reservation)).then(() => setIsLoading(false))
   }
 
   useEffect(() => {
-    id !== undefined ? dispatch(getCustomerEntity(id)) : null
     pipe(
       id,
       O.fromNullable,
@@ -227,7 +215,8 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
               isLoading={isLoading}
               colorScheme={'blue'}
               rightIcon={<CheckIcon />}
-              onClick={() => handleSubmitReservation(datesAndMeal, bedId, customer)}
+              onClick={() =>
+                handleSubmitReservation(datesAndMeal.value, bedId.value, customer.value)}
             >
               Finaliser la réservation
             </Button>

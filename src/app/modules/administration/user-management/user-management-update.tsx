@@ -2,6 +2,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft'
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { IUser } from 'app/shared/model/user.model'
 import React, { useEffect } from 'react'
 import { isEmail, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -33,7 +34,7 @@ export const UserManagementUpdate = () => {
     navigate('/admin/user-management')
   }
 
-  const saveUser = values => {
+  const saveUser = (values: IUser) => {
     if (isNew) {
       dispatch(createUser(values))
     } else {
