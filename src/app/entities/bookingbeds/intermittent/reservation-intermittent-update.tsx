@@ -38,6 +38,10 @@ export interface Customer {
 export type BedIds = ReadonlyArray<{ id: number }>
 
 export const ReservationIntermittentUpdate = (): JSX.Element => {
+  const [datesAndMeal, setDatesAndMeal] = useState<O.Option<DatesAndMeals>>(O.none)
+  const [customer, setCustomer] = useState<O.Option<Customer>>(O.none)
+  const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
+  const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -88,29 +92,33 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
     dispatch(createIntermittentReservation(reservation)).then(() => setIsLoading(false))
   }
 
+  // pipe(
+
+  //   O.fromNullable,
+  //   O.map(c =>
+  //
+  //   )
+  // )
+
+  const backendCustomer = useAppSelector(state => state.customer.entity)
+
   useEffect(() => {
     pipe(
       id,
       O.fromNullable,
-      O.map(id => dispatch(getCustomerEntity(id))),
-      O.map(_ => useAppSelector(state => state.customer.entity)),
-      O.map(c =>
-        setCustomer(O.some({
-          id: c?.id,
-          firstname: c?.firstname,
-          lastname: c?.lastname,
-          email: c?.email,
-          phoneNumber: c?.phoneNumber,
-          age: O.some(c?.age)
-        }))
-      )
+      O.map(id => dispatch(getCustomerEntity(id)))
     )
-  }, [])
-
-  const [datesAndMeal, setDatesAndMeal] = useState<O.Option<DatesAndMeals>>(O.none)
-  const [customer, setCustomer] = useState<O.Option<Customer>>(O.none)
-  const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
-  const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
+    if (backendCustomer.email !== undefined) {
+      setCustomer(O.some({
+        id: backendCustomer?.id,
+        firstname: backendCustomer?.firstname,
+        lastname: backendCustomer?.lastname,
+        email: backendCustomer?.email,
+        phoneNumber: backendCustomer?.phoneNumber,
+        age: O.some(backendCustomer?.age)
+      }))
+    }
+  }, [backendCustomer.email])
 
   const [bedId, setBedId] = useState<O.Option<number>>(O.none)
 
@@ -138,7 +146,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
   //   isDepartureDinner: false,
   //   comment: 'test'
   // }
-
+  console.log('customer', customer)
   return (
     <Stack>
       <Heading size={'lg'} m={4}>
