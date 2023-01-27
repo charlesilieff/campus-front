@@ -38,7 +38,7 @@ pipeline {
         stage('Package') {
             steps {
                 echo "Compiling with parcel..."
-                sh "npx parcel build src/main.html"
+                sh "npm run parcel-build"
             }
         }
         stage('Docker push'){
