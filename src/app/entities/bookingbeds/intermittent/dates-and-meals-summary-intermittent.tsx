@@ -5,7 +5,7 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
-import * as O from 'fp-ts/lib/Option'
+import { Option as O } from 'effect'
 import React from 'react'
 import { BsPencil } from 'react-icons/bs'
 

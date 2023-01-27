@@ -1,7 +1,7 @@
 import { Button, Checkbox, CheckboxGroup, Heading, useToast, VStack } from '@chakra-ui/react'
 import { IPlace } from 'app/shared/model/place.model'
 import axios from 'axios'
-import * as A from 'fp-ts/lib/ReadonlyArray'
+import { ReadonlyArray as A } from 'effect/collection'
 import React, { useEffect, useState } from 'react'
 
 export const PlaceIntermittent = () => {
@@ -61,7 +61,7 @@ export const PlaceIntermittent = () => {
       </Heading>
       <CheckboxGroup
         onChange={e => setSelectedPlaceIds(e.map(e => e.toString()))}
-        value={A.toArray(selectedPlaceIds)}
+        value={[...selectedPlaceIds]}
       >
         <VStack>
           {places.map(place => {

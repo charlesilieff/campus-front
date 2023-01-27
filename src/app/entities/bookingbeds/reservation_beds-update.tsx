@@ -13,7 +13,6 @@ import { CustomValidatedField } from 'app/shared/util/cross-validation-form'
 import { mapIdList } from 'app/shared/util/entity-utils'
 import axios from 'axios'
 import dayjs from 'dayjs'
-import * as A from 'fp-ts/lib/ReadonlyArray'
 import React, { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { TextFormat } from 'react-jhipster'
@@ -46,7 +45,7 @@ export const ReservationBedsUpdate = (): JSX.Element => {
   const [placeImage, setPlace] = useState(null as IPlace)
 
   useEffect(() => {
-    getPlaces().then(data => setPlaces(A.toArray(data)))
+    getPlaces().then(data => setPlaces([...data]))
     getBookingBeds()
     let updatedbedsToBook: number[]
 

@@ -1,8 +1,8 @@
-const config = {
-  VERSION: process.env.VERSION
-}
+// const config = {
+//   VERSION: process.env.VERSION
+// }
 
-export default config
+// export default config
 
 const BACK_END_PORT = 8080
 

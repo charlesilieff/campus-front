@@ -1,14 +1,15 @@
 import { InfoOutlineIcon } from '@chakra-ui/icons'
 import { Link as ChakraLink } from '@chakra-ui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import appConfig from 'app/config/constants'
+// import appConfig from 'app/config/constants'
 import React from 'react'
 import { NavLink as Link } from 'react-router-dom'
 import { NavbarBrand, NavLink } from 'reactstrap'
 
+const logo = new URL('../../../../content/images/logo-Campus-2018.png', import.meta.url).href
 export const BrandIcon = props => (
   <div {...props} className="brand-icon">
-    <img src="content/images/logo-Campus-2018.png" alt="Logo" />
+    <img src={logo} alt="Logo" />
   </div>
 )
 
@@ -16,7 +17,7 @@ export const Brand = _ => (
   <NavbarBrand tag={Link} to="/" className="brand-logo">
     <BrandIcon />
     <span className="brand-title">Gestion de l&apos;hébergement</span>
-    <span className="navbar-version">{appConfig.VERSION}</span>
+    {/* <span className="navbar-version">{appConfig.VERSION}</span> */}
   </NavbarBrand>
 )
 

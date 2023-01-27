@@ -10,7 +10,7 @@ import {
   Input,
   VStack
 } from '@chakra-ui/react'
-import * as O from 'fp-ts/lib/Option'
+import { Option as O } from 'effect'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
@@ -41,7 +41,7 @@ export const CustomerUpdate = (
     formState: { errors }
   } = useForm<FormCustomer>({
     defaultValues: O.isSome(props.customer) ?
-      { ...props.customer.value, age: O.toNullable(props.customer.value.age) } :
+      { ...props.customer.value, age: O.getOrUndefined(props.customer.value.age) } :
       {}
   })
 

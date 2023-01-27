@@ -6,7 +6,7 @@ import { AUTHORITIES } from 'app/config/constants'
 import { useAppSelector } from 'app/config/store'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
 import { pipe } from 'effect'
-import * as O from 'fp-ts/lib/Option'
+import { Option as O } from 'effect'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
@@ -25,11 +25,12 @@ export const Home = (): JSX.Element => {
   const reservationCreationIntermittentUrl = pipe(
     account.customerId,
     O.fromNullable,
-    O.fold(
-      () => `bookingbeds/new/intermittent`,
+    O.map(
       customerId => `bookingbeds/new/intermittent/${customerId}`
-    )
+    ),
+    O.getOrElse(() => `bookingbeds/new/intermittent`)
   )
+
   console.log(reservationCreationIntermittentUrl)
   const reservationRequestUrl = 'reservation-request/new'
 
@@ -42,11 +43,12 @@ export const Home = (): JSX.Element => {
   if (process.env.NODE_ENV === 'production') {
     console.log('Happy production!')
   }
+  const campus = new URL('../../../content/images/campus.webp', import.meta.url).href
   return (
     <HStack>
       <Box>
         <Image
-          src="../../../content/images/campus.webp"
+          src={campus}
           w={'500px'}
           h={'300px'}
           objectFit="contain"
