@@ -18,7 +18,7 @@
     "vite-serve": "vite",
     "vite-build": "vite build",
     "parcel-serve": "parcel --no-cache index.html",
-    "parcel-build": "parcel build index.html"
+    "parcel-build": "parcel build --no-cache  index.html"
   },
   "config": {
     "default_environment": "prod"
