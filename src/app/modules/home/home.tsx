@@ -25,10 +25,10 @@ export const Home = (): JSX.Element => {
   const reservationCreationIntermittentUrl = pipe(
     account.customerId,
     O.fromNullable,
-    O.map(
+    O.match(
+      () => `bookingbeds/new/intermittent`,
       customerId => `bookingbeds/new/intermittent/${customerId}`
-    ),
-    O.getOrElse(() => `bookingbeds/new/intermittent`)
+    )
   )
 
   console.log(reservationCreationIntermittentUrl)
