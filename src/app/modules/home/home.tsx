@@ -38,10 +38,10 @@ export const Home = (): JSX.Element => {
     await navigator.clipboard.writeText(location.href + reservationRequestUrl)
   }
   if (process.env.NODE_ENV === 'development') {
-    console.log('Happy developing!')
+    console.log('Happy developing!!!')
   }
   if (process.env.NODE_ENV === 'production') {
-    console.log('Happy production!')
+    console.log('Happy production!!!')
   }
   const campus = new URL('../../../content/images/campus.webp', import.meta.url).href
   return (
