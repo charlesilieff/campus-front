@@ -146,7 +146,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
   //   isDepartureDinner: false,
   //   comment: 'test'
   // }
-  console.log('customer', customer)
+
   return (
     <Stack>
       <Heading size={'lg'} m={4}>
