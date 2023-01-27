@@ -17,7 +17,7 @@
     "prepare": "husky install",
     "vite-serve": "vite",
     "vite-build": "vite build",
-    "parcel-serve": "parcel --no-cache index.html",
+    "parcel-serve": "parcel --no-cache src/main.html",
     "parcel-build": "parcel build --no-cache  src/main.html"
   },
   "config": {

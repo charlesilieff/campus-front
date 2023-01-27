@@ -48,9 +48,7 @@ export const CustomerUpdate = (
   const handleValidCustomerSubmit = (
     customer: FormCustomer
   ): void => {
-    console.log(customer)
     // @ts-expect-error react hook form ne gère pas bien le type de age
-
     const age = customer.age === undefined || customer.age === '' ? O.none : O.some(customer.age)
     props.setCustomer(O.some({ ...customer, age }))
     props.setUpdateCustomer(false)

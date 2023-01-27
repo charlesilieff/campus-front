@@ -19,9 +19,9 @@ export const Home = (): JSX.Element => {
   const isIntermittent = useAppSelector(state =>
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.INTERMITTENT])
   )
-  console.log(isIntermittent)
+
   const account = useAppSelector(state => state.authentication.account)
-  console.log(account)
+
   const reservationCreationIntermittentUrl = pipe(
     account.customerId,
     O.fromNullable,
@@ -31,7 +31,6 @@ export const Home = (): JSX.Element => {
     )
   )
 
-  console.log(reservationCreationIntermittentUrl)
   const reservationRequestUrl = 'reservation-request/new'
 
   async function copyLink(): Promise<void> {
