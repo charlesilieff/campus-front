@@ -46,7 +46,7 @@ export const Home = (): JSX.Element => {
     <HStack>
       <Box>
         <Image
-          src="../../../content/images/campus.png"
+          src="../../../content/images/campus.webp"
           w={'500px'}
           h={'300px'}
           objectFit="contain"
