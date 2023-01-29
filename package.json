@@ -7,7 +7,7 @@
   "scripts": {
     "fmt": "dprint fmt",
     "lint": "eslint . --ext .ts,.tsx && npx tsc --noEmit",
-    "lint:fix": "eslint . --ext .ts,.tsx && npx tsc --noEmit --fix",
+    "eslint:fix": "eslint . --ext .ts,.tsx --fix",
     "jest": "jest --coverage --logHeapUsage --maxWorkers=2 --config jest.conf.js",
     "jest:update": "npm run jest -- --updateSnapshot",
     "start": "npx parcel --no-cache src/main.html",

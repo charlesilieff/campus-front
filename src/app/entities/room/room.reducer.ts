@@ -100,13 +100,11 @@ export const RoomSlice = createEntitySlice({
         state.updateSuccess = true
         state.entity = {}
       })
-      .addMatcher(isFulfilled(getEntities), (state, action) => {
-        return {
-          ...state,
-          loading: false,
-          entities: action.payload.data
-        }
-      })
+      .addMatcher(isFulfilled(getEntities), (state, action) => ({
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      }))
       .addMatcher(isFulfilled(createEntity, updateEntity, partialUpdateEntity), (state, action) => {
         state.updating = false
         state.loading = false

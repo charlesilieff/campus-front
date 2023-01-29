@@ -36,9 +36,7 @@ export const BedsChoices = (
         props.datesAndMeals.value.departureDate
       ).then(data => {
         // setPlaces(A.toMutable(data))
-        const roomsData = data?.flatMap(place => {
-          return place.rooms
-        })
+        const roomsData = data?.flatMap(place => place.rooms)
 
         setLoading(false)
 

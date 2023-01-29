@@ -19,17 +19,11 @@ export const getPlaces = async (): Promise<ReadonlyArray<IPlace>> => {
 export const filterBedPlace =
   (places: ReadonlyArray<IPlace>) => (idPlace: number): ReadonlyArray<IPlace> => {
     if (isNaN(idPlace) || idPlace === 0) {
-      return places?.flatMap(place => {
-        return place.rooms
-      })
+      return places?.flatMap(place => place.rooms)
     } else {
       return places
-        ?.filter(place => {
-          return place.id === idPlace
-        })
-        ?.flatMap(place => {
-          return place.rooms
-        })
+        ?.filter(place => place.id === idPlace)
+        ?.flatMap(place => place.rooms)
     }
   }
 
@@ -38,17 +32,11 @@ export const filterBedRoomKind = (
   idRoomKind: number
 ): ReadonlyArray<IPlace> => {
   if (isNaN(idRoomKind)) {
-    return places?.flatMap(place => {
-      return place.rooms
-    })
+    return places?.flatMap(place => place.rooms)
   } else {
     return places
-      ?.flatMap(place => {
-        return place.rooms
-      })
-      .filter(room => {
-        return room.bedroomKind?.id === idRoomKind
-      })
+      ?.flatMap(place => place.rooms)
+      .filter(room => room.bedroomKind?.id === idRoomKind)
   }
 }
 export const getPlaceWithFreeBeds = (isIntermittent: boolean) =>

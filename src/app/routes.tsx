@@ -31,89 +31,87 @@ const Admin = Loadable({
   loading: () => <div>loading ...</div>
 })
 
-const Routes = () => {
-  return (
-    <div className="view-routes">
-      <ErrorBoundaryRoutes>
-        <Route index element={<Home />} />
-        <Route path="rgpd" element={<RGPD />} />
-        <Route path="login" element={<Login />} />
-        <Route path="logout" element={<Logout />} />
+const Routes = () => (
+  <div className="view-routes">
+    <ErrorBoundaryRoutes>
+      <Route index element={<Home />} />
+      <Route path="rgpd" element={<RGPD />} />
+      <Route path="login" element={<Login />} />
+      <Route path="logout" element={<Logout />} />
 
-        <Route path="reservation-request">
-          <Route path="new" element={<ReservationRequestUpdate />}></Route>
-          <Route path={`:id`}>
-            <Route
-              path={`edit`}
-              element={<ReservationRequestUpdate />}
-            />
-            <Route index element={<ReservationRequestDetail />} />
-            <Route
-              path={`delete`}
-              element={<RequestDeleteDialog />}
-            />
-          </Route>
-        </Route>
-        <Route path="account">
+      <Route path="reservation-request">
+        <Route path="new" element={<ReservationRequestUpdate />}></Route>
+        <Route path={`:id`}>
           <Route
-            path="register-intermittent"
-            element={<RegisterIntermittentPage />}
+            path={`edit`}
+            element={<ReservationRequestUpdate />}
           />
-
+          <Route index element={<ReservationRequestDetail />} />
           <Route
-            path="*"
-            element={
-              <PrivateRoute
-                hasAnyAuthorities={[
-                  AUTHORITIES.ADMIN,
-                  AUTHORITIES.USER,
-                  AUTHORITIES.RESPHEBERGEMENT,
-                  AUTHORITIES.COOKER,
-                  AUTHORITIES.INTERMITTENT
-                ]}
-              >
-                <Account />
-              </PrivateRoute>
-            }
+            path={`delete`}
+            element={<RequestDeleteDialog />}
           />
-          <Route path="register" element={<Register />} />
-          <Route path="activate" element={<Activate />} />
-          <Route path="reset">
-            <Route path="request" element={<PasswordResetInit />} />
-            <Route path="finish" element={<PasswordResetFinish />} />
-          </Route>
         </Route>
-
+      </Route>
+      <Route path="account">
         <Route
-          path="kitchen/planning"
-          element={
-            <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.COOKER]}>
-              <Kitchen />
-            </PrivateRoute>
-          }
+          path="register-intermittent"
+          element={<RegisterIntermittentPage />}
         />
 
-        <Route
-          path="admin/*"
-          element={
-            <PrivateRoute hasAnyAuthorities={[AUTHORITIES.ADMIN]}>
-              <Admin />
-            </PrivateRoute>
-          }
-        />
         <Route
           path="*"
           element={
-            <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.RESPHEBERGEMENT]}>
-              <EntitiesRoutes />
+            <PrivateRoute
+              hasAnyAuthorities={[
+                AUTHORITIES.ADMIN,
+                AUTHORITIES.USER,
+                AUTHORITIES.RESPHEBERGEMENT,
+                AUTHORITIES.COOKER,
+                AUTHORITIES.INTERMITTENT
+              ]}
+            >
+              <Account />
             </PrivateRoute>
           }
         />
+        <Route path="register" element={<Register />} />
+        <Route path="activate" element={<Activate />} />
+        <Route path="reset">
+          <Route path="request" element={<PasswordResetInit />} />
+          <Route path="finish" element={<PasswordResetFinish />} />
+        </Route>
+      </Route>
 
-        <Route element={<PageNotFound />} />
-      </ErrorBoundaryRoutes>
-    </div>
-  )
-}
+      <Route
+        path="kitchen/planning"
+        element={
+          <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.COOKER]}>
+            <Kitchen />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="admin/*"
+        element={
+          <PrivateRoute hasAnyAuthorities={[AUTHORITIES.ADMIN]}>
+            <Admin />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="*"
+        element={
+          <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.RESPHEBERGEMENT]}>
+            <EntitiesRoutes />
+          </PrivateRoute>
+        }
+      />
+
+      <Route element={<PageNotFound />} />
+    </ErrorBoundaryRoutes>
+  </div>
+)
 
 export default Routes

@@ -64,18 +64,16 @@ export const PlaceIntermittent = () => {
         value={[...selectedPlaceIds]}
       >
         <VStack>
-          {places.map(place => {
-            return (
-              <Checkbox
-                key={place.id}
-                value={place.id.toString()}
-                alignSelf={'flex-start'}
-                pl={12}
-              >
-                {`${place.name} `}
-              </Checkbox>
-            )
-          })}
+          {places.map(place => (
+            <Checkbox
+              key={place.id}
+              value={place.id.toString()}
+              alignSelf={'flex-start'}
+              pl={12}
+            >
+              {`${place.name} `}
+            </Checkbox>
+          ))}
         </VStack>
       </CheckboxGroup>
       <Button

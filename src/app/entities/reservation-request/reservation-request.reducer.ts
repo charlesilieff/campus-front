@@ -30,27 +30,24 @@ export const getEntity = createAsyncThunk(
 
 export const createEntity = createAsyncThunk(
   'reservationRequest/create_entity',
-  async (entity: IReservationRequest) => {
-    return axios.post<IReservationRequest>(apiUrl, entity)
-  },
+  async (entity: IReservationRequest) => axios.post<IReservationRequest>(apiUrl, entity),
   { serializeError: serializeAxiosError }
 )
 
 export const updateEntity = createAsyncThunk(
   'reservationRequest/update_entity',
-  async (entity: { ReservationRequest: IReservationRequest; UUID: string }) => {
-    return axios.put<IReservationRequest>(
+  async (entity: { ReservationRequest: IReservationRequest; UUID: string }) =>
+    axios.put<IReservationRequest>(
       `${apiUrl}/${entity.UUID}`,
       cleanEntity(entity.ReservationRequest)
-    )
-  },
+    ),
   { serializeError: serializeAxiosError }
 )
 
 export const partialUpdateEntity = createAsyncThunk(
   'reservationRequest/partial_update_entity',
-  async (entity: { ReservationRequest: IReservationRequest; UUID: string }) => {
-    return axios.patch<IReservationRequest>(
+  async (entity: { ReservationRequest: IReservationRequest; UUID: string }) =>
+    axios.patch<IReservationRequest>(
       `${apiUrl}/${entity.UUID}`,
       cleanEntity(entity.ReservationRequest),
       {
@@ -58,8 +55,7 @@ export const partialUpdateEntity = createAsyncThunk(
           'Content-Type': 'application/merge-patch+json'
         }
       }
-    )
-  },
+    ),
   { serializeError: serializeAxiosError }
 )
 

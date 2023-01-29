@@ -71,9 +71,9 @@ const Planning = ({ place, date, totalDays, reservations }: IProps) => {
           ]
         }
       })}
-      {reservations?.map((reservation, index) => {
-        return Reservation({ reservation, date, index, place, positionX, positionY })
-      })}
+      {reservations?.map((reservation, index) =>
+        Reservation({ reservation, date, index, place, positionX, positionY })
+      )}
     </div>
   )
 }

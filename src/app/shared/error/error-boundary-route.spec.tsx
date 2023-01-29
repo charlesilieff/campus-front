@@ -12,9 +12,7 @@ const ErrorComp = (): JSX.Element => {
   throw new Error('test')
 }
 
-const NoErrorComp = (): JSX.Element => {
-  return <div>No error</div>
-}
+const NoErrorComp = (): JSX.Element => <div>No error</div>
 
 describe('error-boundary-routes component', () => {
   beforeEach(() => {

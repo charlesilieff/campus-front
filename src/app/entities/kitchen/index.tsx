@@ -82,9 +82,7 @@ const Index = () => {
    * Calculation of total.
    */
   const totalMeals = (table: number[]) => {
-    const add = (accumulator, a) => {
-      return accumulator + a
-    }
+    const add = (accumulator, a) => accumulator + a
     return table.reduce(add, 0) // with initial value to avoid when the array is empty
   }
 
@@ -245,26 +243,18 @@ function displayTotalMeals(resultTotalMeals: number[]) {
  */
 function totalMealsCalculation(mealsData: IMeal[], totalMeals: (table: number[]) => any) {
   // regularLunchToCook: calculation of total.
-  let table: number[] = mealsData.map(meals => {
-    return meals.regularLunchToCook
-  })
+  let table: number[] = mealsData.map(meals => meals.regularLunchToCook)
   const totalRegularLunchToCook: number = totalMeals(table)
 
-  table = mealsData.map(meals => {
-    return meals.regularDinnerToCook
-  })
+  table = mealsData.map(meals => meals.regularDinnerToCook)
   const totalRegularDinnerToCook: number = totalMeals(table)
 
   // specialLunchToCook: calculation of total.
-  table = mealsData.map(meals => {
-    return meals.specialLunchToCook
-  })
+  table = mealsData.map(meals => meals.specialLunchToCook)
   const totalSpecialLunchToCook: number = totalMeals(table)
 
   // specialDinnerToCook: calculation of total.
-  table = mealsData.map(meals => {
-    return meals.specialDinnerToCook
-  })
+  table = mealsData.map(meals => meals.specialDinnerToCook)
   const totalSpecialDinnerToCook: number = totalMeals(table)
 
   const totalRegularToCook: number = totalRegularDinnerToCook + totalRegularLunchToCook

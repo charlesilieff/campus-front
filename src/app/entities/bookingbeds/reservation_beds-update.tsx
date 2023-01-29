@@ -50,15 +50,16 @@ export const ReservationBedsUpdate = (): JSX.Element => {
     let updatedbedsToBook: number[]
 
     // Pour la modif d'une réservation déjà existante
-    updatedbedsToBook = reservationEntity.beds?.reduce((acc: number[], bed: IBed) => {
-      return acc.concat(bed.id)
-    }, [] as number[])
+    updatedbedsToBook = reservationEntity.beds?.reduce(
+      (acc: number[], bed: IBed) => acc.concat(bed.id),
+      [] as number[]
+    )
 
     // Pour créer l'object quand on fait des aller-retour avec le premier formulaire.
     updatedbedsToBook = updatedbedsToBook?.concat(
-      Object.keys(reservationEntity).map(key => {
-        return Number(key) && reservationEntity[key] ? Number(key) : null
-      })
+      Object.keys(reservationEntity).map(key =>
+        Number(key) && reservationEntity[key] ? Number(key) : null
+      )
     )
 
     setBedsToBook(updatedbedsToBook)
@@ -83,40 +84,30 @@ export const ReservationBedsUpdate = (): JSX.Element => {
 
     setPlaces(data)
 
-    const roomsData: IRoom[] = data?.flatMap(place => {
-      return place.rooms
-    })
+    const roomsData: IRoom[] = data?.flatMap(place => place.rooms)
 
     setRooms(roomsData)
 
     setRoomKinds(
       roomsData
-        .map(room => {
-          return room?.bedroomKind
-        })
+        .map(room => room?.bedroomKind)
         // Permet de n'afficher que les bedroomKind non null et unique
-        .filter((bedroomKind, index, arr) => {
-          return arr?.findIndex(e => bedroomKind?.name === e?.name) === index
-        })
+        .filter((bedroomKind, index, arr) =>
+          arr?.findIndex(e => bedroomKind?.name === e?.name) === index
+        )
     )
   }
 
   const filterBedPlace = (idPlace: number): void => {
     if (isNaN(idPlace) || idPlace === 0) {
       setRooms(
-        places?.flatMap(place => {
-          return place.rooms
-        })
+        places?.flatMap(place => place.rooms)
       )
     } else {
       setRooms(
         places
-          ?.filter(place => {
-            return place.id === idPlace
-          })
-          ?.flatMap(place => {
-            return place.rooms
-          })
+          ?.filter(place => place.id === idPlace)
+          ?.flatMap(place => place.rooms)
       )
     }
   }
@@ -124,19 +115,13 @@ export const ReservationBedsUpdate = (): JSX.Element => {
   const filterBedRoomKind = (idRoomKind: number): void => {
     if (isNaN(idRoomKind)) {
       setRooms(
-        places?.flatMap(place => {
-          return place.rooms
-        })
+        places?.flatMap(place => place.rooms)
       )
     } else {
       setRooms(
         places
-          ?.flatMap(place => {
-            return place.rooms
-          })
-          .filter(room => {
-            return room.bedroomKind?.id === idRoomKind
-          })
+          ?.flatMap(place => place.rooms)
+          .filter(room => room.bedroomKind?.id === idRoomKind)
       )
     }
   }
@@ -161,22 +146,16 @@ export const ReservationBedsUpdate = (): JSX.Element => {
 
   const saveEntity = (values: IBookingBeds): void => {
     // On selectionne et on créer une liste d'object bed (id seulement comme atribut)
-    const bedsId = Object.keys(values).map(key => {
-      return Number(key) && values[key] ? Number(key) : ''
-    })
+    const bedsId = Object.keys(values).map(key => Number(key) && values[key] ? Number(key) : '')
 
     const beds: IBed[] = mapIdList(bedsId)
 
     const customerReservation = Object.fromEntries(
-      Object.entries(values).filter(entry => {
-        return !Number(entry[0])
-      })
+      Object.entries(values).filter(entry => !Number(entry[0]))
     )
 
     const reservationLast = Object.fromEntries(
-      Object.entries(reservationEntity).filter(entry => {
-        return !Number(entry[0])
-      })
+      Object.entries(reservationEntity).filter(entry => !Number(entry[0]))
     )
 
     const reservation: IReservation = {
@@ -210,20 +189,18 @@ export const ReservationBedsUpdate = (): JSX.Element => {
   }
 
   // Calcul du nombre de places réservés (coché)
-  const placesBooked = places?.reduce((accP, place) => {
-    return (accP
-      + place.rooms?.reduce((accR, room) => {
-        return (accR
-          + room.beds?.reduce((acc, bed) => {
-            return acc + (bedsToBook?.includes(bed.id) ? bed.numberOfPlaces : 0)
-          }, 0))
-      }, 0))
-  }, 0)
+  const placesBooked = places?.reduce((accP, place) => (accP
+    + place.rooms?.reduce((accR, room) => (accR
+      + room.beds?.reduce(
+        (acc, bed) => acc + (bedsToBook?.includes(bed.id) ? bed.numberOfPlaces : 0),
+        0
+      )), 0)), 0)
 
   const defaultValues = (): IBookingBeds => {
-    const idBeds = reservationEntity.beds?.reduce((acc, bed) => {
-      return { ...acc, [bed.id?.toString()]: true }
-    }, new Object())
+    const idBeds = reservationEntity.beds?.reduce(
+      (acc, bed) => ({ ...acc, [bed.id?.toString()]: true }),
+      new Object()
+    )
     return { ...idBeds, ...reservationEntity }
   }
 
@@ -321,13 +298,11 @@ export const ReservationBedsUpdate = (): JSX.Element => {
           <p>
             {'Numéros des lit réservés : '
               + places
-                ?.flatMap(place => {
-                  return place.rooms?.flatMap(room => {
-                    return room.beds.map(bed => {
-                      return bedsToBook?.includes(bed.id) ? `${bed.number}, ` : ''
-                    })
-                  })
-                })
+                ?.flatMap(place =>
+                  place.rooms?.flatMap(room =>
+                    room.beds.map(bed => bedsToBook?.includes(bed.id) ? `${bed.number}, ` : '')
+                  )
+                )
                 .join('')}
           </p>
           <p style={{ color: reservationEntity.personNumber > placesBooked ? 'red' : 'green' }}>
