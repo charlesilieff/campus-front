@@ -53,7 +53,7 @@ export const ReservationsToBeProcessed = () => {
                       color={'white'}
                       backgroundColor={'#E53E3E'}
                       as={Link}
-                      to="/reservation/not-confirmed"
+                      to="/reservation/to-be-processed"
                       _hover={{ textDecoration: 'none', color: 'white' }}
                     >
                       Traiter les réservations
@@ -86,7 +86,7 @@ export const ReservationsToBeProcessed = () => {
                       color={'white'}
                       backgroundColor={'#3182CE'}
                       as={Link}
-                      to="/reservation/not-confirmed"
+                      to="/reservation/to-be-processed"
                       _hover={{ textDecoration: 'none', color: 'white' }}
                     >
                       Traiter les réservations

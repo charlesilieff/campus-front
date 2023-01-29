@@ -18,7 +18,7 @@ const initialState: EntityState<IReservation> = {
 }
 
 const apiUrl = 'api/reservations'
-const apiUrlNoBedsNotConfirmed = 'api/reservations/not-confirmed'
+const apiUrlNoBedsNotConfirmed = 'api/reservations/to-be-processed'
 // Actions
 
 export const getEntities = createAsyncThunk(

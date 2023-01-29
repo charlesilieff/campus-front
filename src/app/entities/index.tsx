@@ -20,7 +20,7 @@ import { RoomRoutes } from './room'
 export const EntitiesRoutes = () => (
   <div>
     <ErrorBoundaryRoutes>
-      <Route path={'reservation/not-confirmed'} element={<ReservationNotConfirmed />} />
+      <Route path={'reservation/to-be-processed'} element={<ReservationNotConfirmed />} />
       <Route path={'reservation/lunch-only'} element={<ReservationLunchOnly />} />
       <Route path={`bookingbeds/*`} element={<BookingBeds />} />
       <Route path={`reservation/*`} element={<Reservation />} />

@@ -119,7 +119,7 @@ const Index = () => {
                 tag={Link}
                 id="new"
                 data-cy="entityCreatelButton"
-                to="/reservation/not-confirmed"
+                to="/reservation/to-be-processed"
                 replace
                 color="danger"
               >
