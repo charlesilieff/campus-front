@@ -42,8 +42,7 @@ export const CustomerUpdate = (): JSX.Element => {
       ...customerEntity,
       ...values,
       // @ts-expect-error : age is a number
-      age: customerEntity.age === '' ? 0 : customerEntity.age,
-      isFemal: true
+      age: customerEntity.age === '' ? 0 : customerEntity.age
     }
 
     if (isNew) {
@@ -124,16 +123,7 @@ export const CustomerUpdate = (): JSX.Element => {
                     validate: v => isNumber(v) || 'This field should be a number.'
                   }}
                 />
-                {
-                  /* <ValidatedField label="Genre" id="customer-isFemal" name="isFemal" data-cy="isFemal" type="select">
-                <option value="true" key="0">
-                  Femme
-                </option>
-                <option value="false" key="1">
-                  Homme
-                </option>
-              </ValidatedField> */
-                }
+
                 <ValidatedField
                   label="Téléphone"
                   id="customer-phoneNumber"

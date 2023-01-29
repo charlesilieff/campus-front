@@ -6,7 +6,6 @@ export interface IBookingBeds {
   id?: number
   firstname?: string
   lastname?: string
-  isFemal?: boolean
   age?: number
   phoneNumber?: string
   email?: string

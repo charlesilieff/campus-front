@@ -9,7 +9,6 @@ export interface IReservationsPlanning {
   firstname: string
   lastname: string
   age: number
-  isFemal: boolean
   phoneNumber: number
   email: string
   comment: string

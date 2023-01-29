@@ -76,8 +76,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
       lastname: customer.lastname,
       email: customer.email,
       phoneNumber: customer.phoneNumber,
-      age: O.getOrUndefined(customer.age),
-      isFemal: false
+      age: O.getOrUndefined(customer.age)
     }
   })
 

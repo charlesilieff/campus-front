@@ -53,7 +53,6 @@ export const ReservationCustomerUpdate = () => {
       lastname: values.lastname,
       // @ts-expect-error : age is a number
       age: values.age === '' ? undefined : values.age,
-      isFemal: true,
       comment: values.customerComment,
       email: values.email,
       phoneNumber: values.phoneNumber
@@ -82,19 +81,17 @@ export const ReservationCustomerUpdate = () => {
     dispatch(setData(reservation))
   }
 
-  const defaultValues = () => {
-    return {
-      isArrivalDiner: true,
-      isDepartureDiner: false,
-      isArrivalLunch: true,
-      isDepartureLunch: true,
-      reservationComment: reservationEntity?.comment,
-      customerComment: reservationEntity?.customer?.comment,
-      ...reservationEntity,
-      ...reservationEntity.customer,
-      pricingId: reservationEntity?.pricing?.id
-    }
-  }
+  const defaultValues = () => ({
+    isArrivalDiner: true,
+    isDepartureDiner: false,
+    isArrivalLunch: true,
+    isDepartureLunch: true,
+    reservationComment: reservationEntity?.comment,
+    customerComment: reservationEntity?.customer?.comment,
+    ...reservationEntity,
+    ...reservationEntity.customer,
+    pricingId: reservationEntity?.pricing?.id
+  })
 
   return (
     <div>

@@ -32,17 +32,14 @@ export const CustomerUpdate = () => {
         ...customerEntity,
         ...values,
         // @ts-expect-error : age is "" if not set
-        age: values.age === '' ? undefined : values.age,
-        isFemal: true
+        age: values.age === '' ? undefined : values.age
       }
     }
 
     dispatch(setData(entity))
   }
 
-  const defaultValues = () => {
-    return customerEntity
-  }
+  const defaultValues = () => customerEntity
 
   return (
     <div>
@@ -104,16 +101,7 @@ export const CustomerUpdate = () => {
                     validate: v => isNumber(v) || 'Ce doit être un nombre.'
                   }}
                 />
-                {
-                  /* <ValidatedField label="Genre" id="customer-isFemal" name="isFemal" data-cy="isFemal" type="select">
-                <option value="true" key="0">
-                  Femme
-                </option>
-                <option value="false" key="1">
-                  Homme
-                </option>
-              </ValidatedField> */
-                }
+
                 <ValidatedField
                   label="Téléphone"
                   id="customer-phoneNumber"

@@ -38,12 +38,7 @@ export const ReservationRequestDetail = (): JSX.Element => {
             <span id="age">Age</span>
           </dt>
           <dd>{customerEntity?.age}</dd>
-          {
-            /* <dt>
-            <span id="isFemal">Genre</span>
-          </dt>
-          <dd>{customerEntity?.isFemal ? 'Femme' : 'Homme'}</dd> */
-          }
+
           <dt>
             <span id="phoneNumber">Téléphone</span>
           </dt>

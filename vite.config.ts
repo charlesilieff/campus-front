@@ -7,7 +7,7 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tsconfigPaths({ projects: ['./tsconfig.json'] })],
-
+  server: { port: 1234 },
   define: {
     'process.env': process.env
   },
