@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "bookingbeds",
     "bootswatch",
     "chakra",
     "dayjs",
@@ -12,7 +13,9 @@
     "lastname",
     "reduxjs",
     "RESPHEBERGEMENT",
-    "toastify"
+    "rgpd",
+    "toastify",
+    "webp"
   ],
   "editor.defaultFormatter": "dprint.dprint",
   "javascript.format.enable": true,

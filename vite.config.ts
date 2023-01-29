@@ -1,5 +1,6 @@
 import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
+import visualizer from 'rollup-plugin-visualizer'
 import { defineConfig } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
@@ -15,5 +16,10 @@ export default defineConfig({
       '~bootswatch': resolve(__dirname, './node_modules/bootswatch')
     }
   },
-  assetsInclude: ['**/*.webp']
+  assetsInclude: ['**/*.webp'],
+  build: {
+    rollupOptions: {
+      plugins: [visualizer({ emitFile: true, filename: 'stats.html', open: true })]
+    }
+  }
 })

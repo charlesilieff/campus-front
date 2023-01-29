@@ -98,6 +98,54 @@
     "@typescript-eslint/no-empty-function": "warn",
     "@typescript-eslint/unbound-method": "warn",
     "@typescript-eslint/array-type": "off",
+    "@typescript-eslint/naming-convention": [
+      "warn",
+      {
+        "selector": "default",
+        "format": [
+          "camelCase",
+          "PascalCase"
+        ]
+      },
+      {
+        "selector": "variable",
+        "format": [
+          "camelCase",
+          "UPPER_CASE",
+          "PascalCase"
+        ],
+        "trailingUnderscore": "allow"
+      },
+      {
+        "selector": "parameter",
+        "format": [
+          "camelCase",
+          "PascalCase"
+        ],
+        "leadingUnderscore": "allow"
+      },
+      {
+        "selector": "memberLike",
+        "modifiers": [
+          "private"
+        ],
+        "format": [
+          "camelCase",
+          "snake_case"
+        ],
+        "leadingUnderscore": "require"
+      },
+      {
+        "selector": "typeLike",
+        "format": [
+          "PascalCase"
+        ]
+      }
+    ],
+    "arrow-body-style": [
+      "warn",
+      "as-needed"
+    ],
     "@typescript-eslint/no-shadow": "off",
     "spaced-comment": [
       "warn",

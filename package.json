@@ -5,6 +5,7 @@
   "description": "Description for gestionhebergement",
   "license": "MIT",
   "scripts": {
+    "fmt": "dprint fmt",
     "lint": "eslint . --ext .ts,.tsx && npx tsc --noEmit",
     "lint:fix": "eslint . --ext .ts,.tsx && npx tsc --noEmit --fix",
     "jest": "jest --coverage --logHeapUsage --maxWorkers=2 --config jest.conf.js",
@@ -34,7 +35,7 @@
     "@js-joda/timezone": "^2.17.2",
     "@reduxjs/toolkit": "^1.9.1",
     "@vitejs/plugin-react": "^3.0.1",
-    "axios": "1.2.4",
+    "axios": "1.2.5",
     "bootstrap": "4.6.0",
     "bootswatch": "5.0.1",
     "dayjs": "1.11.7",
@@ -57,11 +58,11 @@
     "reactstrap": "^9.1.5",
     "redux": "4.2.0",
     "redux-thunk": "2.3.0",
+    "rollup-plugin-visualizer": "^5.9.0",
     "uuid": "9.0.0",
     "vite": "^4.0.4"
   },
   "devDependencies": {
-    "vite-tsconfig-paths": "^4.0.5",
     "@parcel/reporter-bundle-analyzer": "^2.8.3",
     "@parcel/reporter-bundle-buddy": "^2.8.3",
     "@parcel/transformer-sass": "^2.8.3",
@@ -98,7 +99,8 @@
     "sass": "1.35.1",
     "sinon": "11.1.1",
     "ts-jest": "29.0.5",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "vite-tsconfig-paths": "^4.0.5"
   },
   "cacheDirectories": [
     "node_modules"

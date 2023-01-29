@@ -5,7 +5,7 @@ set -e
 
 files=$(git diff --cached --name-only --diff-filter=ACM "*.ts" "*.tsx" | tr '\n' ' ')
 
-echo "Formatting.." && dprint fmt
+echo "Formatting.." && npm run fmt
 
 echo "$files" | xargs git add
 

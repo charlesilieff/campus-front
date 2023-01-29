@@ -69,15 +69,9 @@ classes/
 out/
 
 ######################
-# Visual Studio Code
+# Maven
 ######################
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-*.code-workspace
-.editorconfig
+stats.html
 ######################
 # Maven
 ######################
