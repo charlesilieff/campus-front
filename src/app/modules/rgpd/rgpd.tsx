@@ -677,5 +677,3 @@ export const RGPD = () => (
     </Col>
   </Row>
 )
-
-export default RGPD

@@ -10,10 +10,12 @@ export const SERVER_API_URL = (() => {
   switch (window.location.hostname) {
     case 'localhost':
       return `http://localhost:${BACK_END_PORT}`
-
+    case '127.0.0.1':
+      return `http://localhost:${BACK_END_PORT}`
     case 'prod.campus.ilieff.fr':
       return `https://prod.backend.campus.ilieff.fr`
-
+    case 'hebergement.campus-transition.org':
+      return `https://prod.backend.campus.ilieff.fr`
     default:
       return `https://dev.backend.campus.ilieff.fr`
   }

@@ -1,3 +1,4 @@
+import { Heading } from '@chakra-ui/react'
 import { faEye, faPencilAlt, faPlus, faSync } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
@@ -26,7 +27,7 @@ export const Reservation = () => {
   return (
     <div>
       <h2 id="reservation-heading" data-cy="ReservationHeading">
-        Réservations sans lit ou non confirmés
+        <Heading>Réservations à traiter</Heading>
         <div className="d-flex justify-content-end">
           <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
             <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraichîr la liste

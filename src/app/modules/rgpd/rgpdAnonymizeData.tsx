@@ -92,5 +92,3 @@ export const RGPDAnonymizeData = () => {
     </>
   )
 }
-
-export default RGPDAnonymizeData

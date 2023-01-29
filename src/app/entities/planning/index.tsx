@@ -123,18 +123,7 @@ const Index = () => {
                 replace
                 color="danger"
               >
-                Réservations non confirmées
-              </Button>
-              &nbsp;&nbsp;&nbsp;
-              <Button
-                tag={Link}
-                id="new"
-                data-cy="entityCreatelButton"
-                to="/reservation/lunch-only"
-                replace
-                color="danger"
-              >
-                Réservations sans lits
+                Réservations à traiter
               </Button>
             </>
           ) :

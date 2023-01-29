@@ -10,7 +10,8 @@ import { Option as O } from 'effect'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import RGPDAnonymizeData from '../rgpd/rgpdAnonymizeData'
+import { ReservationsToBeProcessed } from '../reservation-to-be-processed/reservationtobeprocessed'
+import { RGPDAnonymizeData } from '../rgpd/rgpdAnonymizeData'
 
 export const Home = (): JSX.Element => {
   const isAdmin = useAppSelector(state =>
@@ -20,6 +21,9 @@ export const Home = (): JSX.Element => {
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.INTERMITTENT])
   )
 
+  const isRespHebergement = useAppSelector(state =>
+    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.RESPHEBERGEMENT])
+  )
   const account = useAppSelector(state => state.authentication.account)
 
   const reservationCreationIntermittentUrl = pipe(
@@ -97,10 +101,9 @@ export const Home = (): JSX.Element => {
             </Button>
           ) :
           ''}
+        {isRespHebergement ? <ReservationsToBeProcessed /> : ''}
         {isAdmin ? <RGPDAnonymizeData /> : ''}
       </VStack>
     </HStack>
   )
 }
-
-export default Home
