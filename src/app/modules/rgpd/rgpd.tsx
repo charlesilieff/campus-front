@@ -76,7 +76,7 @@ export const RGPD = () => (
         <strong>Délégué à la protection des données</strong> : Charles Ilieff – cilieff@gmail.com
         <br />
       </p>
-      <div ng-bind-html="linkHTML">
+      <div>
         <p>
           Ce modèle de mentions légales est proposé par le{' '}
           <a
@@ -464,7 +464,7 @@ export const RGPD = () => (
         </a>{' '}
         sont principalement les agents de notre service client.
       </p>
-      <div ng-bind-html="rgpdHTML"></div>
+      <div></div>
       <h2>8. Notification d’incident</h2>
       <p>
         Quels que soient les efforts fournis, aucune méthode de transmission sur Internet et aucune
