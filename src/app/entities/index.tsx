@@ -6,6 +6,7 @@ import { Route } from 'react-router-dom'
 import { BedRoutes } from './bed'
 import { BedroomKindRoutes } from './bedroom-kind'
 import BookingBeds from './bookingbeds'
+import { IntermittentReservations } from './bookingbeds/intermittent/reservations-list'
 import { CustomerRoutes } from './customer'
 import { PlaceRoutes } from './place'
 import Planning from './planning'
@@ -19,7 +20,15 @@ import { RoomRoutes } from './room'
 export const EntitiesRoutes = () => (
   <div>
     <ErrorBoundaryRoutes>
-      <Route path={'reservation/to-be-processed'} element={<ReservationsToBeProcessed />} />
+      <Route
+        path={`reservation/*`}
+        element={
+          <ErrorBoundaryRoutes>
+            <Route path={'to-be-processed'} element={<ReservationsToBeProcessed />} />
+            <Route path={'intermittent/:id'} element={<IntermittentReservations />} />
+          </ErrorBoundaryRoutes>
+        }
+      />
 
       <Route path={`bookingbeds/*`} element={<BookingBeds />} />
       <Route path={`reservation/*`} element={<Reservation />} />

@@ -9,8 +9,8 @@ import { AccountMenu, AdminMenu, EntitiesMenu } from '../menus'
 import { Brand, Help, Home } from './header-components'
 
 export interface IHeaderProps {
-  isCooker: boolean
   isAuthenticated: boolean
+  isIntermittent: boolean
   isAdmin: boolean
   isResp: boolean
   ribbonEnv: string
@@ -19,7 +19,7 @@ export interface IHeaderProps {
   isUser: boolean
 }
 
-const Header = (props: IHeaderProps) => {
+export const Header = (props: IHeaderProps) => {
   const [menuOpen, setMenuOpen] = useState(false)
 
   const renderDevRibbon = () =>
@@ -50,7 +50,11 @@ const Header = (props: IHeaderProps) => {
             {!window.location.pathname.endsWith('reservation-request/new') && <Home />}
 
             {props.isAuthenticated && (
-              <EntitiesMenu isResp={props.isResp} isCooker={props.isCooker} isUser={props.isUser} />
+              <EntitiesMenu
+                isResp={props.isResp}
+                isIntermittent={props.isIntermittent}
+                isUser={props.isUser}
+              />
             )}
             {props.isAuthenticated && props.isAdmin && (
               <AdminMenu showOpenAPI={props.isOpenAPIEnabled} />
@@ -64,5 +68,3 @@ const Header = (props: IHeaderProps) => {
     </div>
   )
 }
-
-export default Header

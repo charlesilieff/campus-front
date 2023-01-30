@@ -5,7 +5,13 @@ import React from 'react'
 
 import { NavDropdown } from './menu-components'
 
-export const EntitiesMenu = props => (
+interface EntitiesMenuProps {
+  isResp: boolean
+  isUser: boolean
+  isIntermittent: boolean
+}
+
+export const EntitiesMenu = (props: EntitiesMenuProps) => (
   <NavDropdown
     icon="th-list"
     name="Gestion de l'hébergement"
@@ -48,6 +54,11 @@ export const EntitiesMenu = props => (
     {(props.isResp || props.isUser) && (
       <MenuItem icon={faCalendar} to="/planning">
         Planning
+      </MenuItem>
+    )}
+    {(props.isIntermittent) && (
+      <MenuItem icon={faCalendar} to="/reservation/intermittent/1">
+        Mes réservations
       </MenuItem>
     )}
     {/* jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here */}

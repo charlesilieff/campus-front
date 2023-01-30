@@ -14,7 +14,17 @@ import { getIntermittentReservations } from '../../reservation/reservation.reduc
 
 export const IntermittentReservations = () => {
   const dispatch = useAppDispatch()
-  const id = pipe(useParams<'id'>(), O.fromNullable, O.map(({ id }) => Number(id)))
+
+  const id = pipe(
+    useParams<{ id: string }>(),
+    x => x.id,
+    O.fromNullable,
+    O.map(id => {
+      console.log('id', id)
+      return Number(id)
+    })
+  )
+  console.log('id', id)
   const reservationList = useAppSelector(state => state.reservation.entities)
   const loading = useAppSelector(state => state.reservation.loading)
 
@@ -29,7 +39,7 @@ export const IntermittentReservations = () => {
   return (
     <div>
       <h2 id="reservation-heading" data-cy="ReservationHeading">
-        <Heading>Réservations à traiter</Heading>
+        <Heading>Mes réservations</Heading>
         <div className="d-flex justify-content-end">
           <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
             <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraîchir la liste
@@ -51,8 +61,6 @@ export const IntermittentReservations = () => {
             <Table responsive>
               <thead>
                 <tr>
-                  <th>Nombre de personnes</th>
-
                   <th>Confirmé</th>
                   <th>Nombre de régime spéciaux</th>
                   <th>Dort au Campus</th>
@@ -72,8 +80,6 @@ export const IntermittentReservations = () => {
               <tbody>
                 {reservationList.map((reservation, i) => (
                   <tr key={`entity-${i}`} data-cy="entityTable">
-                    <td>{reservation.personNumber}</td>
-
                     <td>{reservation.isConfirmed ? 'Oui' : 'Non'}</td>
                     <td>{reservation.specialDietNumber}</td>
                     <td>{reservation.isLunchOnly ? 'Non' : 'Oui'}</td>

@@ -14,7 +14,7 @@ import AppRoutes from './routes'
 import { hasAnyAuthority } from './shared/auth/private-route'
 import { ErrorBoundary } from './shared/error/error-boundary'
 import Footer from './shared/layout/footer/footer'
-import Header from './shared/layout/header/header'
+import { Header } from './shared/layout/header/header'
 import { getProfile } from './shared/reducers/application-profile'
 import { getSession } from './shared/reducers/authentication'
 
@@ -32,8 +32,8 @@ export const App = () => {
   const isAdmin = useAppSelector(state =>
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.ADMIN])
   )
-  const isCooker = useAppSelector(state =>
-    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.COOKER])
+  const isIntermittent = useAppSelector(state =>
+    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.INTERMITTENT])
   )
   const isUser = useAppSelector(state =>
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.USER])
@@ -61,7 +61,7 @@ export const App = () => {
             ribbonEnv={ribbonEnv}
             isInProduction={isInProduction}
             isOpenAPIEnabled={isOpenAPIEnabled}
-            isCooker={isCooker}
+            isIntermittent={isIntermittent}
             isUser={isUser}
             isResp={isResp}
           />
