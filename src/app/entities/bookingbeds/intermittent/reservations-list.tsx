@@ -3,11 +3,10 @@ import { faEye, faPencilAlt, faPlus, faSync } from '@fortawesome/free-solid-svg-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import { pipe } from 'effect'
-import { Option as O } from 'effect'
+import { Option as O, pipe } from 'effect'
 import React, { useEffect } from 'react'
 import { TextFormat } from 'react-jhipster'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Button, Table } from 'reactstrap'
 
 import { getIntermittentReservations } from '../../reservation/reservation.reducer'
@@ -15,25 +14,36 @@ import { getIntermittentReservations } from '../../reservation/reservation.reduc
 export const IntermittentReservations = () => {
   const dispatch = useAppDispatch()
 
-  const id = pipe(
-    useParams<{ id: string }>(),
-    x => x.id,
+  const account = useAppSelector(state => state.authentication.account)
+  const customerId = pipe(
+    account.customerId,
     O.fromNullable,
-    O.map(id => {
-      console.log('id', id)
-      return Number(id)
-    })
+    O.map(Number)
   )
-  console.log('id', id)
+  const userId = pipe(
+    account.id,
+    O.fromNullable,
+    O.map(Number)
+  )
+
+  // const id = pipe(
+  //   useParams<{ id: string }>(),
+  //   x => x.id,
+  //   O.fromNullable,
+  //   O.map(id => {
+  //     console.log('id', id)
+  //     return Number(id)
+  //   })
+  // )
   const reservationList = useAppSelector(state => state.reservation.entities)
   const loading = useAppSelector(state => state.reservation.loading)
 
   useEffect(() => {
-    if (O.isSome(id)) dispatch(getIntermittentReservations(id.value))
+    if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
   }, [])
 
   const handleSyncList = () => {
-    if (O.isSome(id)) dispatch(getIntermittentReservations(id.value))
+    if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
   }
 
   return (
@@ -61,9 +71,8 @@ export const IntermittentReservations = () => {
             <Table responsive>
               <thead>
                 <tr>
-                  <th>Confirmé</th>
-                  <th>Nombre de régime spéciaux</th>
-                  <th>Dort au Campus</th>
+                  <th>Régime sans gluten/lactose</th>
+
                   <th>Repas du soir d&apos;arrivée</th>
                   <th>Repas du soir de départ</th>
                   <th>Repas du midi d&apos;arrivée</th>
@@ -80,9 +89,8 @@ export const IntermittentReservations = () => {
               <tbody>
                 {reservationList.map((reservation, i) => (
                   <tr key={`entity-${i}`} data-cy="entityTable">
-                    <td>{reservation.isConfirmed ? 'Oui' : 'Non'}</td>
-                    <td>{reservation.specialDietNumber}</td>
-                    <td>{reservation.isLunchOnly ? 'Non' : 'Oui'}</td>
+                    <td>{reservation.specialDietNumber === 1 ? 'Oui' : 'Non'}</td>
+
                     <td>{reservation.isArrivalDiner ? 'Oui' : 'Non'}</td>
                     <td>{reservation.isDepartureDiner ? 'Oui' : 'Non'}</td>
                     <td>{reservation.isArrivalLunch ? 'Oui' : 'Non'}</td>
@@ -132,18 +140,22 @@ export const IntermittentReservations = () => {
                           data-cy="entityDetailsButton"
                         >
                           <FontAwesomeIcon icon={faEye} />{' '}
-                          <span className="d-none d-md-inline">Voir</span>
+                          <span className="d-none d-md-inline">Annuler</span>
                         </Button>
-                        <Button
-                          tag={Link}
-                          to={`/bookingbeds/${reservation.id}/edit`}
-                          color="primary"
-                          size="sm"
-                          data-cy="entityEditButton"
-                        >
-                          <FontAwesomeIcon icon={faPencilAlt} />{' '}
-                          <span className="d-none d-md-inline">Modifier</span>
-                        </Button>
+                        {O.isSome(customerId) ?
+                          (
+                            <Button
+                              tag={Link}
+                              to={`/bookingbeds/intermittent/${reservation.id}`}
+                              color="primary"
+                              size="sm"
+                              data-cy="entityEditButton"
+                            >
+                              <FontAwesomeIcon icon={faPencilAlt} />{' '}
+                              <span className="d-none d-md-inline">Modifier</span>
+                            </Button>
+                          ) :
+                          null}
                       </div>
                     </td>
                   </tr>

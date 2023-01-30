@@ -1,4 +1,4 @@
-import { HStack, Select } from '@chakra-ui/react'
+import { Button, HStack, Select } from '@chakra-ui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { AUTHORITIES } from 'app/config/constants'
 import { useAppSelector } from 'app/config/store'
@@ -7,9 +7,9 @@ import { IPlace } from 'app/shared/model/place.model'
 import axios from 'axios'
 import dayjs, { Dayjs } from 'dayjs'
 import React, { useEffect, useState } from 'react'
+import { BsFillExclamationCircleFill } from 'react-icons/bs'
 import { ValidatedField } from 'react-jhipster'
 import { Link } from 'react-router-dom'
-import { Button } from 'reactstrap'
 
 import { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
 import PlaceModal from '../place/placeModal'
@@ -19,7 +19,7 @@ const apiUrlPlacesWithoutImage = '/api/places/noimage'
 const apiUrlPlaces = 'api/planning/places'
 const apiUrlReservations = 'api/planning/reservations'
 
-const Index = () => {
+export const IndexPlanning = () => {
   const isAdmin = useAppSelector(state =>
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.ADMIN])
   )
@@ -103,12 +103,14 @@ const Index = () => {
           (
             <>
               <Button
-                tag={Link}
+                as={Link}
                 id="new"
                 data-cy="entityCreatelButton"
                 to="/bookingbeds/new"
+                _hover={{ textDecoration: 'none', color: 'white' }}
                 replace
-                color="success"
+                backgroundColor={'green'}
+                color={'white'}
               >
                 <FontAwesomeIcon icon="plus-circle" />
                 &nbsp;
@@ -116,12 +118,15 @@ const Index = () => {
               </Button>
               &nbsp;&nbsp;&nbsp;
               <Button
-                tag={Link}
+                as={Link}
                 id="new"
+                _hover={{ textDecoration: 'none', color: 'white' }}
                 data-cy="entityCreatelButton"
                 to="/reservation/to-be-processed"
                 replace
-                color="danger"
+                backgroundColor={'#E53E3E'}
+                color={'white'}
+                leftIcon={<BsFillExclamationCircleFill />}
               >
                 Réservations à traiter
               </Button>
@@ -133,5 +138,3 @@ const Index = () => {
     </div>
   )
 }
-
-export default Index

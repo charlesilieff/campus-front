@@ -1,3 +1,4 @@
+import { Grid, Text } from '@chakra-ui/react'
 import { IPlace } from 'app/shared/model/place.model'
 import { getDateKey } from 'app/shared/util/date-utils'
 import { Dayjs } from 'dayjs'
@@ -31,9 +32,9 @@ const Planning = ({ place, date, totalDays, reservations }: IProps) => {
   const positionY = {}
 
   return (
-    <div className="grid-container">
-      <div className="roomNames">Nom des chambres</div>
-      <div className="bedNames">Lits</div>
+    <Grid className="grid-container">
+      <Text className="roomNames" textAlign={'center'} py={2}>Chambres</Text>
+      <Text className="bedNames" textAlign={'center'} py={2}>Lits</Text>
 
       {
         // Affichage des mois
@@ -74,7 +75,7 @@ const Planning = ({ place, date, totalDays, reservations }: IProps) => {
       {reservations?.map((reservation, index) =>
         Reservation({ reservation, date, index, place, positionX, positionY })
       )}
-    </div>
+    </Grid>
   )
 }
 

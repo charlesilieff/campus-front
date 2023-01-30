@@ -10,7 +10,7 @@ import { Card } from 'reactstrap'
 
 import { AUTHORITIES } from './config/constants'
 import { useAppDispatch, useAppSelector } from './config/store'
-import AppRoutes from './routes'
+import { Routes as AppRoutes } from './routes'
 import { hasAnyAuthority } from './shared/auth/private-route'
 import { ErrorBoundary } from './shared/error/error-boundary'
 import Footer from './shared/layout/footer/footer'
@@ -78,5 +78,3 @@ export const App = () => {
     </Router>
   )
 }
-
-export default App

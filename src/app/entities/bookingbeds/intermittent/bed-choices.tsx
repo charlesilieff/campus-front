@@ -4,9 +4,9 @@ import {
   VStack
 } from '@chakra-ui/react'
 import { IRoom } from 'app/shared/model/room.model'
-import { Option as O } from 'effect'
+import { Option as O, pipe } from 'effect'
 import { consNonEmptyReadonlyArray } from 'effect/index/Optic'
-import React, { useEffect, useState } from 'react'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 
 import { getIntermittentPlaceWithFreeBeds } from '../utils'
 import { IntermittentBeds } from './beds-intermittent'
@@ -15,11 +15,12 @@ import { DatesAndMeals } from './reservation-intermittent-update'
 consNonEmptyReadonlyArray
 interface DatesAndMealsChoicesProps {
   setSelectedBedId: (bedId: O.Option<number>) => void
+  bedId: O.Option<number>
   datesAndMeals: O.Option<DatesAndMeals>
 }
 
-export const BedsChoices = (
-  props: DatesAndMealsChoicesProps
+export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
+  props
 ): JSX.Element => {
   // const [loading, setLoading] = useState(false)
   // const [places, setPlaces] = useState<ReadonlyArray<IPlace>>([])
@@ -105,6 +106,7 @@ export const BedsChoices = (
               </Heading>
 
               <IntermittentBeds
+                bedId={pipe(props.bedId, O.map(bedId => bedId.toString()))}
                 rooms={rooms}
                 selectedBedId={props.setSelectedBedId}
               />

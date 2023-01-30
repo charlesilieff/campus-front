@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react'
 import { BsTrash } from 'react-icons/bs'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
-import { getEntity as getCustomerEntity } from '../../customer/customer.reducer'
+import { getEntity as getReservationEntity } from '../../reservation/reservation.reducer'
 import { createIntermittentReservation, reset } from '../booking-beds.reducer'
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
@@ -37,48 +37,49 @@ export interface Customer {
 
 export type BedIds = ReadonlyArray<{ id: number }>
 
+const createIReservation = (
+  customer: Customer,
+  datesAndMeals: DatesAndMeals,
+  bedId: number
+): IReservation => ({
+  // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
+  arrivalDate: datesAndMeals.arrivalDate,
+  // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
+  departureDate: datesAndMeals.departureDate,
+  specialDietNumber: datesAndMeals.specialDiet === 'true' ? 1 : 0,
+  isArrivalLunch: datesAndMeals.isArrivalLunch,
+  isArrivalDiner: datesAndMeals.isArrivalDinner,
+  isDepartureLunch: datesAndMeals.isDepartureLunch,
+  isDepartureDiner: datesAndMeals.isDepartureDinner,
+  comment: datesAndMeals.comment,
+  beds: [{ id: bedId }],
+  isConfirmed: true,
+  isPaid: false,
+  isLunchOnly: false,
+  paymentMode: '',
+  personNumber: 1,
+  customer: {
+    id: customer.id,
+    firstname: customer.firstname,
+    lastname: customer.lastname,
+    email: customer.email,
+    phoneNumber: customer.phoneNumber,
+    age: O.getOrUndefined(customer.age)
+  }
+})
+
 export const ReservationIntermittentUpdate = (): JSX.Element => {
   const [datesAndMeal, setDatesAndMeal] = useState<O.Option<DatesAndMeals>>(O.none)
   const [customer, setCustomer] = useState<O.Option<Customer>>(O.none)
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
-  const { id } = useParams<{ id: string }>()
+  const { reservationId } = useParams<{ reservationId: string }>()
+  // const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const toast = useToast()
   const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
-
-  const createIReservation = (
-    customer: Customer,
-    datesAndMeals: DatesAndMeals,
-    bedId: number
-  ): IReservation => ({
-    // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
-    arrivalDate: datesAndMeals.arrivalDate,
-    // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
-    departureDate: datesAndMeals.departureDate,
-    specialDietNumber: datesAndMeals.specialDiet === 'true' ? 1 : 0,
-    isArrivalLunch: datesAndMeals.isArrivalLunch,
-    isArrivalDiner: datesAndMeals.isArrivalDinner,
-    isDepartureLunch: datesAndMeals.isDepartureLunch,
-    isDepartureDiner: datesAndMeals.isDepartureDinner,
-    comment: datesAndMeals.comment,
-    beds: [{ id: bedId }],
-    isConfirmed: true,
-    isPaid: false,
-    isLunchOnly: false,
-    paymentMode: '',
-    personNumber: 1,
-    customer: {
-      id: customer.id,
-      firstname: customer.firstname,
-      lastname: customer.lastname,
-      email: customer.email,
-      phoneNumber: customer.phoneNumber,
-      age: O.getOrUndefined(customer.age)
-    }
-  })
 
   const handleSubmitReservation = (
     datesAndMeal: DatesAndMeals,
@@ -91,33 +92,38 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
     dispatch(createIntermittentReservation(reservation)).then(() => setIsLoading(false))
   }
 
-  // pipe(
-
-  //   O.fromNullable,
-  //   O.map(c =>
-  //
-  //   )
-  // )
-
-  const backendCustomer = useAppSelector(state => state.customer.entity)
+  const backendReservation = useAppSelector(state => state.reservation.entity)
 
   useEffect(() => {
     pipe(
-      id,
+      reservationId,
       O.fromNullable,
-      O.map(id => dispatch(getCustomerEntity(id)))
+      O.map(id => dispatch(getReservationEntity(id)))
     )
-    if (backendCustomer.email !== undefined) {
+
+    if (backendReservation.customer !== undefined) {
       setCustomer(O.some({
-        id: backendCustomer?.id,
-        firstname: backendCustomer?.firstname,
-        lastname: backendCustomer?.lastname,
-        email: backendCustomer?.email,
-        phoneNumber: backendCustomer?.phoneNumber,
-        age: O.some(backendCustomer?.age)
+        id: backendReservation.customer?.id,
+        firstname: backendReservation.customer?.firstname,
+        lastname: backendReservation.customer?.lastname,
+        email: backendReservation.customer?.email,
+        phoneNumber: backendReservation.customer?.phoneNumber,
+        age: O.some(backendReservation.customer?.age)
       }))
     }
-  }, [backendCustomer.email])
+    if (backendReservation.arrivalDate !== undefined) {
+      setDatesAndMeal(O.some({
+        arrivalDate: backendReservation?.arrivalDate.toString(),
+        departureDate: backendReservation.departureDate.toString(),
+        specialDiet: backendReservation.specialDietNumber === 1 ? 'true' : 'false',
+        isArrivalLunch: backendReservation.isArrivalLunch,
+        isArrivalDinner: backendReservation.isArrivalDiner,
+        isDepartureLunch: backendReservation.isDepartureLunch,
+        isDepartureDinner: backendReservation.isDepartureDiner,
+        comment: backendReservation.comment
+      }))
+    }
+  }, [backendReservation.id])
 
   const [bedId, setBedId] = useState<O.Option<number>>(O.none)
 
@@ -135,16 +141,6 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
       navigate('/planning')
     }
   }, [updateSuccess])
-  // const testValue = {
-  //   arrivalDate: '2021-22-02',
-  //   departureDate: '2021-22-03',
-  //   specialDiet: 'false' as const,
-  //   isArrivalLunch: true,
-  //   isArrivalDinner: false,
-  //   isDepartureLunch: true,
-  //   isDepartureDinner: false,
-  //   comment: 'test'
-  // }
 
   return (
     <Stack>
@@ -198,6 +194,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
         (
           <BedsChoices
             datesAndMeals={datesAndMeal}
+            bedId={bedId}
             setSelectedBedId={setBedId}
           />
         ) :

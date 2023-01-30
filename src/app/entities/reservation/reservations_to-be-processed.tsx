@@ -53,7 +53,7 @@ export const ReservationsToBeProcessed = () => {
 
                   <th>Confirmé</th>
                   <th>Nombre de régime spéciaux</th>
-                  <th>Dort au Campus</th>
+
                   <th>Repas du soir d&apos;arrivée</th>
                   <th>Repas du soir de départ</th>
                   <th>Repas du midi d&apos;arrivée</th>
@@ -74,7 +74,7 @@ export const ReservationsToBeProcessed = () => {
 
                     <td>{reservation.isConfirmed ? 'Oui' : 'Non'}</td>
                     <td>{reservation.specialDietNumber}</td>
-                    <td>{reservation.isLunchOnly ? 'Non' : 'Oui'}</td>
+
                     <td>{reservation.isArrivalDiner ? 'Oui' : 'Non'}</td>
                     <td>{reservation.isDepartureDiner ? 'Oui' : 'Non'}</td>
                     <td>{reservation.isArrivalLunch ? 'Oui' : 'Non'}</td>

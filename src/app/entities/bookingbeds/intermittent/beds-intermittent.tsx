@@ -5,12 +5,13 @@ import React, { FunctionComponent } from 'react'
 
 interface IProps {
   rooms: ReadonlyArray<IRoom>
+  bedId: O.Option<string>
   selectedBedId: (bedId: O.Option<number>) => void
 }
 export const IntermittentBeds: FunctionComponent<IProps> = (
-  { rooms, selectedBedId }
+  { rooms, selectedBedId, bedId }
 ) => (
-  <RadioGroup onChange={e => selectedBedId(O.some(+e))}>
+  <RadioGroup onChange={e => selectedBedId(O.some(+e))} defaultValue={O.getOrNull(bedId)}>
     {rooms.map(room => {
       const bedRoomKind = room.bedroomKind ? `(${room.bedroomKind.name})` : ''
 

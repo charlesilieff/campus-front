@@ -58,5 +58,3 @@ export const BedDeleteDialog = () => {
     </Modal>
   )
 }
-
-export default BedDeleteDialog

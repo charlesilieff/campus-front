@@ -1,4 +1,4 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { HStack } from '@chakra-ui/react'
 import React from 'react'
 
 import { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
@@ -15,28 +15,17 @@ interface IProps {
 
 export const ReservationBed = (
   { reservation, gridRowStart, gridRowEnd, gridColumnStart, gridColumnEnd, style }: IProps
-) => {
-  style = Object.assign(
-    {
-      gridRowStart,
-      gridRowEnd,
-      gridColumnStart,
-      gridColumnEnd
-    },
-    style
-  )
-  // }
-  return (
-    <div className="reservation" style={style}>
-      <ReservationModal reservation={reservation} />
-      &nbsp;
-      <FontAwesomeIcon
-        icon={reservation?.isConfirmed ? 'check-circle' : 'times-circle'}
-        size="2x"
-        color={reservation?.isConfirmed ? 'green' : 'red'}
-      />
-    </div>
-  )
-}
-
-export default ReservationBed
+) => // }
+(<HStack
+  className="reservation"
+  gridRowStart={gridRowStart}
+  gridRowEnd={gridRowEnd}
+  gridColumnEnd={gridColumnEnd}
+  gridColumnStart={gridColumnStart}
+  style={style}
+  maxW={'12rem'}
+  mx={4}
+  py={2}
+>
+  <ReservationModal reservation={reservation} />
+</HStack>)

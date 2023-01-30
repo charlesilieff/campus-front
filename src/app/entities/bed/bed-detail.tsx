@@ -47,5 +47,3 @@ export const BedDetail = () => {
     </Row>
   )
 }
-
-export default BedDetail

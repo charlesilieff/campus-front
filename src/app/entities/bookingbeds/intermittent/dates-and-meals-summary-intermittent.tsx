@@ -78,7 +78,7 @@ export const DatesAndMealsSummary = (
         </HStack>
       </VStack>
       <HStack py={2}>
-        <Text fontWeight={'bold'}>Régime sans lactose OU sans gluten ?</Text>
+        <Text fontWeight={'bold'}>Régime sans lactose/gluten ?</Text>
         <Text>{specialDiet === 'true' ? 'Oui' : 'Non'}</Text>
       </HStack>
       <VStack alignItems={'flex-start'} py={2}>

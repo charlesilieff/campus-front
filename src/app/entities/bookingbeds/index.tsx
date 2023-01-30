@@ -7,7 +7,7 @@ import { BookingBedsUpdate } from './new-reservation'
 import ReservationDeleteDialog from './reservation-delete-dialog'
 import { ReservationDetail } from './reservation-detail'
 
-const BookingBedsRoutes = (): JSX.Element => (
+export const BookingBedsRoutes = (): JSX.Element => (
   <ErrorBoundaryRoutes>
     <Route path={`new`} element={<BookingBedsUpdate />} />
     <Route
@@ -15,7 +15,7 @@ const BookingBedsRoutes = (): JSX.Element => (
       element={<ReservationIntermittentUpdate />}
     />
     <Route
-      path={`new/intermittent/:id`}
+      path={`intermittent/:reservationId`}
       element={<ReservationIntermittentUpdate />}
     />
     <Route path=":id">
@@ -28,5 +28,3 @@ const BookingBedsRoutes = (): JSX.Element => (
     </Route>
   </ErrorBoundaryRoutes>
 )
-
-export default BookingBedsRoutes

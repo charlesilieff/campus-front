@@ -349,6 +349,7 @@ Planning page
   grid-column-start: 1;
   grid-column-end: 4;
   text-align: center;
+  overflow-wrap: break-word;
   border-top-style: solid;
   border-right-style: solid;
   border-width: 0.15em;
@@ -413,9 +414,9 @@ Planning page
   border-style: solid;
   border-width: 0.2em;
   border-radius: 1.5em;
-  margin-left: 1.6em;
-  margin-right: 1.6em;
+
   border-color: #114b5f;
+  overflow-wrap: break-word;
 }
 
 #place {
@@ -426,7 +427,7 @@ Planning page
 /* jhipster-needle-scss-add-main JHipster will add new css style */
 
 /* ==========================================================================
-kitcnen page
+kitchen page
 ========================================================================== */
 .time {
   grid-column-start: 1;

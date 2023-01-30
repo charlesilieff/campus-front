@@ -2,10 +2,10 @@ import { ErrorBoundaryRoutes } from 'app/shared/error/error-boundary-routes'
 import React from 'react'
 import { Route } from 'react-router-dom'
 
-import Bed from './bed'
-import BedDeleteDialog from './bed-delete-dialog'
-import BedDetail from './bed-detail'
-import BedUpdate from './bed-update'
+import { Bed } from './bed'
+import { BedDeleteDialog } from './bed-delete-dialog'
+import { BedDetail } from './bed-detail'
+import { BedUpdate } from './bed-update'
 
 export const BedRoutes = () => (
   <ErrorBoundaryRoutes>

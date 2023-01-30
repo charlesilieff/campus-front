@@ -116,5 +116,3 @@ export const Bed = () => {
     </div>
   )
 }
-
-export default Bed

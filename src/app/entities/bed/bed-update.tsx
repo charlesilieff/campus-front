@@ -172,5 +172,3 @@ export const BedUpdate = () => {
     </div>
   )
 }
-
-export default BedUpdate

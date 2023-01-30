@@ -31,7 +31,7 @@ const Admin = Loadable({
   loading: () => <div>loading ...</div>
 })
 
-const Routes = () => (
+export const Routes = () => (
   <div className="view-routes">
     <ErrorBoundaryRoutes>
       <Route index element={<Home />} />
@@ -113,5 +113,3 @@ const Routes = () => (
     </ErrorBoundaryRoutes>
   </div>
 )
-
-export default Routes

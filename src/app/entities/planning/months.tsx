@@ -1,3 +1,4 @@
+import { Text } from '@chakra-ui/react'
 import { Dayjs } from 'dayjs'
 import React, { FunctionComponent } from 'react'
 
@@ -23,15 +24,18 @@ export const Months: FunctionComponent<IProps> = ({ month, date, totalDays }) =>
   // Position de fin vertical des cases. Si c'est le deuxième mois (month = 1), la postion est absolu à la fin (endTable)
   const gridColumnEnd = month === 0 ? offSet + remainingDays : endTable
 
-  const style = {
-    gridColumnStart,
-    gridColumnEnd
-  } as React.CSSProperties
-
   return (
-    <div className="month" style={style}>
+    <Text
+      className="month"
+      gridColumnEnd={gridColumnEnd}
+      gridColumnStart={gridColumnStart}
+      textAlign={'center'}
+      py={2}
+      textTransform={'capitalize'}
+      fontWeight={'bold'}
+    >
       {date.add(month, 'month').format('MMMM')}
-    </div>
+    </Text>
   )
 }
 
