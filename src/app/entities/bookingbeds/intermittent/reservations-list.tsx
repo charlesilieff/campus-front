@@ -1,47 +1,35 @@
+import { Heading } from '@chakra-ui/react'
 import { faEye, faPencilAlt, faPlus, faSync } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
-import { useAppSelector } from 'app/config/store'
-import { IReservation } from 'app/shared/model/reservation.model'
-import axios from 'axios'
-import dayjs, { Dayjs } from 'dayjs'
-import React, { useEffect, useState } from 'react'
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { pipe } from 'effect'
+import { Option as O } from 'effect'
+import React, { useEffect } from 'react'
 import { TextFormat } from 'react-jhipster'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Button, Table } from 'reactstrap'
 
-const apiUrlReservations = 'api/reservations/lunch-only'
+import { getIntermittentReservations } from '../../reservation/reservation.reducer'
 
-export const ReservationLunchOnly = () => {
-  const [reservations, setReservations] = useState([] as IReservation[])
-  const [date, setDate] = useState(dayjs())
+export const IntermittentReservations = () => {
+  const dispatch = useAppDispatch()
+  const id = pipe(useParams<'id'>(), O.fromNullable, O.map(({ id }) => Number(id)))
+  const reservationList = useAppSelector(state => state.reservation.entities)
   const loading = useAppSelector(state => state.reservation.loading)
 
   useEffect(() => {
-    getReservations(date)
+    if (O.isSome(id)) dispatch(getIntermittentReservations(id.value))
   }, [])
 
   const handleSyncList = () => {
-    getReservations(date)
-  }
-
-  const getReservations = async (startDate: Dayjs) => {
-    const requestUrl = `${apiUrlReservations}/${startDate.format('YYYY-MM-DD')}?cacheBuster=${
-      new Date().getTime()
-    }`
-    const { data } = await axios.get<IReservation[]>(requestUrl)
-    setReservations(data)
-  }
-
-  const newDate = (dateStart: any) => {
-    setDate(dayjs(dateStart.target.value))
-    getReservations(dayjs(dateStart.target.value))
+    if (O.isSome(id)) dispatch(getIntermittentReservations(id.value))
   }
 
   return (
     <div>
       <h2 id="reservation-heading" data-cy="ReservationHeading">
-        Réservations pour les personnes qui ne dorment pas au campus.
+        <Heading>Réservations à traiter</Heading>
         <div className="d-flex justify-content-end">
           <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
             <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraîchir la liste
@@ -58,54 +46,41 @@ export const ReservationLunchOnly = () => {
         </div>
       </h2>
       <div className="table-responsive">
-        <input
-          className="inline-block"
-          id="date"
-          name="date"
-          data-cy="date"
-          type="date"
-          onChange={newDate}
-        >
-        </input>
-        {reservations && reservations.length > 0 ?
+        {reservationList && reservationList.length > 0 ?
           (
             <Table responsive>
               <thead>
                 <tr>
-                  <th>Id</th>
                   <th>Nombre de personnes</th>
-                  <th>Moyen de paiement</th>
-                  <th>Payé</th>
+
                   <th>Confirmé</th>
                   <th>Nombre de régime spéciaux</th>
                   <th>Dort au Campus</th>
+                  <th>Repas du soir d&apos;arrivée</th>
+                  <th>Repas du soir de départ</th>
+                  <th>Repas du midi d&apos;arrivée</th>
+                  <th>Repas du midi de départ</th>
                   <th>Date d&apos;arrivée</th>
                   <th>Date de départ</th>
                   <th>Commentaire</th>
-                  <th>Tarif</th>
-                  <th>Client</th>
+
+                  <th>Lits</th>
+
                   <th />
                 </tr>
               </thead>
               <tbody>
-                {reservations.map((reservation, i) => (
+                {reservationList.map((reservation, i) => (
                   <tr key={`entity-${i}`} data-cy="entityTable">
-                    <td>
-                      <Button
-                        tag={Link}
-                        to={`/bookingbeds/${reservation.id}`}
-                        color="link"
-                        size="sm"
-                      >
-                        {reservation.id}
-                      </Button>
-                    </td>
                     <td>{reservation.personNumber}</td>
-                    <td>{reservation.paymentMode}</td>
-                    <td>{reservation.isPaid ? 'Oui' : 'Non'}</td>
+
                     <td>{reservation.isConfirmed ? 'Oui' : 'Non'}</td>
                     <td>{reservation.specialDietNumber}</td>
                     <td>{reservation.isLunchOnly ? 'Non' : 'Oui'}</td>
+                    <td>{reservation.isArrivalDiner ? 'Oui' : 'Non'}</td>
+                    <td>{reservation.isDepartureDiner ? 'Oui' : 'Non'}</td>
+                    <td>{reservation.isArrivalLunch ? 'Oui' : 'Non'}</td>
+                    <td>{reservation.isDepartureLunch ? 'Oui' : 'Non'}</td>
                     <td>
                       {reservation.arrivalDate ?
                         (
@@ -129,15 +104,7 @@ export const ReservationLunchOnly = () => {
                         null}
                     </td>
                     <td>{reservation.comment}</td>
-                    <td>
-                      {reservation.pricing ?
-                        (
-                          <Link to={`pricing/${reservation.pricing.id}`}>
-                            {reservation.pricing.wording}
-                          </Link>
-                        ) :
-                        ('Pas de tarif associé.')}
-                    </td>
+
                     <td>
                       {reservation.beds ?
                         reservation.beds.map((val, j) => (
@@ -148,15 +115,7 @@ export const ReservationLunchOnly = () => {
                         )) :
                         null}
                     </td>
-                    <td>
-                      {reservation.customer ?
-                        (
-                          <Link to={`customer/${reservation.customer.id}`}>
-                            {reservation.customer.email}
-                          </Link>
-                        ) :
-                        ''}
-                    </td>
+
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
                         <Button
@@ -191,5 +150,3 @@ export const ReservationLunchOnly = () => {
     </div>
   )
 }
-
-export default ReservationLunchOnly

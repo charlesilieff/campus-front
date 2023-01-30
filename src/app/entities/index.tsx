@@ -11,8 +11,7 @@ import { PlaceRoutes } from './place'
 import Planning from './planning'
 import { PricingRoutes } from './pricing'
 import Reservation from './reservation'
-import ReservationLunchOnly from './reservation/reservation_isLunchOnly'
-import ReservationNotConfirmed from './reservation/reservation_nobeds_notconfirmed'
+import { ReservationsToBeProcessed } from './reservation/reservations_to-be-processed'
 import { RoomRoutes } from './room'
 
 /* jhipster-needle-add-route-import - JHipster will add routes here */
@@ -20,8 +19,8 @@ import { RoomRoutes } from './room'
 export const EntitiesRoutes = () => (
   <div>
     <ErrorBoundaryRoutes>
-      <Route path={'reservation/to-be-processed'} element={<ReservationNotConfirmed />} />
-      <Route path={'reservation/lunch-only'} element={<ReservationLunchOnly />} />
+      <Route path={'reservation/to-be-processed'} element={<ReservationsToBeProcessed />} />
+
       <Route path={`bookingbeds/*`} element={<BookingBeds />} />
       <Route path={`reservation/*`} element={<Reservation />} />
       <Route path={`customer/*`} element={<CustomerRoutes />} />

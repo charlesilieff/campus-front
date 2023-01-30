@@ -14,11 +14,7 @@ export const EntitiesMenu = props => (
     style={{ maxHeight: '80vh', overflow: 'auto' }}
   >
     <>{/* to avoid warnings when empty */}</>
-    {
-      /* <MenuItem icon="coffee" to="/reservation">
-      Réservations
-    </MenuItem> */
-    }
+
     {props.isResp && (
       <>
         <MenuItem icon={faSnowman} to="/customer">

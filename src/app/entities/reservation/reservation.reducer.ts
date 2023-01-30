@@ -18,7 +18,8 @@ const initialState: EntityState<IReservation> = {
 }
 
 const apiUrl = 'api/reservations'
-const apiUrlNoBedsNotConfirmed = 'api/reservations/to-be-processed'
+const apiUrlReservationsToBeProcessed = 'api/reservations/to-be-processed'
+const apiUrlIntermittentReservations = 'api/reservations/user-id'
 // Actions
 
 export const getEntities = createAsyncThunk(
@@ -29,10 +30,18 @@ export const getEntities = createAsyncThunk(
   }
 )
 
-export const getReservationsNoBedsNotConfirmed = createAsyncThunk(
+export const getReservationsToBeProcessed = createAsyncThunk(
   'reservation/fetch_entity_list',
   async () => {
-    const requestUrl = `${apiUrlNoBedsNotConfirmed}?cacheBuster=${new Date().getTime()}`
+    const requestUrl = `${apiUrlReservationsToBeProcessed}?cacheBuster=${new Date().getTime()}`
+    return axios.get<IReservation[]>(requestUrl)
+  }
+)
+
+export const getIntermittentReservations = createAsyncThunk(
+  'reservation/fetch_entity_list',
+  async (id: number) => {
+    const requestUrl = `${apiUrlIntermittentReservations}/${id}`
     return axios.get<IReservation[]>(requestUrl)
   }
 )

@@ -8,20 +8,20 @@ import { TextFormat } from 'react-jhipster'
 import { Link } from 'react-router-dom'
 import { Button, Table } from 'reactstrap'
 
-import { getReservationsNoBedsNotConfirmed } from './reservation.reducer'
+import { getReservationsToBeProcessed } from './reservation.reducer'
 
-export const Reservation = () => {
+export const ReservationsToBeProcessed = () => {
   const dispatch = useAppDispatch()
 
   const reservationList = useAppSelector(state => state.reservation.entities)
   const loading = useAppSelector(state => state.reservation.loading)
 
   useEffect(() => {
-    dispatch(getReservationsNoBedsNotConfirmed())
+    dispatch(getReservationsToBeProcessed())
   }, [])
 
   const handleSyncList = () => {
-    dispatch(getReservationsNoBedsNotConfirmed())
+    dispatch(getReservationsToBeProcessed())
   }
 
   return (
@@ -30,7 +30,7 @@ export const Reservation = () => {
         <Heading>Réservations à traiter</Heading>
         <div className="d-flex justify-content-end">
           <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraichîr la liste
+            <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraîchir la liste
           </Button>
           <Link
             to="/bookingbeds/new"
@@ -156,5 +156,3 @@ export const Reservation = () => {
     </div>
   )
 }
-
-export default Reservation
