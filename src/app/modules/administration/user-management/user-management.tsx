@@ -1,3 +1,4 @@
+import { Heading } from '@chakra-ui/react'
 import { faEye, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { APP_DATE_FORMAT } from 'app/config/constants'
@@ -91,7 +92,7 @@ export const UserManagement = () => {
   return (
     <div>
       <h2 id="user-management-page-heading" data-cy="userManagementPageHeading">
-        Utilisateurs
+        <Heading size={'lg'}>Utilisateurs</Heading>
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
             <FontAwesomeIcon icon={faSync} spin={loading} /> Actualiser la liste

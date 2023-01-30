@@ -6,6 +6,6 @@ import UserManagement from './user-management'
 
 export const AdministrationRoutes = () => (
   <ErrorBoundaryRoutes>
-    <Route path="user-management" element={<UserManagement />} />
+    <Route path="user-management/*" element={<UserManagement />} />
   </ErrorBoundaryRoutes>
 )
