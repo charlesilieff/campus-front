@@ -11,8 +11,8 @@ interface IProps {
   reservation: IReservationsPlanning
   index: number
   place: IPlace
-  positionX: any
-  positionY: any
+  positionX: number[]
+  positionY: number[]
   date: Dayjs
 }
 
@@ -21,7 +21,7 @@ export const Reservation = ({ reservation, index, place, positionX, positionY, d
 
   const colors = ['#74CAE7', '#E19BE8', '#F08E6A', '#82B865', '#FFCAD4', '#B8D8BA']
   let style = {
-    backgroundColor: colors[index] ? colors[index] : 'hsl(' + Math.random() * 360 + ', 100%, 75%)'
+    backgroundColor: colors[index] ? colors[index] : `hsl(${Math.random() * 360}, 100%, 75%)`
   } as React.CSSProperties
 
   // construction de la liste des lits présents au lieu affiché du planning.
@@ -38,7 +38,7 @@ export const Reservation = ({ reservation, index, place, positionX, positionY, d
     const endTable = 39
     const arrivalDate = dayjs(reservation.arrivalDate)
 
-    let gridColumnStart = positionX[getDateKey(arrivalDate)] === undefined ?
+    let gridColumnStart: number = positionX[getDateKey(arrivalDate)] === undefined ?
       8 :
       positionX[getDateKey(arrivalDate)]
     const difference = dayjs(reservation?.departureDate).diff(
@@ -113,11 +113,9 @@ export const Reservation = ({ reservation, index, place, positionX, positionY, d
         gridColumnStart={gridColumnStart}
         gridColumnEnd={gridColumnEnd}
         reservation={reservation}
-        key={bedId}
         style={style}
+        key={bedId}
       />
     )
   })
 }
-
-export default Reservation

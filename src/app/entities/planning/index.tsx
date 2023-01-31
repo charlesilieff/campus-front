@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom'
 
 import type { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
 import PlaceModal from '../place/placeModal'
-import Planning from './planning'
+import { Planning } from './planning'
 
 const apiUrlPlacesWithoutImage = '/api/places/noimage'
 const apiUrlPlaces = 'api/planning/places'

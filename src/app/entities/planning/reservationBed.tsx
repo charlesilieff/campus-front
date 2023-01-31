@@ -23,7 +23,6 @@ export const ReservationBed = (
   gridColumnEnd={gridColumnEnd}
   gridColumnStart={gridColumnStart}
   style={style}
-  maxW={'12rem'}
   mx={4}
   py={2}
 >

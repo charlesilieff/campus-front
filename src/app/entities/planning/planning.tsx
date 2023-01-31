@@ -18,18 +18,18 @@ interface IProps {
   reservations: IReservationsPlanning[]
 }
 
-// On souhaite afficher 31 jours => Tableau de 31 élements.
+// On souhaite afficher 31 jours => Tableau de 31 éléments.
 const monthDays = Array.from({ length: 31 })
 
-const Planning = ({ place, date, totalDays, reservations }: IProps) => {
+export const Planning = ({ place, date, totalDays, reservations }: IProps) => {
   // Offset en de départ horizontal des cases chambres
   let roomRowPosition = 4
 
   // Objects contenant la position en x dans la grille des jours.
-  const positionX = {}
+  const positionX: number[] = []
 
   // Objects contenant la position en y dans la grille des lits.
-  const positionY = {}
+  const positionY: number[] = []
 
   return (
     <Grid className="grid-container">
@@ -49,7 +49,7 @@ const Planning = ({ place, date, totalDays, reservations }: IProps) => {
       }
       {monthDays.map((_, index) => {
         const gridColumnStart = 8 + index
-        // On construit l'object qui va permettre de récuperer la bonne position en X pour afficher les réservations.
+        // On construit l'object qui va permettre de récupérer la bonne position en X pour afficher les réservations.
         const dateDay = date.add(index, 'day')
         positionX[getDateKey(dateDay)] = gridColumnStart
         return <Day positionX={gridColumnStart} key={getDateKey(dateDay)} date={dateDay}></Day>
@@ -65,7 +65,7 @@ const Planning = ({ place, date, totalDays, reservations }: IProps) => {
           return [
             <Room room={room} gridRowEnd={roomRowPosition} key={room.id}></Room>,
             room.beds.map((bed, index) => {
-              // On construit l'object qui va permettre de récuperer la bonne postion en Y pour afficher les réservations.
+              // On construit l'object qui va permettre de récupérer la bonne position en Y pour afficher les réservations.
               positionY[bed.id] = roomRowPosition - index - 1
               return <Bed key={index} bed={bed} rowPosition={roomRowPosition} index={index} />
             })
@@ -78,5 +78,3 @@ const Planning = ({ place, date, totalDays, reservations }: IProps) => {
     </Grid>
   )
 }
-
-export default Planning

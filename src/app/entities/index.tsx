@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ErrorBoundaryRoutes } from 'app/shared/error/error-boundary-routes'
 import React from 'react'
 import { Route } from 'react-router-dom'
@@ -14,8 +13,6 @@ import { PricingRoutes } from './pricing'
 import Reservation from './reservation'
 import { ReservationsToBeProcessed } from './reservation/reservations_to-be-processed'
 import { RoomRoutes } from './room'
-
-/* jhipster-needle-add-route-import - JHipster will add routes here */
 
 export const EntitiesRoutes = () => (
   <div>
