@@ -1,6 +1,6 @@
-import { IBed } from './bed.model'
-import { ICustomer } from './customer.model'
-import { IPricing } from './pricing.model'
+import type { IBed } from './bed.model'
+import type { ICustomer } from './customer.model'
+import type { IPricing } from './pricing.model'
 
 export interface IBookingBeds {
   id?: number

@@ -1,5 +1,5 @@
 import { getDateKey } from 'app/shared/util/date-utils'
-import { Dayjs } from 'dayjs'
+import type { Dayjs } from 'dayjs'
 import React from 'react'
 
 import { Day } from './day'

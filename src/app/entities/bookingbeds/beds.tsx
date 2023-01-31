@@ -1,6 +1,7 @@
-import { IRoom } from 'app/shared/model/room.model'
+import type { IRoom } from 'app/shared/model/room.model'
 import { CustomValidatedField } from 'app/shared/util/cross-validation-form'
-import React, { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
+import React from 'react'
 
 interface IProps {
   rooms: IRoom[]

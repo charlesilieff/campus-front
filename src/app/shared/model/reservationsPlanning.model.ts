@@ -1,4 +1,4 @@
-import { ICustomer } from 'app/shared/model/customer.model'
+import type { ICustomer } from 'app/shared/model/customer.model'
 
 export interface IReservationsPlanning {
   id: number

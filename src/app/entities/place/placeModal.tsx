@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { IPlace } from 'app/shared/model/place.model'
+import type { IPlace } from 'app/shared/model/place.model'
 import React, { useState } from 'react'
 import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap'
 

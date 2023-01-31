@@ -1,8 +1,11 @@
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
-import { defaultValue, IBedroomKind } from 'app/shared/model/bedroom-kind.model'
+import type { IBedroomKind } from 'app/shared/model/bedroom-kind.model'
+import { defaultValue } from 'app/shared/model/bedroom-kind.model'
+import type {
+  EntityState
+} from 'app/shared/reducers/reducer.utils'
 import {
   createEntitySlice,
-  EntityState,
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
 import { cleanEntity } from 'app/shared/util/entity-utils'

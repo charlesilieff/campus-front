@@ -1,5 +1,6 @@
-import { IRoom } from 'app/shared/model/room.model'
-import React, { FunctionComponent } from 'react'
+import type { IRoom } from 'app/shared/model/room.model'
+import type { FunctionComponent } from 'react'
+import React from 'react'
 
 interface IProps {
   room: IRoom

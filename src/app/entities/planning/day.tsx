@@ -1,5 +1,5 @@
 import { Box, Text, VStack } from '@chakra-ui/react'
-import { Dayjs } from 'dayjs'
+import type { Dayjs } from 'dayjs'
 import React from 'react'
 
 interface IProps {

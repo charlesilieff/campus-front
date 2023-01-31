@@ -1,8 +1,11 @@
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
-import { defaultValue, IReservation } from 'app/shared/model/reservation.model'
+import type { IReservation } from 'app/shared/model/reservation.model'
+import { defaultValue } from 'app/shared/model/reservation.model'
+import type {
+  EntityState
+} from 'app/shared/reducers/reducer.utils'
 import {
   createEntitySlice,
-  EntityState,
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
 import { cleanEntity } from 'app/shared/util/entity-utils'

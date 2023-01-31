@@ -1,7 +1,7 @@
-import { IMeal } from 'app/shared/model/meal.model'
+import type { IMeal } from 'app/shared/model/meal.model'
 import { createContext } from 'react'
 
-import { IMealsNumber } from './IMealsNumber'
+import type { IMealsNumber } from './IMealsNumber'
 
 const defaultValue: IMeal[] = []
 

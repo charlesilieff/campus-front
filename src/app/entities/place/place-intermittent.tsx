@@ -1,5 +1,5 @@
 import { Button, Checkbox, CheckboxGroup, Heading, useToast, VStack } from '@chakra-ui/react'
-import { IPlace } from 'app/shared/model/place.model'
+import type { IPlace } from 'app/shared/model/place.model'
 import axios from 'axios'
 import { ReadonlyArray as A } from 'effect/collection'
 import React, { useEffect, useState } from 'react'

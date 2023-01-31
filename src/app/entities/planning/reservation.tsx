@@ -1,7 +1,8 @@
-import { IPlace } from 'app/shared/model/place.model'
-import { IReservationsPlanning } from 'app/shared/model/reservationsPlanning.model'
+import type { IPlace } from 'app/shared/model/place.model'
+import type { IReservationsPlanning } from 'app/shared/model/reservationsPlanning.model'
 import { getDateKey } from 'app/shared/util/date-utils'
-import dayjs, { Dayjs } from 'dayjs'
+import type { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 import React from 'react'
 
 import { ReservationBed } from './reservationBed'

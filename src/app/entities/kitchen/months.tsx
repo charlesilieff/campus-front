@@ -1,5 +1,6 @@
-import { Dayjs } from 'dayjs'
-import React, { FunctionComponent } from 'react'
+import type { Dayjs } from 'dayjs'
+import type { FunctionComponent } from 'react'
+import React from 'react'
 
 interface IProps {
   month: number

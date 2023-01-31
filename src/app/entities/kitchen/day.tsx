@@ -1,9 +1,10 @@
-import { IMeal } from 'app/shared/model/meal.model'
-import dayjs, { Dayjs } from 'dayjs'
+import type { IMeal } from 'app/shared/model/meal.model'
+import type { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 import React, { useContext, useEffect, useState } from 'react'
 import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap'
 
-import { IMealsNumber } from './IMealsNumber'
+import type { IMealsNumber } from './IMealsNumber'
 import MealContext from './mealsContext'
 
 interface IProps {

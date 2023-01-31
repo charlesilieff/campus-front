@@ -2,14 +2,14 @@ import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getPricings } from 'app/entities/pricing/pricing.reducer'
-import { ICustomer } from 'app/shared/model/customer.model'
-import { IReservation } from 'app/shared/model/reservation.model'
+import type { ICustomer } from 'app/shared/model/customer.model'
+import type { IReservation } from 'app/shared/model/reservation.model'
 import React, { useEffect } from 'react'
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
-import { IBookingBeds } from '../../shared/model/bookingBeds.model'
+import type { IBookingBeds } from '../../shared/model/bookingBeds.model'
 import { getEntity, reset, setData } from './booking-beds.reducer'
 
 export const ReservationCustomerUpdate = () => {

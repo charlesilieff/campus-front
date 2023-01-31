@@ -1,6 +1,6 @@
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { ICustomer } from 'app/shared/model/customer.model'
+import type { ICustomer } from 'app/shared/model/customer.model'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'

@@ -1,7 +1,9 @@
-import { createAsyncThunk, isFulfilled, isPending, PayloadAction } from '@reduxjs/toolkit'
-import { defaultValue, IReservationRequest } from 'app/shared/model/reservation-request.model'
-import { createEntitySlice, EntityState,
-  serializeAxiosError } from 'app/shared/reducers/reducer.utils'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
+import type { IReservationRequest } from 'app/shared/model/reservation-request.model'
+import { defaultValue } from 'app/shared/model/reservation-request.model'
+import type { EntityState } from 'app/shared/reducers/reducer.utils'
+import { createEntitySlice, serializeAxiosError } from 'app/shared/reducers/reducer.utils'
 import { cleanEntity } from 'app/shared/util/entity-utils'
 import axios from 'axios'
 

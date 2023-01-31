@@ -1,8 +1,11 @@
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
-import { defaultValue, IPlace } from 'app/shared/model/place.model'
+import type { IPlace } from 'app/shared/model/place.model'
+import { defaultValue } from 'app/shared/model/place.model'
+import type {
+  EntityState
+} from 'app/shared/reducers/reducer.utils'
 import {
   createEntitySlice,
-  EntityState,
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
 import { cleanEntity } from 'app/shared/util/entity-utils'

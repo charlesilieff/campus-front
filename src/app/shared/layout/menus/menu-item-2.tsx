@@ -1,5 +1,5 @@
 import { Box, MenuItem as MenuItemChakra } from '@chakra-ui/react'
-import { IconProp } from '@fortawesome/fontawesome-svg-core'
+import type { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { NavLink as Link } from 'react-router-dom'

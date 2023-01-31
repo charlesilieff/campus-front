@@ -1,8 +1,11 @@
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
-import { defaultValue, ICustomer } from 'app/shared/model/customer.model'
+import type { ICustomer } from 'app/shared/model/customer.model'
+import { defaultValue } from 'app/shared/model/customer.model'
+import type {
+  EntityState
+} from 'app/shared/reducers/reducer.utils'
 import {
   createEntitySlice,
-  EntityState,
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
 import { cleanEntity } from 'app/shared/util/entity-utils'

@@ -2,7 +2,8 @@ import { useAppSelector } from 'app/config/store'
 import { ErrorBoundary } from 'app/shared/error/error-boundary'
 import React from 'react'
 import { Translate } from 'react-jhipster'
-import { Navigate, RouteProps, useLocation } from 'react-router-dom'
+import type { RouteProps } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 
 interface IOwnProps extends RouteProps {
   hasAnyAuthorities?: string[]

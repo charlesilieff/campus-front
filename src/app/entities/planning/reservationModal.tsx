@@ -6,7 +6,7 @@ import { FaTimesCircle } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
-import { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
+import type { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
 
 interface IProps {
   reservation: IReservationsPlanning

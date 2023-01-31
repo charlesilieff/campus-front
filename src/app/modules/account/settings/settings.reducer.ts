@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { AppThunk } from 'app/config/store'
+import type { AppThunk } from 'app/config/store'
 import { getSession } from 'app/shared/reducers/authentication'
 import { serializeAxiosError } from 'app/shared/reducers/reducer.utils'
 import axios from 'axios'

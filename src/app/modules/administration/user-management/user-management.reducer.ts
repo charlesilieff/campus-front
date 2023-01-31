@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit'
-import { defaultValue, IUser } from 'app/shared/model/user.model'
-import { IQueryParams, serializeAxiosError } from 'app/shared/reducers/reducer.utils'
+import type { IUser } from 'app/shared/model/user.model'
+import { defaultValue } from 'app/shared/model/user.model'
+import type { IQueryParams } from 'app/shared/reducers/reducer.utils'
+import { serializeAxiosError } from 'app/shared/reducers/reducer.utils'
 import axios from 'axios'
 
 const initialState = {

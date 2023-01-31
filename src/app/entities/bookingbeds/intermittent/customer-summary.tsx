@@ -10,7 +10,7 @@ import { Option as O } from 'effect'
 import React from 'react'
 import { BsPencil } from 'react-icons/bs'
 
-import { Customer } from './reservation-intermittent-update'
+import type { Customer } from './reservation-intermittent-update'
 
 interface CustomerSummaryProps {
   customer: Customer

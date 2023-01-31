@@ -1,5 +1,5 @@
 import pick from 'lodash/pick'
-import { IPaginationBaseState } from 'react-jhipster'
+import type { IPaginationBaseState } from 'react-jhipster'
 
 /**
  * Removes fields with an 'id' field that equals ''.

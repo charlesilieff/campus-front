@@ -1,13 +1,15 @@
-import {
+import type {
   ActionReducerMapBuilder,
   AnyAction,
   AsyncThunk,
-  createSlice,
   SerializedError,
   SliceCaseReducers,
   ValidateSliceCaseReducers
 } from '@reduxjs/toolkit'
-import { AxiosError } from 'axios'
+import {
+  createSlice
+} from '@reduxjs/toolkit'
+import type { AxiosError } from 'axios'
 
 /**
  * Model for redux actions with pagination

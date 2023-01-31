@@ -1,7 +1,7 @@
 import { HStack } from '@chakra-ui/react'
 import React from 'react'
 
-import { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
+import type { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
 import ReservationModal from './reservationModal'
 
 interface IProps {

@@ -1,10 +1,10 @@
 import { Grid, Text } from '@chakra-ui/react'
-import { IPlace } from 'app/shared/model/place.model'
+import type { IPlace } from 'app/shared/model/place.model'
 import { getDateKey } from 'app/shared/util/date-utils'
-import { Dayjs } from 'dayjs'
+import type { Dayjs } from 'dayjs'
 import React from 'react'
 
-import { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
+import type { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
 import Bed from './beds'
 import Day from './day'
 import Months from './months'

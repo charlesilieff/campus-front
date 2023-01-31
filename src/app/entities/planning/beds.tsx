@@ -1,5 +1,6 @@
-import { IBed } from 'app/shared/model/bed.model'
-import React, { FunctionComponent } from 'react'
+import type { IBed } from 'app/shared/model/bed.model'
+import type { FunctionComponent } from 'react'
+import React from 'react'
 
 interface IProps {
   rowPosition: number

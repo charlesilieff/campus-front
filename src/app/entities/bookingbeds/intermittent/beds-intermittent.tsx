@@ -1,7 +1,8 @@
 import { Radio, RadioGroup, Text, VStack } from '@chakra-ui/react'
-import { IRoom } from 'app/shared/model/room.model'
+import type { IRoom } from 'app/shared/model/room.model'
 import { Option as O } from 'effect'
-import React, { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
+import React from 'react'
 
 interface IProps {
   rooms: ReadonlyArray<IRoom>

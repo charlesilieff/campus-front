@@ -1,12 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { IMeal } from 'app/shared/model/meal.model'
+import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
-import dayjs, { Dayjs } from 'dayjs'
+import type { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { ValidatedField } from 'react-jhipster'
 import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap'
 
-import { IMealsNumber } from './IMealsNumber'
+import type { IMealsNumber } from './IMealsNumber'
 import MealContext from './mealsContext'
 import MealsPlanning from './mealsPlanning'
 

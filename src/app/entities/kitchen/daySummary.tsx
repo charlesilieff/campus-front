@@ -1,7 +1,7 @@
-import { Dayjs } from 'dayjs'
+import type { Dayjs } from 'dayjs'
 import React, { useContext } from 'react'
 
-import { IMealsNumber } from './IMealsNumber'
+import type { IMealsNumber } from './IMealsNumber'
 import MealContext from './mealsContext'
 
 interface IProps {

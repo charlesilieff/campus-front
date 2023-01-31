@@ -3,14 +3,15 @@ import {
   Spinner,
   VStack
 } from '@chakra-ui/react'
-import { IRoom } from 'app/shared/model/room.model'
+import type { IRoom } from 'app/shared/model/room.model'
 import { Option as O, pipe } from 'effect'
 import { consNonEmptyReadonlyArray } from 'effect/index/Optic'
-import React, { FunctionComponent, useEffect, useState } from 'react'
+import type { FunctionComponent } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { getIntermittentPlaceWithFreeBeds } from '../utils'
 import { IntermittentBeds } from './beds-intermittent'
-import { DatesAndMeals } from './reservation-intermittent-update'
+import type { DatesAndMeals } from './reservation-intermittent-update'
 
 consNonEmptyReadonlyArray
 interface DatesAndMealsChoicesProps {

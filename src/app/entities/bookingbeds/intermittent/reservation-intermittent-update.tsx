@@ -1,7 +1,7 @@
 import { CheckIcon } from '@chakra-ui/icons'
 import { Button, Heading, HStack, Stack, useToast } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import { IReservation } from 'app/shared/model/reservation.model'
+import type { IReservation } from 'app/shared/model/reservation.model'
 import { Option as O, pipe } from 'effect'
 import React, { useEffect, useState } from 'react'
 import { BsTrash } from 'react-icons/bs'

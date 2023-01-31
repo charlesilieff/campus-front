@@ -1,4 +1,4 @@
-import { IPlace } from 'app/shared/model/place.model'
+import type { IPlace } from 'app/shared/model/place.model'
 import axios from 'axios'
 
 const apiUrlAllPlaces = 'api/planning/places'

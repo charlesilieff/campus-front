@@ -21,7 +21,7 @@ import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import sinon from 'sinon'
 
-import { IUser } from '../model/user.model'
+import type { IUser } from '../model/user.model'
 
 describe('Authentication reducer tests', () => {
   function isAccountEmpty(state: { account: IUser }): boolean {

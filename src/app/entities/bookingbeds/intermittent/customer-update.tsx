@@ -15,7 +15,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import { Customer } from './reservation-intermittent-update'
+import type { Customer } from './reservation-intermittent-update'
 
 interface CustomerUpdateProps {
   setCustomer: (customer: O.Option<Customer>) => void

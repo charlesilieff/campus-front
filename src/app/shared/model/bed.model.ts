@@ -1,5 +1,5 @@
-import { IReservation } from 'app/shared/model/reservation.model'
-import { IRoom } from 'app/shared/model/room.model'
+import type { IReservation } from 'app/shared/model/reservation.model'
+import type { IRoom } from 'app/shared/model/room.model'
 
 export interface IBed {
   id?: number

@@ -1,7 +1,7 @@
 import { faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import { ICustomer } from 'app/shared/model/customer.model'
+import type { ICustomer } from 'app/shared/model/customer.model'
 import React, { useEffect } from 'react'
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { useParams } from 'react-router-dom'

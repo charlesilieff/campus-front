@@ -21,7 +21,7 @@ import React, { useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import { DatesAndMeals } from './reservation-intermittent-update'
+import type { DatesAndMeals } from './reservation-intermittent-update'
 
 interface DatesAndMealsChoicesProps {
   setDatesAndMeal: (datesAndMeal: O.Option<DatesAndMeals>) => void

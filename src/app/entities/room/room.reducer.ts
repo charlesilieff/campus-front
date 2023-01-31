@@ -1,8 +1,11 @@
 import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit'
-import { defaultValue, IRoom } from 'app/shared/model/room.model'
+import type { IRoom } from 'app/shared/model/room.model'
+import { defaultValue } from 'app/shared/model/room.model'
+import type {
+  EntityState
+} from 'app/shared/reducers/reducer.utils'
 import {
   createEntitySlice,
-  EntityState,
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
 import { cleanEntity } from 'app/shared/util/entity-utils'

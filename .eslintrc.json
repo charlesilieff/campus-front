@@ -184,6 +184,7 @@
     "no-invalid-this": "off",
     "react/prop-types": "off",
     "react/display-name": "off",
-    "import/no-default-export": "warn"
+    "import/no-default-export": "warn",
+    "@typescript-eslint/consistent-type-imports": "error"
   }
 }

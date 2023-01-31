@@ -1,4 +1,4 @@
-import { IRoom } from 'app/shared/model/room.model'
+import type { IRoom } from 'app/shared/model/room.model'
 
 export interface IPlace {
   id?: number

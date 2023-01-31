@@ -1,9 +1,13 @@
-import { createAsyncThunk, isFulfilled, isPending, PayloadAction } from '@reduxjs/toolkit'
-import { defaultValue, IBookingBeds } from 'app/shared/model/bookingBeds.model'
-import { IReservation } from 'app/shared/model/reservation.model'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
+import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
+import { defaultValue } from 'app/shared/model/bookingBeds.model'
+import type { IReservation } from 'app/shared/model/reservation.model'
+import type {
+  EntityState
+} from 'app/shared/reducers/reducer.utils'
 import {
   createEntitySlice,
-  EntityState,
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
 import { cleanEntity } from 'app/shared/util/entity-utils'
