@@ -29,6 +29,7 @@ export const IntermittentBeds: FunctionComponent<IProps> = (
                 <Radio
                   key={bed.id}
                   value={bed.id.toString()}
+                  isChecked={O.exists<string>(b => b === bed.id.toString())(bedId)}
                 >
                   {`${bed.number} ${bedkind}  (places : ${bed.numberOfPlaces})`}
                 </Radio>

@@ -1,5 +1,6 @@
 import type { IPlace } from 'app/shared/model/place.model'
 import axios from 'axios'
+import { Option as O } from 'effect'
 
 const apiUrlAllPlaces = 'api/planning/places'
 const apiUrlPlacesWithoutImage = 'api/places/noimage'
@@ -42,13 +43,14 @@ export const filterBedRoomKind = (
 export const getPlaceWithFreeBeds = (isIntermittent: boolean) =>
 async (
   arrivalDate: string,
-  departureDate: string
+  departureDate: string,
+  reservationId: O.Option<string>
 ): Promise<ReadonlyArray<IPlace>> => {
   const apiUrlPlaces = `api/bookingbeds/${
     isIntermittent ? 'intermittent/' : ''
-  }${arrivalDate}/${departureDate}`
-  const requestUrl = `${apiUrlPlaces}`
-  const { data } = await axios.get<IPlace[]>(requestUrl)
+  }${arrivalDate}/${departureDate}${O.isSome(reservationId) ? `/${reservationId.value}` : ''}`
+
+  const { data } = await axios.get<IPlace[]>(apiUrlPlaces)
 
   data.forEach(place => place.rooms.sort((room1, room2) => room1.name.localeCompare(room2.name)))
   return data

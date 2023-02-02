@@ -51,7 +51,7 @@
   "Array": {
     "prefix": "+A",
     "body": [
-      "import * as A from \"@effect-ts/core/Collections/Immutable/Array\""
+      "import { ReadonlyArray as A } from 'effect/collection'"
     ],
     "description": "Array as A"
   },

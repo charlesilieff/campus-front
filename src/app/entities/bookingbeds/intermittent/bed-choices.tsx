@@ -18,6 +18,7 @@ interface DatesAndMealsChoicesProps {
   setSelectedBedId: (bedId: O.Option<number>) => void
   bedId: O.Option<number>
   datesAndMeals: O.Option<DatesAndMeals>
+  reservationId: O.Option<string>
 }
 
 export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
@@ -35,7 +36,8 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
     if (O.isSome(props.datesAndMeals)) {
       getIntermittentPlaceWithFreeBeds(
         props.datesAndMeals.value.arrivalDate,
-        props.datesAndMeals.value.departureDate
+        props.datesAndMeals.value.departureDate,
+        props.reservationId
       ).then(data => {
         // setPlaces(A.toMutable(data))
         const roomsData = data?.flatMap(place => place.rooms)
