@@ -1,18 +1,39 @@
-import { Heading } from '@chakra-ui/react'
-import { faEye, faPencilAlt, faPlus, faSync } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  Box,
+  Button,
+  Heading,
+  HStack,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  useDisclosure,
+  VStack
+} from '@chakra-ui/react'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { deleteEntity } from 'app/entities/bookingbeds/booking-beds.reducer'
 import { Option as O, pipe } from 'effect'
 import React, { useEffect } from 'react'
+import { FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { TextFormat } from 'react-jhipster'
 import { Link } from 'react-router-dom'
-import { Button, Table } from 'reactstrap'
 
 import { getIntermittentReservations } from '../../reservation/reservation.reducer'
+import { CancelReservationModal } from './cancel-modal'
 
 export const IntermittentReservations = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const dispatch = useAppDispatch()
+
+  const cancelReservation = (id: number) => {
+    dispatch(deleteEntity(id)).then(() =>
+      pipe(userId, O.map(userId => dispatch(getIntermittentReservations(userId))))
+    )
+    onClose()
+  }
 
   const account = useAppSelector(state => state.authentication.account)
   const customerId = pipe(
@@ -38,55 +59,58 @@ export const IntermittentReservations = () => {
   }
 
   return (
-    <div>
-      <h2 id="reservation-heading" data-cy="ReservationHeading">
-        <Heading>Mes réservations</Heading>
-        <div className="d-flex justify-content-end">
-          <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraîchir la liste
-          </Button>
-          <Link
-            to="/bookingbeds/new/intermittent"
-            className="btn btn-primary jh-create-entity"
-            id="jh-create-entity"
-            data-cy="entityCreateButton"
-          >
-            <FontAwesomeIcon icon={faPlus} />
-            &nbsp; Nouvelle réservation
-          </Link>
-        </div>
-      </h2>
-      <div className="table-responsive">
+    <VStack>
+      <Heading alignSelf={'flex-start'}>Mes réservations</Heading>
+      <HStack alignSelf={'flex-end'}>
+        <Button
+          backgroundColor={'#17a2b8'}
+          color={'white'}
+          onClick={handleSyncList}
+          isLoading={loading}
+          leftIcon={<FaSync />}
+        >
+          Rafraîchir la liste
+        </Button>
+        <Button
+          color={'white'}
+          backgroundColor={'#E95420'}
+          as={Link}
+          to="/bookingbeds/new/intermittent"
+          leftIcon={<FaPlus />}
+          _hover={{ textDecoration: 'none', color: 'orange' }}
+        >
+          Nouvelle réservation
+        </Button>
+      </HStack>
+      <Box>
         {reservationList && reservationList.length > 0 ?
           (
-            <Table responsive>
-              <thead>
-                <tr>
-                  <th>Régime sans gluten/lactose</th>
+            <Table variant={'striped'}>
+              <Thead>
+                <Tr>
+                  <Th>Régime sans gluten/lactose</Th>
 
-                  <th>Repas du soir d&apos;arrivée</th>
-                  <th>Repas du soir de départ</th>
-                  <th>Repas du midi d&apos;arrivée</th>
-                  <th>Repas du midi de départ</th>
-                  <th>Date d&apos;arrivée</th>
-                  <th>Date de départ</th>
-                  <th>Commentaire</th>
+                  <Th>Repas du soir d&apos;arrivée</Th>
+                  <Th>Repas du soir de départ</Th>
+                  <Th>Repas du midi d&apos;arrivée</Th>
+                  <Th>Repas du midi de départ</Th>
+                  <Th>Date d&apos;arrivée</Th>
+                  <Th>Date de départ</Th>
+                  <Th>Commentaire</Th>
 
-                  <th>Lits</th>
-
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
+                  <Th>Lits</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
                 {reservationList.map((reservation, i) => (
-                  <tr key={`entity-${i}`} data-cy="entityTable">
-                    <td>{reservation.specialDietNumber === 1 ? 'Oui' : 'Non'}</td>
+                  <Tr key={`entity-${i}`} data-cy="entityTable">
+                    <Td>{reservation.specialDietNumber === 1 ? 'Oui' : 'Non'}</Td>
 
-                    <td>{reservation.isArrivalDiner ? 'Oui' : 'Non'}</td>
-                    <td>{reservation.isDepartureDiner ? 'Oui' : 'Non'}</td>
-                    <td>{reservation.isArrivalLunch ? 'Oui' : 'Non'}</td>
-                    <td>{reservation.isDepartureLunch ? 'Oui' : 'Non'}</td>
-                    <td>
+                    <Td>{reservation.isArrivalDiner ? 'Oui' : 'Non'}</Td>
+                    <Td>{reservation.isDepartureDiner ? 'Oui' : 'Non'}</Td>
+                    <Td>{reservation.isArrivalLunch ? 'Oui' : 'Non'}</Td>
+                    <Td>{reservation.isDepartureLunch ? 'Oui' : 'Non'}</Td>
+                    <Td>
                       {reservation.arrivalDate ?
                         (
                           <TextFormat
@@ -96,8 +120,8 @@ export const IntermittentReservations = () => {
                           />
                         ) :
                         null}
-                    </td>
-                    <td>
+                    </Td>
+                    <Td>
                       {reservation.departureDate ?
                         (
                           <TextFormat
@@ -107,10 +131,10 @@ export const IntermittentReservations = () => {
                           />
                         ) :
                         null}
-                    </td>
-                    <td>{reservation.comment}</td>
+                    </Td>
+                    <Td>{reservation.comment}</Td>
 
-                    <td>
+                    <Td>
                       {reservation.beds ?
                         reservation.beds.map((val, j) => (
                           <span key={j}>
@@ -119,43 +143,42 @@ export const IntermittentReservations = () => {
                           </span>
                         )) :
                         null}
-                    </td>
+                    </Td>
 
-                    <td className="text-right">
-                      <div className="btn-group flex-btn-group-container">
-                        <Button
-                          tag={Link}
-                          to={`/bookingbeds/${reservation.id}`}
-                          color="info"
-                          size="sm"
-                          data-cy="entityDetailsButton"
-                        >
-                          <FontAwesomeIcon icon={faEye} />{' '}
-                          <span className="d-none d-md-inline">Annuler</span>
-                        </Button>
+                    <Td>
+                      <HStack spacing={0}>
+                        <CancelReservationModal
+                          isOpen={isOpen}
+                          onOpen={onOpen}
+                          onClose={onClose}
+                          cancelReservation={cancelReservation}
+                          reservationId={reservation.id}
+                        />
+
                         {O.isSome(customerId) ?
                           (
                             <Button
-                              tag={Link}
+                              as={Link}
                               to={`/bookingbeds/intermittent/${reservation.id}`}
-                              color="primary"
-                              size="sm"
-                              data-cy="entityEditButton"
+                              _hover={{ textDecoration: 'none', color: 'orange' }}
+                              color="white"
+                              borderLeftRadius={0}
+                              backgroundColor={'#17a2b8'}
+                              leftIcon={<FaPencilAlt />}
                             >
-                              <FontAwesomeIcon icon={faPencilAlt} />{' '}
-                              <span className="d-none d-md-inline">Modifier</span>
+                              Modifier
                             </Button>
                           ) :
                           null}
-                      </div>
-                    </td>
-                  </tr>
+                      </HStack>
+                    </Td>
+                  </Tr>
                 ))}
-              </tbody>
+              </Tbody>
             </Table>
           ) :
           (!loading && <div className="alert alert-warning">Pas de réservations trouvées.</div>)}
-      </div>
-    </div>
+      </Box>
+    </VStack>
   )
 }

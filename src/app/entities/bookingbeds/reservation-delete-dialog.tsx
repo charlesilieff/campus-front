@@ -59,5 +59,3 @@ export const ReservationDeleteDialog = () => {
     </Modal>
   )
 }
-
-export default ReservationDeleteDialog

@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom'
 
 import { ReservationIntermittentUpdate } from './intermittent/reservation-intermittent-update'
 import { BookingBedsUpdate } from './new-reservation'
-import ReservationDeleteDialog from './reservation-delete-dialog'
+import { ReservationDeleteDialog } from './reservation-delete-dialog'
 import { ReservationDetail } from './reservation-detail'
 
 export const BookingBedsRoutes = (): JSX.Element => (
