@@ -26,15 +26,6 @@ export const IntermittentReservations = () => {
     O.map(Number)
   )
 
-  // const id = pipe(
-  //   useParams<{ id: string }>(),
-  //   x => x.id,
-  //   O.fromNullable,
-  //   O.map(id => {
-  //     console.log('id', id)
-  //     return Number(id)
-  //   })
-  // )
   const reservationList = useAppSelector(state => state.reservation.entities)
   const loading = useAppSelector(state => state.reservation.loading)
 
@@ -55,7 +46,7 @@ export const IntermittentReservations = () => {
             <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraîchir la liste
           </Button>
           <Link
-            to="/bookingbeds/new"
+            to="/bookingbeds/new/intermittent"
             className="btn btn-primary jh-create-entity"
             id="jh-create-entity"
             data-cy="entityCreateButton"

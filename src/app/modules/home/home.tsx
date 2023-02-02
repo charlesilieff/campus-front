@@ -5,8 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { AUTHORITIES } from 'app/config/constants'
 import { useAppSelector } from 'app/config/store'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
-import { pipe } from 'effect'
-import { Option as O } from 'effect'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
@@ -26,14 +24,7 @@ export const Home = (): JSX.Element => {
   )
   const account = useAppSelector(state => state.authentication.account)
 
-  const reservationCreationIntermittentUrl = pipe(
-    account.customerId,
-    O.fromNullable,
-    O.match(
-      () => `bookingbeds/new/intermittent`,
-      customerId => `bookingbeds/new/intermittent/${customerId}`
-    )
-  )
+  const reservationCreationIntermittentUrl = `bookingbeds/new/intermittent`
 
   const reservationRequestUrl = 'reservation-request/new'
 

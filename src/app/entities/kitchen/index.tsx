@@ -9,7 +9,7 @@ import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap'
 
 import type { IMealsNumber } from './IMealsNumber'
 import MealContext from './mealsContext'
-import MealsPlanning from './mealsPlanning'
+import { MealsPlanning } from './mealsPlanning'
 
 const apiUrlMealsDateFor31Daus = 'api/meals/date'
 interface IShowSavingProps {
@@ -17,7 +17,7 @@ interface IShowSavingProps {
   message: string
 }
 
-const Index = () => {
+export const Index = () => {
   const [date, setDate] = useState(dayjs())
 
   const [mealsData, setMealsData] = useState([] as IMeal[])
@@ -69,10 +69,10 @@ const Index = () => {
     const newDefaultValue = [...mealsData]
     newDefaultValue[index] = {
       ...newDefaultValue[index],
-      specialLunchToCook: mealsNumber.lunchtime.specialDiet,
-      specialDinnerToCook: mealsNumber.dinner.specialDiet,
-      regularLunchToCook: mealsNumber.lunchtime.classicDiet,
-      regularDinnerToCook: mealsNumber.dinner.classicDiet,
+      specialLunch: mealsNumber.lunchtime.specialDiet,
+      specialDinner: mealsNumber.dinner.specialDiet,
+      regularLunch: mealsNumber.lunchtime.classicDiet,
+      regularDinner: mealsNumber.dinner.classicDiet,
       comment: mealsNumber.comment
     }
     // Mise à jour du contexte : du nombre de repas à réaliser.
@@ -157,7 +157,6 @@ const Index = () => {
     </MealContext.Provider>
   )
 }
-export default Index
 
 function calculateAccordingToNumberOfDays(
   mealsDataDays: IMeal[],
@@ -167,11 +166,12 @@ function calculateAccordingToNumberOfDays(
   totalMeals: (table: number[]) => any
 ) {
   mealsDataDays = new Array(numberOfDays)
-
+  console.log('mealsDataDays', mealsDataDays)
   for (let i = 0; i < numberOfDays; i++) {
     mealsDataDays[i] = { ...mealsData[i] }
   }
   resultTotalMeals = totalMealsCalculation(mealsDataDays, totalMeals)
+  console.log('resultTotalMeals', resultTotalMeals)
   return { mealsDataDays, resultTotalMeals }
 }
 
@@ -243,33 +243,35 @@ function displayTotalMeals(resultTotalMeals: number[]) {
  * @returns : results of totals.
  */
 function totalMealsCalculation(mealsData: IMeal[], totalMeals: (table: number[]) => any) {
-  // regularLunchToCook: calculation of total.
-  let table: number[] = mealsData.map(meals => meals.regularLunchToCook)
-  const totalRegularLunchToCook: number = totalMeals(table)
+  // regularLunch: calculation of total.
+  console.log('mealsData', mealsData)
+  let table: number[] = mealsData.map(meals => meals.regularLunch)
 
-  table = mealsData.map(meals => meals.regularDinnerToCook)
-  const totalRegularDinnerToCook: number = totalMeals(table)
+  const totalRegularLunch: number = totalMeals(table)
 
-  // specialLunchToCook: calculation of total.
-  table = mealsData.map(meals => meals.specialLunchToCook)
-  const totalSpecialLunchToCook: number = totalMeals(table)
+  table = mealsData.map(meals => meals.regularDinner)
+  const totalRegularDinner: number = totalMeals(table)
 
-  // specialDinnerToCook: calculation of total.
-  table = mealsData.map(meals => meals.specialDinnerToCook)
-  const totalSpecialDinnerToCook: number = totalMeals(table)
+  // specialLunch: calculation of total.
+  table = mealsData.map(meals => meals.specialLunch)
+  const totalSpecialLunch: number = totalMeals(table)
 
-  const totalRegularToCook: number = totalRegularDinnerToCook + totalRegularLunchToCook
-  const totalSpecialToCook: number = totalSpecialDinnerToCook + totalSpecialLunchToCook
-  const totalToCook: number = totalRegularToCook + totalSpecialToCook
+  // specialDinner: calculation of total.
+  table = mealsData.map(meals => meals.specialDinner)
+  const totalSpecialDinner: number = totalMeals(table)
+
+  const totalRegular: number = totalRegularDinner + totalRegularLunch
+  const totalSpecial: number = totalSpecialDinner + totalSpecialLunch
+  const total: number = totalRegular + totalSpecial
 
   const result: number[] = [
-    totalRegularLunchToCook,
-    totalRegularDinnerToCook,
-    totalSpecialLunchToCook,
-    totalSpecialDinnerToCook,
-    totalRegularToCook,
-    totalSpecialToCook,
-    totalToCook
+    totalRegularLunch,
+    totalRegularDinner,
+    totalSpecialLunch,
+    totalSpecialDinner,
+    totalRegular,
+    totalSpecial,
+    total
   ]
 
   return result

@@ -32,7 +32,7 @@ import applicationProfile from './application-profile'
 import authentication from './authentication'
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
-const rootReducer = {
+export const rootReducer = {
   authentication,
   applicationProfile,
   administration,
@@ -55,5 +55,3 @@ const rootReducer = {
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 }
-
-export default rootReducer

@@ -37,18 +37,6 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
     comment: mealsContext[index].comment
   }
 
-  const differentialMealsNumber: IMealsNumber = {
-    lunchtime: {
-      classicDiet: mealsContext[index].regularLunchToCook - mealsContext[index].regularLunch,
-      specialDiet: mealsContext[index].specialLunchToCook - mealsContext[index].specialLunch
-    },
-    dinner: {
-      classicDiet: mealsContext[index].regularDinnerToCook - mealsContext[index].regularDinner,
-      specialDiet: mealsContext[index].specialDinnerToCook - mealsContext[index].specialDinner
-    },
-    comment: mealsContext[index].comment
-  }
-
   const colorNumber = (differential: number) => {
     let color: string
 
@@ -85,12 +73,10 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
           {mealsNumberReferential?.lunchtime.classicDiet}
           <div
             style={{
-              color: colorNumber(differentialMealsNumber?.lunchtime.classicDiet)
+              color: colorNumber(mealsNumberReferential?.lunchtime.classicDiet)
             } as React.CSSProperties}
           >
-            {differentialMealsNumber?.lunchtime.classicDiet > 0 ?
-              '+' + differentialMealsNumber?.lunchtime.classicDiet :
-              differentialMealsNumber?.lunchtime.classicDiet}
+            wtf
           </div>
         </div>
       </div>
@@ -111,12 +97,10 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
           {mealsNumberReferential?.lunchtime.specialDiet}
           <div
             style={{
-              color: colorNumber(differentialMealsNumber?.lunchtime.specialDiet)
+              color: colorNumber(mealsNumberReferential?.lunchtime.specialDiet)
             } as React.CSSProperties}
           >
-            {differentialMealsNumber?.lunchtime.specialDiet > 0 ?
-              '+' + differentialMealsNumber?.lunchtime.specialDiet :
-              differentialMealsNumber?.lunchtime.specialDiet}
+            wtf
           </div>
         </div>
       </div>
@@ -138,12 +122,10 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
           {mealsNumberReferential?.dinner.classicDiet}
           <div
             style={{
-              color: colorNumber(differentialMealsNumber?.dinner.classicDiet)
+              color: colorNumber(mealsNumberReferential?.dinner.classicDiet)
             } as React.CSSProperties}
           >
-            {differentialMealsNumber?.dinner.classicDiet > 0 ?
-              '+' + differentialMealsNumber?.dinner.classicDiet :
-              differentialMealsNumber?.dinner.classicDiet}
+            wtf
           </div>
         </div>
       </div>
@@ -165,12 +147,10 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
           {mealsNumberReferential?.dinner.specialDiet}
           <div
             style={{
-              color: colorNumber(differentialMealsNumber?.dinner.specialDiet)
+              color: colorNumber(mealsNumberReferential?.dinner.specialDiet)
             } as React.CSSProperties}
           >
-            {differentialMealsNumber?.dinner.specialDiet > 0 ?
-              '+' + differentialMealsNumber?.dinner.specialDiet :
-              differentialMealsNumber?.dinner.specialDiet}
+            wtf
           </div>
         </div>
       </div>

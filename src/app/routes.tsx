@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom'
 
 import { AUTHORITIES } from './config/constants'
 import { EntitiesRoutes } from './entities'
-import Kitchen from './entities/kitchen'
+import { Index } from './entities/kitchen'
 import { RequestDeleteDialog } from './entities/reservation-request/request-delete-dialog'
 import { ReservationRequestDetail } from './entities/reservation-request/request-detail'
 import { DemandUpdate as ReservationRequestUpdate } from './entities/reservation-request/request-update'
@@ -88,7 +88,7 @@ export const Routes = () => (
       path="kitchen/planning"
       element={
         <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.COOKER]}>
-          <Kitchen />
+          <Index />
         </PrivateRoute>
       }
     />

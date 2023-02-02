@@ -40,12 +40,12 @@ export const Day = ({ positionX, date, index }: IProps) => {
   useEffect(() => {
     const mealsToCookFromDb: IMealsNumber = {
       lunchtime: {
-        specialDiet: mealsContext[index]?.specialLunchToCook,
-        classicDiet: mealsContext[index]?.regularLunchToCook
+        specialDiet: mealsContext[index]?.specialLunch,
+        classicDiet: mealsContext[index]?.regularLunch
       },
       dinner: {
-        specialDiet: mealsContext[index]?.specialDinnerToCook,
-        classicDiet: mealsContext[index]?.regularDinnerToCook
+        specialDiet: mealsContext[index]?.specialDinner,
+        classicDiet: mealsContext[index]?.regularDinner
       },
       comment: mealsContext[index]?.comment
     }

@@ -20,7 +20,7 @@ interface IProps {
  *        - régime classique
  *  - Repas du soir.
  */
-const MealsPlanning = ({ date, totalDays, numberOfDays }: IProps) => {
+export const MealsPlanning = ({ date, totalDays, numberOfDays }: IProps) => {
   // On souhaite afficher 31 jours => Tableau de 31 élements.
   const monthDays = Array.from({ length: numberOfDays })
 
@@ -52,8 +52,6 @@ const MealsPlanning = ({ date, totalDays, numberOfDays }: IProps) => {
     </div>
   )
 }
-
-export default MealsPlanning
 
 /**
  * Style of the grid according to the number of days.

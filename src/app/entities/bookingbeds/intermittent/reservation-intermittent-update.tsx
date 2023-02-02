@@ -7,8 +7,9 @@ import React, { useEffect, useState } from 'react'
 import { BsTrash } from 'react-icons/bs'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
+import { getEntity as getCustomer } from '../../customer/customer.reducer'
 import { getEntity as getReservationEntity } from '../../reservation/reservation.reducer'
-import { createIntermittentReservation, reset } from '../booking-beds.reducer'
+import { createEntity, createReservationAndUpdateUser, reset } from '../booking-beds.reducer'
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
 import { CustomerUpdate } from './customer-update'
@@ -75,12 +76,15 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
   const { reservationId } = useParams<{ reservationId: string }>()
-  // const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const toast = useToast()
   const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
+  const customerId = O.fromNullable(
+    useAppSelector(state => state.authentication.account.customerId)
+  )
 
+  const userId: number = useAppSelector(state => state.userManagement.user?.id)
   const handleSubmitReservation = (
     datesAndMeal: DatesAndMeals,
     bedId: number,
@@ -89,10 +93,32 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
     const reservation = createIReservation(customer, datesAndMeal, bedId)
 
     setIsLoading(true)
-    dispatch(createIntermittentReservation(reservation)).then(() => setIsLoading(false))
+    if (O.isNone(customerId)) {
+      dispatch(createEntity(reservation)).then(() => setIsLoading(false))
+    } else {
+      dispatch(createReservationAndUpdateUser(userId)(reservation)).then(() => setIsLoading(false))
+    }
   }
 
   const backendReservation = useAppSelector(state => state.reservation.entity)
+  const backendCustomer = useAppSelector(state => state.customer.entity)
+
+  useEffect(() => {
+    if (backendCustomer.id === undefined) {
+      pipe(customerId, O.map(id => dispatch(getCustomer(id))))
+    }
+
+    if (backendCustomer.id !== undefined) {
+      setCustomer(O.some({
+        id: backendCustomer?.id,
+        firstname: backendCustomer?.firstname,
+        lastname: backendCustomer?.lastname,
+        email: backendCustomer?.email,
+        phoneNumber: backendCustomer?.phoneNumber,
+        age: O.some(backendCustomer?.age)
+      }))
+    }
+  }, [backendCustomer.id])
 
   useEffect(() => {
     pipe(
@@ -101,16 +127,16 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
       O.map(id => dispatch(getReservationEntity(id)))
     )
 
-    if (backendReservation.customer !== undefined) {
-      setCustomer(O.some({
-        id: backendReservation.customer?.id,
-        firstname: backendReservation.customer?.firstname,
-        lastname: backendReservation.customer?.lastname,
-        email: backendReservation.customer?.email,
-        phoneNumber: backendReservation.customer?.phoneNumber,
-        age: O.some(backendReservation.customer?.age)
-      }))
-    }
+    // if (backendReservation.customer !== undefined) {
+    //   setCustomer(O.some({
+    //     id: backendReservation.customer?.id,
+    //     firstname: backendReservation.customer?.firstname,
+    //     lastname: backendReservation.customer?.lastname,
+    //     email: backendReservation.customer?.email,
+    //     phoneNumber: backendReservation.customer?.phoneNumber,
+    //     age: O.some(backendReservation.customer?.age)
+    //   }))
+    // }
     if (backendReservation.arrivalDate !== undefined) {
       setDatesAndMeal(O.some({
         arrivalDate: backendReservation?.arrivalDate.toString(),

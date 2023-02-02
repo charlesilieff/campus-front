@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import pick from 'lodash/pick'
 import type { IPaginationBaseState } from 'react-jhipster'
 
@@ -8,7 +10,7 @@ import type { IPaginationBaseState } from 'react-jhipster'
  *
  * @param entity Object to clean.
  */
-export const cleanEntity = entity => {
+export const cleanEntity = (entity: Record<string, any>) => {
   const keysToKeep = Object.keys(entity).filter(k =>
     !(entity[k] instanceof Object) || (entity[k]['id'] !== '' && entity[k]['id'] !== -1)
   )
