@@ -1,3 +1,4 @@
+import { useToast } from '@chakra-ui/react'
 import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
@@ -14,6 +15,7 @@ import { getEntity, reset, setData } from './booking-beds.reducer'
 
 export const ReservationCustomerUpdate = () => {
   const dispatch = useAppDispatch()
+  const toast = useToast()
   const { id } = useParams<'id'>()
   const navigate = useNavigate()
   const isNew = id === undefined
@@ -42,6 +44,25 @@ export const ReservationCustomerUpdate = () => {
 
   useEffect(() => {
     if (updateSuccess) {
+      if (isNew) {
+        toast({
+          position: 'top',
+          title: 'Réservation crée !',
+          description: 'La réservation a bien été crée.',
+          status: 'success',
+          duration: 4000,
+          isClosable: true
+        })
+      } else {
+        toast({
+          position: 'top',
+          title: 'Réservation modifiée !',
+          description: 'La réservation a bien été modifiée.',
+          status: 'success',
+          duration: 4000,
+          isClosable: true
+        })
+      }
       handleClose()
     }
   }, [updateSuccess])
@@ -358,5 +379,3 @@ export const ReservationCustomerUpdate = () => {
     </div>
   )
 }
-
-export default ReservationCustomerUpdate

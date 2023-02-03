@@ -1,4 +1,4 @@
-import { Heading, HStack, Select, Text, useToast } from '@chakra-ui/react'
+import { Heading, HStack, Select, Text } from '@chakra-ui/react'
 import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
@@ -16,7 +16,7 @@ import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { TextFormat } from 'react-jhipster'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
 import PlaceModal from '../place/placeModal'
@@ -25,13 +25,11 @@ import { backToOne, createEntity, updateEntity } from './booking-beds.reducer'
 import { getOnePlace, getPlaces } from './utils'
 
 export const ReservationBedsUpdate = (): JSX.Element => {
-  const toast = useToast()
   const dispatch = useAppDispatch()
   const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
+
   const reservationEntity = useAppSelector(state => state.bookingBeds.entity)
   const loading = useAppSelector(state => state.bookingBeds.loading)
-  const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
 
   const arrivalDate = dayjs(reservationEntity.arrivalDate).format('YYYY-MM-DD')
   const departureDate = dayjs(reservationEntity.departureDate).format('YYYY-MM-DD')
@@ -65,16 +63,6 @@ export const ReservationBedsUpdate = (): JSX.Element => {
 
     setBedsToBook(updatedbedsToBook)
   }, [])
-
-  useEffect(() => {
-    if (updateSuccess) {
-      handleClose()
-    }
-  }, [updateSuccess])
-
-  const handleClose = (): void => {
-    navigate('/planning')
-  }
 
   const getBookingBeds = async (): Promise<void> => {
     const reservationId = isNew ? '' : `/${reservationEntity.id}`
@@ -178,26 +166,8 @@ export const ReservationBedsUpdate = (): JSX.Element => {
     }
 
     if (isNew) {
-      toast({
-        position: 'top',
-        title: 'Réservation crée !',
-        description: 'La réservation a bien été crée.',
-        status: 'success',
-        duration: 4000,
-        isClosable: true
-      })
-      console.log('updateSuccess')
       dispatch(createEntity(reservation))
     } else {
-      toast({
-        position: 'top',
-        title: 'Réservation modifiée !',
-        description: 'La réservation a bien été modifié.',
-        status: 'success',
-        duration: 4000,
-        isClosable: true
-      })
-      console.log('updateSuccess')
       dispatch(updateEntity(reservation))
     }
   }
@@ -384,5 +354,3 @@ export const ReservationBedsUpdate = (): JSX.Element => {
     </div>
   )
 }
-
-export default ReservationBedsUpdate
