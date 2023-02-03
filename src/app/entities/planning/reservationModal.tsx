@@ -29,7 +29,6 @@ export const ReservationModal = ({ reservation, isRespHebergement }: IProps) => 
     }
   }
 
-  console.log('status', status)
   const toggle = () => setModal(!modal)
   return (
     <Box>

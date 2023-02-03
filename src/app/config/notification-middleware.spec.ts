@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { expect } from '@jest/globals'
 import * as toastify from 'react-toastify' // synthetic default import doesn't work here due to mocking.
 import { applyMiddleware, createStore } from 'redux'

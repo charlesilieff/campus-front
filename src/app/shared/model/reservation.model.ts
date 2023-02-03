@@ -10,7 +10,6 @@ export interface IReservation {
   isConfirmed?: boolean
   reservationNumber?: string | null
   specialDietNumber?: number
-  isLunchOnly?: boolean
   isArrivalDiner?: boolean
   isDepartureDiner?: boolean
   isArrivalLunch?: boolean
@@ -25,7 +24,6 @@ export interface IReservation {
 }
 
 export const defaultValue: Readonly<IReservation> = {
-  isLunchOnly: false,
   isPaid: false,
   isConfirmed: false,
   isArrivalDiner: true,

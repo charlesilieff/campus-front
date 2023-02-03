@@ -1,4 +1,4 @@
-import { Heading, HStack, Select, Text } from '@chakra-ui/react'
+import { Heading, HStack, Select, Text, useToast } from '@chakra-ui/react'
 import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
@@ -25,6 +25,7 @@ import { backToOne, createEntity, updateEntity } from './booking-beds.reducer'
 import { getOnePlace, getPlaces } from './utils'
 
 export const ReservationBedsUpdate = (): JSX.Element => {
+  const toast = useToast()
   const dispatch = useAppDispatch()
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -176,14 +177,27 @@ export const ReservationBedsUpdate = (): JSX.Element => {
       reservation.specialDietNumber = reservation.personNumber
     }
 
-    if (reservation.isLunchOnly) {
-      reservation.isDepartureDiner = false
-      reservation.isArrivalDiner = false
-    }
-
     if (isNew) {
+      toast({
+        position: 'top',
+        title: 'Réservation crée !',
+        description: 'La réservation a bien été crée.',
+        status: 'success',
+        duration: 4000,
+        isClosable: true
+      })
+      console.log('updateSuccess')
       dispatch(createEntity(reservation))
     } else {
+      toast({
+        position: 'top',
+        title: 'Réservation modifiée !',
+        description: 'La réservation a bien été modifié.',
+        status: 'success',
+        duration: 4000,
+        isClosable: true
+      })
+      console.log('updateSuccess')
       dispatch(updateEntity(reservation))
     }
   }

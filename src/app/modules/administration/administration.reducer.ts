@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk, createSlice, isPending, isRejected } from '@reduxjs/toolkit'
 import type { AppThunk } from 'app/config/store'
 import { serializeAxiosError } from 'app/shared/reducers/reducer.utils'
@@ -156,4 +157,5 @@ export const AdministrationSlice = createSlice({
 })
 
 // Reducer
+// eslint-disable-next-line import/no-default-export
 export default AdministrationSlice.reducer
