@@ -58,7 +58,6 @@ const createIReservation = (
   beds: [{ id: bedId }],
   isConfirmed: true,
   isPaid: false,
-  isLunchOnly: false,
   paymentMode: '',
   personNumber: 1,
   customer: {

@@ -31,7 +31,7 @@ export const ReservationUpdate = () => {
 
   const saveEntity = (values: IReservation): void => {
     const entity: IReservationRequest = {
-      reservation: { ...reservationEntity, ...values, isLunchOnly: false },
+      reservation: { ...reservationEntity, ...values },
 
       customer: {
         ...customerEntity,

@@ -105,10 +105,7 @@ export const ReservationDetail = () => {
             <span id="specialDietNumber">Nombre de régimes spéciaux</span>
           </dt>
           <dd>{reservationEntity.specialDietNumber}</dd>
-          <dt>
-            <span id="isLunchOnly">Dort au campus ?</span>
-          </dt>
-          <dd>{reservationEntity.isLunchOnly ? 'Non' : 'Oui'}</dd>
+
           <dt></dt>
           <dt>
             <span id="isArrivalLunch">Repas du midi, jour d&apos;arrivée</span>

@@ -86,7 +86,6 @@ export const Reservation = () => {
                     <td>{reservation.isPaid ? 'Oui' : 'Non'}</td>
                     <td>{reservation.isConfirmed ? 'Oui' : 'Non'}</td>
                     <td>{reservation.specialDietNumber}</td>
-                    <td>{reservation.isLunchOnly ? 'Non' : 'Oui'}</td>
                     <td>{reservation.isArrivalDiner}</td>
                     <td>{reservation.isDepartureDiner}</td>
                     <td>{reservation.isArrivalLunch}</td>
