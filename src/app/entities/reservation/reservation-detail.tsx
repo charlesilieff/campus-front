@@ -47,10 +47,7 @@ export const ReservationDetail = () => {
             <UncontrolledTooltip target="specialDietNumber">Régimes spéciaux</UncontrolledTooltip>
           </dt>
           <dd>{reservationEntity.specialDietNumber}</dd>
-          <dt>
-            <span id="isLunchOnly">dort au campus</span>
-          </dt>
-          <dd>{reservationEntity.isConfirmed ? 'Non' : 'Oui'}</dd>
+
           <dt>
             <span id="isArrivalDiner">Repas du soir d&apos;arrivée</span>
           </dt>

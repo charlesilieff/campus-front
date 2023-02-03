@@ -18,7 +18,6 @@ export interface IBookingBeds {
   isDepartureDiner?: boolean
   isDepartureLunch?: boolean
   reservationComment?: string
-  isLunchOnly?: boolean
   personNumber?: number
   specialDietNumber?: number
   customer?: ICustomer

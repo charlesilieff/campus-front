@@ -54,7 +54,6 @@ export const Reservation = () => {
                   <th>Payé</th>
                   <th>Confirmé</th>
                   <th>Nombre de régime spéciaux</th>
-                  <th>Dort au campus</th>
                   <th>Repas du soir d&apos;arrivée</th>
                   <th>Repas du soir de départ</th>
                   <th>Repas du midi d&apos;arrivée</th>
@@ -86,7 +85,6 @@ export const Reservation = () => {
                     <td>{reservation.isPaid ? 'true' : 'false'}</td>
                     <td>{reservation.isConfirmed ? 'true' : 'false'}</td>
                     <td>{reservation.specialDietNumber}</td>
-                    <td>{reservation.isLunchOnly ? 'Non' : 'Oui'}</td>
                     <td>{reservation.isArrivalDiner ? 'true' : 'false'}</td>
                     <td>{reservation.isDepartureDiner ? 'true' : 'false'}</td>
                     <td>{reservation.isArrivalLunch ? 'true' : 'false'}</td>
