@@ -11,10 +11,11 @@ interface IProps {
   gridColumnStart: number
   gridColumnEnd: number
   style: React.CSSProperties
+  isAdmin: boolean
 }
 
 export const ReservationBed = (
-  { reservation, gridRowStart, gridRowEnd, gridColumnStart, gridColumnEnd, style }: IProps
+  { reservation, gridRowStart, gridRowEnd, gridColumnStart, gridColumnEnd, style, isAdmin }: IProps
 ) => // }
 (<HStack
   className="reservation"
@@ -26,5 +27,5 @@ export const ReservationBed = (
   mx={4}
   my={1}
 >
-  <ReservationModal reservation={reservation} />
+  <ReservationModal reservation={reservation} isAdmin={isAdmin} />
 </HStack>)

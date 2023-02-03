@@ -1,4 +1,4 @@
-import { CheckCircleIcon, EditIcon } from '@chakra-ui/icons'
+import { CheckCircleIcon, EditIcon, WarningIcon } from '@chakra-ui/icons'
 import { Box, Button, HStack, Text } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import React, { useState } from 'react'
@@ -6,14 +6,29 @@ import { FaTimesCircle } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
-import type { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
+import type { IReservationsPlanning,
+  ReservationStatus } from '../../shared/model/reservationsPlanning.model'
 
 interface IProps {
   reservation: IReservationsPlanning
+  isAdmin: boolean
 }
-export const ReservationModal = ({ reservation }: IProps) => {
+export const ReservationModal = ({ reservation, isAdmin }: IProps) => {
   const [modal, setModal] = useState(false)
   const status = reservation.status
+  const statusIcon = (status: ReservationStatus) => {
+    switch (status) {
+      case 'pending':
+        return <FaTimesCircle />
+      case 'processed':
+        return <CheckCircleIcon />
+      case 'urgent':
+        return <WarningIcon />
+      default:
+        return null
+    }
+  }
+
   console.log('status', status)
   const toggle = () => setModal(!modal)
   return (
@@ -24,16 +39,13 @@ export const ReservationModal = ({ reservation }: IProps) => {
         leftIcon={<EditIcon />}
         _hover={{ textDecoration: 'none', color: 'black' }}
         _active={{ textDecoration: 'none', color: 'black' }}
-        rightIcon={reservation?.isConfirmed ?
-          <CheckCircleIcon color="green" /> :
-          <FaTimesCircle color="red" />}
+        rightIcon={isAdmin ? statusIcon(status) : null}
         px={2}
         py={4}
       >
         <HStack>
           <Text fontSize={14}>{reservation?.customer.firstname}</Text>
           <Text fontSize={14}>{reservation?.customer.lastname}</Text>
-          <Text fontSize={14}>{status}</Text>
         </HStack>
       </Button>
       <Modal isOpen={modal} toggle={toggle} className="modal-l">

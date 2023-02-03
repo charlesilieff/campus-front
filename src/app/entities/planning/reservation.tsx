@@ -1,5 +1,9 @@
+import { AUTHORITIES } from 'app/config/constants'
+import { useAppSelector } from 'app/config/store'
+import { hasAnyAuthority } from 'app/shared/auth/private-route'
 import type { IPlace } from 'app/shared/model/place.model'
-import type { IReservationsPlanning } from 'app/shared/model/reservationsPlanning.model'
+import type { IReservationsPlanning,
+  ReservationStatus } from 'app/shared/model/reservationsPlanning.model'
 import { getDateKey } from 'app/shared/util/date-utils'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
@@ -21,11 +25,47 @@ export const Reservation: FunctionComponent<IProps> = (
   { reservation, index, place, positionX, positionY, date }
 ) => {
   const positionYEnd = {}
-
+  const isAdmin = useAppSelector(state =>
+    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.ADMIN])
+  )
   const colors = ['#74CAE7', '#E19BE8', '#F08E6A', '#82B865', '#FFCAD4', '#B8D8BA']
+  const backgroundColorCalculation = (status: ReservationStatus, isAdmin: boolean) => {
+    if (!isAdmin) {
+      return colors[index] ? colors[index] : `hsl(${Math.random() * 360}, 100%, 75%)`
+    } else {
+      switch (status) {
+        case 'pending':
+          return '#FDEEB5'
+        case 'processed':
+          return '#D0ECCF'
+        case 'urgent':
+          return '#FFD7D7'
+        default:
+          return colors[index] ? colors[index] : `hsl(${Math.random() * 360}, 100%, 75%)`
+      }
+    }
+  }
+  const textColorCalculation = (status: ReservationStatus, isAdmin: boolean) => {
+    if (!isAdmin) {
+      return 'black'
+    } else {
+      switch (status) {
+        case 'pending':
+          return '#906904'
+        case 'processed':
+          return '#087F23'
+        case 'urgent':
+          return '#971515'
+        default:
+          return 'black'
+      }
+    }
+  }
+
   let style = {
     borderWidth: '1px',
-    backgroundColor: colors[index] ? colors[index] : `hsl(${Math.random() * 360}, 100%, 75%)`
+    backgroundColor: backgroundColorCalculation(reservation.status, isAdmin),
+    color: textColorCalculation(reservation.status, isAdmin)
   } as React.CSSProperties
 
   // construction de la liste des lits présents au lieu affiché du planning.
@@ -115,6 +155,7 @@ export const Reservation: FunctionComponent<IProps> = (
 
         return (
           <ReservationBed
+            isAdmin={isAdmin}
             gridRowStart={positionY[bedId]}
             gridRowEnd={positionYEnd[bedId]}
             gridColumnStart={gridColumnStart}

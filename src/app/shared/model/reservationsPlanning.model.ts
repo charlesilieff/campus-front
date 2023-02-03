@@ -1,5 +1,7 @@
 import type { ICustomer } from 'app/shared/model/customer.model'
 
+export type ReservationStatus = 'pending' | 'processed' | 'urgent'
+
 export interface IReservationsPlanning {
   id: number
   isPaid: boolean
@@ -15,5 +17,5 @@ export interface IReservationsPlanning {
   arrivalDate: Date
   departureDate: Date
   bedsId: number[]
-  status: 'PENDING' | 'PROCESSED' | 'URGENT'
+  status: ReservationStatus
 }
