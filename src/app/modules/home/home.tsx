@@ -6,7 +6,7 @@ import { AUTHORITIES } from 'app/config/constants'
 import { useAppSelector } from 'app/config/store'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
 import React from 'react'
-import { BsPlusCircle, BsPlusCircleFill } from 'react-icons/bs'
+import { BsPlusCircleFill } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 
 import { ReservationsToBeProcessed } from '../reservation-to-be-processed/reservationtobeprocessed'
