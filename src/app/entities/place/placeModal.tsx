@@ -1,7 +1,8 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button } from '@chakra-ui/react'
 import type { IPlace } from 'app/shared/model/place.model'
 import React, { useState } from 'react'
-import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap'
+import { BsMap } from 'react-icons/bs'
+import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
 const PlaceModal = (place: IPlace) => {
   const [modal, setModal] = useState(false)
@@ -12,13 +13,12 @@ const PlaceModal = (place: IPlace) => {
       {place.image ?
         (
           <Button
-            size="sm"
-            style={{ backgroundColor: '#B8D8BA', borderStyle: 'none', marginRight: '2rem' }}
+            color={'white'}
+            style={{ backgroundColor: '#3182CE', borderStyle: 'none', marginRight: '2rem' }}
             onClick={toggle}
+            leftIcon={<BsMap />}
           >
-            <FontAwesomeIcon icon="map" />
-            &nbsp;
-            <span className="d-none d-md-inline">Plan</span>
+            Plan
           </Button>
         ) :
         <p>Pas de plan pour ce lieu.</p>}

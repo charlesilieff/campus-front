@@ -6,6 +6,7 @@ import { AUTHORITIES } from 'app/config/constants'
 import { useAppSelector } from 'app/config/store'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
 import React from 'react'
+import { BsPlusCircle, BsPlusCircleFill } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 
 import { ReservationsToBeProcessed } from '../reservation-to-be-processed/reservationtobeprocessed'
@@ -82,14 +83,35 @@ export const Home = (): JSX.Element => {
           null}
         {isIntermittent ?
           (
-            <Button
-              as={Link}
-              to={reservationCreationIntermittentUrl}
-              colorScheme={'green'}
-              _hover={{ textDecoration: 'none', color: 'gray.900', backgroundColor: 'green.300' }}
+            <Box
+              py={'10px'}
+              px={'25px'}
+              backgroundColor={'#C6F6D5'}
+              borderLeft={'4px'}
+              borderColor={'#38A169'}
+              minW={'650px'}
             >
-              Nouvelle réservation
-            </Button>
+              <HStack justifyContent={'space-between'}>
+                <VStack alignItems={'flex-start'}>
+                  <HStack>
+                    <BsPlusCircleFill color="#38A169" size={'24px'} />
+                    <Text fontWeight={'bold'}>Nouvelle réservation personnelle</Text>
+                  </HStack>
+                </VStack>
+                <Button
+                  as={Link}
+                  to={reservationCreationIntermittentUrl}
+                  colorScheme={'green'}
+                  _hover={{
+                    textDecoration: 'none',
+                    color: 'white',
+                    backgroundColor: '#38A169'
+                  }}
+                >
+                  Créer une réservation
+                </Button>
+              </HStack>
+            </Box>
           ) :
           ''}
 

@@ -1,4 +1,5 @@
-import { Button, HStack, Select } from '@chakra-ui/react'
+import { CheckCircleIcon, EditIcon, TimeIcon, WarningIcon } from '@chakra-ui/icons'
+import { Box, Button, HStack, Select, Text, VStack } from '@chakra-ui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { AUTHORITIES } from 'app/config/constants'
 import { useAppSelector } from 'app/config/store'
@@ -67,75 +68,145 @@ export const IndexPlanning = () => {
   const totalDays = date.daysInMonth()
 
   return (
-    <div>
-      <HStack>
-        <ValidatedField
-          className="inline-block"
-          id="date"
-          name="date"
-          data-cy="date"
-          type="date"
-          onChange={newDatePlanning}
-        >
-        </ValidatedField>
-        <Select
-          width={'200px'}
-          className="block"
-          id="place"
-          name="placeId"
-          data-cy="place"
-          pl={10}
-          onChange={e => {
-            getOnePlace(e.target.value)
-          }}
-        >
-          {places ?
-            (places.map(p => (
-              <option value={p.id} key={p.id}>
-                {p.name}
-              </option>
-            ))) :
-            <option value="" key="0" />}
-          Lieu
-        </Select>
-        <PlaceModal {...place} />
-        &nbsp;&nbsp;&nbsp;
+    <>
+      <HStack w={'100%'} justifyContent={'space-between'} alignItems={'flex-end'}>
+        <HStack>
+          <Box alignSelf={'flex-end'}>
+            <ValidatedField
+              className="inline-block"
+              id="date"
+              name="date"
+              data-cy="date"
+              type="date"
+              onChange={newDatePlanning}
+            >
+            </ValidatedField>
+          </Box>
+          <Select
+            alignSelf={'flex-end'}
+            width={'200px'}
+            className="block"
+            id="place"
+            name="placeId"
+            data-cy="place"
+            pl={10}
+            py={4}
+            onChange={e => {
+              getOnePlace(e.target.value)
+            }}
+          >
+            {places ?
+              (places.map(p => (
+                <option value={p.id} key={p.id}>
+                  {p.name}
+                </option>
+              ))) :
+              <option value="" key="0" />}
+            Lieu
+          </Select>
+          <Box alignSelf={'flex-end'} py={4}>
+            <PlaceModal {...place} />
+          </Box>
+          &nbsp;&nbsp;&nbsp;
+          {isAdmin ?
+            (
+              <>
+                <Box alignSelf={'flex-end'} pb={4}>
+                  <Button
+                    as={Link}
+                    id="new"
+                    data-cy="entityCreatelButton"
+                    to="/bookingbeds/new"
+                    _hover={{ textDecoration: 'none', color: 'white' }}
+                    replace
+                    backgroundColor={'green'}
+                    color={'white'}
+                  >
+                    <FontAwesomeIcon icon="plus-circle" />
+                    &nbsp;
+                    <span className="d-none d-md-inline">Nouvelle réservation</span>
+                  </Button>
+                </Box>
+                &nbsp;&nbsp;&nbsp;
+                <Box alignSelf={'flex-end'} py={4}>
+                  <Button
+                    as={Link}
+                    id="new"
+                    _hover={{ textDecoration: 'none', color: 'white' }}
+                    data-cy="entityCreatelButton"
+                    to="/reservation/to-be-processed"
+                    replace
+                    backgroundColor={'#E53E3E'}
+                    color={'white'}
+                    leftIcon={<BsFillExclamationCircleFill />}
+                  >
+                    Réservations à traiter
+                  </Button>
+                </Box>
+              </>
+            ) :
+            null}
+        </HStack>
         {isAdmin ?
           (
-            <>
-              <Button
-                as={Link}
-                id="new"
-                data-cy="entityCreatelButton"
-                to="/bookingbeds/new"
-                _hover={{ textDecoration: 'none', color: 'white' }}
-                replace
-                backgroundColor={'green'}
-                color={'white'}
-              >
-                <FontAwesomeIcon icon="plus-circle" />
-                &nbsp;
-                <span className="d-none d-md-inline">Nouvelle réservation</span>
-              </Button>
-              &nbsp;&nbsp;&nbsp;
-              <Button
-                as={Link}
-                id="new"
-                _hover={{ textDecoration: 'none', color: 'white' }}
-                data-cy="entityCreatelButton"
-                to="/reservation/to-be-processed"
-                replace
-                backgroundColor={'#E53E3E'}
-                color={'white'}
-                leftIcon={<BsFillExclamationCircleFill />}
-              >
-                Réservations à traiter
-              </Button>
-            </>
+            <VStack
+              alignItems={'flex-start'}
+              pb={4}
+            >
+              <Text fontWeight={'bold'} textDecoration={'underline'}>Légende:</Text>
+              <HStack>
+                <Button
+                  size={'xs'}
+                  disabled={true}
+                  id="new"
+                  _hover={{ textDecoration: 'none', color: 'white' }}
+                  data-cy="entityCreatelButton"
+                  backgroundColor={'green.200'}
+                  color={'green'}
+                  leftIcon={<EditIcon />}
+                  rightIcon={<CheckCircleIcon />}
+                >
+                  xyr
+                </Button>
+                <Text>réservation finalisée</Text>
+              </HStack>
+              <HStack>
+                <Button
+                  size={'xs'}
+                  disabled={true}
+                  id="new"
+                  _hover={{ textDecoration: 'none', color: 'white' }}
+                  data-cy="entityCreatelButton"
+                  backgroundColor={'#FDEEB5'}
+                  color={'#906904'}
+                  rightIcon={<TimeIcon />}
+                  leftIcon={<EditIcon />}
+                >
+                  xyr
+                </Button>
+                <Text>réservation à traiter</Text>
+              </HStack>
+              <HStack>
+                <Button
+                  size={'xs'}
+                  disabled={true}
+                  id="new"
+                  _hover={{ textDecoration: 'none', color: 'white' }}
+                  data-cy="entityCreatelButton"
+                  backgroundColor={'#FFD7D7'}
+                  color={'#971515'}
+                  leftIcon={<EditIcon />}
+                  rightIcon={<WarningIcon />}
+                >
+                  xyr
+                </Button>
+                <Text>réservation urgente à traiter</Text>
+              </HStack>
+            </VStack>
           ) :
           ('')}
       </HStack>
       <Planning place={place} date={date} totalDays={totalDays} reservations={reservations} />
-    </div>
+    </>
   )
 }
