@@ -25,12 +25,12 @@ export const Reservation: FunctionComponent<IProps> = (
   { reservation, index, place, positionX, positionY, date }
 ) => {
   const positionYEnd = {}
-  const isAdmin = useAppSelector(state =>
-    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.ADMIN])
+  const isRespHebergement = useAppSelector(state =>
+    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.RESPHEBERGEMENT])
   )
   const colors = ['#74CAE7', '#E19BE8', '#F08E6A', '#82B865', '#FFCAD4', '#B8D8BA']
-  const backgroundColorCalculation = (status: ReservationStatus, isAdmin: boolean) => {
-    if (!isAdmin) {
+  const backgroundColorCalculation = (status: ReservationStatus, isRespHebergement: boolean) => {
+    if (!isRespHebergement) {
       return colors[index] ? colors[index] : `hsl(${Math.random() * 360}, 100%, 75%)`
     } else {
       switch (status) {
@@ -45,8 +45,8 @@ export const Reservation: FunctionComponent<IProps> = (
       }
     }
   }
-  const textColorCalculation = (status: ReservationStatus, isAdmin: boolean) => {
-    if (!isAdmin) {
+  const textColorCalculation = (status: ReservationStatus, isRespHebergement: boolean) => {
+    if (!isRespHebergement) {
       return 'black'
     } else {
       switch (status) {
@@ -64,8 +64,8 @@ export const Reservation: FunctionComponent<IProps> = (
 
   let style = {
     borderWidth: '1px',
-    backgroundColor: backgroundColorCalculation(reservation.status, isAdmin),
-    color: textColorCalculation(reservation.status, isAdmin)
+    backgroundColor: backgroundColorCalculation(reservation.status, isRespHebergement),
+    color: textColorCalculation(reservation.status, isRespHebergement)
   } as React.CSSProperties
 
   // construction de la liste des lits présents au lieu affiché du planning.
@@ -155,7 +155,7 @@ export const Reservation: FunctionComponent<IProps> = (
 
         return (
           <ReservationBed
-            isAdmin={isAdmin}
+            isRespHebergement={isRespHebergement}
             gridRowStart={positionY[bedId]}
             gridRowEnd={positionYEnd[bedId]}
             gridColumnStart={gridColumnStart}

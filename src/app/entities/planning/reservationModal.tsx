@@ -11,9 +11,9 @@ import type { IReservationsPlanning,
 
 interface IProps {
   reservation: IReservationsPlanning
-  isAdmin: boolean
+  isRespHebergement: boolean
 }
-export const ReservationModal = ({ reservation, isAdmin }: IProps) => {
+export const ReservationModal = ({ reservation, isRespHebergement }: IProps) => {
   const [modal, setModal] = useState(false)
   const status = reservation.status
   const statusIcon = (status: ReservationStatus) => {
@@ -39,7 +39,7 @@ export const ReservationModal = ({ reservation, isAdmin }: IProps) => {
         leftIcon={<EditIcon />}
         _hover={{ textDecoration: 'none', color: 'black' }}
         _active={{ textDecoration: 'none', color: 'black' }}
-        rightIcon={isAdmin ? statusIcon(status) : null}
+        rightIcon={isRespHebergement ? statusIcon(status) : null}
         px={2}
         py={4}
       >
