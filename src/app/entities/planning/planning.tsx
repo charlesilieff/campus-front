@@ -9,7 +9,7 @@ import Bed from './beds'
 import Day from './day'
 import Months from './months'
 import { Reservation } from './reservation'
-import Room from './rooms'
+import { Room } from './rooms'
 
 interface IProps {
   date: Dayjs
@@ -72,9 +72,20 @@ export const Planning = ({ place, date, totalDays, reservations }: IProps) => {
           ]
         }
       })}
-      {reservations?.map((reservation, index) =>
-        Reservation({ reservation, date, index, place, positionX, positionY })
-      )}
+      {
+        // Affichage des réservations
+      }
+      {reservations?.map((reservation, index) => (
+        <Reservation
+          key={reservation.id}
+          reservation={reservation}
+          date={date}
+          index={index}
+          place={place}
+          positionX={positionX}
+          positionY={positionY}
+        />
+      ))}
     </Grid>
   )
 }

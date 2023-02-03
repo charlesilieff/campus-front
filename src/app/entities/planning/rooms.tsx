@@ -24,5 +24,3 @@ export const Room: FunctionComponent<IProps> = ({ gridRowEnd, room }) => {
     </>
   )
 }
-
-export default Room

@@ -15,4 +15,5 @@ export interface IReservationsPlanning {
   arrivalDate: Date
   departureDate: Date
   bedsId: number[]
+  status: 'PENDING' | 'PROCESSED' | 'URGENT'
 }

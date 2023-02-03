@@ -2,7 +2,7 @@ import { HStack } from '@chakra-ui/react'
 import React from 'react'
 
 import type { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
-import ReservationModal from './reservationModal'
+import { ReservationModal } from './reservationModal'
 
 interface IProps {
   reservation: IReservationsPlanning
@@ -24,7 +24,7 @@ export const ReservationBed = (
   gridColumnStart={gridColumnStart}
   style={style}
   mx={4}
-  py={2}
+  my={1}
 >
   <ReservationModal reservation={reservation} />
 </HStack>)

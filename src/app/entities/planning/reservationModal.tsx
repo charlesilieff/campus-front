@@ -1,5 +1,5 @@
 import { CheckCircleIcon, EditIcon } from '@chakra-ui/icons'
-import { Button, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, HStack, Text } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import React, { useState } from 'react'
 import { FaTimesCircle } from 'react-icons/fa'
@@ -11,11 +11,13 @@ import type { IReservationsPlanning } from '../../shared/model/reservationsPlann
 interface IProps {
   reservation: IReservationsPlanning
 }
-const ReservationModal = ({ reservation }: IProps) => {
+export const ReservationModal = ({ reservation }: IProps) => {
   const [modal, setModal] = useState(false)
+  const status = reservation.status
+  console.log('status', status)
   const toggle = () => setModal(!modal)
   return (
-    <>
+    <Box>
       <Button
         backgroundColor={'transparent'}
         onClick={toggle}
@@ -28,10 +30,11 @@ const ReservationModal = ({ reservation }: IProps) => {
         px={2}
         py={4}
       >
-        <VStack>
-          <Text fontSize={14}>{reservation?.customer.firstname}</Text>{' '}
+        <HStack>
+          <Text fontSize={14}>{reservation?.customer.firstname}</Text>
           <Text fontSize={14}>{reservation?.customer.lastname}</Text>
-        </VStack>
+          <Text fontSize={14}>{status}</Text>
+        </HStack>
       </Button>
       <Modal isOpen={modal} toggle={toggle} className="modal-l">
         <ModalHeader toggle={toggle}>
@@ -49,8 +52,6 @@ const ReservationModal = ({ reservation }: IProps) => {
           </Link>
         </ModalBody>
       </Modal>
-    </>
+    </Box>
   )
 }
-
-export default ReservationModal
