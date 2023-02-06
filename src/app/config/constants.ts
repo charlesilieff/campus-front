@@ -15,7 +15,7 @@ export const SERVER_API_URL = (() => {
     case 'prod.campus.ilieff.fr':
       return `https://prod.backend.campus.ilieff.fr`
     case 'hebergement.campus-transition.org':
-      return `https://prod.backend.campus.ilieff.fr`
+      return `https://backend.hebergement.campus-transition.org`
     default:
       return `https://dev.backend.campus.ilieff.fr`
   }
