@@ -49,15 +49,6 @@ export const ReservationsToBeProcessed = () => {
                         réservations urgentes à traiter
                       </Text>
                     </VStack>
-                    <Button
-                      color={'white'}
-                      backgroundColor={'#E53E3E'}
-                      as={Link}
-                      to="/reservation/to-be-processed"
-                      _hover={{ textDecoration: 'none', color: 'white' }}
-                    >
-                      Traiter les réservations
-                    </Button>
                   </HStack>
                 </Box>
               ) :
