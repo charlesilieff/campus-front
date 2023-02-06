@@ -21,7 +21,7 @@ const initialState: EntityState<IReservation> = {
 }
 
 const apiUrl = 'api/reservations'
-const apiUrlReservationsToBeProcessed = 'api/reservations/to-be-processed'
+const apiUrlReservationsToBeProcessed = 'api/reservations-to-be-processed'
 const apiUrlIntermittentReservations = 'api/reservations/user-id'
 // Actions
 

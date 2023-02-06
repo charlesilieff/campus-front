@@ -58,5 +58,17 @@ pipeline {
                 sshCommand remote: remote, command: "docker run -d --restart unless-stopped --name ${DOCKER_IMAGE_NAME} --pull=always -p 80:80 docker.ilieff.fr/${DOCKER_IMAGE_NAME}:latest"
             }
         }
+        
    }
+   post {
+        always
+            {
+              echo "Docker and dist cleaning..."
+//               cleanWs()
+                    script    {
+                    sh "docker system prune -a -f"
+                    sh "rm -r dist"                   
+                    }
+            }
+    }
 }
