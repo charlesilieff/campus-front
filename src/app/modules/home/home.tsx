@@ -53,9 +53,6 @@ export const Home = (): JSX.Element => {
         <Text>
           Bienvenue dans l&apos;outil de gestion d&apos;hebergement du Campus de la Transition.
         </Text>
-        <Text>
-          Test mise à jour
-        </Text>
         <Box backgroundColor={'blue.100'} p={5}>
           <VStack alignItems={'flex-start'}>
             <Box>
