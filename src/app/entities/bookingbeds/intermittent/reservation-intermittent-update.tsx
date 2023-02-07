@@ -11,7 +11,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { getEntity as getCustomer } from '../../customer/customer.reducer'
 import { getEntity as getReservationEntity } from '../../reservation/reservation.reducer'
-import { createEntity, createReservationAndUpdateUser, reset } from '../booking-beds.reducer'
+import { createEntity, createReservationAndUpdateUser, reset,
+  updateEntity as updateReservation } from '../booking-beds.reducer'
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
 import { CustomerUpdate } from './customer-update'
@@ -95,13 +96,20 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
     const reservation = createIReservation(customer, datesAndMeal, bedId)
 
     setIsLoading(true)
-    if (O.isSome(customerId)) {
-      dispatch(createEntity(reservation)).then(() => setIsLoading(false))
-    } else {
-      dispatch(createReservationAndUpdateUser({ entity: reservation, userId })).then(() => {
-        dispatch(getSession())
+    if (reservationId !== undefined) {
+      // FIXME: unsafe
+      dispatch(updateReservation({ ...reservation, id: Number(reservationId) })).then(() =>
         setIsLoading(false)
-      })
+      )
+    } else {
+      if (O.isSome(customerId)) {
+        dispatch(createEntity(reservation)).then(() => setIsLoading(false))
+      } else {
+        dispatch(createReservationAndUpdateUser({ entity: reservation, userId })).then(() => {
+          dispatch(getSession())
+          setIsLoading(false)
+        })
+      }
     }
   }
 
@@ -153,14 +161,25 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
   useEffect(() => {
     if (updateSuccess) {
       dispatch(reset())
-      toast({
-        position: 'top',
-        title: 'Réservation crée !',
-        description: 'A bientôt !',
-        status: 'success',
-        duration: 9000,
-        isClosable: true
-      })
+      if (reservationId !== undefined) {
+        toast({
+          position: 'top',
+          title: 'Réservation modifiée !',
+          description: 'A bientôt !',
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        })
+      } else {
+        toast({
+          position: 'top',
+          title: 'Réservation crée !',
+          description: 'A bientôt !',
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        })
+      }
       navigate('/planning')
     }
   }, [updateSuccess])

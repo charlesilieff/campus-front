@@ -14,6 +14,7 @@ import PasswordStrengthBar from 'app/shared/layout/password/password-strength-ba
 import { Option as O } from 'effect'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import { handleIntermittentRegister, reset } from './register.reducer'
@@ -30,6 +31,7 @@ interface FormValues {
 }
 
 export const RegisterIntermittentPage = (): JSX.Element => {
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = React.useState(false)
   const dispatch = useAppDispatch()
   const {
@@ -64,6 +66,7 @@ export const RegisterIntermittentPage = (): JSX.Element => {
       })
     ).then(() => {
       setIsLoading(false)
+      navigate('/')
     })
   }
 

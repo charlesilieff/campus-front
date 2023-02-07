@@ -62,7 +62,8 @@ export const RegisterSlice = createSlice({
       .addCase(handleRegister.fulfilled, () => ({
         ...initialState,
         registrationSuccess: true,
-        successMessage: 'Registration saved! Please check your email for confirmation.'
+        successMessage:
+          'Inscription enregistrée ! Veuillez vérifier votre e-mail pour pouvoir vous connecter.'
       }))
   }
 })
