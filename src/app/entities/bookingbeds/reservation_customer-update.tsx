@@ -339,6 +339,7 @@ export const ReservationCustomerUpdate = () => {
                     )) :
                     null}
                 </ValidatedField>
+
                 {!isNew ?
                   (
                     <Button

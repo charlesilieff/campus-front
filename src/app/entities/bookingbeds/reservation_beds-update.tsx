@@ -1,6 +1,4 @@
-import { Heading, HStack, Select, Text } from '@chakra-ui/react'
-import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button, Heading, HStack, Select, Text } from '@chakra-ui/react'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { IBed } from 'app/shared/model/bed.model'
@@ -15,9 +13,10 @@ import axios from 'axios'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { FaArrowLeft, FaSave } from 'react-icons/fa'
 import { TextFormat } from 'react-jhipster'
 import { useParams } from 'react-router-dom'
-import { Button, Col, Row } from 'reactstrap'
+import { Col, Row } from 'reactstrap'
 
 import PlaceModal from '../place/placeModal'
 import Beds from './beds'
@@ -25,6 +24,7 @@ import { backToOne, createEntity, updateEntity } from './booking-beds.reducer'
 import { getOnePlace, getPlaces } from './utils'
 
 export const ReservationBedsUpdate = (): JSX.Element => {
+  const [isLoading, setIsLoading] = useState(false)
   const dispatch = useAppDispatch()
   const { id } = useParams<{ id: string }>()
 
@@ -42,7 +42,7 @@ export const ReservationBedsUpdate = (): JSX.Element => {
   const [rooms, setRooms] = useState([] as IRoom[])
   const [bedsToBook, setBedsToBook] = useState([] as number[])
   const [placeImage, setPlace] = useState(null as IPlace)
-
+  // const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
   useEffect(() => {
     getPlaces().then(data => setPlaces([...data]))
     getBookingBeds()
@@ -63,6 +63,10 @@ export const ReservationBedsUpdate = (): JSX.Element => {
 
     setBedsToBook(updatedbedsToBook)
   }, [])
+
+  // useEffect(() => {
+  //   setIsLoading(false)
+  // }, [updateSuccess])
 
   const getBookingBeds = async (): Promise<void> => {
     const reservationId = isNew ? '' : `/${reservationEntity.id}`
@@ -134,6 +138,7 @@ export const ReservationBedsUpdate = (): JSX.Element => {
   }
 
   const saveEntity = (values: IBookingBeds): void => {
+    setIsLoading(true)
     // On selectionne et on créer une liste d'object bed (id seulement comme atribut)
     const bedsId = Object.keys(values).map(key => Number(key) && values[key] ? Number(key) : '')
 
@@ -166,9 +171,13 @@ export const ReservationBedsUpdate = (): JSX.Element => {
     }
 
     if (isNew) {
-      dispatch(createEntity(reservation))
+      dispatch(createEntity(reservation)).then(() => {
+        setIsLoading(false)
+      })
     } else {
-      dispatch(updateEntity(reservation))
+      dispatch(updateEntity(reservation)).then(() => {
+        setIsLoading(false)
+      })
     }
   }
 
@@ -299,7 +308,9 @@ export const ReservationBedsUpdate = (): JSX.Element => {
         <Col md="8">
           {loading ? <p>Chargement...</p> : (
             <FormProvider {...form}>
-              <form onSubmit={form.handleSubmit(saveEntity)}>
+              <form
+                onSubmit={form.handleSubmit(saveEntity)}
+              >
                 <Beds rooms={rooms} bedsToBook={bedsToBook} checkBedsToBook={checkBedsToBook} />
                 <CustomValidatedField
                   label="Moyen de paiement"
@@ -332,19 +343,22 @@ export const ReservationBedsUpdate = (): JSX.Element => {
                 />
                 <br />
                 <Button
+                  backgroundColor={'#17A2B8'}
+                  color={'white'}
+                  leftIcon={<FaArrowLeft />}
                   onClick={() => back(form.getValues())}
-                  id="cancel-save"
-                  data-cy="entityCreateCancelButton"
-                  color="info"
                 >
-                  <FontAwesomeIcon icon={faArrowLeft} />
-                  &nbsp;
-                  <span className="d-none d-md-inline">Retour</span>
+                  Retour
                 </Button>
                 &nbsp;
-                <Button color="primary" id="save-entity" data-cy="stepTwo" type="submit">
-                  <FontAwesomeIcon icon={faSave} />
-                  &nbsp; Enregistrer
+                <Button
+                  backgroundColor={'#E95420'}
+                  color={'white'}
+                  type="submit"
+                  leftIcon={<FaSave />}
+                  isLoading={isLoading}
+                >
+                  Enregistrer
                 </Button>
               </form>
             </FormProvider>
