@@ -16,7 +16,7 @@ import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { deleteEntity } from 'app/entities/bookingbeds/booking-beds.reducer'
 import { Option as O, pipe } from 'effect'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { TextFormat } from 'react-jhipster'
 import { Link } from 'react-router-dom'
@@ -25,13 +25,16 @@ import { getIntermittentReservations } from '../../reservation/reservation.reduc
 import { CancelReservationModal } from './cancel-modal'
 
 export const IntermittentReservations = () => {
+  const [isDeleting, setIsDeleting] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const dispatch = useAppDispatch()
 
   const cancelReservation = (id: number) => {
-    dispatch(deleteEntity(id)).then(() =>
+    setIsDeleting(true)
+    dispatch(deleteEntity(id)).then(() => {
+      setIsDeleting(false)
       pipe(userId, O.map(userId => dispatch(getIntermittentReservations(userId))))
-    )
+    })
     onClose()
   }
 
@@ -148,6 +151,7 @@ export const IntermittentReservations = () => {
                     <Td>
                       <HStack spacing={0}>
                         <CancelReservationModal
+                          isLoading={isDeleting}
                           isOpen={isOpen}
                           onOpen={onOpen}
                           onClose={onClose}

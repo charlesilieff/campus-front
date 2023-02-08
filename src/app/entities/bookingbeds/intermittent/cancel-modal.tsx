@@ -13,7 +13,8 @@ import React from 'react'
 import { FaTrash } from 'react-icons/fa'
 
 export const CancelReservationModal = (
-  { cancelReservation, reservationId, isOpen, onOpen, onClose }: {
+  { cancelReservation, reservationId, isOpen, onOpen, onClose, isLoading }: {
+    isLoading: boolean
     cancelReservation: (reservationId: number) => void
     reservationId: number
     isOpen: boolean
@@ -23,6 +24,7 @@ export const CancelReservationModal = (
 ): JSX.Element => (
   <>
     <Button
+      isLoading={isLoading}
       color="white"
       backgroundColor={'#df382c'}
       borderRightRadius={0}
