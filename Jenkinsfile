@@ -44,11 +44,11 @@ pipeline {
         stage('Docker push'){
             steps {
                 echo "Building docker..."
-                sh "docker build . -t docker.ilieff.fr/${DOCKER_IMAGE_NAME}:1.0.0"
+                sh "docker build . -t docker.ilieff.fr/${DOCKER_IMAGE_NAME}"
                 echo "Login to Ilieff docker repo"
                 sh "docker login docker.ilieff.fr -u charles -p${DOCKER_REPO_PASSWORD}"
                 echo "Push docker..."
-                sh "docker push docker.ilieff.fr/${DOCKER_IMAGE_NAME}:1.0.0"
+                sh "docker push docker.ilieff.fr/${DOCKER_IMAGE_NAME}"
             }
        }
        stage('Deploy') {
