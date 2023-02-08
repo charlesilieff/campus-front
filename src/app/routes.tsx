@@ -11,7 +11,7 @@ import { AccountRoutes } from './modules/account'
 import Activate from './modules/account/activate/activate'
 import PasswordResetFinish from './modules/account/password-reset/finish/password-reset-finish'
 import PasswordResetInit from './modules/account/password-reset/init/password-reset-init'
-import Register from './modules/account/register/register'
+import { RegisterPage } from './modules/account/register/register'
 import { RegisterIntermittentPage } from './modules/account/register/register-intermittent'
 import { AdministrationRoutes } from './modules/administration'
 import { Home } from './modules/home/home'
@@ -65,7 +65,7 @@ export const Routes = () => (
           </PrivateRoute>
         }
       />
-      <Route path="register" element={<Register />} />
+      <Route path="register" element={<RegisterPage />} />
       <Route path="activate" element={<Activate />} />
       <Route path="reset">
         <Route path="request" element={<PasswordResetInit />} />

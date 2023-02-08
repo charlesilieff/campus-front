@@ -10,9 +10,15 @@ import { BsTrash } from 'react-icons/bs'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { getEntity as getCustomer } from '../../customer/customer.reducer'
-import { getEntity as getReservationEntity } from '../../reservation/reservation.reducer'
-import { createEntity, createReservationAndUpdateUser, reset,
-  updateEntity as updateReservation } from '../booking-beds.reducer'
+import {
+  getEntity as getReservationEntity,
+  reset as resetReservations
+} from '../../reservation/reservation.reducer'
+import {
+  createEntity,
+  createReservationAndUpdateUser,
+  updateEntity as updateReservation
+} from '../booking-beds.reducer'
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
 import { CustomerUpdate } from './customer-update'
@@ -154,13 +160,18 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
       setBedId(pipe(backendReservation.beds, A.head, O.map(bed => bed.id)))
     }
   }, [backendReservation.id])
-
+  useEffect(() => {
+    if (reservationId === undefined) {
+      dispatch(resetReservations())
+      setDatesAndMeal(O.none)
+      setUpdateDatesAndMeals(false)
+    }
+  }, [])
   const [bedId, setBedId] = useState<O.Option<number>>(O.none)
-  console.log('bedId', bedId)
 
   useEffect(() => {
     if (updateSuccess) {
-      dispatch(reset())
+      dispatch(resetReservations())
       if (reservationId !== undefined) {
         toast({
           position: 'top',
