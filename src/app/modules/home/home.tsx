@@ -117,7 +117,6 @@ export const Home = (): JSX.Element => {
 
         {isRespHebergement ? <ReservationsToBeProcessed /> : ''}
         {isAdmin ? <RGPDAnonymizeData /> : ''}
-        {isAdmin ? <Text>Version 1.0.1</Text> : ''}
       </VStack>
     </HStack>
   )
