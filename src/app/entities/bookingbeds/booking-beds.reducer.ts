@@ -25,13 +25,15 @@ const initialState: EntityState<IBookingBeds> = {
 }
 
 const apiUrlBookingBeds = 'api/bookingbeds'
+const apiAllPlaces = 'api/all-places-with-rooms-and-beds'
 const apiUrl = 'api/reservations'
 // Actions
 
-export const getEntities = createAsyncThunk(
+// this is not used
+export const getAllPlaceWithRoomsAndBeds = createAsyncThunk(
   'reservation/fetch_entity_list',
   async () => {
-    const requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`
+    const requestUrl = `${apiAllPlaces}?cacheBuster=${new Date().getTime()}`
     return axios.get<IReservation[]>(requestUrl)
   }
 )
@@ -135,7 +137,7 @@ export const BookingBedsSlice = createEntitySlice({
         state.updateSuccess = true
         state.entity = {}
       })
-      .addMatcher(isFulfilled(getEntities), (state, action) => ({
+      .addMatcher(isFulfilled(getAllPlaceWithRoomsAndBeds), (state, action) => ({
         ...state,
         loading: false,
         entities: action.payload.data
@@ -148,7 +150,7 @@ export const BookingBedsSlice = createEntitySlice({
         state.stepOne = false
         state.creating = false
       })
-      .addMatcher(isPending(getEntities, getEntity), state => {
+      .addMatcher(isPending(getAllPlaceWithRoomsAndBeds, getEntity), state => {
         state.errorMessage = null
         state.updateSuccess = false
         state.loading = true
@@ -167,4 +169,5 @@ export const BookingBedsSlice = createEntitySlice({
 export const { reset, setData, backToOne } = BookingBedsSlice.actions
 
 // Reducer
+// eslint-disable-next-line import/no-default-export
 export default BookingBedsSlice.reducer
