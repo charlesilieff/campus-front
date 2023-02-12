@@ -145,4 +145,5 @@ export const ReservationSlice = createEntitySlice({
 export const { reset } = ReservationSlice.actions
 
 // Reducer
+// eslint-disable-next-line import/no-default-export
 export default ReservationSlice.reducer

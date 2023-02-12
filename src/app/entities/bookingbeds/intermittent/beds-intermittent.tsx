@@ -1,11 +1,12 @@
 import { Radio, RadioGroup, Text, VStack } from '@chakra-ui/react'
-import type { IRoom } from 'app/shared/model/room.model'
 import { Option as O } from 'effect'
 import type { FunctionComponent } from 'react'
 import React from 'react'
 
+import type { IRoomWithBeds } from '../utils'
+
 interface IProps {
-  rooms: ReadonlyArray<IRoom>
+  rooms: ReadonlyArray<IRoomWithBeds>
   bedId: O.Option<string>
   selectedBedId: (bedId: O.Option<number>) => void
 }
@@ -15,26 +16,31 @@ export const IntermittentBeds: FunctionComponent<IProps> = (
   <RadioGroup onChange={e => selectedBedId(O.some(+e))} defaultValue={O.getOrNull(bedId)}>
     {rooms.map(room => {
       const bedRoomKind = room.bedroomKind ? `(${room.bedroomKind.name})` : ''
-
+      const isRoomFull = room.beds.length === room.beds.filter(b => b.booked).length
       return (
         <VStack key={room.id} mb={6} alignItems={'flex-start'}>
-          <Text fontWeight={'bold'}>
+          <Text fontWeight={'bold'} color={isRoomFull ? 'grey' : 'black'}>
             {`Chambre ${room.name} ${bedRoomKind}`}
           </Text>
-          {room.beds.length === 0 ?
-            <Text>Aucun lits libre à ces dates.</Text> :
-            room.beds.map(bed => {
-              const bedkind = bed.kind ? `(${bed.kind})` : ''
-              return (
-                <Radio
-                  key={bed.id}
-                  value={bed.id.toString()}
-                  isChecked={O.exists<string>(b => b === bed.id.toString())(bedId)}
-                >
-                  {`${bed.number} ${bedkind}  (places : ${bed.numberOfPlaces})`}
-                </Radio>
-              )
-            })}
+
+          {room.beds.map(bed => {
+            const bedkind = bed.kind ? `(${bed.kind})` : ''
+            const isDisabled = bed.booked
+              && (!O.exists<string>(b => b === bed.id.toString())(bedId))
+
+            return (
+              <Radio
+                key={bed.id}
+                value={bed.id.toString()}
+                isDisabled={isDisabled}
+                isChecked={O.exists<string>(b => b === bed.id.toString())(bedId)}
+              >
+                {`${bed.number} ${bedkind}  (places : ${bed.numberOfPlaces}) ${
+                  isDisabled ? '(réservé)' : ''
+                }`}
+              </Radio>
+            )
+          })}
         </VStack>
       )
     })}

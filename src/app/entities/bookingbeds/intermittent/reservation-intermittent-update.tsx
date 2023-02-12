@@ -11,12 +11,12 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { getEntity as getCustomer } from '../../customer/customer.reducer'
 import {
-  getEntity as getReservationEntity,
-  reset as resetReservations
+  getEntity as getReservationEntity
 } from '../../reservation/reservation.reducer'
 import {
   createEntity,
   createReservationAndUpdateUser,
+  reset as resetReservations,
   updateEntity as updateReservation
 } from '../booking-beds.reducer'
 import { BedsChoices } from './bed-choices'
@@ -170,6 +170,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
   const [bedId, setBedId] = useState<O.Option<number>>(O.none)
 
   useEffect(() => {
+    console.log('cocuou')
     if (updateSuccess) {
       dispatch(resetReservations())
       if (reservationId !== undefined) {

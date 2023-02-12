@@ -1,4 +1,4 @@
-import type { IPlace } from 'app/shared/model/place.model'
+import type { IBedroomKind } from 'app/shared/model/bedroom-kind.model'
 import axios from 'axios'
 import { Option as O } from 'effect'
 
@@ -40,7 +40,35 @@ export const filterBedRoomKind = (
       .filter(room => room.bedroomKind?.id === idRoomKind)
   }
 }
-export const getPlaceWithFreeBeds = (isIntermittent: boolean) =>
+
+export interface IPlace {
+  id?: number
+  name?: string
+  comment?: string | null
+  imageContentType?: string | null
+  image?: string | null
+  rooms?: IRoomWithBeds[] | null
+  intermittentAllowed?: boolean
+}
+
+export interface IRoomWithBeds {
+  id?: number
+  name?: string
+  comment?: string | null
+  beds?: IBedWithStatus[] | null
+  bedroomKind?: IBedroomKind | null
+  place?: IPlace | null
+}
+
+export interface IBedWithStatus {
+  id?: number
+  kind?: string
+  number?: string
+  numberOfPlaces?: number
+  booked: boolean
+}
+
+export const getPlaceWithFreeBedsAndBookedBeds = (isIntermittent: boolean) =>
 async (
   arrivalDate: string,
   departureDate: string,
@@ -56,4 +84,4 @@ async (
   return data
 }
 
-export const getIntermittentPlaceWithFreeBeds = getPlaceWithFreeBeds(true)
+export const getIntermittentPlaceWithFreeAndBookedBeds = getPlaceWithFreeBedsAndBookedBeds(true)
