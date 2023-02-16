@@ -21,6 +21,7 @@ describe('Profile reducer tests', () => {
     it('should return the right payload in prod', () => {
       const payload = {
         data: {
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           'display-ribbon-on-profiles': 'awesome ribbon stuff',
           activeProfiles: ['prod']
         }
@@ -36,6 +37,7 @@ describe('Profile reducer tests', () => {
     it('should return the right payload in dev with OpenAPI enabled', () => {
       const payload = {
         data: {
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           'display-ribbon-on-profiles': 'awesome ribbon stuff',
           activeProfiles: ['api-docs', 'dev']
         }

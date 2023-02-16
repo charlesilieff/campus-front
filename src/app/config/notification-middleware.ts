@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { toast } from 'react-toastify'
 
 import { isFulfilledAction, isRejectedAction } from '../shared/reducers/reducer.utils'
@@ -7,6 +8,7 @@ const addErrorAlert = (message: string, key?: string, data?: string) => {
   toast.error(message)
 }
 
+// eslint-disable-next-line import/no-default-export
 export default () => next => action => {
   const { error, payload } = action
 
@@ -68,6 +70,7 @@ export default () => next => action => {
                 }
                 // convert 'something[14].other[4].id' to 'something[].other[].id' so translations can be written to it
                 const convertedField = fieldError.field.replace(/\[\d*\]/g, '[]')
+                // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
                 const fieldName = convertedField.charAt(0).toUpperCase()
                   + convertedField.slice(1)
                 addErrorAlert(
