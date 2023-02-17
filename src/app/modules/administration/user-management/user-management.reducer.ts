@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk, createSlice, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit'
 import type { IUser } from 'app/shared/model/user.model'
 import { defaultValue } from 'app/shared/model/user.model'
@@ -109,6 +110,7 @@ export const UserManagementSlice = createSlice({
       .addMatcher(isFulfilled(getUsers, getUsersAsAdmin), (state, action) => {
         state.loading = false
         state.users = action.payload.data
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         state.totalItems = parseInt(action.payload.headers['x-total-count'], 10)
       })
       .addMatcher(isFulfilled(createUser, updateUser), (state, action) => {
@@ -150,4 +152,5 @@ export const UserManagementSlice = createSlice({
 export const { reset } = UserManagementSlice.actions
 
 // Reducer
+// eslint-disable-next-line import/no-default-export
 export default UserManagementSlice.reducer
