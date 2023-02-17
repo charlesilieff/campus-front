@@ -55,6 +55,7 @@ pipeline {
             steps {
                 sshCommand remote: remote, command: "docker stop ${DOCKER_IMAGE_NAME}"
                 sshCommand remote: remote, command: "docker rm ${DOCKER_IMAGE_NAME}"
+                sshCommand remote: remote, command: "docker system prune -a --volumes -f"
                 sshCommand remote: remote, command: "docker run -d --restart unless-stopped --name ${DOCKER_IMAGE_NAME} --pull=always -p 80:80 docker.ilieff.fr/${DOCKER_IMAGE_NAME}:latest"
             }
         }
