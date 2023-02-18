@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar'
+import { PasswordStrengthBar } from 'app/shared/layout/password/password-strength-bar'
 import { getSession } from 'app/shared/reducers/authentication'
 import React, { useEffect, useState } from 'react'
 import { ValidatedField, ValidatedForm } from 'react-jhipster'
@@ -9,7 +9,7 @@ import { Button, Col, Row } from 'reactstrap'
 
 import { reset, savePassword } from './password.reducer'
 
-export const PasswordPage = () => {
+export const Password = () => {
   const [password, setPassword] = useState('')
   const dispatch = useAppDispatch()
 
@@ -104,5 +104,3 @@ export const PasswordPage = () => {
     </div>
   )
 }
-
-export default PasswordPage

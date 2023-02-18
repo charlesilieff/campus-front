@@ -10,7 +10,7 @@ import {
   VStack
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar'
+import { PasswordStrengthBar } from 'app/shared/layout/password/password-strength-bar'
 import { Option as O } from 'effect'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'

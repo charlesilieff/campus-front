@@ -19,7 +19,7 @@ export const PrivateRoute = ({ children, hasAnyAuthorities = [], ...rest }: IOwn
 
   if (!children) {
     throw new Error(
-      `A component needs to be specified for private route for path ${(rest as any).path}`
+      `A component needs to be specified for private route for path ${rest.path}`
     )
   }
 

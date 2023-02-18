@@ -7,10 +7,10 @@ import { Button, Col, Row } from 'reactstrap'
 
 import { reset, saveAccountSettings } from './settings.reducer'
 
-export const SettingsPage = () => {
+export const Settings = () => {
   const dispatch = useAppDispatch()
   const account = useAppSelector(state => state.authentication.account)
-  const successMessage = useAppSelector(state => state.settings.successMessage)
+  const successMessage: string = useAppSelector(state => state.settings.successMessage)
 
   useEffect(() => {
     dispatch(getSession())
@@ -104,5 +104,3 @@ export const SettingsPage = () => {
     </div>
   )
 }
-
-export default SettingsPage

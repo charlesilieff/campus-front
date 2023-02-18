@@ -3,6 +3,7 @@ import { faEye, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-s
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { APP_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+import type { IUser } from 'app/shared/model/user.model'
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils'
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.constants'
 import React, { useEffect, useState } from 'react'
@@ -75,7 +76,7 @@ export const UserManagement = () => {
     getUsersFromProps()
   }
 
-  const toggleActive = user => () => {
+  const toggleActive = (user: IUser) => () => {
     dispatch(
       updateUser({
         ...user,
@@ -243,5 +244,3 @@ export const UserManagement = () => {
     </div>
   )
 }
-
-export default UserManagement

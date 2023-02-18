@@ -9,10 +9,11 @@ export interface IMenuItem {
   icon: IconProp
   to: string
   id?: string
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   'data-cy'?: string
 }
 
-export default class MenuItem extends React.Component<IMenuItem> {
+export class MenuItem extends React.Component<IMenuItem> {
   render() {
     const { to, icon, id, children } = this.props
 

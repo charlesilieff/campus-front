@@ -9,11 +9,15 @@ const initialState = {
   isOpenAPIEnabled: false
 }
 
+interface Profiles {
+  activeProfiles: string[]
+}
+
 export type ApplicationProfileState = Readonly<typeof initialState>
 
 export const getProfile = createAsyncThunk(
   'applicationProfile/get_profile',
-  async () => axios.get<any>('management/info'),
+  async () => axios.get<Profiles>('management/info'),
   {
     serializeError: serializeAxiosError
   }
@@ -34,4 +38,5 @@ export const ApplicationProfileSlice = createSlice({
 })
 
 // Reducer
+// eslint-disable-next-line import/no-default-export
 export default ApplicationProfileSlice.reducer

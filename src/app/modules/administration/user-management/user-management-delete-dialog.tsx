@@ -48,5 +48,3 @@ export const UserManagementDeleteDialog = () => {
     </Modal>
   )
 }
-
-export default UserManagementDeleteDialog

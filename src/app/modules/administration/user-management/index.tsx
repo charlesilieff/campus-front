@@ -2,12 +2,12 @@ import { ErrorBoundaryRoutes } from 'app/shared/error/error-boundary-routes'
 import React from 'react'
 import { Route } from 'react-router-dom'
 
-import UserManagement from './user-management'
-import UserManagementDeleteDialog from './user-management-delete-dialog'
-import UserManagementDetail from './user-management-detail'
-import UserManagementUpdate from './user-management-update'
+import { UserManagement } from './user-management'
+import { UserManagementDeleteDialog } from './user-management-delete-dialog'
+import { UserManagementDetail } from './user-management-detail'
+import { UserManagementUpdate } from './user-management-update'
 
-const Routes = () => (
+export const UserManagementRoutes = () => (
   <ErrorBoundaryRoutes>
     <Route path={`new`} element={<UserManagementUpdate />} />
     <Route index element={<UserManagement />} />
@@ -24,5 +24,3 @@ const Routes = () => (
     </Route>
   </ErrorBoundaryRoutes>
 )
-
-export default Routes

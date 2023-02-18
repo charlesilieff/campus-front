@@ -60,4 +60,5 @@ export const PasswordSlice = createSlice({
 export const { reset } = PasswordSlice.actions
 
 // Reducer
+// eslint-disable-next-line import/no-default-export
 export default PasswordSlice.reducer

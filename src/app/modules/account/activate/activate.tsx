@@ -22,7 +22,7 @@ const failureAlert = (
   </Alert>
 )
 
-export const ActivatePage = () => {
+export const Activate = () => {
   const dispatch = useAppDispatch()
 
   const [searchParams] = useSearchParams()
@@ -50,5 +50,3 @@ export const ActivatePage = () => {
     </div>
   )
 }
-
-export default ActivatePage

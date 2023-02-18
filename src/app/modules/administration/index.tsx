@@ -2,10 +2,10 @@ import { ErrorBoundaryRoutes } from 'app/shared/error/error-boundary-routes'
 import React from 'react'
 import { Route } from 'react-router-dom'
 
-import UserManagement from './user-management'
+import { UserManagementRoutes } from './user-management'
 
 export const AdministrationRoutes = () => (
   <ErrorBoundaryRoutes>
-    <Route path="user-management/*" element={<UserManagement />} />
+    <Route path="user-management/*" element={<UserManagementRoutes />} />
   </ErrorBoundaryRoutes>
 )

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { NavDropdown } from './menu-components'
-import MenuItem from './menu-item'
+import { MenuItem } from './menu-item'
 
 const adminMenuItems = (
   <>
@@ -23,5 +23,3 @@ export const AdminMenu = ({ showOpenAPI }) => (
     {showOpenAPI && openAPIItem}
   </NavDropdown>
 )
-
-export default AdminMenu

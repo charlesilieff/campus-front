@@ -172,5 +172,3 @@ export const UserManagementUpdate = () => {
     </div>
   )
 }
-
-export default UserManagementUpdate

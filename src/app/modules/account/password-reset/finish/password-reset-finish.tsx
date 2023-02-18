@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar'
+import { PasswordStrengthBar } from 'app/shared/layout/password/password-strength-bar'
 import React, { useEffect, useState } from 'react'
 import { ValidatedField, ValidatedForm } from 'react-jhipster'
 import { useSearchParams } from 'react-router-dom'
@@ -8,7 +8,7 @@ import { Button, Col, Row } from 'reactstrap'
 
 import { handlePasswordResetFinish, reset } from '../password-reset.reducer'
 
-export const PasswordResetFinishPage = () => {
+export const PasswordResetFinish = () => {
   const dispatch = useAppDispatch()
 
   const [searchParams] = useSearchParams()
@@ -26,7 +26,8 @@ export const PasswordResetFinishPage = () => {
   const handleValidSubmit = ({ newPassword }) =>
     dispatch(handlePasswordResetFinish({ key, newPassword }))
 
-  const updatePassword = event => setPassword(event.target.value)
+  const updatePassword = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setPassword(event.target.value)
 
   const getResetForm = () => (
     <ValidatedForm onSubmit={handleValidSubmit}>
@@ -77,7 +78,7 @@ export const PasswordResetFinishPage = () => {
     </ValidatedForm>
   )
 
-  const successMessage = useAppSelector(state => state.passwordReset.successMessage)
+  const successMessage: string = useAppSelector(state => state.passwordReset.successMessage)
 
   useEffect(() => {
     if (successMessage) {
@@ -96,5 +97,3 @@ export const PasswordResetFinishPage = () => {
     </div>
   )
 }
-
-export default PasswordResetFinishPage

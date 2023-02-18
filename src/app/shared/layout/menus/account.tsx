@@ -3,7 +3,7 @@ import React from 'react'
 import { GoTriangleDown } from 'react-icons/go'
 import { HiUser } from 'react-icons/hi'
 
-import MenuItem2 from './menu-item-2'
+import { MenuItem2 } from './menu-item-2'
 
 const accountMenuItemsAuthenticated = (
   <>

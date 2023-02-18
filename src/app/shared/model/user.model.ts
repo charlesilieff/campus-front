@@ -1,5 +1,5 @@
 export interface IUser {
-  id?: any
+  id?: number | null
   login?: string
   firstName?: string
   lastName?: string
@@ -16,7 +16,7 @@ export interface IUser {
 }
 
 export const defaultValue: Readonly<IUser> = {
-  id: '',
+  id: null,
   login: '',
   firstName: '',
   lastName: '',

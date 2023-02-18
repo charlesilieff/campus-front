@@ -63,4 +63,5 @@ export const SettingsSlice = createSlice({
 export const { reset } = SettingsSlice.actions
 
 // Reducer
+// eslint-disable-next-line import/no-default-export
 export default SettingsSlice.reducer

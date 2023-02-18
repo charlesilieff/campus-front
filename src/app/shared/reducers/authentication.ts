@@ -33,7 +33,7 @@ export const getSession = (): AppThunk => dispatch => {
 
 export const getAccount = createAsyncThunk(
   'authentication/get_account',
-  async () => axios.get<any>('api/account'),
+  async () => axios.get<IUser>('api/account'),
   {
     serializeError: serializeAxiosError
   }
@@ -166,4 +166,5 @@ export const AuthenticationSlice = createSlice({
 export const { logoutSession, authError, clearAuth } = AuthenticationSlice.actions
 
 // Reducer
+// eslint-disable-next-line import/no-default-export
 export default AuthenticationSlice.reducer

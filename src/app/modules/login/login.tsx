@@ -18,7 +18,7 @@ export const Login = () => {
     setShowModal(true)
   }, [])
 
-  const handleLogin = (username, password, rememberMe = false) =>
+  const handleLogin = (username: string, password: string, rememberMe = false) =>
     dispatch(login(username, password, rememberMe))
 
   const handleClose = () => {
@@ -40,5 +40,3 @@ export const Login = () => {
     />
   )
 }
-
-export default Login

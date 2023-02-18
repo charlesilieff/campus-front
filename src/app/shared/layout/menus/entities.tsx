@@ -1,6 +1,6 @@
 import { faBed, faCalendar, faEuroSign, faIgloo, faMapMarkedAlt, faPersonBooth, faSnowman,
   faUtensils } from '@fortawesome/free-solid-svg-icons'
-import MenuItem from 'app/shared/layout/menus/menu-item'
+import { MenuItem } from 'app/shared/layout/menus/menu-item'
 import React from 'react'
 
 import { NavDropdown } from './menu-components'

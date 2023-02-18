@@ -52,14 +52,21 @@ export const PasswordStrengthBar = ({ password }: IPasswordStrengthBarProps): JS
     return { idx: idx + 1, col: colors[idx] }
   }
 
-  const getPoints = force => {
-    const pts = [] as any[]
+  const getPoints = (
+    force: 0 | {
+      idx: number
+      col: string
+    }
+  ) => {
+    const pts = []
     for (let i = 0; i < 5; i++) {
       pts.push(
         <li
           key={i}
           className="point"
-          style={i < force.idx ? { backgroundColor: force.col } : { backgroundColor: '#DDD' }}
+          style={force !== 0 && i < force.idx ?
+            { backgroundColor: force.col } :
+            { backgroundColor: '#DDD' }}
         />
       )
     }
@@ -76,5 +83,3 @@ export const PasswordStrengthBar = ({ password }: IPasswordStrengthBarProps): JS
     </div>
   )
 }
-
-export default PasswordStrengthBar
