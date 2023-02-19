@@ -30,55 +30,53 @@ export const PasswordResetFinish = () => {
   const updatePassword = (event: React.ChangeEvent<HTMLInputElement>) =>
     setPassword(event.target.value)
 
-  const getResetForm = () => (
-    <ValidatedForm onSubmit={handleValidSubmit}>
-      <ValidatedField
-        name="newPassword"
-        label="Nouveau mot de passe"
-        placeholder="Nouveau mot de passe"
-        type="password"
-        validate={{
-          required: { value: true, message: 'Votre mot de passe est requis.' },
-          minLength: {
-            value: 4,
-            message: 'Votre mot de passe doit comporter au moins 4 caractères.'
-          },
-          maxLength: {
-            value: 50,
-            message: 'Votre mot de passe ne doit pas comporter plus de 50 caractères.'
-          }
-        }}
-        onChange={updatePassword}
-        data-cy="resetPassword"
-      />
-      <PasswordStrengthBar password={password} />
-      <ValidatedField
-        name="confirmPassword"
-        label="Confirmation du nouveau mot de passe"
-        placeholder="Confirmation du nouveau mot de passe"
-        type="password"
-        validate={{
-          required: { value: true, message: 'Votre confirmation du mot de passe est requise.' },
-          minLength: {
-            value: 4,
-            message: 'Votre confirmation du mot de passe doit comporter au moins 4 caractères.'
-          },
-          maxLength: {
-            value: 50,
-            message:
-              'Votre confirmation du mot de passe ne doit pas comporter plus de 50 caractères.'
-          },
-          validate: v =>
-            v === password || 'Le nouveau mot de passe et sa confirmation ne sont pas égaux !'
-        }}
-        data-cy="confirmResetPassword"
-      />
-      <Button color="success" type="submit" data-cy="submit">
-        Réinitialiser le mot de passe
-      </Button>
-    </ValidatedForm>
-  )
+  const getResetForm = () => (<ValidatedForm onSubmit={handleValidSubmit}>
+    <ValidatedField
+      name="newPassword"
+      label="Nouveau mot de passe"
+      placeholder="Nouveau mot de passe"
+      type="password"
+      validate={{
+        required: { value: true, message: 'Votre mot de passe est requis.' },
+        minLength: {
+          value: 4,
+          message: 'Votre mot de passe doit comporter au moins 4 caractères.'
+        },
+        maxLength: {
+          value: 50,
+          message: 'Votre mot de passe ne doit pas comporter plus de 50 caractères.'
+        }
+      }}
+      onChange={updatePassword}
+      data-cy="resetPassword"
+    />
+    <PasswordStrengthBar password={password} />
+    <ValidatedField
+      name="confirmPassword"
+      label="Confirmation du nouveau mot de passe"
+      placeholder="Confirmation du nouveau mot de passe"
+      type="password"
+      validate={{
+        required: { value: true, message: 'Votre confirmation du mot de passe est requise.' },
+        minLength: {
+          value: 4,
+          message: 'Votre confirmation du mot de passe doit comporter au moins 4 caractères.'
+        },
+        maxLength: {
+          value: 50,
+          message: 'Votre confirmation du mot de passe ne doit pas comporter plus de 50 caractères.'
+        },
+        validate: v =>
+          v === password || 'Le nouveau mot de passe et sa confirmation ne sont pas égaux !'
+      }}
+      data-cy="confirmResetPassword"
+    />
+    <Button color="success" type="submit" data-cy="submit">
+      Réinitialiser le mot de passe
+    </Button>
+  </ValidatedForm>)
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   const successMessage: string | null = useAppSelector(state => state.passwordReset.successMessage)
 
   useEffect(() => {

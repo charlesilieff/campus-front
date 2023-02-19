@@ -20,6 +20,7 @@ export const PasswordResetInit = () => {
     dispatch(handlePasswordResetInit(email))
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   const successMessage: string = useAppSelector(state => state.passwordReset.successMessage)
 
   useEffect(() => {
