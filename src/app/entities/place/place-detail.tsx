@@ -67,5 +67,3 @@ export const PlaceDetail = () => {
     </Row>
   )
 }
-
-export default PlaceDetail

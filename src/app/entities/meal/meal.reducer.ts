@@ -128,4 +128,5 @@ export const MealSlice = createEntitySlice({
 export const { reset } = MealSlice.actions
 
 // Reducer
+// eslint-disable-next-line import/no-default-export
 export default MealSlice.reducer

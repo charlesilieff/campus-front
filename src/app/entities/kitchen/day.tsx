@@ -5,7 +5,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap'
 
 import type { IMealsNumber } from './IMealsNumber'
-import MealContext from './mealsContext'
+import { MealsContext } from './mealsContext'
 
 interface IProps {
   positionX: number
@@ -23,7 +23,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
     comment: ''
   }
 
-  const [mealsContext, setMealsContext] = useContext(MealContext)
+  const [mealsContext, setMealsContext] = useContext(MealsContext)
 
   const [commentPopup, setCommentPopup] = useState('')
 
@@ -280,9 +280,9 @@ function commentPopupFunction(
   modal: boolean,
   toggle: () => void,
   date: dayjs.Dayjs,
-  submitModalPopup: (e: any) => void,
+  submitModalPopup: (e: React.FormEvent<HTMLFormElement>) => void,
   commentPopup: string,
-  changeCommentPopup: (value: any) => void
+  changeCommentPopup: (value: string) => void
 ) {
   return (
     <Modal isOpen={modal} toggle={toggle} className="modal-l">

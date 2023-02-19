@@ -1,6 +1,7 @@
 import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+import type { IPlace } from 'app/shared/model/place.model'
 import React, { useEffect } from 'react'
 import { ValidatedBlobField, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -38,7 +39,7 @@ export const PlaceUpdate = () => {
   }, [updateSuccess])
 
   const saveEntity = values => {
-    const entity = {
+    const entity: IPlace = {
       ...placeEntity,
       ...values
     }
@@ -142,5 +143,3 @@ export const PlaceUpdate = () => {
     </div>
   )
 }
-
-export default PlaceUpdate

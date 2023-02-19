@@ -128,4 +128,5 @@ export const CustomerSlice = createEntitySlice({
 export const { reset } = CustomerSlice.actions
 
 // Reducer
+// eslint-disable-next-line import/no-default-export
 export default CustomerSlice.reducer

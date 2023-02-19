@@ -6,11 +6,11 @@ import type { IMealsNumber } from './IMealsNumber'
 const defaultValue: IMeal[] = []
 
 // Mise en place du contexte.
-const MealsContext = createContext<[IMeal[], (mealsNumber: IMealsNumber, index: number) => void]>([
+export const MealsContext = createContext<
+  [IMeal[], (mealsNumber: IMealsNumber, index: number) => void]
+>([
   defaultValue,
   () => {
     // This is intentional
   }
 ])
-
-export default MealsContext

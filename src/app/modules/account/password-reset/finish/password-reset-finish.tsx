@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { PasswordStrengthBar } from 'app/shared/layout/password/password-strength-bar'
 import React, { useEffect, useState } from 'react'
+import type { FieldValues } from 'react-hook-form'
 import { ValidatedField, ValidatedForm } from 'react-jhipster'
 import { useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -23,7 +24,7 @@ export const PasswordResetFinish = () => {
     []
   )
 
-  const handleValidSubmit = ({ newPassword }) =>
+  const handleValidSubmit = ({ newPassword }: FieldValues) =>
     dispatch(handlePasswordResetFinish({ key, newPassword }))
 
   const updatePassword = (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -78,7 +79,7 @@ export const PasswordResetFinish = () => {
     </ValidatedForm>
   )
 
-  const successMessage: string = useAppSelector(state => state.passwordReset.successMessage)
+  const successMessage: string | null = useAppSelector(state => state.passwordReset.successMessage)
 
   useEffect(() => {
     if (successMessage) {

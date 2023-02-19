@@ -5,9 +5,9 @@ import type { Dayjs } from 'dayjs'
 import React from 'react'
 
 import type { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
-import Bed from './beds'
-import Day from './day'
-import Months from './months'
+import { Bed } from './beds'
+import { Day } from './day'
+import { Months } from './months'
 import { Reservation } from './reservation'
 import { Room } from './rooms'
 

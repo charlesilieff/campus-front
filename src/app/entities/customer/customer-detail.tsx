@@ -64,5 +64,3 @@ export const CustomerDetail = () => {
     </Row>
   )
 }
-
-export default CustomerDetail

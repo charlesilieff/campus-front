@@ -2,8 +2,8 @@ import { getDateKey } from 'app/shared/util/date-utils'
 import type { Dayjs } from 'dayjs'
 import React from 'react'
 
-import DaySummary from './daySummary'
-import Months from './months'
+import { DaySummary } from './daySummary'
+import { Months } from './months'
 
 interface IProps {
   date: Dayjs
@@ -19,7 +19,7 @@ interface IProps {
  *        - régime classique
  *  - Repas du soir.
  */
-const KitchenSummary = ({ date, totalDays, numberOfDays }: IProps) => {
+export const KitchenSummary = ({ date, totalDays, numberOfDays }: IProps) => {
   // On souhaite afficher 31 jours => Tableau de 31 élements.
   const monthDays = Array.from({ length: numberOfDays })
 
@@ -50,8 +50,6 @@ const KitchenSummary = ({ date, totalDays, numberOfDays }: IProps) => {
     </div>
   )
 }
-
-export default KitchenSummary
 
 /**
  * Style of the grid according to the number of days.

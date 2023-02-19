@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
   ActionReducerMapBuilder,
@@ -113,7 +115,7 @@ export const createEntitySlice = <T, Reducers extends SliceCaseReducers<EntitySt
       ...reducers
     },
     extraReducers(builder) {
-      extraReducers(builder)
+      extraReducers !== undefined ? extraReducers(builder) : null
       /*
        * Common rejection logic is handled here.
        * If you want to add your own rejcetion logic, pass `skipRejectionHandling: true`

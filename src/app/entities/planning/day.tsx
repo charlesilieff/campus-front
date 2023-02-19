@@ -41,5 +41,3 @@ export const Day = ({ positionX, date }: IProps) => {
     </>
   )
 }
-
-export default Day

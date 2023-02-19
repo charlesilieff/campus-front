@@ -113,5 +113,3 @@ export const BedroomKind = () => {
     </div>
   )
 }
-
-export default BedroomKind

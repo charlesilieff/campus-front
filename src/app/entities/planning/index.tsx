@@ -14,7 +14,7 @@ import { ValidatedField } from 'react-jhipster'
 import { Link } from 'react-router-dom'
 
 import type { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
-import PlaceModal from '../place/placeModal'
+import { PlaceModal } from '../place/placeModal'
 import { Planning } from './planning'
 
 const apiUrlPlacesWithoutImage = '/api/places/noimage'

@@ -58,5 +58,3 @@ export const CustomerDeleteDialog = () => {
     </Modal>
   )
 }
-
-export default CustomerDeleteDialog

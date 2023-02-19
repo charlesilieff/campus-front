@@ -8,7 +8,7 @@ interface IProps {
   bedsToBook: number[]
   checkBedsToBook: (bed: number) => void
 }
-const Beds: FunctionComponent<IProps> = ({ rooms, bedsToBook, checkBedsToBook }) => (
+export const Beds: FunctionComponent<IProps> = ({ rooms, bedsToBook, checkBedsToBook }) => (
   <>
     {rooms.map(room => {
       const bedRoomKind = room.bedroomKind ? `(${room.bedroomKind.name})` : ''
@@ -41,5 +41,3 @@ const Beds: FunctionComponent<IProps> = ({ rooms, bedsToBook, checkBedsToBook })
     })}
   </>
 )
-
-export default Beds

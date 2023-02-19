@@ -37,5 +37,3 @@ export const Bed: FunctionComponent<IProps> = ({ rowPosition, index, bed }) => {
     </>
   )
 }
-
-export default Bed

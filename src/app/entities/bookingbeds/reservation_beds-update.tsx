@@ -18,8 +18,8 @@ import { TextFormat } from 'react-jhipster'
 import { useParams } from 'react-router-dom'
 import { Col, Row } from 'reactstrap'
 
-import PlaceModal from '../place/placeModal'
-import Beds from './beds'
+import { PlaceModal } from '../place/placeModal'
+import { Beds } from './beds'
 import { backToOne, createEntity, updateEntity } from './booking-beds.reducer'
 import { getOnePlace, getPlaces } from './utils'
 
@@ -299,7 +299,7 @@ export const ReservationBedsUpdate = (): JSX.Element => {
                 .join('')}
           </p>
           <p style={{ color: reservationEntity.personNumber > placesBooked ? 'red' : 'green' }}>
-            {'Nombre de personnes hébergées : ' + placesBooked}
+            {`Nombre de personnes hébergées : ${placesBooked}`}
           </p>
         </Col>
       </Row>

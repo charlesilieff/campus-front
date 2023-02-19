@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+import type { IUser } from 'app/shared/model/user.model'
 import { getSession } from 'app/shared/reducers/authentication'
 import React, { useEffect } from 'react'
 import { isEmail, ValidatedField, ValidatedForm } from 'react-jhipster'
@@ -9,7 +10,8 @@ import { reset, saveAccountSettings } from './settings.reducer'
 
 export const Settings = () => {
   const dispatch = useAppDispatch()
-  const account = useAppSelector(state => state.authentication.account)
+  const account: IUser = useAppSelector(state => state.authentication.account)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   const successMessage: string = useAppSelector(state => state.settings.successMessage)
 
   useEffect(() => {
@@ -25,7 +27,7 @@ export const Settings = () => {
     }
   }, [successMessage])
 
-  const handleValidSubmit = values => {
+  const handleValidSubmit = (values: IUser) => {
     dispatch(
       saveAccountSettings({
         ...account,

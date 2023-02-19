@@ -3,7 +3,7 @@ import type { Dayjs } from 'dayjs'
 import React from 'react'
 
 import { Day } from './day'
-import Months from './months'
+import { Months } from './months'
 
 interface IProps {
   date: Dayjs

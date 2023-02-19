@@ -24,7 +24,7 @@ export const handlePasswordResetInit = createAsyncThunk(
 
 export const handlePasswordResetFinish = createAsyncThunk(
   'passwordReset/reset_password_finish',
-  async (data: { key: string; newPassword: string }) => axios.post(`${apiUrl}/finish`, data),
+  async (data: { key: string | null; newPassword: string }) => axios.post(`${apiUrl}/finish`, data),
   { serializeError: serializeAxiosError }
 )
 

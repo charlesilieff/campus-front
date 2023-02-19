@@ -8,10 +8,10 @@ import { ValidatedField } from 'react-jhipster'
 import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap'
 
 import type { IMealsNumber } from './IMealsNumber'
-import MealContext from './mealsContext'
+import { MealsContext } from './mealsContext'
 import { MealsPlanning } from './mealsPlanning'
 
-const apiUrlMealsDateFor31Daus = 'api/meals/date'
+const apiUrlMealsDateFor31Days = 'api/meals/date'
 interface IShowSavingProps {
   isShow: boolean
   message: string
@@ -43,7 +43,7 @@ export const Index = () => {
     }
   }, [showSavingPopup])
 
-  const newDatePlanning = (dateStart: any) => {
+  const newDatePlanning = (dateStart: React.ChangeEvent<HTMLInputElement>) => {
     setDate(dayjs(dateStart.target.value))
   }
 
@@ -52,7 +52,7 @@ export const Index = () => {
   const totalDays = date.daysInMonth()
 
   const getMealsDateFor31Days = async (startDate: Dayjs) => {
-    const requestUrl = `${apiUrlMealsDateFor31Daus}/${startDate.format('YYYY-MM-DD')}?cacheBuster=${
+    const requestUrl = `${apiUrlMealsDateFor31Days}/${startDate.format('YYYY-MM-DD')}?cacheBuster=${
       new Date().getTime()
     }`
     const { data } = await axios.get<IMeal[]>(requestUrl)
@@ -83,7 +83,7 @@ export const Index = () => {
    * Calculation of total.
    */
   const totalMeals = (table: number[]) => {
-    const add = (accumulator, a) => accumulator + a
+    const add = (accumulator: number, a: number) => accumulator + a
     return table.reduce(add, 0) // with initial value to avoid when the array is empty
   }
 
@@ -120,7 +120,7 @@ export const Index = () => {
   }
 
   return (
-    <MealContext.Provider value={[mealsData, changeMeal]}>
+    <MealsContext.Provider value={[mealsData, changeMeal]}>
       <div>
         <div>
           <ValidatedField
@@ -154,7 +154,7 @@ export const Index = () => {
       {displayTotalMeals(resultTotalMeals)}
 
       {showSavingPopup.isShow && savePopupFunction(showSavingPopup.message)}
-    </MealContext.Provider>
+    </MealsContext.Provider>
   )
 }
 
@@ -163,15 +163,13 @@ function calculateAccordingToNumberOfDays(
   numberOfDays: number,
   mealsData: IMeal[],
   resultTotalMeals: number[],
-  totalMeals: (table: number[]) => any
+  totalMeals: (table: number[]) => number
 ) {
   mealsDataDays = new Array(numberOfDays)
-  console.log('mealsDataDays', mealsDataDays)
   for (let i = 0; i < numberOfDays; i++) {
     mealsDataDays[i] = { ...mealsData[i] }
   }
   resultTotalMeals = totalMealsCalculation(mealsDataDays, totalMeals)
-  console.log('resultTotalMeals', resultTotalMeals)
   return { mealsDataDays, resultTotalMeals }
 }
 
@@ -194,13 +192,13 @@ function displayTotalMeals(resultTotalMeals: number[]) {
           {`Total repas classiques de midi: ${resultTotalMeals[0]}`}
         </div>
         <div id="total" className="col">
-          {'Total repas classiques du soir: ' + resultTotalMeals[1]}
+          {`Total repas classiques du soir: ${resultTotalMeals[1]}`}
         </div>
         <div id="total" className="col">
-          {'Total repas spéciaux de midi: ' + resultTotalMeals[2]}
+          {`Total repas spéciaux de midi: ${resultTotalMeals[2]}`}
         </div>
         <div id="total" className="col">
-          {'Total repas spéciaux du soir: ' + resultTotalMeals[3]}
+          {`Total repas spéciaux du soir: ${resultTotalMeals[3]}`}
         </div>
       </div>
       <div className="col-4">
@@ -208,13 +206,13 @@ function displayTotalMeals(resultTotalMeals: number[]) {
           <br />
         </div>
         <div id="total" className="col">
-          {'Total repas classiques: ' + resultTotalMeals[4]}
+          {`Total repas classiques: ${resultTotalMeals[4]}`}
         </div>
         <div id="total" className="col">
           <br />
         </div>
         <div id="total" className="col">
-          {'Total repas spéciaux: ' + resultTotalMeals[5]}
+          {`Total repas spéciaux: ${resultTotalMeals[5]}`}
         </div>
       </div>
       <div className="col-4">
@@ -229,7 +227,7 @@ function displayTotalMeals(resultTotalMeals: number[]) {
           {' '}
         </div>
         <div id="total" className="col">
-          {'Total repas: ' + resultTotalMeals[6]}
+          {`Total repas: ${resultTotalMeals[6]}`}
         </div>
       </div>
     </div>
@@ -242,7 +240,7 @@ function displayTotalMeals(resultTotalMeals: number[]) {
  * @param totalMeals : reducer, calculate a sum of numbers.
  * @returns : results of totals.
  */
-function totalMealsCalculation(mealsData: IMeal[], totalMeals: (table: number[]) => any) {
+function totalMealsCalculation(mealsData: IMeal[], totalMeals: (table: number[]) => number) {
   // regularLunch: calculation of total.
   console.log('mealsData', mealsData)
   let table: number[] = mealsData.map(meals => meals.regularLunch)

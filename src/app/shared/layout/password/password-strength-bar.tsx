@@ -58,7 +58,7 @@ export const PasswordStrengthBar = ({ password }: IPasswordStrengthBarProps): JS
       col: string
     }
   ) => {
-    const pts = []
+    const pts: JSX.Element[] = []
     for (let i = 0; i < 5; i++) {
       pts.push(
         <li

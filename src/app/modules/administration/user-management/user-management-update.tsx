@@ -47,6 +47,7 @@ export const UserManagementUpdate = () => {
   const user = useAppSelector(state => state.userManagement.user)
   const loading = useAppSelector(state => state.userManagement.loading)
   const updating = useAppSelector(state => state.userManagement.updating)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   const authorities = useAppSelector(state => state.userManagement.authorities)
 
   return (

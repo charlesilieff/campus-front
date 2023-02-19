@@ -4,8 +4,8 @@ import axios from 'axios'
 
 const initialState = {
   loading: false,
-  errorMessage: null,
-  successMessage: null,
+  errorMessage: null as string,
+  successMessage: null as string,
   updateSuccess: false,
   updateFailure: false
 }

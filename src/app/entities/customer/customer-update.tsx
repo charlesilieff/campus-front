@@ -1,6 +1,7 @@
 import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+import type { ICustomer } from 'app/shared/model/customer.model'
 import React, { useEffect } from 'react'
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -38,7 +39,7 @@ export const CustomerUpdate = (): JSX.Element => {
   }, [updateSuccess])
 
   const saveEntity = values => {
-    const entity = {
+    const entity: ICustomer = {
       ...customerEntity,
       ...values,
       // @ts-expect-error : age is a number
@@ -193,5 +194,3 @@ export const CustomerUpdate = (): JSX.Element => {
     </div>
   )
 }
-
-export default CustomerUpdate

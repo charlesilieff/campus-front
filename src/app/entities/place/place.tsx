@@ -129,5 +129,3 @@ export const Place = () => {
     </div>
   )
 }
-
-export default Place

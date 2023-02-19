@@ -1,3 +1,4 @@
+import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { Storage } from 'react-jhipster'
 
@@ -7,8 +8,8 @@ const TIMEOUT = 1 * 60 * 1000
 axios.defaults.timeout = TIMEOUT
 axios.defaults.baseURL = SERVER_API_URL
 
-const setupAxiosInterceptors = onUnauthenticated => {
-  const onRequestSuccess = config => {
+export const setupAxiosInterceptors = onUnauthenticated => {
+  const onRequestSuccess = (config: AxiosRequestConfig) => {
     const token = Storage.local.get('jhi-authenticationToken')
       || Storage.session.get('jhi-authenticationToken')
     if (token) {
@@ -16,8 +17,9 @@ const setupAxiosInterceptors = onUnauthenticated => {
     }
     return config
   }
-  const onResponseSuccess = response => response
-  const onResponseError = err => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  const onResponseSuccess = response => response as AxiosRequestConfig
+  const onResponseError = (err: { status: number; response: { status: number } }) => {
     const status = err.status || (err.response ? err.response.status : 0)
     if (status === 403 || status === 401) {
       onUnauthenticated()
@@ -27,5 +29,3 @@ const setupAxiosInterceptors = onUnauthenticated => {
   axios.interceptors.request.use(onRequestSuccess)
   axios.interceptors.response.use(onResponseSuccess, onResponseError)
 }
-
-export default setupAxiosInterceptors

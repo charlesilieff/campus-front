@@ -2,10 +2,10 @@ import { ErrorBoundaryRoutes } from 'app/shared/error/error-boundary-routes'
 import React from 'react'
 import { Route } from 'react-router-dom'
 
-import Customer from './customer'
-import CustomerDeleteDialog from './customer-delete-dialog'
-import CustomerDetail from './customer-detail'
-import CustomerUpdate from './customer-update'
+import { Customer } from './customer'
+import { CustomerDeleteDialog } from './customer-delete-dialog'
+import { CustomerDetail } from './customer-detail'
+import { CustomerUpdate } from './customer-update'
 
 export const CustomerRoutes = () => (
   <ErrorBoundaryRoutes>

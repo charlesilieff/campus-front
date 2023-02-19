@@ -2,11 +2,11 @@ import { ErrorBoundaryRoutes } from 'app/shared/error/error-boundary-routes'
 import React from 'react'
 import { Route } from 'react-router-dom'
 
-import Place from './place'
-import PlaceDeleteDialog from './place-delete-dialog'
-import PlaceDetail from './place-detail'
+import { Place } from './place'
+import { PlaceDeleteDialog } from './place-delete-dialog'
+import { PlaceDetail } from './place-detail'
 import { PlaceIntermittent } from './place-intermittent'
-import PlaceUpdate from './place-update'
+import { PlaceUpdate } from './place-update'
 
 export const PlaceRoutes = () => (
   <ErrorBoundaryRoutes>

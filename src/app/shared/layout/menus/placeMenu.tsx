@@ -1,5 +1,5 @@
 import { HStack, Select } from '@chakra-ui/react'
-import PlaceModal from 'app/entities/place/placeModal'
+import { PlaceModal } from 'app/entities/place/placeModal'
 import type { IPlace } from 'app/shared/model/place.model'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'

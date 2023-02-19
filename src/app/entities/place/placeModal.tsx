@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { BsMap } from 'react-icons/bs'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
-const PlaceModal = (place: IPlace) => {
+export const PlaceModal = (place: IPlace) => {
   const [modal, setModal] = useState(false)
 
   const toggle = () => setModal(!modal)
@@ -43,5 +43,3 @@ const PlaceModal = (place: IPlace) => {
     </div>
   )
 }
-
-export default PlaceModal

@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable import/no-default-export */
 const getErrorMessage = errorData => {
   let message = errorData.message
   if (errorData.fieldErrors) {

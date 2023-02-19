@@ -122,7 +122,7 @@ export const AuthenticationSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(authenticate.rejected, (state, action) => ({
+      .addCase(authenticate.rejected, (_state, action) => ({
         ...initialState,
         errorMessage: action.error.message,
         showModalLogin: true,

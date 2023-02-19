@@ -130,5 +130,3 @@ export const Customer = () => {
     </VStack>
   )
 }
-
-export default Customer

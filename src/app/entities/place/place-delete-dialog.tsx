@@ -58,5 +58,3 @@ export const PlaceDeleteDialog = () => {
     </Modal>
   )
 }
-
-export default PlaceDeleteDialog

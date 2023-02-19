@@ -39,5 +39,3 @@ export const Months: FunctionComponent<IProps> = ({ month, date, totalDays }) =>
     </Text>
   )
 }
-
-export default Months

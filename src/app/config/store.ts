@@ -4,13 +4,13 @@ import type { TypedUseSelectorHook } from 'react-redux'
 import { useDispatch, useSelector } from 'react-redux'
 import { loadingBarMiddleware } from 'react-redux-loading-bar'
 
-import { rootReducer as reducer } from '../shared/reducers'
+import { rootReducer } from '../shared/reducers'
 import errorMiddleware from './error-middleware'
 import loggerMiddleware from './logger-middleware'
 import notificationMiddleware from './notification-middleware'
 
 const store = configureStore({
-  reducer,
+  reducer: rootReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {

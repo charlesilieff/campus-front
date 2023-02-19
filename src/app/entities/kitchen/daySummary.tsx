@@ -2,7 +2,7 @@ import type { Dayjs } from 'dayjs'
 import React, { useContext } from 'react'
 
 import type { IMealsNumber } from './IMealsNumber'
-import MealContext from './mealsContext'
+import { MealsContext } from './mealsContext'
 
 interface IProps {
   positionX: number
@@ -14,7 +14,7 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
   const dayWeek = date.day()
   const dayMonth = date.date()
 
-  const mealsContext = useContext(MealContext)[0]
+  const mealsContext = useContext(MealsContext)[0]
 
   const style = {
     gridColumnStart: positionX,
@@ -157,4 +157,3 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
     </>
   )
 }
-export default DaySummary
