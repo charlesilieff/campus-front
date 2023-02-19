@@ -140,5 +140,3 @@ export const CustomerUpdate = () => {
     </div>
   )
 }
-
-export default CustomerUpdate

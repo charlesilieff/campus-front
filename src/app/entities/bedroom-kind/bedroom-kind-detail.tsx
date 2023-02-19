@@ -53,5 +53,3 @@ export const BedroomKindDetail = () => {
     </Row>
   )
 }
-
-export default BedroomKindDetail

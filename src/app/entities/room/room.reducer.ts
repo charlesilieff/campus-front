@@ -140,4 +140,5 @@ export const RoomSlice = createEntitySlice({
 export const { reset } = RoomSlice.actions
 
 // Reducer
+// eslint-disable-next-line import/no-default-export
 export default RoomSlice.reducer

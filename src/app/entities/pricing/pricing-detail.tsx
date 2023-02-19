@@ -45,5 +45,3 @@ export const PricingDetail = () => {
     </Row>
   )
 }
-
-export default PricingDetail

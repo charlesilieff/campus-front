@@ -1,6 +1,7 @@
 import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+import type { IBedroomKind } from 'app/shared/model/bedroom-kind.model'
 import React, { useEffect } from 'react'
 import { ValidatedField, ValidatedForm } from 'react-jhipster'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -37,7 +38,7 @@ export const BedroomKindUpdate = () => {
     }
   }, [updateSuccess])
 
-  const saveEntity = values => {
+  const saveEntity = (values: IBedroomKind) => {
     const entity = {
       ...bedroomKindEntity,
       ...values
@@ -134,5 +135,3 @@ export const BedroomKindUpdate = () => {
     </div>
   )
 }
-
-export default BedroomKindUpdate

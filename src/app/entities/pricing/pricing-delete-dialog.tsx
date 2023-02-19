@@ -58,5 +58,3 @@ export const PricingDeleteDialog = () => {
     </Modal>
   )
 }
-
-export default PricingDeleteDialog

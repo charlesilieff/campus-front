@@ -44,5 +44,3 @@ export const RoomDetail = () => {
     </Row>
   )
 }
-
-export default RoomDetail

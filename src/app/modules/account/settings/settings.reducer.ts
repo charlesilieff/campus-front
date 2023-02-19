@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { AppThunk } from 'app/config/store'
+import type { IUser } from 'app/shared/model/user.model'
 import { getSession } from 'app/shared/reducers/authentication'
 import { serializeAxiosError } from 'app/shared/reducers/reducer.utils'
 import axios from 'axios'
@@ -17,7 +18,7 @@ export type SettingsState = Readonly<typeof initialState>
 // Actions
 const apiUrl = 'api/account'
 
-export const saveAccountSettings: (account: any) => AppThunk = account => async dispatch => {
+export const saveAccountSettings: (account: IUser) => AppThunk = account => async dispatch => {
   await dispatch(updateAccount(account))
 
   dispatch(getSession())
@@ -25,7 +26,7 @@ export const saveAccountSettings: (account: any) => AppThunk = account => async 
 
 export const updateAccount = createAsyncThunk(
   'settings/update_account',
-  async (account: any) => axios.post<any>(apiUrl, account),
+  async (account: IUser) => axios.post<IUser>(apiUrl, account),
   {
     serializeError: serializeAxiosError
   }

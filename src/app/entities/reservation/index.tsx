@@ -2,11 +2,11 @@ import { ErrorBoundaryRoutes } from 'app/shared/error/error-boundary-routes'
 import React from 'react'
 import { Route } from 'react-router-dom'
 
-import Reservation from './reservation'
-import ReservationDeleteDialog from './reservation-delete-dialog'
-import ReservationDetail from './reservation-detail'
+import { Reservation } from './reservation'
+import { ReservationDeleteDialog } from './reservation-delete-dialog'
+import { ReservationDetail } from './reservation-detail'
 
-const Routes = () => (
+export const ReservationRoutes = () => (
   <ErrorBoundaryRoutes>
     <Route index element={<Reservation />} />
     <Route path=":id">
@@ -18,5 +18,3 @@ const Routes = () => (
     </Route>
   </ErrorBoundaryRoutes>
 )
-
-export default Routes

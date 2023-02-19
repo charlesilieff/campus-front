@@ -31,6 +31,7 @@ export const AUTHORITIES = {
 }
 
 export const messages = {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   DATA_ERROR_ALERT: 'Internal Error'
 }
 

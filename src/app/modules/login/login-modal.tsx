@@ -12,7 +12,7 @@ export interface ILoginModalProps {
   handleClose: () => void
 }
 
-const LoginModal = (props: ILoginModalProps) => {
+export const LoginModal = (props: ILoginModalProps) => {
   const login = (
     { username, password, rememberMe }: { username: string; password: string; rememberMe: boolean }
   ) => {
@@ -115,5 +115,3 @@ const LoginModal = (props: ILoginModalProps) => {
     </Modal>
   )
 }
-
-export default LoginModal

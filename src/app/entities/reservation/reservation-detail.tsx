@@ -127,5 +127,3 @@ export const ReservationDetail = () => {
     </Row>
   )
 }
-
-export default ReservationDetail

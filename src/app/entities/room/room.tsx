@@ -126,5 +126,3 @@ export const Room = () => {
     </div>
   )
 }
-
-export default Room

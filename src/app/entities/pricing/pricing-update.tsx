@@ -1,6 +1,7 @@
 import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+import type { IPricing } from 'app/shared/model/pricing.model'
 import React, { useEffect } from 'react'
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -37,7 +38,7 @@ export const PricingUpdate = () => {
     }
   }, [updateSuccess])
 
-  const saveEntity = values => {
+  const saveEntity = (values: IPricing) => {
     const entity = {
       ...pricingEntity,
       ...values
@@ -146,5 +147,3 @@ export const PricingUpdate = () => {
     </div>
   )
 }
-
-export default PricingUpdate

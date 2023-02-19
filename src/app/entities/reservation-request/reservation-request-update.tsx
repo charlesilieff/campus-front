@@ -198,7 +198,8 @@ export const ReservationUpdate = () => {
                     registerOptions={{
                       required: { value: true, message: 'La date de départ est obligatoire.' }
                     }}
-                    validate={(value, getValue) => {
+                    validate={(value: string, getValue) => {
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                       if (new Date(value) <= new Date(getValue('arrivalDate'))) {
                         return 'Veuillez rentrez une date postérieure à votre arrivée.'
                       }
@@ -233,5 +234,3 @@ export const ReservationUpdate = () => {
     </div>
   )
 }
-
-export default ReservationUpdate

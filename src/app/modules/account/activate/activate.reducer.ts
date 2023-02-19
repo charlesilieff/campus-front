@@ -42,4 +42,5 @@ export const ActivateSlice = createSlice({
 export const { reset } = ActivateSlice.actions
 
 // Reducer
+// eslint-disable-next-line import/no-default-export
 export default ActivateSlice.reducer

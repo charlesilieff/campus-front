@@ -128,4 +128,5 @@ export const PlaceSlice = createEntitySlice({
 export const { reset } = PlaceSlice.actions
 
 // Reducer
+// eslint-disable-next-line import/no-default-export
 export default PlaceSlice.reducer

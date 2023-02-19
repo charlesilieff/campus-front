@@ -3,7 +3,7 @@ import { login } from 'app/shared/reducers/authentication'
 import React, { useEffect, useState } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 
-import LoginModal from './login-modal'
+import { LoginModal } from './login-modal'
 
 export const Login = () => {
   const dispatch = useAppDispatch()

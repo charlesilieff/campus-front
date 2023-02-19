@@ -54,6 +54,7 @@ export const partialUpdateEntity = createAsyncThunk(
       cleanEntity(entity.ReservationRequest),
       {
         headers: {
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           'Content-Type': 'application/merge-patch+json'
         }
       }
@@ -124,4 +125,5 @@ export const ReservationRequestSlice = createEntitySlice({
 export const { reset, setData, backToOne } = ReservationRequestSlice.actions
 
 // Reducer
+// eslint-disable-next-line import/no-default-export
 export default ReservationRequestSlice.reducer

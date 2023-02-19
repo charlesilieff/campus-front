@@ -67,5 +67,3 @@ export const RoomDeleteDialog = () => {
     </Modal>
   )
 }
-
-export default RoomDeleteDialog

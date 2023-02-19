@@ -71,4 +71,5 @@ export const RegisterSlice = createSlice({
 export const { reset } = RegisterSlice.actions
 
 // Reducer
+// eslint-disable-next-line import/no-default-export
 export default RegisterSlice.reducer

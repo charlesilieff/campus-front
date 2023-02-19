@@ -10,7 +10,7 @@ import { CustomerRoutes } from './customer'
 import { PlaceRoutes } from './place'
 import { IndexPlanning } from './planning'
 import { PricingRoutes } from './pricing'
-import Reservation from './reservation'
+import { ReservationRoutes } from './reservation'
 import { ReservationsToBeProcessed } from './reservation/reservations_to-be-processed'
 import { RoomRoutes } from './room'
 
@@ -31,7 +31,7 @@ export const EntitiesRoutes = () => (
       />
 
       <Route path={`bookingbeds/*`} element={<BookingBedsRoutes />} />
-      <Route path={`reservation/*`} element={<Reservation />} />
+      <Route path={`reservation/*`} element={<ReservationRoutes />} />
       <Route path={`customer/*`} element={<CustomerRoutes />} />
       <Route path={`pricing/*`} element={<PricingRoutes />} />
       <Route path={`bed/*`} element={<BedRoutes />} />

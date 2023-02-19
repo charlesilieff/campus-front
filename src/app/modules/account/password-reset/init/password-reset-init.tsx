@@ -16,11 +16,11 @@ export const PasswordResetInit = () => {
     []
   )
 
-  const handleValidSubmit = ({ email }) => {
+  const handleValidSubmit = ({ email }: { email: string }) => {
     dispatch(handlePasswordResetInit(email))
   }
 
-  const successMessage = useAppSelector(state => state.passwordReset.successMessage)
+  const successMessage: string = useAppSelector(state => state.passwordReset.successMessage)
 
   useEffect(() => {
     if (successMessage) {
@@ -65,5 +65,3 @@ export const PasswordResetInit = () => {
     </div>
   )
 }
-
-export default PasswordResetInit

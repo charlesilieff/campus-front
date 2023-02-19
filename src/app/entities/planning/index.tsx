@@ -58,7 +58,7 @@ export const IndexPlanning = () => {
     setReservations(data)
   }
 
-  const newDatePlanning = (dateStart: any) => {
+  const newDatePlanning = (dateStart: React.ChangeEvent<HTMLInputElement>) => {
     setDate(dayjs(dateStart.target.value))
     getReservations(place.id.toString(), dayjs(dateStart.target.value))
   }

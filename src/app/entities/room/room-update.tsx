@@ -181,5 +181,3 @@ export const RoomUpdate = () => {
     </div>
   )
 }
-
-export default RoomUpdate

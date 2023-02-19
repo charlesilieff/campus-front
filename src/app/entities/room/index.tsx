@@ -2,10 +2,10 @@ import { ErrorBoundaryRoutes } from 'app/shared/error/error-boundary-routes'
 import React from 'react'
 import { Route } from 'react-router-dom'
 
-import Room from './room'
-import RoomDeleteDialog from './room-delete-dialog'
-import RoomDetail from './room-detail'
-import RoomUpdate from './room-update'
+import { Room } from './room'
+import { RoomDeleteDialog } from './room-delete-dialog'
+import { RoomDetail } from './room-detail'
+import { RoomUpdate } from './room-update'
 
 export const RoomRoutes = () => (
   <ErrorBoundaryRoutes>

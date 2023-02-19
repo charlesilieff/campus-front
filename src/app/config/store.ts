@@ -20,7 +20,7 @@ const store = configureStore({
     }).concat(errorMiddleware, notificationMiddleware, loadingBarMiddleware(), loggerMiddleware)
 })
 
-const getStore = () => store
+export const getStore = () => store
 
 export type IRootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
@@ -28,5 +28,3 @@ export type AppDispatch = typeof store.dispatch
 export const useAppSelector: TypedUseSelectorHook<IRootState> = useSelector
 export const useAppDispatch = () => useDispatch<AppDispatch>()
 export type AppThunk<ReturnType = void,> = ThunkAction<ReturnType, IRootState, unknown, AnyAction>
-
-export default getStore

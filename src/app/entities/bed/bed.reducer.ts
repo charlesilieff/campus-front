@@ -129,4 +129,5 @@ export const BedSlice = createEntitySlice({
 export const { reset } = BedSlice.actions
 
 // Reducer
+// eslint-disable-next-line import/no-default-export
 export default BedSlice.reducer

@@ -128,4 +128,5 @@ export const BedroomKindSlice = createEntitySlice({
 export const { reset } = BedroomKindSlice.actions
 
 // Reducer
+// eslint-disable-next-line import/no-default-export
 export default BedroomKindSlice.reducer

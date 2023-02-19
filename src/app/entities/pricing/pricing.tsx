@@ -28,7 +28,7 @@ export const Pricing = () => {
         <Heading>Tarifs</Heading>
         <div className="d-flex justify-content-end">
           <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraichîr la liste
+            <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraîchir la liste
           </Button>
           <Link
             to={`new`}
@@ -93,7 +93,7 @@ export const Pricing = () => {
                           data-cy="entityDeleteButton"
                         >
                           <FontAwesomeIcon icon={faTrash} />{' '}
-                          <span className="d-none d-md-inline">Suppimer</span>
+                          <span className="d-none d-md-inline">Supprimer</span>
                         </Button>
                       </div>
                     </td>
@@ -102,10 +102,8 @@ export const Pricing = () => {
               </tbody>
             </Table>
           ) :
-          (!loading && <div className="alert alert-warning">No Pricings found</div>)}
+          (!loading && <div className="alert alert-warning">No Pricing found</div>)}
       </div>
     </div>
   )
 }
-
-export default Pricing
