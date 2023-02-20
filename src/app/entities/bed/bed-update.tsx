@@ -1,23 +1,57 @@
-import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  Button,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  HStack,
+  Input,
+  Select,
+  Tooltip,
+  VStack
+} from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getRooms } from 'app/entities/room/room.reducer'
 import type { IBed } from 'app/shared/model/bed.model'
 import React, { useEffect } from 'react'
-import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
+import { useForm } from 'react-hook-form'
+import { FaArrowLeft, FaSave } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { Button, Col, Row, UncontrolledTooltip } from 'reactstrap'
 
 import { createEntity, getEntity, reset, updateEntity } from './bed.reducer'
 
+interface BedForm {
+  roomId: string
+  number: string
+  numberOfPlaces: number
+  kind: string
+}
+
 export const BedUpdate = () => {
-  const dispatch = useAppDispatch()
+  const bedEntity = useAppSelector(state => state.bed.entity)
   const { id } = useParams<'id'>()
-  const navigate = useNavigate()
   const isNew = id === undefined
+  const defaultValues = () =>
+    isNew ? {} : {
+      ...bedEntity,
+      // @ts-expect-error TODO: fix this
+      roomId: bedEntity?.room?.id === '' ? undefined : bedEntity?.room?.id
+    }
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors }
+  } = useForm<BedForm>({
+    defaultValues: defaultValues()
+  })
+
+  const dispatch = useAppDispatch()
+
+  const navigate = useNavigate()
 
   const rooms = useAppSelector(state => state.room.entities)
-  const bedEntity = useAppSelector(state => state.bed.entity)
+
   const loading = useAppSelector(state => state.bed.loading)
   const updating = useAppSelector(state => state.bed.updating)
   const updateSuccess = useAppSelector(state => state.bed.updateSuccess)
@@ -58,117 +92,125 @@ export const BedUpdate = () => {
     }
   }
 
-  const defaultValues = () =>
-    isNew ? {} : {
-      ...bedEntity,
-      // @ts-expect-error TODO: fix this
-      roomId: bedEntity?.room?.id === '' ? undefined : bedEntity?.room?.id
-    }
-
   return (
-    <div>
-      <Row className="justify-content-center">
-        <Col md="8">
-          <h2
-            id="gestionhebergementApp.bed.home.createOrEditLabel"
-            data-cy="BedCreateUpdateHeading"
-          >
-            Créez ou modifiez un lit
-          </h2>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col md="8">
-          {loading ?
-            <p>Chargement...</p> :
-            (
-              <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
-                <ValidatedField
-                  label="Type"
-                  id="bed-kind"
-                  name="kind"
-                  data-cy="kind"
+    <VStack spacing={8}>
+      <Heading>
+        Créez ou modifiez un lit
+      </Heading>
+
+      {loading ? <p>Chargement...</p> : (
+        <form
+          onSubmit={handleSubmit(saveEntity)}
+        >
+          <VStack spacing={4}>
+            <FormControl isRequired isInvalid={errors.kind !== undefined}>
+              <FormLabel htmlFor="kind" fontWeight={'bold'}>
+                {'Type'}
+              </FormLabel>
+              <Input
+                id="kind"
+                type="text"
+                placeholder="Type"
+                {...register('kind', {
+                  required: 'Le type est obligatoire',
+                  minLength: {
+                    value: 4,
+                    message: 'This field is required to be at least 4 characters.'
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: 'This field cannot be longer than 20 characters.'
+                  }
+                })}
+              />
+
+              <FormErrorMessage>
+                {errors.kind && errors.kind.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isRequired isInvalid={errors.number !== undefined}>
+              <FormLabel htmlFor="number" fontWeight={'bold'}>
+                {'Numéro'}
+              </FormLabel>
+              <Tooltip label="Numéro du lit, peut comporter des lettres">
+                <Input
+                  id="number"
                   type="text"
-                  validate={{
-                    required: { value: true, message: 'This field is required.' },
-                    minLength: {
-                      value: 4,
-                      message: 'This field is required to be at least 4 characters.'
-                    },
+                  placeholder="Numéro"
+                  {...register('number', {
+                    required: 'Le numéro est obligatoire',
+
                     maxLength: {
                       value: 20,
                       message: 'This field cannot be longer than 20 characters.'
                     }
-                  }}
+                  })}
                 />
-                <ValidatedField
-                  label="Numéro"
-                  id="bed-number"
-                  name="number"
-                  data-cy="number"
-                  type="text"
-                  validate={{
-                    required: { value: true, message: 'This field is required.' }
-                  }}
-                />
-                <UncontrolledTooltip target="numberLabel">
-                  Numéro du lit, peut comporter des lettres
-                </UncontrolledTooltip>
-                <ValidatedField
-                  label="Nombre de places"
-                  id="bed-numberOfPlaces"
-                  name="numberOfPlaces"
-                  data-cy="numberOfPlaces"
-                  type="text"
-                  validate={{
-                    required: { value: true, message: 'This field is required.' },
-                    min: { value: 0, message: 'This field should be at least 0.' },
-                    validate: v => isNumber(v) || 'This field should be a number.'
-                  }}
-                />
-                <ValidatedField
-                  id="bed-room"
-                  name="roomId"
-                  data-cy="room"
-                  label="Chambre"
-                  type="select"
-                >
-                  <option value="" key="0" />
-                  {rooms ?
-                    rooms.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.name}
-                      </option>
-                    )) :
-                    null}
-                </ValidatedField>
-                <Button
-                  tag={Link}
-                  id="cancel-save"
-                  data-cy="entityCreateCancelButton"
-                  to="/bed"
-                  replace
-                  color="info"
-                >
-                  <FontAwesomeIcon icon={faArrowLeft} />
-                  &nbsp;
-                  <span className="d-none d-md-inline">Retour</span>
-                </Button>
-                &nbsp;
-                <Button
-                  color="primary"
-                  id="save-entity"
-                  data-cy="entityCreateSaveButton"
-                  type="submit"
-                  disabled={updating}
-                >
-                  <FontAwesomeIcon icon={faSave} />
-                  &nbsp; Sauvegarder
-                </Button>
-              </ValidatedForm>
-            )}
-        </Col>
-      </Row>
-    </div>
+              </Tooltip>
+
+              <FormErrorMessage>
+                {errors.number && errors.number.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isRequired isInvalid={errors.numberOfPlaces !== undefined}>
+              <FormLabel htmlFor="number" fontWeight={'bold'}>
+                {'Nombre de places'}
+              </FormLabel>
+
+              <Input
+                id="number"
+                type="number"
+                placeholder="Nombre de places"
+                {...register('numberOfPlaces', {
+                  required: 'Le nombre de places est obligatoire'
+                })}
+              />
+
+              <FormErrorMessage>
+                {errors.numberOfPlaces && errors.numberOfPlaces.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="room" fontWeight={'bold'}>
+                {'Chambre'}
+              </FormLabel>
+
+              <Select
+                id="room"
+                {...register('roomId', {})}
+              >
+                <option value="" key="0" />
+                {rooms ?
+                  rooms.map(room => (
+                    <option value={room.id} key={room.id}>
+                      {room.name}
+                    </option>
+                  )) :
+                  null}
+              </Select>
+            </FormControl>
+            <HStack>
+              <Button
+                as={Link}
+                to="/bed"
+                leftIcon={<FaArrowLeft />}
+                variant={'back'}
+              >
+                Retour
+              </Button>
+              &nbsp;
+              <Button
+                type="submit"
+                isLoading={updating}
+                leftIcon={<FaSave />}
+                variant={'save'}
+              >
+                Sauvegarder
+              </Button>
+            </HStack>
+          </VStack>
+        </form>
+      )}
+    </VStack>
   )
 }
