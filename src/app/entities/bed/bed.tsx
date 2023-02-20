@@ -26,24 +26,30 @@ export const Bed = () => {
   return (
     <VStack>
       <Heading>Liste des lits</Heading>
-      <HStack alignSelf={'flex-end'}>
-        <Button variant={'see'} onClick={handleSyncList} disabled={loading} leftIcon={<FaSync />}>
-          Rafraîchir la liste
-        </Button>
-        <Link
-          to={`new`}
-          className="btn btn-primary jh-create-entity"
-          id="jh-create-entity"
-          data-cy="entityCreateButton"
-        >
-          <HStack>
-            <FaPlus />
-            <Text>Créez un nouveau lit</Text>
-          </HStack>
-        </Link>
+      <HStack justifyContent={'space-between'} w={'100%'}>
+        <PlaceMenu />
+        <HStack>
+          <Button
+            variant={'see'}
+            onClick={handleSyncList}
+            isLoading={loading}
+            leftIcon={<FaSync />}
+          >
+            Rafraîchir la liste
+          </Button>
+          <Link
+            to={`new`}
+            className="btn btn-primary jh-create-entity"
+            id="jh-create-entity"
+            data-cy="entityCreateButton"
+          >
+            <HStack>
+              <FaPlus />
+              <Text>Créez un nouveau lit</Text>
+            </HStack>
+          </Link>
+        </HStack>
       </HStack>
-
-      <PlaceMenu />
 
       <div className="table-responsive">
         {bedList && bedList.length > 0 ?
