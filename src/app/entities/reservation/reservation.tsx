@@ -170,7 +170,7 @@ export const Reservation = () => {
                           data-cy="entityDeleteButton"
                         >
                           <FontAwesomeIcon icon={faTrash} />{' '}
-                          <span className="d-none d-md-inline">Suppimer</span>
+                          <span className="d-none d-md-inline">Supprimer</span>
                         </Button>
                       </div>
                     </td>

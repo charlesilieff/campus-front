@@ -1,13 +1,13 @@
-import { Heading } from '@chakra-ui/react'
-import { faEye, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { PlaceMenu } from 'app/shared/layout/menus/placeMenu'
 import React, { useEffect } from 'react'
+import { FaEye, FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import { Button, Table } from 'reactstrap'
+import { Table } from 'reactstrap'
 
 import { getEntities } from './bed.reducer'
+import { BedDeleteDialog } from './beddelete-dialog'
 
 export const Bed = () => {
   const dispatch = useAppDispatch()
@@ -24,24 +24,24 @@ export const Bed = () => {
   }
 
   return (
-    <div>
-      <h2 id="bed-heading" data-cy="BedHeading">
-        <Heading>Liste des lits</Heading>
-        <div className="d-flex justify-content-end">
-          <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraichîr la liste
-          </Button>
-          <Link
-            to={`new`}
-            className="btn btn-primary jh-create-entity"
-            id="jh-create-entity"
-            data-cy="entityCreateButton"
-          >
-            <FontAwesomeIcon icon={faPlus} />
-            &nbsp; Créez un nouveau lit
-          </Link>
-        </div>
-      </h2>
+    <VStack>
+      <Heading>Liste des lits</Heading>
+      <HStack alignSelf={'flex-end'}>
+        <Button variant={'see'} onClick={handleSyncList} disabled={loading} leftIcon={<FaSync />}>
+          Rafraîchir la liste
+        </Button>
+        <Link
+          to={`new`}
+          className="btn btn-primary jh-create-entity"
+          id="jh-create-entity"
+          data-cy="entityCreateButton"
+        >
+          <HStack>
+            <FaPlus />
+            <Text>Créez un nouveau lit</Text>
+          </HStack>
+        </Link>
+      </HStack>
 
       <PlaceMenu />
 
@@ -63,7 +63,7 @@ export const Bed = () => {
                   <tr key={`entity-${i}`} data-cy="entityTable">
                     <td>{bed.kind}</td>
                     <td>
-                      <Button tag={Link} to={`${bed.id}`} color="link" size="sm">
+                      <Button as={Link} to={`${bed.id}`} color="link" size="sm">
                         {bed.number}
                       </Button>
                     </td>
@@ -75,35 +75,26 @@ export const Bed = () => {
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
                         <Button
-                          tag={Link}
+                          as={Link}
                           to={`${bed.id}`}
-                          color="info"
+                          variant="see"
                           size="sm"
-                          data-cy="entityDetailsButton"
+                          leftIcon={<FaEye />}
+                          borderRightRadius={0}
                         >
-                          <FontAwesomeIcon icon={faEye} />{' '}
-                          <span className="d-none d-md-inline">Voir</span>
+                          Voir
                         </Button>
                         <Button
-                          tag={Link}
+                          as={Link}
                           to={`${bed.id}/edit`}
-                          color="primary"
                           size="sm"
-                          data-cy="entityEditButton"
+                          variant="modify"
+                          borderRadius={0}
+                          leftIcon={<FaPencilAlt />}
                         >
-                          <FontAwesomeIcon icon={faPencilAlt} />{' '}
-                          <span className="d-none d-md-inline">Modifier</span>
+                          Modifier
                         </Button>
-                        <Button
-                          tag={Link}
-                          to={`${bed.id}/delete`}
-                          color="danger"
-                          size="sm"
-                          data-cy="entityDeleteButton"
-                        >
-                          <FontAwesomeIcon icon={faTrash} />{' '}
-                          <span className="d-none d-md-inline">Suppimer</span>
-                        </Button>
+                        <BedDeleteDialog bedId={bed.id} />
                       </div>
                     </td>
                   </tr>
@@ -113,6 +104,6 @@ export const Bed = () => {
           ) :
           (!loading && <div className="alert alert-warning">Pas de lits trouvés</div>)}
       </div>
-    </div>
+    </VStack>
   )
 }

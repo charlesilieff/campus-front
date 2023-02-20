@@ -81,40 +81,31 @@ export const Customer = () => {
                       <div className="btn-group flex-btn-group-container">
                         <Button
                           as={Link}
-                          color={'white'}
-                          backgroundColor={'#17a2b8'}
+                          variant="see"
                           to={`${customer.id}`}
                           size="sm"
-                          data-cy="entityDetailsButton"
                           leftIcon={<FaEye />}
                           borderRightRadius={0}
-                          _hover={{ textDecoration: 'none', color: 'orange' }}
                         >
                           Voir
                         </Button>
                         <Button
                           as={Link}
-                          color={'white'}
-                          backgroundColor={'#e95420'}
+                          variant="modify"
                           to={`${customer.id}/edit`}
                           size="sm"
-                          data-cy="entityEditButton"
                           borderRadius={0}
                           leftIcon={<FaPencilAlt />}
-                          _hover={{ textDecoration: 'none', color: 'orange' }}
                         >
                           Modifier
                         </Button>
                         <Button
                           as={Link}
-                          color={'white'}
-                          backgroundColor={'#df382c'}
+                          variant="danger"
                           to={`${customer.id}/delete`}
                           size="sm"
-                          data-cy="entityDeleteButton"
                           borderLeftRadius={0}
                           leftIcon={<FaTrash />}
-                          _hover={{ textDecoration: 'none', color: 'orange' }}
                         >
                           Supprimer
                         </Button>

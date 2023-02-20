@@ -3,7 +3,6 @@ import React from 'react'
 import { Route } from 'react-router-dom'
 
 import { Bed } from './bed'
-import { BedDeleteDialog } from './bed-delete-dialog'
 import { BedDetail } from './bed-detail'
 import { BedUpdate } from './bed-update'
 
@@ -12,7 +11,6 @@ export const BedRoutes = () => (
     <Route path={`new`} element={<BedUpdate />} />
     <Route index element={<Bed />} />
     <Route path=":id">
-      <Route path={`delete`} element={<BedDeleteDialog />} />
       <Route path={`edit`} element={<BedUpdate />} />
       <Route index element={<BedDetail />} />
     </Route>

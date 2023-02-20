@@ -29,7 +29,7 @@ export const Place = () => {
         <Heading>Lieux</Heading>
         <div className="d-flex justify-content-end">
           <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraichîr la liste
+            <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraîchir la liste
           </Button>
           <Link
             to={`new`}
@@ -115,7 +115,7 @@ export const Place = () => {
                           data-cy="entityDeleteButton"
                         >
                           <FontAwesomeIcon icon={faTrash} />{' '}
-                          <span className="d-none d-md-inline">Suppimer</span>
+                          <span className="d-none d-md-inline">Supprimer</span>
                         </Button>
                       </div>
                     </td>

@@ -29,7 +29,7 @@ export const BedroomKind = () => {
         <Heading>Type de chambre</Heading>
         <div className="d-flex justify-content-end">
           <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraichîr la liste
+            <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraîchir la liste
           </Button>
           <Link
             to={`new`}
@@ -99,7 +99,7 @@ export const BedroomKind = () => {
                           data-cy="entityDeleteButton"
                         >
                           <FontAwesomeIcon icon={faTrash} />{' '}
-                          <span className="d-none d-md-inline">Suppimer</span>
+                          <span className="d-none d-md-inline">Supprimer</span>
                         </Button>
                       </div>
                     </td>

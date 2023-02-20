@@ -25,6 +25,33 @@ const Button = defineStyleConfig({
         color: 'white',
         textDecoration: 'none'
       }
+    },
+    danger: {
+      bg: '#dc3545',
+      color: 'white',
+      _hover: {
+        bg: 'red.600',
+        color: 'white',
+        textDecoration: 'none'
+      }
+    },
+    modify: {
+      bg: '#e95420',
+      color: 'white',
+      _hover: {
+        bg: 'yellow.600',
+        color: 'white',
+        textDecoration: 'none'
+      }
+    },
+    see: {
+      bg: '#17a2b8',
+      color: 'white',
+      _hover: {
+        bg: 'blue.600',
+        color: 'white',
+        textDecoration: 'none'
+      }
     }
   },
   // The default `size` or `variant` values
