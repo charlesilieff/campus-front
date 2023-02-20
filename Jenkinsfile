@@ -37,8 +37,8 @@ pipeline {
         }
         stage('Package') {
             steps {
-                echo "Compiling with parcel..."
-                sh "npm run parcel-build"
+                echo "Compiling with vite..."
+                sh "npm run vite-build"
             }
         }
         stage('Docker push'){
