@@ -25,7 +25,7 @@ export const Login = () => {
     setShowModal(false)
     navigate('/')
   }
-  // @ts-expect-error from is not defined
+
   const { from } = (location.state) || { from: { pathname: '/', search: location.search } }
   if (isAuthenticated) {
     return <Navigate to={from} replace />
