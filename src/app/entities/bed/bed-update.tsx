@@ -21,10 +21,10 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { createEntity, getEntity, reset, updateEntity } from './bed.reducer'
 
 interface BedForm {
-  roomId: string
   number: string
   numberOfPlaces: number
   kind: string
+  roomId: string
 }
 
 export const BedUpdate = () => {
