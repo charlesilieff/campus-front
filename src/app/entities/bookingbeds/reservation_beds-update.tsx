@@ -1,16 +1,15 @@
 import { Button, Heading, HStack, Select, Text } from '@chakra-ui/react'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import type { IBed } from 'app/shared/model/bed.model'
 import type { IBedroomKind } from 'app/shared/model/bedroom-kind.model'
 import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
 import type { IPlace } from 'app/shared/model/place.model'
-import type { IReservation } from 'app/shared/model/reservation.model'
 import type { IRoom } from 'app/shared/model/room.model'
 import { CustomValidatedField } from 'app/shared/util/cross-validation-form'
-import { mapIdList } from 'app/shared/util/entity-utils'
 import axios from 'axios'
 import dayjs from 'dayjs'
+import { Option as O, pipe } from 'effect'
+import { ReadonlyArray as A } from 'effect/collection'
 import React, { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
@@ -46,22 +45,22 @@ export const ReservationBedsUpdate = (): JSX.Element => {
   useEffect(() => {
     getPlaces().then(data => setPlaces([...data]))
     getBookingBeds()
-    let updatedbedsToBook: number[]
+    let updatedBedsToBook: number[]
 
     // Pour la modif d'une réservation déjà existante
-    updatedbedsToBook = reservationEntity.beds?.reduce(
-      (acc: number[], bed: IBed) => acc.concat(bed.id),
+    updatedBedsToBook = reservationEntity.bedIds?.reduce(
+      (acc: number[], bedId: number) => acc.concat(bedId),
       [] as number[]
     )
 
     // Pour créer l'object quand on fait des aller-retour avec le premier formulaire.
-    updatedbedsToBook = updatedbedsToBook?.concat(
+    updatedBedsToBook = updatedBedsToBook?.concat(
       Object.keys(reservationEntity).map(key =>
         Number(key) && reservationEntity[key] ? Number(key) : null
       )
     )
 
-    setBedsToBook(updatedbedsToBook)
+    setBedsToBook(updatedBedsToBook)
   }, [])
 
   // useEffect(() => {
@@ -120,7 +119,7 @@ export const ReservationBedsUpdate = (): JSX.Element => {
   }
 
   const back = (formValues: IBookingBeds): void => {
-    formValues.beds = mapIdList(bedsToBook)
+    formValues.bedIds = bedsToBook
 
     dispatch(backToOne(formValues))
   }
@@ -139,10 +138,11 @@ export const ReservationBedsUpdate = (): JSX.Element => {
 
   const saveEntity = (values: IBookingBeds): void => {
     setIsLoading(true)
-    // On selectionne et on créer une liste d'object bed (id seulement comme atribut)
-    const bedsId = Object.keys(values).map(key => Number(key) && values[key] ? Number(key) : '')
-
-    const beds: IBed[] = mapIdList(bedsId)
+    // On sélectionne et on créer une liste d'object bed (id seulement comme attribut)
+    const bedIds = pipe(
+      Object.keys(values).map(key => Number(key) && values[key] ? O.some(Number(key)) : O.none),
+      A.compact
+    )
 
     const customerReservation = Object.fromEntries(
       Object.entries(values).filter(entry => !Number(entry[0]))
@@ -152,13 +152,13 @@ export const ReservationBedsUpdate = (): JSX.Element => {
       Object.entries(reservationEntity).filter(entry => !Number(entry[0]))
     )
 
-    const reservation: IReservation = {
+    const reservation: IBookingBeds = {
       ...reservationLast,
       ...{
         ...customerReservation,
         age: customerReservation.age === '' ? null : customerReservation.age
       },
-      beds
+      bedIds: [...bedIds]
     }
 
     if (reservation.paymentMode === '') {
@@ -190,8 +190,8 @@ export const ReservationBedsUpdate = (): JSX.Element => {
       )), 0)), 0)
 
   const defaultValues = (): IBookingBeds => {
-    const idBeds = reservationEntity.beds?.reduce(
-      (acc, bed) => ({ ...acc, [bed.id?.toString()]: true }),
+    const idBeds = reservationEntity.bedIds?.reduce(
+      (acc, bedId) => ({ ...acc, [bedId?.toString()]: true }),
       new Object()
     )
     return { ...idBeds, ...reservationEntity }

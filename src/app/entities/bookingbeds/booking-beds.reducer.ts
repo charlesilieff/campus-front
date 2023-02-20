@@ -2,7 +2,6 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
 import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
 import { defaultValue } from 'app/shared/model/bookingBeds.model'
-import type { IReservation } from 'app/shared/model/reservation.model'
 import type {
   EntityState
 } from 'app/shared/reducers/reducer.utils'
@@ -26,7 +25,6 @@ const initialState: EntityState<IBookingBeds> = {
 
 const apiUrlBookingBeds = 'api/bookingbeds'
 const apiAllPlaces = 'api/all-places-with-rooms-and-beds'
-const apiUrl = 'api/reservations'
 // Actions
 
 // this is not used
@@ -34,22 +32,22 @@ export const getAllPlaceWithRoomsAndBeds = createAsyncThunk(
   'reservation/fetch_entity_list',
   async () => {
     const requestUrl = `${apiAllPlaces}?cacheBuster=${new Date().getTime()}`
-    return axios.get<IReservation[]>(requestUrl)
+    return axios.get<IBookingBeds[]>(requestUrl)
   }
 )
 
-export const getEntity = createAsyncThunk(
+export const getReservationsWithBedIdsEntity = createAsyncThunk(
   'bookingBeds/fetch_entity',
   async (id: string | number) => {
-    const requestUrl = `${apiUrl}/${id}`
-    return axios.get<IReservation>(requestUrl)
+    const requestUrl = `${apiUrlBookingBeds}/${id}`
+    return axios.get<IBookingBeds>(requestUrl)
   },
   { serializeError: serializeAxiosError }
 )
 
 export const createEntity = createAsyncThunk(
   'bookingBeds/create_entity',
-  async (entity: IReservation) => {
+  async (entity: IBookingBeds) => {
     const result = await axios.post<IBookingBeds>(apiUrlBookingBeds, cleanEntity(entity))
     // thunkAPI.dispatch(getEntities())
     return result
@@ -59,7 +57,7 @@ export const createEntity = createAsyncThunk(
 
 export const createReservationAndUpdateUser = createAsyncThunk(
   'bookingBeds/create_entity',
-  async ({ entity, userId }: { entity: IReservation; userId: number }) => {
+  async ({ entity, userId }: { entity: IBookingBeds; userId: number }) => {
     const result = await axios.post<IBookingBeds>(
       `${apiUrlBookingBeds}/${userId}`,
       cleanEntity(entity)
@@ -72,7 +70,7 @@ export const createReservationAndUpdateUser = createAsyncThunk(
 
 export const updateEntity = createAsyncThunk(
   'bookingBeds/update_entity',
-  async (entity: IReservation) => {
+  async (entity: IBookingBeds) => {
     const result = await axios.put<IBookingBeds>(
       `${apiUrlBookingBeds}/${entity.id}`,
       cleanEntity(entity)
@@ -85,8 +83,11 @@ export const updateEntity = createAsyncThunk(
 
 export const partialUpdateEntity = createAsyncThunk(
   'bookingBeds/partial_update_entity',
-  async (entity: IReservation) => {
-    const result = await axios.patch<IBookingBeds>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
+  async (entity: IBookingBeds) => {
+    const result = await axios.patch<IBookingBeds>(
+      `${apiUrlBookingBeds}/${entity.id}`,
+      cleanEntity(entity)
+    )
     // thunkAPI.dispatch(getEntities())
     return result
   },
@@ -97,7 +98,7 @@ export const deleteEntity = createAsyncThunk(
   'bookingBeds/delete_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrlBookingBeds}/${id}`
-    const result = await axios.delete<IReservation>(requestUrl)
+    const result = await axios.delete<IBookingBeds>(requestUrl)
     // thunkAPI.dispatch(getEntities())
     return result
   },
@@ -110,7 +111,7 @@ export const BookingBedsSlice = createEntitySlice({
   name: 'bookingBeds',
   initialState,
   reducers: {
-    setData(state, action: PayloadAction<IReservation>) {
+    setData(state, action: PayloadAction<IBookingBeds>) {
       state.entity = {
         ...state.entity,
         ...action.payload
@@ -118,7 +119,7 @@ export const BookingBedsSlice = createEntitySlice({
       state.stepOne = true
       state.creating = true
     },
-    backToOne(state, action: PayloadAction<IReservation>) {
+    backToOne(state, action: PayloadAction<IBookingBeds>) {
       state.stepOne = false
       state.entity = {
         ...state.entity,
@@ -128,7 +129,7 @@ export const BookingBedsSlice = createEntitySlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(getEntity.fulfilled, (state, action) => {
+      .addCase(getReservationsWithBedIdsEntity.fulfilled, (state, action) => {
         state.loading = false
         state.entity = action.payload.data
       })
@@ -150,11 +151,14 @@ export const BookingBedsSlice = createEntitySlice({
         state.stepOne = false
         state.creating = false
       })
-      .addMatcher(isPending(getAllPlaceWithRoomsAndBeds, getEntity), state => {
-        state.errorMessage = null
-        state.updateSuccess = false
-        state.loading = true
-      })
+      .addMatcher(
+        isPending(getAllPlaceWithRoomsAndBeds, getReservationsWithBedIdsEntity),
+        state => {
+          state.errorMessage = null
+          state.updateSuccess = false
+          state.loading = true
+        }
+      )
       .addMatcher(
         isPending(createEntity, updateEntity, partialUpdateEntity, deleteEntity),
         state => {

@@ -11,7 +11,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
 import type { IBookingBeds } from '../../shared/model/bookingBeds.model'
-import { getEntity, reset, setData } from './booking-beds.reducer'
+import { getReservationsWithBedIdsEntity, reset, setData } from './booking-beds.reducer'
 
 export const ReservationCustomerUpdate = () => {
   const dispatch = useAppDispatch()
@@ -35,7 +35,7 @@ export const ReservationCustomerUpdate = () => {
       if (isNew) {
         dispatch(reset())
       } else {
-        dispatch(getEntity(id))
+        dispatch(getReservationsWithBedIdsEntity(id))
       }
     }
 

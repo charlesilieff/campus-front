@@ -9,7 +9,7 @@ import { TextFormat } from 'react-jhipster'
 import { Link, useParams } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
-import { getEntity } from './booking-beds.reducer'
+import { getEntity } from '../reservation/reservation.reducer'
 
 export const ReservationDetail = () => {
   const dispatch = useAppDispatch()
@@ -22,7 +22,7 @@ export const ReservationDetail = () => {
     dispatch(getEntity(id))
   }, [])
 
-  const reservationEntity = useAppSelector(state => state.bookingBeds.entity)
+  const reservationEntity = useAppSelector(state => state.reservation.entity)
   const customerEntity = reservationEntity.customer
   return (
     <Row>

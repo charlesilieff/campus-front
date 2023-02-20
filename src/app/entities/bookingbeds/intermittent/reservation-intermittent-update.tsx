@@ -1,7 +1,7 @@
 import { CheckIcon } from '@chakra-ui/icons'
 import { Button, Heading, HStack, Stack, useToast } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import type { IReservation } from 'app/shared/model/reservation.model'
+import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
 import { getSession } from 'app/shared/reducers/authentication'
 import { Option as O, pipe } from 'effect'
 import { ReadonlyArray as A } from 'effect/collection'
@@ -47,11 +47,11 @@ export interface Customer {
 
 export type BedIds = ReadonlyArray<{ id: number }>
 
-const createIReservation = (
+const createIReservationWithBedIds = (
   customer: Customer,
   datesAndMeals: DatesAndMeals,
   bedId: number
-): IReservation => ({
+): IBookingBeds => ({
   // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
   arrivalDate: datesAndMeals.arrivalDate,
   // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
@@ -62,7 +62,7 @@ const createIReservation = (
   isDepartureLunch: datesAndMeals.isDepartureLunch,
   isDepartureDiner: datesAndMeals.isDepartureDinner,
   comment: datesAndMeals.comment,
-  beds: [{ id: bedId }],
+  bedIds: [bedId],
   isConfirmed: true,
   isPaid: false,
   paymentMode: '',
@@ -99,7 +99,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
     bedId: number,
     customer: Customer
   ): void => {
-    const reservation = createIReservation(customer, datesAndMeal, bedId)
+    const reservation = createIReservationWithBedIds(customer, datesAndMeal, bedId)
 
     setIsLoading(true)
     if (reservationId !== undefined) {

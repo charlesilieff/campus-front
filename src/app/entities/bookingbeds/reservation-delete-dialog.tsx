@@ -5,7 +5,7 @@ import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
-import { deleteEntity, getEntity } from './booking-beds.reducer'
+import { deleteEntity, getReservationsWithBedIdsEntity } from './booking-beds.reducer'
 
 export const ReservationDeleteDialog = () => {
   const dispatch = useAppDispatch()
@@ -13,7 +13,7 @@ export const ReservationDeleteDialog = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   useEffect(() => {
-    dispatch(getEntity(id))
+    dispatch(getReservationsWithBedIdsEntity(id))
   }, [])
 
   const reservationEntity = useAppSelector(state => state.bookingBeds.entity)

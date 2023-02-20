@@ -1,4 +1,3 @@
-import type { IBed } from './bed.model'
 import type { ICustomer } from './customer.model'
 import type { IPricing } from './pricing.model'
 
@@ -25,12 +24,13 @@ export interface IBookingBeds {
   isPaid?: boolean
   isConfirmed?: boolean
   paymentMode?: string
-  beds?: IBed[]
+  bedIds: number[]
   comment?: string
 }
 
 export const defaultValue: Readonly<IBookingBeds> = {
   isPaid: false,
   isConfirmed: false,
-  paymentMode: null
+  paymentMode: null,
+  bedIds: []
 }
