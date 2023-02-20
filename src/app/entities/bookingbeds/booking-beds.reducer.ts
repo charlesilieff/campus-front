@@ -136,7 +136,7 @@ export const BookingBedsSlice = createEntitySlice({
       .addCase(deleteEntity.fulfilled, state => {
         state.updating = false
         state.updateSuccess = true
-        state.entity = {}
+        state.entity = { bedIds: [] }
       })
       .addMatcher(isFulfilled(getAllPlaceWithRoomsAndBeds), (state, action) => ({
         ...state,

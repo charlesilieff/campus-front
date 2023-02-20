@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getPricings } from 'app/entities/pricing/pricing.reducer'
 import type { ICustomer } from 'app/shared/model/customer.model'
-import type { IReservation } from 'app/shared/model/reservation.model'
 import React, { useEffect } from 'react'
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -84,7 +83,7 @@ export const ReservationCustomerUpdate = () => {
       values.specialDietNumber = values.personNumber
     }
 
-    const reservation: IReservation = {
+    const reservation: IBookingBeds = {
       ...reservationEntity,
       arrivalDate: values.arrivalDate,
       departureDate: values.departureDate,
