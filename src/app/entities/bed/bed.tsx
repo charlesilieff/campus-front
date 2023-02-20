@@ -1,10 +1,10 @@
-import { Button, Heading, HStack, Text, VStack } from '@chakra-ui/react'
+import { Button, Heading, HStack, Table, Tbody, Td, Text, Th, Thead, Tr,
+  VStack } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { PlaceMenu } from 'app/shared/layout/menus/placeMenu'
 import React, { useEffect } from 'react'
 import { FaEye, FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import { Table } from 'reactstrap'
 
 import { getEntities } from './bed.reducer'
 import { BedDeleteDialog } from './beddelete-dialog'
@@ -48,31 +48,30 @@ export const Bed = () => {
       <div className="table-responsive">
         {bedList && bedList.length > 0 ?
           (
-            <Table responsive>
-              <thead>
-                <tr>
-                  <th>Type</th>
-                  <th>Numéro</th>
-                  <th>Nombre de places</th>
-                  <th>Chambre</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
+            <Table variant={'striped'}>
+              <Thead>
+                <Tr>
+                  <Th>Type</Th>
+                  <Th>Numéro</Th>
+                  <Th>Nombre de places</Th>
+                  <Th>Chambre</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
                 {bedList.map((bed, i) => (
-                  <tr key={`entity-${i}`} data-cy="entityTable">
-                    <td>{bed.kind}</td>
-                    <td>
-                      <Button as={Link} to={`${bed.id}`} color="link" size="sm">
+                  <Tr key={`entity-${i}`}>
+                    <Td>{bed.kind}</Td>
+                    <Td>
+                      <Button as={Link} to={`${bed.id}`} size="sm" variant={'see'}>
                         {bed.number}
                       </Button>
-                    </td>
+                    </Td>
 
-                    <td>{bed.numberOfPlaces}</td>
-                    <td>
+                    <Td>{bed.numberOfPlaces}</Td>
+                    <Td>
                       {bed.room ? <Link to={`/room/${bed.room.id}`}>{bed.room.name}</Link> : ''}
-                    </td>
-                    <td className="text-right">
+                    </Td>
+                    <Td className="text-right">
                       <div className="btn-group flex-btn-group-container">
                         <Button
                           as={Link}
@@ -96,10 +95,10 @@ export const Bed = () => {
                         </Button>
                         <BedDeleteDialog bedId={bed.id} />
                       </div>
-                    </td>
-                  </tr>
+                    </Td>
+                  </Tr>
                 ))}
-              </tbody>
+              </Tbody>
             </Table>
           ) :
           (!loading && <div className="alert alert-warning">Pas de lits trouvés</div>)}
