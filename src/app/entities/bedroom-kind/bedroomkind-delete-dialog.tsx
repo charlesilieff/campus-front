@@ -1,17 +1,27 @@
-import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay,
-  useDisclosure } from '@chakra-ui/react'
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure
+} from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { FunctionComponent } from 'react'
 import React, { useEffect } from 'react'
 import { FaBan, FaTrash } from 'react-icons/fa'
 
-import { deleteEntity } from './bed.reducer'
+import { deleteEntity } from './bedroom-kind.reducer'
 
-export const BedDeleteDialog: FunctionComponent<{ bedId: number }> = ({ bedId }): JSX.Element => {
+export const BedroomKindDeleteDialog: FunctionComponent<{ bedroomKindId: number }> = (
+  { bedroomKindId }
+): JSX.Element => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const dispatch = useAppDispatch()
 
-  const updateSuccess = useAppSelector(state => state.bed.updateSuccess)
+  const updateSuccess = useAppSelector(state => state.bedroomKind.updateSuccess)
 
   useEffect(() => {
     if (updateSuccess) {
@@ -20,7 +30,7 @@ export const BedDeleteDialog: FunctionComponent<{ bedId: number }> = ({ bedId })
   }, [updateSuccess])
 
   const confirmDelete = () => {
-    dispatch(deleteEntity(bedId))
+    dispatch(deleteEntity(bedroomKindId))
   }
 
   return (
@@ -40,8 +50,8 @@ export const BedDeleteDialog: FunctionComponent<{ bedId: number }> = ({ bedId })
           <ModalHeader>
             Confirmer l&apos;opération de suppression
           </ModalHeader>
-          <ModalBody id="gestionhebergementApp.bed.delete.question">
-            Êtes-vous sûr de vouloir supprimer ce lit ?
+          <ModalBody id="gestionhebergementApp.bedroomKind.delete.question">
+            Êtes-vous sûr de vouloir supprimer ce type de chambre ?
           </ModalBody>
           <ModalFooter justifyContent={'space-between'}>
             <Button onClick={onClose} leftIcon={<FaBan />} variant="back">

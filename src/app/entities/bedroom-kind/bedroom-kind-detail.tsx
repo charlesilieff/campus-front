@@ -1,9 +1,8 @@
-import { faArrowLeft, faPencilAlt } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
+import { FaArrowLeft, FaPencilAlt } from 'react-icons/fa'
 import { Link, useParams } from 'react-router-dom'
-import { Button, Col, Row } from 'reactstrap'
 
 import { getEntity } from './bedroom-kind.reducer'
 
@@ -17,39 +16,35 @@ export const BedroomKindDetail = () => {
 
   const bedroomKindEntity = useAppSelector(state => state.bedroomKind.entity)
   return (
-    <Row>
-      <Col md="8">
-        <h2 data-cy="bedroomKindDetailsHeading">Type de chambre</h2>
-        <dl className="jh-entity-details">
-          <dt>
-            <span id="name">Nom</span>
-          </dt>
-          <dd>{bedroomKindEntity.name}</dd>
-          <dt>
-            <span id="description">Description</span>
-          </dt>
-          <dd>{bedroomKindEntity.description}</dd>
-        </dl>
+    <VStack alignItems={'flex-start'}>
+      <Heading>Type de chambre</Heading>
+
+      <Heading size={'md'}>Nom</Heading>
+
+      <Text>{bedroomKindEntity.name}</Text>
+
+      <Heading size={'md'}>Description</Heading>
+
+      <Text>{bedroomKindEntity.description}</Text>
+      <HStack>
         <Button
-          tag={Link}
+          as={Link}
+          variant={'back'}
           to="/bedroom-kind"
-          replace
-          color="info"
-          data-cy="entityDetailsBackButton"
+          leftIcon={<FaArrowLeft />}
         >
-          <FontAwesomeIcon icon={faArrowLeft} /> <span className="d-none d-md-inline">Retour</span>
+          Retour
         </Button>
         &nbsp;
         <Button
-          tag={Link}
+          variant={'modify'}
+          as={Link}
           to={`/bedroom-kind/${bedroomKindEntity.id}/edit`}
-          replace
-          color="primary"
+          leftIcon={<FaPencilAlt />}
         >
-          <FontAwesomeIcon icon={faPencilAlt} />{' '}
-          <span className="d-none d-md-inline">Modifier</span>
+          Modifier
         </Button>
-      </Col>
-    </Row>
+      </HStack>
+    </VStack>
   )
 }
