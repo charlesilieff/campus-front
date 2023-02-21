@@ -3,7 +3,6 @@ import React from 'react'
 import { Route } from 'react-router-dom'
 
 import { Pricing } from './pricing'
-import { PricingDeleteDialog } from './pricing-delete-dialog'
 import { PricingDetail } from './pricing-detail'
 import { PricingUpdate } from './pricing-update'
 
@@ -14,7 +13,6 @@ export const PricingRoutes = () => (
     <Route path=":id">
       <Route path={`edit`} element={<PricingUpdate />} />
       <Route index element={<PricingDetail />} />
-      <Route path={`delete`} element={<PricingDeleteDialog />} />
     </Route>
   </ErrorBoundaryRoutes>
 )

@@ -1,12 +1,11 @@
-import { Heading } from '@chakra-ui/react'
-import { faEye, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button, Heading, HStack, Table, Tbody, Td, Th, Thead, Tr, VStack } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
+import { FaEye, FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import { Button, Table } from 'reactstrap'
 
 import { getEntities } from './pricing.reducer'
+import { PricingDeleteDialog } from './pricingdelete-dialog'
 
 export const Pricing = () => {
   const dispatch = useAppDispatch()
@@ -23,87 +22,82 @@ export const Pricing = () => {
   }
 
   return (
-    <div>
-      <h2 id="pricing-heading" data-cy="PricingHeading">
-        <Heading>Tarifs</Heading>
-        <div className="d-flex justify-content-end">
-          <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraîchir la liste
-          </Button>
-          <Link
-            to={`new`}
-            className="btn btn-primary jh-create-entity"
-            id="jh-create-entity"
-            data-cy="entityCreateButton"
-          >
-            <FontAwesomeIcon icon={faPlus} />
-            &nbsp; Créez un nouveau tarif
-          </Link>
-        </div>
-      </h2>
+    <VStack alignItems={'flex-start'}>
+      <Heading>Tarifs</Heading>
+      <HStack alignSelf={'flex-end'}>
+        <Button
+          variant={'see'}
+          onClick={handleSyncList}
+          isLoading={loading}
+          leftIcon={<FaSync />}
+        >
+          Rafraîchir la liste
+        </Button>
+        <Button
+          as={Link}
+          color={'white'}
+          backgroundColor={'#e95420'}
+          _hover={{ textDecoration: 'none', color: 'orange' }}
+          to={`new`}
+          leftIcon={<FaPlus />}
+        >
+          Créez un nouveau tarif
+        </Button>
+      </HStack>
+
       <div className="table-responsive">
         {pricingList && pricingList.length > 0 ?
           (
-            <Table responsive>
-              <thead>
-                <tr>
-                  <th>Nom</th>
-                  <th>Prix</th>
-                  <th>Commentaire</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
+            <Table variant={'striped'}>
+              <Thead>
+                <Tr>
+                  <Th>Nom</Th>
+                  <Th>Prix</Th>
+                  <Th>Commentaire</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
                 {pricingList.map((pricing, i) => (
-                  <tr key={`entity-${i}`} data-cy="entityTable">
-                    <td>
-                      <Button tag={Link} to={`${pricing.id}`} color="link" size="sm">
+                  <Tr key={`entity-${i}`} data-cy="entityTable">
+                    <Td>
+                      <Button as={Link} to={`${pricing.id}`} variant="see" size="sm">
                         {pricing.wording}
                       </Button>
-                    </td>
-                    <td>{pricing.price}</td>
-                    <td>{pricing.comment}</td>
-                    <td className="text-right">
+                    </Td>
+                    <Td>{pricing.price}</Td>
+                    <Td>{pricing.comment}</Td>
+                    <Td className="text-right">
                       <div className="btn-group flex-btn-group-container">
                         <Button
-                          tag={Link}
+                          as={Link}
                           to={`${pricing.id}`}
-                          color="info"
+                          variant={'see'}
+                          leftIcon={<FaEye />}
                           size="sm"
-                          data-cy="entityDetailsButton"
+                          borderRightRadius="0"
                         >
-                          <FontAwesomeIcon icon={faEye} />{' '}
-                          <span className="d-none d-md-inline">Voir</span>
+                          Voir
                         </Button>
                         <Button
-                          tag={Link}
+                          as={Link}
                           to={`${pricing.id}/edit`}
-                          color="primary"
+                          variant={'modify'}
+                          leftIcon={<FaPencilAlt />}
                           size="sm"
-                          data-cy="entityEditButton"
+                          borderRadius={0}
                         >
-                          <FontAwesomeIcon icon={faPencilAlt} />{' '}
-                          <span className="d-none d-md-inline">Modifier</span>
+                          Modifier
                         </Button>
-                        <Button
-                          tag={Link}
-                          to={`${pricing.id}/delete`}
-                          color="danger"
-                          size="sm"
-                          data-cy="entityDeleteButton"
-                        >
-                          <FontAwesomeIcon icon={faTrash} />{' '}
-                          <span className="d-none d-md-inline">Supprimer</span>
-                        </Button>
+                        <PricingDeleteDialog pricingId={pricing.id} />
                       </div>
-                    </td>
-                  </tr>
+                    </Td>
+                  </Tr>
                 ))}
-              </tbody>
+              </Tbody>
             </Table>
           ) :
           (!loading && <div className="alert alert-warning">No Pricing found</div>)}
       </div>
-    </div>
+    </VStack>
   )
 }
