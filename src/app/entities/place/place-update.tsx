@@ -5,8 +5,8 @@ import {
   FormLabel,
   Heading,
   HStack,
+  Image,
   Input,
-  Text,
   Textarea,
   VStack
 } from '@chakra-ui/react'
@@ -68,7 +68,10 @@ export const PlaceUpdate = () => {
   const { id } = useParams<'id'>()
   const navigate = useNavigate()
   const isNew = id === undefined
-
+  const clearBlob = () => {
+    setImage(O.none)
+    setImageContentType(O.none)
+  }
   const placeEntity = useAppSelector(state => state.place.entity)
 
   const defaultValues = (): PlaceForm =>
@@ -175,16 +178,22 @@ export const PlaceUpdate = () => {
               </FormLabel>
               {O.isSome(image) && O.isSome(imageContentType) ?
                 (
-                  <Text
-                    onClick={openFile(imageContentType.value, image.value)}
-                    cursor="pointer"
+                  <HStack
                     p={4}
+                    alignItems="flex-end"
+                    justifyContent={'space-between'}
                   >
-                    <img
+                    <Image
+                      cursor="pointer"
+                      onClick={openFile(imageContentType.value, image.value)}
                       src={`data:${imageContentType.value};base64,${image.value}`}
                       style={{ maxHeight: '100px' }}
                     />
-                  </Text>
+
+                    <Button color="white" backgroundColor={'red'} size="sm" onClick={clearBlob}>
+                      <strong>&nbsp;x&nbsp;</strong>
+                    </Button>
+                  </HStack>
                 ) :
                 null}
 
