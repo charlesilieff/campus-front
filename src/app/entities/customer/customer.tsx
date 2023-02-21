@@ -1,12 +1,12 @@
-import { Button, Heading, HStack, VStack } from '@chakra-ui/react'
+import { Button, Heading, HStack, Table, Tbody, Td, Th, Thead, Tr, VStack } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
-import { FaEye, FaPencilAlt, FaPlus, FaTrash } from 'react-icons/fa'
+import { FaEye, FaPencilAlt, FaPlus } from 'react-icons/fa'
 import { HiRefresh } from 'react-icons/hi'
 import { Link } from 'react-router-dom'
-import { Table } from 'reactstrap'
 
 import { getEntities } from './customer.reducer'
+import { CustomerDeleteDialog } from './customerdelete-dialog'
 
 export const Customer = () => {
   const dispatch = useAppDispatch()
@@ -48,76 +48,65 @@ export const Customer = () => {
           Créez un nouveau client
         </Button>
       </HStack>
-      <div className="table-responsive">
-        {customerList && customerList.length > 0 ?
-          (
-            <Table responsive>
-              <thead>
-                <tr>
-                  <th>Prénom</th>
-                  <th>Nom</th>
-                  <th>Age</th>
-                  {/* <th>Genre</th> */}
-                  <th>Téléphone</th>
-                  <th>Email</th>
-                  <th>Commentaire</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {customerList.map((customer, i) => (
-                  <tr key={`entity-${i}`} data-cy="entityTable">
-                    <td>{customer.firstname}</td>
-                    <td>{customer.lastname}</td>
-                    <td>{customer.age}</td>
-                    <td>{customer.phoneNumber}</td>
-                    <td>
-                      <Button as={Link} to={`${customer.id}`} color="link" size="sm">
-                        {customer.email}
+
+      {customerList && customerList.length > 0 ?
+        (
+          <Table variant={'striped'}>
+            <Thead>
+              <Tr>
+                <Th>Prénom</Th>
+                <Th>Nom</Th>
+                <Th>Age</Th>
+
+                <Th>Téléphone</Th>
+                <Th>Email</Th>
+                <Th>Commentaire</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {customerList.map((customer, i) => (
+                <Tr key={`entity-${i}`} data-cy="entityTable">
+                  <Td>{customer.firstname}</Td>
+                  <Td>{customer.lastname}</Td>
+                  <Td>{customer.age}</Td>
+                  <Td>{customer.phoneNumber}</Td>
+                  <Td>
+                    <Button as={Link} to={`${customer.id}`} variant={'see'} size="sm">
+                      {customer.email}
+                    </Button>
+                  </Td>
+                  <Td>{customer.comment}</Td>
+                  <Td className="text-right">
+                    <HStack spacing={0}>
+                      <Button
+                        as={Link}
+                        variant="see"
+                        to={`${customer.id}`}
+                        size="sm"
+                        leftIcon={<FaEye />}
+                        borderRightRadius={0}
+                      >
+                        Voir
                       </Button>
-                    </td>
-                    <td>{customer.comment}</td>
-                    <td className="text-right">
-                      <div className="btn-group flex-btn-group-container">
-                        <Button
-                          as={Link}
-                          variant="see"
-                          to={`${customer.id}`}
-                          size="sm"
-                          leftIcon={<FaEye />}
-                          borderRightRadius={0}
-                        >
-                          Voir
-                        </Button>
-                        <Button
-                          as={Link}
-                          variant="modify"
-                          to={`${customer.id}/edit`}
-                          size="sm"
-                          borderRadius={0}
-                          leftIcon={<FaPencilAlt />}
-                        >
-                          Modifier
-                        </Button>
-                        <Button
-                          as={Link}
-                          variant="danger"
-                          to={`${customer.id}/delete`}
-                          size="sm"
-                          borderLeftRadius={0}
-                          leftIcon={<FaTrash />}
-                        >
-                          Supprimer
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          ) :
-          (!loading && <div className="alert alert-warning">Aucun client trouvé</div>)}
-      </div>
+                      <Button
+                        as={Link}
+                        variant="modify"
+                        to={`${customer.id}/edit`}
+                        size="sm"
+                        borderRadius={0}
+                        leftIcon={<FaPencilAlt />}
+                      >
+                        Modifier
+                      </Button>
+                      <CustomerDeleteDialog customerId={customer.id} />
+                    </HStack>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        ) :
+        (!loading && <div className="alert alert-warning">Aucun client trouvé</div>)}
     </VStack>
   )
 }

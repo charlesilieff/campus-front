@@ -1,9 +1,8 @@
-import { faArrowLeft, faPencilAlt } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
+import { FaArrowLeft, FaPencilAlt } from 'react-icons/fa'
 import { Link, useParams } from 'react-router-dom'
-import { Button, Col, Row, UncontrolledTooltip } from 'reactstrap'
 
 import { getEntity } from './customer.reducer'
 
@@ -17,50 +16,46 @@ export const CustomerDetail = () => {
 
   const customerEntity = useAppSelector(state => state.customer.entity)
   return (
-    <Row>
-      <Col md="8">
-        <h2 data-cy="customerDetailsHeading">Customer</h2>
-        <dl className="jh-entity-details">
-          <dt>
-            <span id="firstname">Firstname</span>
-            <UncontrolledTooltip target="firstname">Prénom</UncontrolledTooltip>
-          </dt>
-          <dd>{customerEntity.firstname}</dd>
-          <dt>
-            <span id="lastname">Lastname</span>
-            <UncontrolledTooltip target="lastname">Nom</UncontrolledTooltip>
-          </dt>
-          <dd>{customerEntity.lastname}</dd>
-          <dt>
-            <span id="age">Age</span>
-          </dt>
-          <dd>{customerEntity.age}</dd>
+    <VStack alignItems={'flex-start'}>
+      <Heading>Customer</Heading>
 
-          <dt>
-            <span id="phoneNumber">Téléphone</span>
-          </dt>
-          <dd>{customerEntity.phoneNumber}</dd>
-          <dt>
-            <span id="email">Email</span>
-            <UncontrolledTooltip target="email">
-              Champs unique, peut servir pour l&#39;authentification
-            </UncontrolledTooltip>
-          </dt>
-          <dd>{customerEntity.email}</dd>
-          <dt>
-            <span id="comment">Comment</span>
-          </dt>
-          <dd>{customerEntity.comment}</dd>
-        </dl>
-        <Button tag={Link} to="/customer" replace color="info" data-cy="entityDetailsBackButton">
-          <FontAwesomeIcon icon={faArrowLeft} /> <span className="d-none d-md-inline">Retour</span>
+      <Heading size={'md'}>Prénom</Heading>
+
+      <Text>{customerEntity.firstname}</Text>
+
+      <Heading size={'md'}>Nom</Heading>
+
+      <Text>{customerEntity.lastname}</Text>
+
+      <Heading size={'md'}>Age</Heading>
+
+      <Text>{customerEntity.age}</Text>
+
+      <Heading size={'md'}>Téléphone</Heading>
+
+      <Text>{customerEntity.phoneNumber}</Text>
+
+      <Heading size={'md'}>Email</Heading>
+
+      <Text>{customerEntity.email}</Text>
+
+      <Heading size={'md'}>Comment</Heading>
+
+      <Text>{customerEntity.comment}</Text>
+      <HStack>
+        <Button as={Link} to="/customer" variant="back" leftIcon={<FaArrowLeft />}>
+          Retour
         </Button>
-        &nbsp;
-        <Button tag={Link} to={`/customer/${customerEntity.id}/edit`} replace color="primary">
-          <FontAwesomeIcon icon={faPencilAlt} />{' '}
-          <span className="d-none d-md-inline">Modifier</span>
+
+        <Button
+          as={Link}
+          to={`/customer/${customerEntity.id}/edit`}
+          variant="modify"
+          leftIcon={<FaPencilAlt />}
+        >
+          Modifier
         </Button>
-      </Col>
-    </Row>
+      </HStack>
+    </VStack>
   )
 }

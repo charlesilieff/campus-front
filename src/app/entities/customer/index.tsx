@@ -3,7 +3,6 @@ import React from 'react'
 import { Route } from 'react-router-dom'
 
 import { Customer } from './customer'
-import { CustomerDeleteDialog } from './customer-delete-dialog'
 import { CustomerDetail } from './customer-detail'
 import { CustomerUpdate } from './customer-update'
 
@@ -14,7 +13,6 @@ export const CustomerRoutes = () => (
     <Route path=":id">
       <Route index element={<CustomerDetail />} />
       <Route path={`edit`} element={<CustomerUpdate />} />
-      <Route path={`delete`} element={<CustomerDeleteDialog />} />
     </Route>
   </ErrorBoundaryRoutes>
 )

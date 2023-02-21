@@ -171,7 +171,7 @@ export const ReservationUpdate = () => {
                     registerOptions={{
                       maxLength: {
                         value: 400,
-                        message: 'Le commentaire ne peut pas faire plus de 400 caractéres.'
+                        message: 'Le commentaire ne peut pas faire plus de 400 caractères.'
                       }
                     }}
                   />

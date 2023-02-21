@@ -51,64 +51,60 @@ export const Bed = () => {
         </HStack>
       </HStack>
 
-      <div className="table-responsive">
-        {bedList && bedList.length > 0 ?
-          (
-            <Table variant={'striped'}>
-              <Thead>
-                <Tr>
-                  <Th>Type</Th>
-                  <Th>Numéro</Th>
-                  <Th>Nombre de places</Th>
-                  <Th>Chambre</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {bedList.map((bed, i) => (
-                  <Tr key={`entity-${i}`}>
-                    <Td>{bed.kind}</Td>
-                    <Td>
-                      <Button as={Link} to={`${bed.id}`} size="sm" variant={'see'}>
-                        {bed.number}
-                      </Button>
-                    </Td>
+      {bedList && bedList.length > 0 ?
+        (
+          <Table variant={'striped'}>
+            <Thead>
+              <Tr>
+                <Th>Type</Th>
+                <Th>Numéro</Th>
+                <Th>Nombre de places</Th>
+                <Th>Chambre</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {bedList.map((bed, i) => (
+                <Tr key={`entity-${i}`}>
+                  <Td>{bed.kind}</Td>
+                  <Td>
+                    <Button as={Link} to={`${bed.id}`} size="sm" variant={'see'}>
+                      {bed.number}
+                    </Button>
+                  </Td>
 
-                    <Td>{bed.numberOfPlaces}</Td>
-                    <Td>
-                      {bed.room ? <Link to={`/room/${bed.room.id}`}>{bed.room.name}</Link> : ''}
-                    </Td>
-                    <Td className="text-right">
-                      <div className="btn-group flex-btn-group-container">
-                        <Button
-                          as={Link}
-                          to={`${bed.id}`}
-                          variant="see"
-                          size="sm"
-                          leftIcon={<FaEye />}
-                          borderRightRadius={0}
-                        >
-                          Voir
-                        </Button>
-                        <Button
-                          as={Link}
-                          to={`${bed.id}/edit`}
-                          size="sm"
-                          variant="modify"
-                          borderRadius={0}
-                          leftIcon={<FaPencilAlt />}
-                        >
-                          Modifier
-                        </Button>
-                        <BedDeleteDialog bedId={bed.id} />
-                      </div>
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          ) :
-          (!loading && <div className="alert alert-warning">Pas de lits trouvés</div>)}
-      </div>
+                  <Td>{bed.numberOfPlaces}</Td>
+                  <Td>
+                    {bed.room ? <Link to={`/room/${bed.room.id}`}>{bed.room.name}</Link> : ''}
+                  </Td>
+                  <Td className="text-right">
+                    <Button
+                      as={Link}
+                      to={`${bed.id}`}
+                      variant="see"
+                      size="sm"
+                      leftIcon={<FaEye />}
+                      borderRightRadius={0}
+                    >
+                      Voir
+                    </Button>
+                    <Button
+                      as={Link}
+                      to={`${bed.id}/edit`}
+                      size="sm"
+                      variant="modify"
+                      borderRadius={0}
+                      leftIcon={<FaPencilAlt />}
+                    >
+                      Modifier
+                    </Button>
+                    <BedDeleteDialog bedId={bed.id} />
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        ) :
+        (!loading && <div className="alert alert-warning">Pas de lits trouvés</div>)}
     </VStack>
   )
 }
