@@ -1,5 +1,5 @@
 import { Heading } from '@chakra-ui/react'
-import { faEye, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faPencilAlt, faPlus, faSync } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import { Button, Table } from 'reactstrap'
 
 import { getEntities } from './place.reducer'
+import { PlaceDeleteDialog } from './placedelete-dialog'
 
 export const Place = () => {
   const dispatch = useAppDispatch()
@@ -107,16 +108,7 @@ export const Place = () => {
                           <FontAwesomeIcon icon={faPencilAlt} />{' '}
                           <span className="d-none d-md-inline">Modifier</span>
                         </Button>
-                        <Button
-                          tag={Link}
-                          to={`${place.id}/delete`}
-                          color="danger"
-                          size="sm"
-                          data-cy="entityDeleteButton"
-                        >
-                          <FontAwesomeIcon icon={faTrash} />{' '}
-                          <span className="d-none d-md-inline">Supprimer</span>
-                        </Button>
+                        <PlaceDeleteDialog placeId={place.id} />
                       </div>
                     </td>
                   </tr>

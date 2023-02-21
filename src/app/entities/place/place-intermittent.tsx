@@ -3,6 +3,7 @@ import type { IPlace } from 'app/shared/model/place.model'
 import axios from 'axios'
 import { ReadonlyArray as A } from 'effect/collection'
 import React, { useEffect, useState } from 'react'
+import { FaSave } from 'react-icons/fa'
 
 export const PlaceIntermittent = () => {
   const [places, setPlaces] = useState<ReadonlyArray<IPlace>>(A.empty)
@@ -77,9 +78,10 @@ export const PlaceIntermittent = () => {
         </VStack>
       </CheckboxGroup>
       <Button
-        colorScheme={'green'}
+        variant={'save'}
         onClick={() => saveIntermittentPlaces(selectedPlaceIds)}
         isLoading={isLoading}
+        leftIcon={<FaSave />}
       >
         Enregistrer
       </Button>

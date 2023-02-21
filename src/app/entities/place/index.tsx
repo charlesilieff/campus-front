@@ -3,7 +3,6 @@ import React from 'react'
 import { Route } from 'react-router-dom'
 
 import { Place } from './place'
-import { PlaceDeleteDialog } from './place-delete-dialog'
 import { PlaceDetail } from './place-detail'
 import { PlaceIntermittent } from './place-intermittent'
 import { PlaceUpdate } from './place-update'
@@ -14,7 +13,6 @@ export const PlaceRoutes = () => (
     <Route path={`intermittent`} element={<PlaceIntermittent />} />
     <Route index element={<Place />} />
     <Route path=":id">
-      <Route path={`delete`} element={<PlaceDeleteDialog />} />
       <Route path={`edit`} element={<PlaceUpdate />} />
       <Route index element={<PlaceDetail />} />
     </Route>
