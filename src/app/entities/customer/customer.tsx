@@ -41,8 +41,6 @@ export const Customer = () => {
           backgroundColor={'#e95420'}
           _hover={{ textDecoration: 'none', color: 'orange' }}
           to={`new`}
-          id="jh-create-entity"
-          data-cy="entityCreateButton"
           leftIcon={<FaPlus />}
         >
           Créez un nouveau client

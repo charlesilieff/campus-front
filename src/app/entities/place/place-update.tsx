@@ -19,6 +19,7 @@ import { FaArrowLeft, FaSave } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { createEntity, getEntity, reset, updateEntity } from './place.reducer'
+import { openFile, setFileData } from './utils'
 
 interface PlaceForm {
   name?: string
@@ -27,40 +28,6 @@ interface PlaceForm {
   imageContentType?: string
 }
 
-const toBase64 = (file: File, cb: (v: string) => void) => {
-  const fileReader: FileReader = new FileReader()
-  fileReader.readAsDataURL(file)
-  fileReader.onload = e => {
-    const base64Data = e.target['result'].toString().substr(
-      e.target['result'].toString().indexOf('base64,') + 'base64,'.length
-    )
-    cb(base64Data)
-  }
-}
-const setFileData = (
-  event: React.ChangeEvent<HTMLInputElement> | React.FocusEvent<HTMLInputElement>,
-  callback: (type: string, v: string) => void
-) => {
-  const target = event?.target
-  if (target && target.files && target.files[0]) {
-    const file = target.files[0]
-
-    toBase64(file, base64Data => {
-      callback(file.type, base64Data)
-    })
-  } else {
-    callback('', '')
-  }
-}
-export const openFile = (contentType: string, data: string) => () => {
-  const fileURL = `data:${contentType};base64,${data}`
-  const win = window.open()
-  win.document.write(
-    '<iframe src="'
-      + fileURL
-      + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>'
-  )
-}
 export const PlaceUpdate = () => {
   const [image, setImage] = useState<O.Option<string>>(O.none)
   const [imageContentType, setImageContentType] = useState<O.Option<string>>(O.none)

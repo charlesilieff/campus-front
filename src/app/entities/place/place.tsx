@@ -1,14 +1,12 @@
-import { Heading } from '@chakra-ui/react'
-import { faEye, faPencilAlt, faPlus, faSync } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button, Heading, HStack, Table, Tbody, Td, Th, Thead, Tr, VStack } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
-import { byteSize, openFile } from 'react-jhipster'
+import { FaEye, FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import { Button, Table } from 'reactstrap'
 
 import { getEntities } from './place.reducer'
 import { PlaceDeleteDialog } from './placedelete-dialog'
+import { byteSize, openFile } from './utils'
 
 export const Place = () => {
   const dispatch = useAppDispatch()
@@ -25,99 +23,101 @@ export const Place = () => {
   }
 
   return (
-    <div>
-      <h2 id="place-heading" data-cy="PlaceHeading">
-        <Heading>Lieux</Heading>
-        <div className="d-flex justify-content-end">
-          <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraîchir la liste
-          </Button>
-          <Link
-            to={`new`}
-            className="btn btn-primary jh-create-entity"
-            id="jh-create-entity"
-            data-cy="entityCreateButton"
-          >
-            <FontAwesomeIcon icon={faPlus} />
-            &nbsp; Créez un nouveau lieu
-          </Link>
-        </div>
-      </h2>
-      <div className="table-responsive">
-        {placeList && placeList.length > 0 ?
-          (
-            <Table responsive>
-              <thead>
-                <tr>
-                  <th>Nom</th>
-                  <th>Commentaire</th>
-                  <th>Image</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {placeList.map((place, i) => (
-                  <tr key={`entity-${i}`} data-cy="entityTable">
-                    <td>
-                      <Button tag={Link} to={`${place.id}`} color="link" size="sm">
-                        {place.name}
+    <VStack alignItems={'flex-start'}>
+      <Heading>Lieux</Heading>
+      <HStack alignSelf={'flex-end'}>
+        <Button
+          variant={'see'}
+          onClick={handleSyncList}
+          isLoading={loading}
+          leftIcon={<FaSync />}
+        >
+          Rafraîchir la liste
+        </Button>
+        <Button
+          as={Link}
+          color={'white'}
+          backgroundColor={'#e95420'}
+          _hover={{ textDecoration: 'none', color: 'orange' }}
+          to={`new`}
+          leftIcon={<FaPlus />}
+        >
+          Créez un nouveau lieu
+        </Button>
+      </HStack>
+
+      {placeList && placeList.length > 0 ?
+        (
+          <Table variant={'striped'}>
+            <Thead>
+              <Tr>
+                <Th>Nom</Th>
+                <Th>Commentaire</Th>
+                <Th>Image</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {placeList.map((place, i) => (
+                <Tr key={`entity-${i}`} data-cy="entityTable">
+                  <Td>
+                    <Button as={Link} to={`${place.id}`} color="link" size="sm">
+                      {place.name}
+                    </Button>
+                  </Td>
+                  <Td>{place.comment}</Td>
+                  <Td>
+                    {place.image ?
+                      (
+                        <div>
+                          {place.imageContentType ?
+                            (
+                              <a onClick={openFile(place.imageContentType, place.image)}>
+                                <img
+                                  src={`data:${place.imageContentType};base64,${place.image}`}
+                                  style={{ maxHeight: '30px' }}
+                                />
+                                &nbsp;
+                              </a>
+                            ) :
+                            null}
+                          <span>
+                            {place.imageContentType}, {byteSize(place.image)}
+                          </span>
+                        </div>
+                      ) :
+                      null}
+                  </Td>
+                  <Td className="text-right">
+                    <HStack spacing={0}>
+                      <Button
+                        as={Link}
+                        to={`${place.id}`}
+                        variant="see"
+                        size="sm"
+                        leftIcon={<FaEye />}
+                        borderRightRadius={0}
+                      >
+                        Voir
                       </Button>
-                    </td>
-                    <td>{place.comment}</td>
-                    <td>
-                      {place.image ?
-                        (
-                          <div>
-                            {place.imageContentType ?
-                              (
-                                <a onClick={openFile(place.imageContentType, place.image)}>
-                                  <img
-                                    src={`data:${place.imageContentType};base64,${place.image}`}
-                                    style={{ maxHeight: '30px' }}
-                                  />
-                                  &nbsp;
-                                </a>
-                              ) :
-                              null}
-                            <span>
-                              {place.imageContentType}, {byteSize(place.image)}
-                            </span>
-                          </div>
-                        ) :
-                        null}
-                    </td>
-                    <td className="text-right">
-                      <div className="btn-group flex-btn-group-container">
-                        <Button
-                          tag={Link}
-                          to={`${place.id}`}
-                          color="info"
-                          size="sm"
-                          data-cy="entityDetailsButton"
-                        >
-                          <FontAwesomeIcon icon={faEye} />{' '}
-                          <span className="d-none d-md-inline">Voir</span>
-                        </Button>
-                        <Button
-                          tag={Link}
-                          to={`${place.id}/edit`}
-                          color="primary"
-                          size="sm"
-                          data-cy="entityEditButton"
-                        >
-                          <FontAwesomeIcon icon={faPencilAlt} />{' '}
-                          <span className="d-none d-md-inline">Modifier</span>
-                        </Button>
-                        <PlaceDeleteDialog placeId={place.id} />
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          ) :
-          (!loading && <div className="alert alert-warning">Aucun lieu trouvé</div>)}
-      </div>
-    </div>
+                      <Button
+                        as={Link}
+                        to={`${place.id}/edit`}
+                        size="sm"
+                        variant={'modify'}
+                        borderRadius={0}
+                        leftIcon={<FaPencilAlt />}
+                      >
+                        Modifier
+                      </Button>
+                      <PlaceDeleteDialog placeId={place.id} />
+                    </HStack>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        ) :
+        (!loading && <div className="alert alert-warning">Aucun lieu trouvé</div>)}
+    </VStack>
   )
 }
