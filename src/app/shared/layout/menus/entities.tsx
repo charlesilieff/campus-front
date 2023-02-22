@@ -61,6 +61,5 @@ export const EntitiesMenu = (props: EntitiesMenuProps) => (
         Mes réservations
       </MenuItem>
     )}
-    {/* jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here */}
   </NavDropdown>
 )

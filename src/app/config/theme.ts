@@ -58,8 +58,13 @@ const Button = defineStyleConfig({
   defaultProps: {}
 })
 
+const Table = defineStyleConfig({
+  defaultProps: { variant: 'striped' }
+})
+
 export const theme = extendTheme({
   components: {
-    Button
+    Button,
+    Table
   }
 })

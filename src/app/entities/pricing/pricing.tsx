@@ -48,7 +48,7 @@ export const Pricing = () => {
       <div className="table-responsive">
         {pricingList && pricingList.length > 0 ?
           (
-            <Table variant={'striped'}>
+            <Table>
               <Thead>
                 <Tr>
                   <Th>Nom</Th>

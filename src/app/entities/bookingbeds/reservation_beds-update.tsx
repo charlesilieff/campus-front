@@ -63,10 +63,6 @@ export const ReservationBedsUpdate = (): JSX.Element => {
     setBedsToBook(updatedBedsToBook)
   }, [])
 
-  // useEffect(() => {
-  //   setIsLoading(false)
-  // }, [updateSuccess])
-
   const getBookingBeds = async (): Promise<void> => {
     const reservationId = isNew ? '' : `/${reservationEntity.id}`
     const requestUrl = `${apiUrlPlaces}${reservationId}?cacheBuster=${new Date().getTime()}`

@@ -39,6 +39,5 @@ export const rootReducer = {
   requestReservation,
   bookingBeds,
   place,
-  /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 }

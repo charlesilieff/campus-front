@@ -1,7 +1,6 @@
 import './header.scss'
 
 import React, { useState } from 'react'
-import { Translate } from 'react-jhipster'
 import LoadingBar from 'react-redux-loading-bar'
 import { Collapse, Nav, Navbar, NavbarToggler } from 'reactstrap'
 
@@ -27,15 +26,13 @@ export const Header = (props: IHeaderProps) => {
       (
         <div className="ribbon dev">
           <a href="">
-            <Translate contentKey={`global.ribbon.${props.ribbonEnv}`} />
+            `global.ribbon.${props.ribbonEnv}`
           </a>
         </div>
       ) :
       null
 
   const toggleMenu = () => setMenuOpen(!menuOpen)
-
-  /* jhipster-needle-add-element-to-menu - JHipster will add new menu items here */
 
   return (
     <div id="app-header">
