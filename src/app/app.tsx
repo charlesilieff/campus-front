@@ -2,11 +2,11 @@ import 'react-toastify/dist/ReactToastify.css'
 import './app.scss'
 import './config/dayjs'
 
+import { Card } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
-import { Card } from 'reactstrap'
 
 import { AUTHORITIES } from './config/constants'
 import { useAppDispatch, useAppSelector } from './config/store'
@@ -66,14 +66,13 @@ export const App = () => {
             isResp={isResp}
           />
         </ErrorBoundary>
-        <div className="container-fluid view-container" id="app-view-container">
-          <Card className="jh-card">
-            <ErrorBoundary>
-              <AppRoutes />
-            </ErrorBoundary>
-          </Card>
-          <Footer />
-        </div>
+
+        <Card variant="outline" m={4} p={4}>
+          <ErrorBoundary>
+            <AppRoutes />
+          </ErrorBoundary>
+        </Card>
+        <Footer />
       </div>
     </Router>
   )
