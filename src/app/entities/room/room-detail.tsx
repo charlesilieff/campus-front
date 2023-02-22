@@ -1,9 +1,8 @@
-import { faArrowLeft, faPencilAlt } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
+import { FaArrowLeft, FaPencilAlt } from 'react-icons/fa'
 import { Link, useParams } from 'react-router-dom'
-import { Button, Col, Row } from 'reactstrap'
 
 import { getEntity } from './room.reducer'
 
@@ -17,30 +16,33 @@ export const RoomDetail = () => {
 
   const roomEntity = useAppSelector(state => state.room.entity)
   return (
-    <Row>
-      <Col md="8">
-        <h2 data-cy="roomDetailsHeading">Chambre</h2>
-        <dl className="jh-entity-details">
-          <dt>
-            <span id="name">Nom / Numéro</span>
-          </dt>
-          <dd>{roomEntity.name}</dd>
-          <dt>
-            <span id="comment">Commentaire</span>
-          </dt>
-          <dd>{roomEntity.comment}</dd>
-          <dt>Type de chambre</dt>
-          <dd>{roomEntity.bedroomKind ? roomEntity.bedroomKind.name : ''}</dd>
-        </dl>
-        <Button tag={Link} to="/room" replace color="info" data-cy="entityDetailsBackButton">
-          <FontAwesomeIcon icon={faArrowLeft} /> <span className="d-none d-md-inline">Retour</span>
+    <VStack alignItems={'flex-start'}>
+      <Heading>Chambre</Heading>
+
+      <Heading size={'md'}>Nom / Numéro</Heading>
+
+      <Text>{roomEntity.name}</Text>
+
+      <Heading size={'md'}>Commentaire</Heading>
+
+      <Text>{roomEntity.comment}</Text>
+      <Heading size={'md'}>Type de chambre</Heading>
+      <Text>{roomEntity.bedroomKind ? roomEntity.bedroomKind.name : ''}</Text>
+
+      <HStack>
+        <Button as={Link} to="/room" leftIcon={<FaArrowLeft />} variant="back">
+          Retour
         </Button>
-        &nbsp;
-        <Button tag={Link} to={`/room/${roomEntity.id}/edit`} replace color="primary">
-          <FontAwesomeIcon icon={faPencilAlt} />{' '}
-          <span className="d-none d-md-inline">Modifier</span>
+
+        <Button
+          as={Link}
+          to={`/room/${roomEntity.id}/edit`}
+          leftIcon={<FaPencilAlt />}
+          variant="modify"
+        >
+          Modifier
         </Button>
-      </Col>
-    </Row>
+      </HStack>
+    </VStack>
   )
 }

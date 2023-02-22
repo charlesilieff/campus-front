@@ -1,5 +1,5 @@
 import { Heading } from '@chakra-ui/react'
-import { faEye, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faPencilAlt, faPlus, faSync } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { PlaceMenu } from 'app/shared/layout/menus/placeMenu'
@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import { Button, Table } from 'reactstrap'
 
 import { getEntities } from './room.reducer'
+import { RoomDeleteDialog } from './roomdelete-dialog'
 
 export const Room = () => {
   const dispatch = useAppDispatch()
@@ -102,18 +103,9 @@ export const Room = () => {
                           data-cy="entityEditButton"
                         >
                           <FontAwesomeIcon icon={faPencilAlt} />{' '}
-                          <span className="d-none d-md-inline">Editer</span>
+                          <span className="d-none d-md-inline">Éditer</span>
                         </Button>
-                        <Button
-                          tag={Link}
-                          to={`${room.id}/delete`}
-                          color="danger"
-                          size="sm"
-                          data-cy="entityDeleteButton"
-                        >
-                          <FontAwesomeIcon icon={faTrash} />{' '}
-                          <span className="d-none d-md-inline">Supprimer</span>
-                        </Button>
+                        <RoomDeleteDialog roomId={room.id} />
                       </div>
                     </td>
                   </tr>
