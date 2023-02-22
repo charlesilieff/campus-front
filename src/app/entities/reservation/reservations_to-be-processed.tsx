@@ -25,7 +25,7 @@ export const ReservationsToBeProcessed = () => {
   return (
     <VStack>
       <Heading>Réservations à traiter</Heading>
-      <HStack>
+      <HStack alignSelf={'flex-end'}>
         <Button variant={'see'} onClick={handleSyncList} isLoading={loading} leftIcon={<FaSync />}>
           Rafraîchir la liste
         </Button>
