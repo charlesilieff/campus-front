@@ -1,13 +1,11 @@
-import { Heading } from '@chakra-ui/react'
-import { faEye, faPencilAlt, faPlus, faSync } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button, Heading, HStack, Table, Tbody, Td, Th, Thead, Tr, VStack } from '@chakra-ui/react'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
-import { TextFormat } from 'react-jhipster'
+import { FaEye, FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import { Button, Table } from 'reactstrap'
 
+import { TextFormat } from '../bookingbeds/text-format'
 import { getReservationsToBeProcessed } from './reservation.reducer'
 
 export const ReservationsToBeProcessed = () => {
@@ -25,134 +23,139 @@ export const ReservationsToBeProcessed = () => {
   }
 
   return (
-    <div>
-      <h2 id="reservation-heading" data-cy="ReservationHeading">
-        <Heading>Réservations à traiter</Heading>
-        <div className="d-flex justify-content-end">
-          <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon={faSync} spin={loading} /> Rafraîchir la liste
-          </Button>
-          <Link
-            to="/bookingbeds/new"
-            className="btn btn-primary jh-create-entity"
-            id="jh-create-entity"
-            data-cy="entityCreateButton"
-          >
-            <FontAwesomeIcon icon={faPlus} />
-            &nbsp; Nouvelle réservation
-          </Link>
-        </div>
-      </h2>
-      <div className="table-responsive">
-        {reservationList && reservationList.length > 0 ?
-          (
-            <Table responsive>
-              <thead>
-                <tr>
-                  <th>Nombre de personnes</th>
+    <VStack>
+      <Heading>Réservations à traiter</Heading>
+      <HStack>
+        <Button variant={'see'} onClick={handleSyncList} isLoading={loading} leftIcon={<FaSync />}>
+          Rafraîchir la liste
+        </Button>
+        <Button
+          as={Link}
+          to="/bookingbeds/new"
+          color={'white'}
+          backgroundColor={'#e95420'}
+          _hover={{ textDecoration: 'none', color: 'orange' }}
+          leftIcon={<FaPlus />}
+        >
+          Nouvelle réservation
+        </Button>
+      </HStack>
 
-                  <th>Confirmé</th>
-                  <th>Nombre de régime spéciaux</th>
+      {reservationList && reservationList.length > 0 ?
+        (
+          <Table size={'sm'}>
+            <Thead>
+              <Tr>
+                <Th fontSize={'10px'} px={2} py={1}>Nombre de personnes</Th>
 
-                  <th>Repas du soir d&apos;arrivée</th>
-                  <th>Repas du soir de départ</th>
-                  <th>Repas du midi d&apos;arrivée</th>
-                  <th>Repas du midi de départ</th>
-                  <th>Date d&apos;arrivée</th>
-                  <th>Date de départ</th>
-                  <th>Commentaire</th>
+                <Th fontSize={'10px'} px={2} py={1}>Confirmé</Th>
+                <Th fontSize={'10px'} px={2} py={1}>Nombre de régime spéciaux</Th>
 
-                  <th>Lits</th>
-                  <th>Client</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {reservationList.map((reservation, i) => (
-                  <tr key={`entity-${i}`} data-cy="entityTable">
-                    <td>{reservation.personNumber}</td>
+                <Th fontSize={'10px'} px={2} py={1}>Repas du soir d&apos;arrivée</Th>
+                <Th fontSize={'10px'} px={2} py={1}>Repas du soir de départ</Th>
+                <Th fontSize={'10px'} px={2} py={1}>Repas du midi d&apos;arrivée</Th>
+                <Th fontSize={'10px'} px={2} py={1}>Repas du midi de départ</Th>
+                <Th fontSize={'10px'} px={2} py={1}>Date d&apos;arrivée</Th>
+                <Th fontSize={'10px'} px={2} py={1}>Date de départ</Th>
+                <Th fontSize={'10px'} px={2} py={1}>Commentaire</Th>
 
-                    <td>{reservation.isConfirmed ? 'Oui' : 'Non'}</td>
-                    <td>{reservation.specialDietNumber}</td>
+                <Th fontSize={'10px'} px={2} py={1}>Lits</Th>
+                <Th fontSize={'10px'} px={2} py={1}>Client</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {reservationList.map((reservation, i) => (
+                <Tr key={`entity-${i}`}>
+                  <Td
+                    px={2}
+                    py={1}
+                    textAlign={'center'}
+                  >
+                    {reservation.personNumber}
+                  </Td>
 
-                    <td>{reservation.isArrivalDiner ? 'Oui' : 'Non'}</td>
-                    <td>{reservation.isDepartureDiner ? 'Oui' : 'Non'}</td>
-                    <td>{reservation.isArrivalLunch ? 'Oui' : 'Non'}</td>
-                    <td>{reservation.isDepartureLunch ? 'Oui' : 'Non'}</td>
-                    <td>
-                      {reservation.arrivalDate ?
-                        (
-                          <TextFormat
-                            type="date"
-                            value={reservation.arrivalDate}
-                            format={APP_LOCAL_DATE_FORMAT}
-                          />
-                        ) :
-                        null}
-                    </td>
-                    <td>
-                      {reservation.departureDate ?
-                        (
-                          <TextFormat
-                            type="date"
-                            value={reservation.departureDate}
-                            format={APP_LOCAL_DATE_FORMAT}
-                          />
-                        ) :
-                        null}
-                    </td>
-                    <td>{reservation.comment}</td>
+                  <Td px={2} py={1} textAlign={'center'}>
+                    {reservation.isConfirmed ? 'Oui' : 'Non'}
+                  </Td>
+                  <Td px={2} py={1} textAlign={'center'}>{reservation.specialDietNumber}</Td>
 
-                    <td>
-                      {reservation.beds ?
-                        reservation.beds.map((val, j) => (
-                          <span key={j}>
-                            <Link to={`bed/${val.id}`}>{val.number}</Link>
-                            {j === reservation.beds.length - 1 ? '' : ', '}
-                          </span>
-                        )) :
-                        null}
-                    </td>
-                    <td>
-                      {reservation.customer ?
-                        (
-                          <Link to={`customer/${reservation.customer.id}`}>
-                            {reservation.customer.email}
-                          </Link>
-                        ) :
-                        ''}
-                    </td>
-                    <td className="text-right">
-                      <div className="btn-group flex-btn-group-container">
-                        <Button
-                          tag={Link}
-                          to={`/bookingbeds/${reservation.id}`}
-                          color="info"
-                          size="sm"
-                          data-cy="entityDetailsButton"
-                        >
-                          <FontAwesomeIcon icon={faEye} />{' '}
-                          <span className="d-none d-md-inline">Voir</span>
-                        </Button>
-                        <Button
-                          tag={Link}
-                          to={`/bookingbeds/${reservation.id}/edit`}
-                          color="primary"
-                          size="sm"
-                          data-cy="entityEditButton"
-                        >
-                          <FontAwesomeIcon icon={faPencilAlt} />{' '}
-                          <span className="d-none d-md-inline">Modifier</span>
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          ) :
-          (!loading && <div className="alert alert-warning">Pas de réservations trouvées.</div>)}
-      </div>
-    </div>
+                  <Td px={2} py={1}>{reservation.isArrivalDiner ? 'Oui' : 'Non'}</Td>
+                  <Td px={2} py={1}>{reservation.isDepartureDiner ? 'Oui' : 'Non'}</Td>
+                  <Td px={2} py={1}>{reservation.isArrivalLunch ? 'Oui' : 'Non'}</Td>
+                  <Td px={2} py={1}>{reservation.isDepartureLunch ? 'Oui' : 'Non'}</Td>
+                  <Td px={2} py={1}>
+                    {reservation.arrivalDate ?
+                      (
+                        <TextFormat
+                          type="date"
+                          value={reservation.arrivalDate}
+                          format={APP_LOCAL_DATE_FORMAT}
+                        />
+                      ) :
+                      null}
+                  </Td>
+                  <Td px={2} py={1}>
+                    {reservation.departureDate ?
+                      (
+                        <TextFormat
+                          type="date"
+                          value={reservation.departureDate}
+                          format={APP_LOCAL_DATE_FORMAT}
+                        />
+                      ) :
+                      null}
+                  </Td>
+                  <Td px={2} py={1}>{reservation.comment}</Td>
+
+                  <Td px={2} py={1}>
+                    {reservation.beds ?
+                      reservation.beds.map((val, j) => (
+                        <span key={j}>
+                          <Link to={`bed/${val.id}`}>{val.number}</Link>
+                          {j === reservation.beds.length - 1 ? '' : ', '}
+                        </span>
+                      )) :
+                      null}
+                  </Td>
+                  <Td px={2} py={1}>
+                    {reservation.customer ?
+                      (
+                        <Link to={`customer/${reservation.customer.id}`}>
+                          {reservation.customer.email}
+                        </Link>
+                      ) :
+                      ''}
+                  </Td>
+                  <Td px={2} py={1} className="text-right">
+                    <HStack spacing={0}>
+                      <Button
+                        as={Link}
+                        to={`/bookingbeds/${reservation.id}`}
+                        variant={'see'}
+                        size="sm"
+                        leftIcon={<FaEye />}
+                        borderRightRadius={0}
+                      >
+                        Voir
+                      </Button>
+                      <Button
+                        as={Link}
+                        to={`/bookingbeds/${reservation.id}/edit`}
+                        variant={'modify'}
+                        size="sm"
+                        leftIcon={<FaPencilAlt />}
+                        borderLeftRadius={0}
+                      >
+                        Modifier
+                      </Button>
+                    </HStack>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        ) :
+        (!loading && <div className="alert alert-warning">Pas de réservations trouvées.</div>)}
+    </VStack>
   )
 }
