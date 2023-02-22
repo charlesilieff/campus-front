@@ -1,11 +1,10 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Box, Button, HStack, Input } from '@chakra-ui/react'
 import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
-import { ValidatedField } from 'react-jhipster'
-import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap'
+import { FaCalendar } from 'react-icons/fa'
 
 import type { IMealsNumber } from './IMealsNumber'
 import { MealsContext } from './mealsContext'
@@ -121,39 +120,30 @@ export const Index = () => {
 
   return (
     <MealsContext.Provider value={[mealsData, changeMeal]}>
-      <div>
-        <div>
-          <ValidatedField
-            className="inline-block"
-            id="date"
-            name="date"
-            data-cy="date"
-            type="date"
-            onChange={newDatePlanning}
-          >
-          </ValidatedField>
-          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      <Box m={4}>
+        <HStack m={4} spacing={8}>
+          <Box>
+            <Input
+              type="date"
+              onChange={newDatePlanning}
+            >
+            </Input>
+          </Box>
 
-          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-
-          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-          {/* sur 15 jours */}
           <Button
-            color="primary"
-            id="number-of-days"
-            data-cy="numberofday"
             onClick={() => toggleNumberOfDays()}
+            leftIcon={<FaCalendar />}
+            color={'white'}
+            backgroundColor={'#e95420'}
+            _hover={{ textDecoration: 'none', color: 'orange' }}
           >
-            <FontAwesomeIcon icon="calendar" />
-            &nbsp; {numberOfDays === 31 ? '15 jours' : '31 jours'}
+            {numberOfDays === 31 ? '15 jours' : '31 jours'}
           </Button>
-        </div>
+        </HStack>
 
         <MealsPlanning date={date} totalDays={totalDays} numberOfDays={numberOfDays} />
-      </div>
+      </Box>
       {displayTotalMeals(resultTotalMeals)}
-
-      {showSavingPopup.isShow && savePopupFunction(showSavingPopup.message)}
     </MealsContext.Provider>
   )
 }
@@ -273,25 +263,4 @@ function totalMealsCalculation(mealsData: IMeal[], totalMeals: (table: number[])
   ]
 
   return result
-}
-
-/**
- * Comment modal box.
- * @param modal
- * @param toggle
- * @param date
- * @param submitModalPopup
- * @param commentPopup
- * @param changeCommentPopup
- * @returns
- */
-function savePopupFunction(commentPopup: string) {
-  return (
-    <Modal isOpen={true}>
-      <ModalHeader>Sauvegarde:</ModalHeader>
-      <ModalBody>
-        <label>{commentPopup}</label>
-      </ModalBody>
-    </Modal>
-  )
 }

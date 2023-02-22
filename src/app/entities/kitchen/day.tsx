@@ -1,8 +1,7 @@
 import type { IMeal } from 'app/shared/model/meal.model'
 import type { Dayjs } from 'dayjs'
-import dayjs from 'dayjs'
+import type dayjs from 'dayjs'
 import React, { useContext, useEffect, useState } from 'react'
-import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap'
 
 import type { IMealsNumber } from './IMealsNumber'
 import { MealsContext } from './mealsContext'
@@ -23,9 +22,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
     comment: ''
   }
 
-  const [mealsContext, setMealsContext] = useContext(MealsContext)
-
-  const [commentPopup, setCommentPopup] = useState('')
+  const [mealsContext] = useContext(MealsContext)
 
   const [mealsNumber, setMealsNumber] = useState(defaultValue)
 
@@ -49,8 +46,6 @@ export const Day = ({ positionX, date, index }: IProps) => {
       },
       comment: mealsContext[index]?.comment
     }
-
-    setCommentPopup(mealsContext[index]?.comment)
 
     const mealsReferentialFromDb: IMealsNumber = {
       lunchtime: {
@@ -137,20 +132,6 @@ export const Day = ({ positionX, date, index }: IProps) => {
   const [modal, setModal] = useState(false)
   const toggle = () => {
     setModal(!modal)
-  }
-
-  const submitModalPopup = e => {
-    e.preventDefault()
-    const modifiedComment: IMealsNumber = {
-      ...mealsNumber,
-      comment: commentPopup
-    }
-    setMealsContext(modifiedComment, index)
-    setModal(!modal)
-  }
-
-  const changeCommentPopup = (value: string) => {
-    setCommentPopup(value)
   }
 
   return (
@@ -253,56 +234,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
           {mealsNumber?.dinner.specialDiet}
         </div>
       </div>
-
-      {commentPopupFunction(
-        modal,
-        toggle,
-        date,
-        submitModalPopup,
-        commentPopup,
-        changeCommentPopup
-      )}
     </>
-  )
-}
-
-/**
- * Comment modal box.
- * @param modal
- * @param toggle
- * @param date
- * @param submitModalPopup
- * @param commentPopup
- * @param changeCommentPopup
- * @returns
- */
-function commentPopupFunction(
-  modal: boolean,
-  toggle: () => void,
-  date: dayjs.Dayjs,
-  submitModalPopup: (e: React.FormEvent<HTMLFormElement>) => void,
-  commentPopup: string,
-  changeCommentPopup: (value: string) => void
-) {
-  return (
-    <Modal isOpen={modal} toggle={toggle} className="modal-l">
-      <ModalHeader toggle={toggle}>Commentaire du {dayjs(date).format('DD/MM/YYYY')} :</ModalHeader>
-      <ModalBody>
-        <div>
-          <form onSubmit={submitModalPopup}>
-            <textarea
-              cols={35}
-              rows={8}
-              maxLength={400}
-              value={commentPopup}
-              onChange={e => changeCommentPopup(e.target.value)}
-            />
-            <br />
-            <Button type="submit">Enregistrer</Button>
-          </form>
-        </div>
-      </ModalBody>
-    </Modal>
   )
 }
 
