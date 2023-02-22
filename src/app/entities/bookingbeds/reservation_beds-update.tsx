@@ -48,7 +48,9 @@ export const ReservationBedsUpdate = (): JSX.Element => {
     let updatedBedsToBook: number[]
 
     // Pour la modif d'une réservation déjà existante
-    updatedBedsToBook = reservationEntity.bedIds?.reduce(
+    // @ts-expect-error : should be re written
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    updatedBedsToBook = reservationEntity.beds?.map(b => b.id).reduce(
       (acc: number[], bedId: number) => acc.concat(bedId),
       [] as number[]
     )
@@ -59,13 +61,13 @@ export const ReservationBedsUpdate = (): JSX.Element => {
         Number(key) && reservationEntity[key] ? Number(key) : null
       )
     )
-
+    console.log(reservationEntity)
     setBedsToBook(updatedBedsToBook)
   }, [])
 
   const getBookingBeds = async (): Promise<void> => {
     const reservationId = isNew ? '' : `/${reservationEntity.id}`
-    const requestUrl = `${apiUrlPlaces}${reservationId}?cacheBuster=${new Date().getTime()}`
+    const requestUrl = `${apiUrlPlaces}${reservationId}`
     const { data } = await axios.get<IPlace[]>(requestUrl)
 
     data.forEach(place => place.rooms.sort((room1, room2) => room1.name.localeCompare(room2.name)))
@@ -130,6 +132,7 @@ export const ReservationBedsUpdate = (): JSX.Element => {
     }
 
     setBedsToBook(updatedbedsToBook)
+    console.log('bedsToBook', updatedbedsToBook)
   }
 
   const saveEntity = (values: IBookingBeds): void => {
@@ -165,7 +168,7 @@ export const ReservationBedsUpdate = (): JSX.Element => {
     if (reservation?.specialDietNumber > reservation?.personNumber) {
       reservation.specialDietNumber = reservation.personNumber
     }
-
+    console.log('reservation', reservation)
     if (isNew) {
       dispatch(createEntity(reservation)).then(() => {
         setIsLoading(false)

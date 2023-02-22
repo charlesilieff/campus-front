@@ -10,7 +10,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Button, Col, Row } from 'reactstrap'
 
 import type { IBookingBeds } from '../../shared/model/bookingBeds.model'
-import { getReservationsWithBedIdsEntity, reset, setData } from './booking-beds.reducer'
+import { getReservationsWithBedEntity, reset, setData } from './booking-beds.reducer'
 
 export const ReservationCustomerUpdate = () => {
   const dispatch = useAppDispatch()
@@ -22,6 +22,7 @@ export const ReservationCustomerUpdate = () => {
   const creating = useAppSelector(state => state.bookingBeds.creating)
   const pricing = useAppSelector(state => state.pricing.entities)
   const reservationEntity = useAppSelector(state => state.bookingBeds.entity)
+  console.log(reservationEntity)
   const loading = useAppSelector(state => state.bookingBeds.loading)
   const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
 
@@ -34,7 +35,7 @@ export const ReservationCustomerUpdate = () => {
       if (isNew) {
         dispatch(reset())
       } else {
-        dispatch(getReservationsWithBedIdsEntity(id))
+        dispatch(getReservationsWithBedEntity(id))
       }
     }
 
@@ -97,6 +98,7 @@ export const ReservationCustomerUpdate = () => {
       pricing: pricing.find(it => it.id.toString() === values.pricingId.toString()),
       customer
     }
+    console.log(reservation)
     dispatch(setData(reservation))
   }
 

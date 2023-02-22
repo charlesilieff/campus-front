@@ -24,6 +24,7 @@ const initialState: EntityState<IBookingBeds> = {
 }
 
 const apiUrlBookingBeds = 'api/bookingbeds'
+const apiUrlReservations = 'api/reservations'
 const apiAllPlaces = 'api/all-places-with-rooms-and-beds'
 // Actions
 
@@ -34,6 +35,15 @@ export const getAllPlaceWithRoomsAndBeds = createAsyncThunk(
     const requestUrl = `${apiAllPlaces}?cacheBuster=${new Date().getTime()}`
     return axios.get<IBookingBeds[]>(requestUrl)
   }
+)
+
+export const getReservationsWithBedEntity = createAsyncThunk(
+  'bookingBeds/fetch_entity',
+  async (id: string | number) => {
+    const requestUrl = `${apiUrlReservations}/${id}`
+    return axios.get<IBookingBeds>(requestUrl)
+  },
+  { serializeError: serializeAxiosError }
 )
 
 export const getReservationsWithBedIdsEntity = createAsyncThunk(
