@@ -3,7 +3,7 @@
 // import { useAppDispatch, useAppSelector } from 'app/config/store'
 // import React, { useEffect } from 'react'
 // import { useNavigate, useParams } from 'react-router-dom'
-// import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+// import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reacttrap'
 
 // import { deleteEntity, getEntity } from './reservation.reducer'
 

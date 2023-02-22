@@ -5,7 +5,7 @@
 // import React, { useEffect } from 'react'
 // import { TextFormat } from 'react-jhipster'
 // import { Link } from 'react-router-dom'
-// import { Button, Table } from 'reactstrap'
+// import { Button, Table } from 'rectstrap'
 
 // import { getEntities } from './reservation.reducer'
 

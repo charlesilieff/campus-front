@@ -24,16 +24,17 @@ export const ReservationBed = (
     style,
     isRespHebergement
   }: IProps
-) => // }
-(<HStack
-  className="reservation"
-  gridRowStart={gridRowStart}
-  gridRowEnd={gridRowEnd}
-  gridColumnEnd={gridColumnEnd}
-  gridColumnStart={gridColumnStart}
-  style={style}
-  mx={4}
-  my={1}
->
-  <ReservationModal reservation={reservation} isRespHebergement={isRespHebergement} />
-</HStack>)
+) => (
+  <HStack
+    className="reservation"
+    gridRowStart={gridRowStart}
+    gridRowEnd={gridRowEnd}
+    gridColumnEnd={gridColumnEnd}
+    gridColumnStart={gridColumnStart}
+    style={style}
+    mx={4}
+    my={1}
+  >
+    <ReservationModal reservation={reservation} isRespHebergement={isRespHebergement} />
+  </HStack>
+)

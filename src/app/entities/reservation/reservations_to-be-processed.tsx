@@ -46,21 +46,21 @@ export const ReservationsToBeProcessed = () => {
           <Table size={'sm'}>
             <Thead>
               <Tr>
-                <Th fontSize={'10px'} px={2} py={1}>Nombre de personnes</Th>
+                <Th px={2} py={1}>Nombre de personnes</Th>
 
-                <Th fontSize={'10px'} px={2} py={1}>Confirmé</Th>
-                <Th fontSize={'10px'} px={2} py={1}>Nombre de régime spéciaux</Th>
+                <Th px={2} py={1}>Confirmé</Th>
+                <Th px={2} py={1}>Nombre de régime spéciaux</Th>
 
-                <Th fontSize={'10px'} px={2} py={1}>Repas du soir d&apos;arrivée</Th>
-                <Th fontSize={'10px'} px={2} py={1}>Repas du soir de départ</Th>
-                <Th fontSize={'10px'} px={2} py={1}>Repas du midi d&apos;arrivée</Th>
-                <Th fontSize={'10px'} px={2} py={1}>Repas du midi de départ</Th>
-                <Th fontSize={'10px'} px={2} py={1}>Date d&apos;arrivée</Th>
-                <Th fontSize={'10px'} px={2} py={1}>Date de départ</Th>
-                <Th fontSize={'10px'} px={2} py={1}>Commentaire</Th>
+                <Th px={2} py={1}>Repas du soir d&apos;arrivée</Th>
+                <Th px={2} py={1}>Repas du soir de départ</Th>
+                <Th px={2} py={1}>Repas du midi d&apos;arrivée</Th>
+                <Th px={2} py={1}>Repas du midi de départ</Th>
+                <Th px={2} py={1}>Date d&apos;arrivée</Th>
+                <Th px={2} py={1}>Date de départ</Th>
+                <Th px={2} py={1}>Commentaire</Th>
 
-                <Th fontSize={'10px'} px={2} py={1}>Lits</Th>
-                <Th fontSize={'10px'} px={2} py={1}>Client</Th>
+                <Th px={2} py={1}>Lits</Th>
+                <Th px={2} py={1}>Client</Th>
               </Tr>
             </Thead>
             <Tbody>
