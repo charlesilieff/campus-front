@@ -10,9 +10,9 @@ import { getEntity, reset, setData } from './reservation-request.reducer'
 
 export const CustomerUpdate = () => {
   const dispatch = useAppDispatch()
-  const { id } = useParams<'id'>()
+  const { uuid } = useParams<'uuid'>()
 
-  const isNew = id === undefined
+  const isNew = uuid === undefined
 
   const customerEntity = useAppSelector(state => state.requestReservation.entity.customer)
   const loading = useAppSelector(state => state.requestReservation.loading)
@@ -21,7 +21,7 @@ export const CustomerUpdate = () => {
     if (isNew) {
       dispatch(reset())
     } else {
-      dispatch(getEntity(id))
+      dispatch(getEntity(uuid))
     }
   }, [])
 

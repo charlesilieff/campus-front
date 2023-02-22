@@ -1,55 +1,78 @@
-import { faTrash } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useAppDispatch, useAppSelector } from 'app/config/store'
-import React, { useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+  useToast
+} from '@chakra-ui/react'
+import { useAppDispatch } from 'app/config/store'
+import type { FunctionComponent } from 'react'
+import React from 'react'
+import { FaBan, FaTrash } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
 
-import { deleteEntity, getEntity } from './reservation-request.reducer'
+import { deleteEntity, reset } from './reservation-request.reducer'
 
-export const RequestDeleteDialog = () => {
+export const ReservationRequestDeleteDialog: FunctionComponent<{ reservationRequestId: string }> = (
+  { reservationRequestId }
+): JSX.Element => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const dispatch = useAppDispatch()
-  const { id } = useParams<'id'>()
   const navigate = useNavigate()
-  useEffect(() => {
-    dispatch(getEntity(id))
-  }, [])
 
-  const updateSuccess = useAppSelector(state => state.requestReservation.updateSuccess)
-
-  const handleClose = () => {
-    navigate(`/reservation-request/${id}`)
-  }
+  const toast = useToast()
 
   const confirmDelete = () => {
-    dispatch(deleteEntity(id))
+    dispatch(deleteEntity(reservationRequestId)).then(() => {
+      toast({
+        position: 'top',
+        title: 'Réservation annulée',
+        description: 'La demande de réservation a bien été annulée.',
+        status: 'success',
+        duration: 4000,
+        isClosable: true
+      })
+      dispatch(reset())
+      navigate('/reservation-request/new')
+    })
   }
 
-  return !updateSuccess ?
-    (
-      <Modal isOpen toggle={handleClose}>
-        <ModalHeader toggle={handleClose} data-cy="customerDeleteDialogHeading">
-          Confirmation de l&apos;annulation de la réservation.
-        </ModalHeader>
-        <ModalBody id="gestionhebergementApp.customer.delete.question">
-          Voulez-vraiment annuler la demande de réservation ?
-        </ModalBody>
-        <ModalFooter>
-          <Button data-cy="entityDetailsBackButton" color="secondary" onClick={handleClose}>
-            <FontAwesomeIcon icon="ban" />
-            &nbsp; Non
-          </Button>
-          <Button
-            id="jhi-confirm-delete-customer"
-            data-cy="entityConfirmDeleteButton"
-            color="danger"
-            onClick={confirmDelete}
-          >
-            <FontAwesomeIcon icon={faTrash} />
-            &nbsp; Oui
-          </Button>
-        </ModalFooter>
+  return (
+    <>
+      <Button
+        variant="danger"
+        onClick={onOpen}
+        leftIcon={<FaTrash />}
+      >
+        Annuler
+      </Button>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>
+            Confirmation de l&apos;annulation de la réservation.
+          </ModalHeader>
+          <ModalBody id="gestionhebergementApp.reservation-request.delete.question">
+            Voulez-vraiment annuler la demande de réservation ?
+          </ModalBody>
+          <ModalFooter justifyContent={'space-between'}>
+            <Button onClick={onClose} leftIcon={<FaBan />} variant="back">
+              Non
+            </Button>
+            <Button
+              onClick={confirmDelete}
+              leftIcon={<FaTrash />}
+              variant="danger"
+            >
+              Oui
+            </Button>
+          </ModalFooter>
+        </ModalContent>
       </Modal>
-    ) :
-    <div>Votre réservation a bien été annulée, vous allez recevoir un email de confirmation.</div>
+    </>
+  )
 }

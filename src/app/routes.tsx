@@ -4,7 +4,6 @@ import { Route } from 'react-router-dom'
 import { AUTHORITIES } from './config/constants'
 import { EntitiesRoutes } from './entities'
 import { Index } from './entities/kitchen'
-import { RequestDeleteDialog } from './entities/reservation-request/request-delete-dialog'
 import { ReservationRequestDetail } from './entities/reservation-request/request-detail'
 import { DemandUpdate as ReservationRequestUpdate } from './entities/reservation-request/request-update'
 import { AccountRoutes } from './modules/account'
@@ -31,16 +30,12 @@ export const Routes = () => (
 
     <Route path="reservation-request">
       <Route path="new" element={<ReservationRequestUpdate />}></Route>
-      <Route path={`:id`}>
+      <Route path={`:uuid`}>
         <Route
           path={`edit`}
           element={<ReservationRequestUpdate />}
         />
         <Route index element={<ReservationRequestDetail />} />
-        <Route
-          path={`delete`}
-          element={<RequestDeleteDialog />}
-        />
       </Route>
     </Route>
     <Route path="account">

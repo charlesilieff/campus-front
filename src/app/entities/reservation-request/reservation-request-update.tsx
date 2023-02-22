@@ -1,12 +1,11 @@
 /* eslint-disable simple-import-sort/imports */
-import { Button, Heading, VStack } from '@chakra-ui/react'
-import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button, Heading, HStack, VStack } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { IReservationRequest } from 'app/shared/model/reservation-request.model'
 import type { IReservation } from 'app/shared/model/reservation.model'
 import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { FaArrowLeft, FaSave } from 'react-icons/fa'
 import { isNumber } from 'react-jhipster'
 import { Link, useParams } from 'react-router-dom'
 
@@ -19,15 +18,22 @@ import {
 
 export const ReservationUpdate = () => {
   const dispatch = useAppDispatch()
-  const { id } = useParams<'id'>()
+  const { uuid } = useParams<'uuid'>()
 
-  const isNew = id === undefined
+  const isNew = uuid === undefined
 
   const customerEntity = useAppSelector(state => state.requestReservation.entity.customer)
   const reservationEntity = useAppSelector(state => state.requestReservation.entity.reservation)
   const loading = useAppSelector(state => state.requestReservation.loading)
   const updateSuccess = useAppSelector(state => state.requestReservation.updateSuccess)
+
   const today = new Date().setHours(0) as unknown as Date
+
+  // useEffect(() => {
+  //   if (updateSuccess) {
+  //     dispatch(reset())
+  //   }
+  // }, [updateSuccess])
 
   const saveEntity = (values: IReservation): void => {
     const entity: IReservationRequest = {
@@ -43,7 +49,7 @@ export const ReservationUpdate = () => {
     if (isNew) {
       dispatch(createEntity(entity))
     } else {
-      dispatch(updateEntity({ ReservationRequest: entity, UUID: id }))
+      dispatch(updateEntity({ ReservationRequest: entity, UUID: uuid }))
     }
   }
 
@@ -82,7 +88,7 @@ export const ReservationUpdate = () => {
                 <Link
                   to={isNew ?
                     `/reservation-request/${reservationEntity?.reservationNumber}` :
-                    `/reservation-request/${id}`}
+                    `/reservation-request/${uuid}`}
                 >
                   ici
                 </Link>
@@ -199,26 +205,24 @@ export const ReservationUpdate = () => {
                   return true
                 }}
               />
-              <Button
-                onClick={() => dispatch(backToOne(form.getValues()))}
-                id="cancel-save"
-                data-cy="entityCreateCancelButton"
-                color="info"
-              >
-                <FontAwesomeIcon icon={faArrowLeft} />
-                &nbsp;
-                <span className="d-none d-md-inline">Retour</span>
-              </Button>
-              &nbsp;
-              <Button
-                color="primary"
-                id="save-entity"
-                data-cy="entityCreateSaveButton"
-                type="submit"
-              >
-                <FontAwesomeIcon icon={faSave} />
-                &nbsp; Envoyer la demande
-              </Button>
+              <HStack>
+                <Button
+                  onClick={() => dispatch(backToOne(form.getValues()))}
+                  leftIcon={<FaArrowLeft />}
+                  variant="back"
+                >
+                  Retour
+                </Button>
+
+                <Button
+                  variant={'save'}
+                  type="submit"
+                  leftIcon={<FaSave />}
+                  isLoading={loading}
+                >
+                  Envoyer la demande
+                </Button>
+              </HStack>
             </form>
           </FormProvider>
         )}
