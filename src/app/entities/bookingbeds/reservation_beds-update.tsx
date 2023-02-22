@@ -1,4 +1,4 @@
-import { Button, Heading, HStack, Select, Text } from '@chakra-ui/react'
+import { Button, Heading, HStack, Select, Text, VStack } from '@chakra-ui/react'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { IBedroomKind } from 'app/shared/model/bedroom-kind.model'
@@ -13,13 +13,12 @@ import { ReadonlyArray as A } from 'effect/collection'
 import React, { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
-import { TextFormat } from 'react-jhipster'
 import { useParams } from 'react-router-dom'
-import { Col, Row } from 'reactstrap'
 
 import { PlaceModal } from '../place/placeModal'
 import { Beds } from './beds'
 import { backToOne, createEntity, updateEntity } from './booking-beds.reducer'
+import { TextFormat } from './text-format'
 import { getOnePlace, getPlaces } from './utils'
 
 export const ReservationBedsUpdate = (): JSX.Element => {
@@ -202,168 +201,150 @@ export const ReservationBedsUpdate = (): JSX.Element => {
   })
 
   return (
-    <div>
-      <Row className="justify-content-center">
-        <Col md="6">
-          <Heading
-            size={'lg'}
-            id="gestionhebergementApp.reservation.home.createOrEditLabel"
-            data-cy="ReservationCreateUpdateHeading"
-          >
-            Choisissez les lits :
-          </Heading>
-        </Col>
-      </Row>
-      <Row>
-        <Col sm={{ size: 6, order: 2, offset: 2 }}>
-          <HStack>
-            <Text fontWeight={'bold'}>Nom: {reservationEntity?.customer.firstname}</Text>
-            <Text fontWeight={'bold'}>Prénom: {reservationEntity?.customer.lastname}</Text>
-          </HStack>
-          <p>
-            Date d&apos;arrivée :{' '}
-            <TextFormat
-              value={reservationEntity?.arrivalDate}
-              type="date"
-              format={APP_LOCAL_DATE_FORMAT}
-            />{' '}
-            Date de départ :{' '}
-            <TextFormat
-              value={reservationEntity?.departureDate}
-              type="date"
-              format={APP_LOCAL_DATE_FORMAT}
-            />
-          </p>
-          <p>Nombre de personnes à héberger : {reservationEntity.personNumber}</p>
-        </Col>
-      </Row>
-      <Row className="justify-content-center" style={{ marginBottom: '2rem' }}>
-        <Col md={{ size: 2, order: 0, offset: 2 }}>
-          <Heading size={'md'}>Filtrer par lieu</Heading>
-          <Select
-            className="block"
-            id="place"
-            name="placeId"
-            data-cy="place"
-            style={{ padding: '0.4rem', borderRadius: '0.3rem' }}
-            onChange={e => {
-              getOnePlace(e.target.value).then(res => setPlace(res))
-              filterBedPlace(Number(e.target.value))
-            }}
-          >
-            <option value={0}>Aucun</option>
-            {places ?
-              (places?.map(p => (
-                <option value={p.id} key={p.id}>
-                  {p.name}
-                </option>
-              ))) :
-              <option value="" key="0" />}
-          </Select>
-          <PlaceModal {...placeImage} />
-        </Col>
-        <Col md={{ size: 4, order: 1 }}>
-          <Heading size={'md'}>Filtre par type de chambre</Heading>
-          <Select
-            className="block"
-            id="roomKind"
-            name="roomKindId"
-            data-cy="roomKind"
-            style={{ padding: '0.4rem', borderRadius: '0.3rem' }}
-            onChange={e => {
-              filterBedRoomKind(Number(e.target.value))
-            }}
-          >
-            <option value={null}>Aucune</option>
-            {roomKinds ?
-              (roomKinds.map((p, index) => (
-                <option value={p?.id} key={index}>
-                  {p?.name}
-                </option>
-              ))) :
-              <option value="" key="0" />}
-          </Select>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col md="8">
-          <p>
-            {'Numéros des lit réservés : '
-              + places
-                ?.flatMap(place =>
-                  place.rooms?.flatMap(room =>
-                    room.beds.map(bed => bedsToBook?.includes(bed.id) ? `${bed.number}, ` : '')
-                  )
-                )
-                .join('')}
-          </p>
-          <p style={{ color: reservationEntity.personNumber > placesBooked ? 'red' : 'green' }}>
-            {`Nombre de personnes hébergées : ${placesBooked}`}
-          </p>
-        </Col>
-      </Row>
+    <VStack>
+      <VStack alignItems={'flex-start'}>
+        <Heading
+          size={'lg'}
+        >
+          Choisissez les lits :
+        </Heading>
 
-      <Row className="justify-content-center">
-        <Col md="8">
-          {loading ? <p>Chargement...</p> : (
-            <FormProvider {...form}>
-              <form
-                onSubmit={form.handleSubmit(saveEntity)}
+        <HStack>
+          <Text fontWeight={'bold'}>Nom: {reservationEntity?.customer.firstname}</Text>
+          <Text fontWeight={'bold'}>Prénom: {reservationEntity?.customer.lastname}</Text>
+        </HStack>
+        <p>
+          Date d&apos;arrivée :{' '}
+          <TextFormat
+            value={reservationEntity?.arrivalDate}
+            type="date"
+            format={APP_LOCAL_DATE_FORMAT}
+          />{' '}
+          Date de départ :{' '}
+          <TextFormat
+            value={reservationEntity?.departureDate}
+            type="date"
+            format={APP_LOCAL_DATE_FORMAT}
+          />
+        </p>
+        <p>Nombre de personnes à héberger : {reservationEntity.personNumber}</p>
+
+        <Heading size={'md'}>Filtrer par lieu</Heading>
+        <Select
+          className="block"
+          id="place"
+          name="placeId"
+          data-cy="place"
+          style={{ padding: '0.4rem', borderRadius: '0.3rem' }}
+          onChange={e => {
+            getOnePlace(e.target.value).then(res => setPlace(res))
+            filterBedPlace(Number(e.target.value))
+          }}
+        >
+          <option value={0}>Aucun</option>
+          {places ?
+            (places?.map(p => (
+              <option value={p.id} key={p.id}>
+                {p.name}
+              </option>
+            ))) :
+            <option value="" key="0" />}
+        </Select>
+        <PlaceModal {...placeImage} />
+
+        <Heading size={'md'}>Filtre par type de chambre</Heading>
+        <Select
+          className="block"
+          id="roomKind"
+          name="roomKindId"
+          data-cy="roomKind"
+          style={{ padding: '0.4rem', borderRadius: '0.3rem' }}
+          onChange={e => {
+            filterBedRoomKind(Number(e.target.value))
+          }}
+        >
+          <option value={null}>Aucune</option>
+          {roomKinds ?
+            (roomKinds.map((p, index) => (
+              <option value={p?.id} key={index}>
+                {p?.name}
+              </option>
+            ))) :
+            <option value="" key="0" />}
+        </Select>
+
+        <p>
+          {'Numéros des lit réservés : '
+            + places
+              ?.flatMap(place =>
+                place.rooms?.flatMap(room =>
+                  room.beds.map(bed => bedsToBook?.includes(bed.id) ? `${bed.number}, ` : '')
+                )
+              )
+              .join('')}
+        </p>
+        <p style={{ color: reservationEntity.personNumber > placesBooked ? 'red' : 'green' }}>
+          {`Nombre de personnes hébergées : ${placesBooked}`}
+        </p>
+
+        {loading ? <p>Chargement...</p> : (
+          <FormProvider {...form}>
+            <form
+              onSubmit={form.handleSubmit(saveEntity)}
+            >
+              <Beds rooms={rooms} bedsToBook={bedsToBook} checkBedsToBook={checkBedsToBook} />
+              <CustomValidatedField
+                label="Moyen de paiement"
+                id="reservation-paymentMode"
+                name="paymentMode"
+                data-cy="paymentMode"
+                type="text"
+                registerOptions={{
+                  minLength: { value: 2, message: 'Minimum 2.' },
+                  maxLength: { value: 40, message: 'Maximum 40.' }
+                }}
+              />
+              <CustomValidatedField
+                label="Réservation payée ?"
+                id="reservation-isPaid"
+                name="isPaid"
+                data-cy="isPaid"
+                type="checkbox"
+              />
+              <br />
+              <CustomValidatedField
+                label={`Réservation confirmée si cochée ? ${
+                  reservationEntity.isConfirmed ? '' : "(envoi d'un email en cas de confirmation)"
+                }`}
+                id="reservation-isConfirmed"
+                name="isConfirmed"
+                data-cy="isConfirmed"
+                type="checkbox"
+                style={{ fontWeight: 'bold', fontSize: '1.3em', color: 'red' }}
+              />
+              <br />
+              <Button
+                backgroundColor={'#17A2B8'}
+                color={'white'}
+                leftIcon={<FaArrowLeft />}
+                onClick={() => back(form.getValues())}
               >
-                <Beds rooms={rooms} bedsToBook={bedsToBook} checkBedsToBook={checkBedsToBook} />
-                <CustomValidatedField
-                  label="Moyen de paiement"
-                  id="reservation-paymentMode"
-                  name="paymentMode"
-                  data-cy="paymentMode"
-                  type="text"
-                  registerOptions={{
-                    minLength: { value: 2, message: 'Minimum 2.' },
-                    maxLength: { value: 40, message: 'Maximum 40.' }
-                  }}
-                />
-                <CustomValidatedField
-                  label="Réservation payée ?"
-                  id="reservation-isPaid"
-                  name="isPaid"
-                  data-cy="isPaid"
-                  type="checkbox"
-                />
-                <br />
-                <CustomValidatedField
-                  label={`Réservation confirmée si cochée ? ${
-                    reservationEntity.isConfirmed ? '' : "(envoi d'un email en cas de confirmation)"
-                  }`}
-                  id="reservation-isConfirmed"
-                  name="isConfirmed"
-                  data-cy="isConfirmed"
-                  type="checkbox"
-                  style={{ fontWeight: 'bold', fontSize: '1.3em', color: 'red' }}
-                />
-                <br />
-                <Button
-                  backgroundColor={'#17A2B8'}
-                  color={'white'}
-                  leftIcon={<FaArrowLeft />}
-                  onClick={() => back(form.getValues())}
-                >
-                  Retour
-                </Button>
-                &nbsp;
-                <Button
-                  backgroundColor={'#E95420'}
-                  color={'white'}
-                  type="submit"
-                  leftIcon={<FaSave />}
-                  isLoading={isLoading}
-                >
-                  Enregistrer
-                </Button>
-              </form>
-            </FormProvider>
-          )}
-        </Col>
-      </Row>
-    </div>
+                Retour
+              </Button>
+              &nbsp;
+              <Button
+                backgroundColor={'#E95420'}
+                color={'white'}
+                type="submit"
+                leftIcon={<FaSave />}
+                isLoading={isLoading}
+              >
+                Enregistrer
+              </Button>
+            </form>
+          </FormProvider>
+        )}
+      </VStack>
+    </VStack>
   )
 }

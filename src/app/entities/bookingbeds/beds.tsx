@@ -1,5 +1,5 @@
+import { Checkbox, VStack } from '@chakra-ui/react'
 import type { IRoom } from 'app/shared/model/room.model'
-import { CustomValidatedField } from 'app/shared/util/cross-validation-form'
 import type { FunctionComponent } from 'react'
 import React from 'react'
 
@@ -14,7 +14,7 @@ export const Beds: FunctionComponent<IProps> = ({ rooms, bedsToBook, checkBedsTo
       const bedRoomKind = room.bedroomKind ? `(${room.bedroomKind.name})` : ''
 
       return (
-        <React.Fragment key={room.id}>
+        <VStack alignItems={'flex-start'} key={room.id}>
           <p style={{ fontWeight: 'bold' }}>
             {`Chambre : ${room.name} ${bedRoomKind}
                          `}
@@ -23,20 +23,20 @@ export const Beds: FunctionComponent<IProps> = ({ rooms, bedsToBook, checkBedsTo
           {room.beds.length === 0 ? 'Aucun lits libre à ces dates.' : room.beds.map(bed => {
             const bedkind = bed.kind ? `(${bed.kind})` : ''
             return (
-              <CustomValidatedField
-                label={`${bed.number} ${bedkind}  (places : ${bed.numberOfPlaces})`}
+              <Checkbox
                 key={bed.id}
-                type="checkbox"
                 id={`reservation-${bed.id}`}
                 name={bed.id.toString()}
                 data-cy={bed.id.toString()}
-                checked={bedsToBook?.includes(bed.id) ? true : false}
+                isChecked={bedsToBook?.includes(bed.id) ? true : false}
                 onChange={() => checkBedsToBook(bed.id)}
-              />
+              >
+                {`${bed.number} ${bedkind}  (places : ${bed.numberOfPlaces})`}
+              </Checkbox>
             )
           })}
           <br />
-        </React.Fragment>
+        </VStack>
       )
     })}
   </>

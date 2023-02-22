@@ -1,13 +1,11 @@
-import { useToast } from '@chakra-ui/react'
-import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button, Heading, useToast, VStack } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getPricings } from 'app/entities/pricing/pricing.reducer'
 import type { ICustomer } from 'app/shared/model/customer.model'
 import React, { useEffect } from 'react'
+import { FaArrowLeft, FaSave } from 'react-icons/fa'
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { Button, Col, Row } from 'reactstrap'
 
 import type { IBookingBeds } from '../../shared/model/bookingBeds.model'
 import { getReservationsWithBedEntity, reset, setData } from './booking-beds.reducer'
@@ -115,269 +113,229 @@ export const ReservationCustomerUpdate = () => {
   })
 
   return (
-    <div>
-      <Row className="justify-content-center">
-        <Col md="8">
-          <h2
-            id="gestionhebergementApp.reservation.home.createOrEditLabel"
-            data-cy="ReservationCreateUpdateHeading"
-          >
-            Créer ou modifier la réservation et le client.
-          </h2>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col md="8">
-          {loading ?
-            <p>Chargement...</p> :
-            (
-              <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
-                <Button
-                  tag={Link}
-                  id="cancel-save"
-                  data-cy="entityCreateCancelButton"
-                  to="/planning"
-                  replace
-                  style={{ backgroundColor: '#114B5F', color: 'white' }}
-                >
-                  &nbsp;
-                  <span className="d-none d-md-inline">Annuler</span>
-                </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" data-cy="stepTwo" type="submit">
-                  <FontAwesomeIcon icon={faSave} />
-                  &nbsp; Suivant
-                </Button>
-                <ValidatedField
-                  label="Prénom"
-                  id="customer-firstname"
-                  name="firstname"
-                  data-cy="firstname"
-                  type="text"
-                  validate={{
-                    required: { value: true, message: 'Ce champ est requis.' },
-                    minLength: {
-                      value: 1,
-                      message: 'Ce champ est requis et doit avoir au moins 1 caractère.'
-                    },
-                    maxLength: {
-                      value: 50,
-                      message: 'Ce champ ne peut pas dépasser plus de 50 caractères.'
-                    }
-                  }}
-                />
-                <ValidatedField
-                  label="Nom"
-                  id="customer-lastname"
-                  name="lastname"
-                  data-cy="lastname"
-                  type="text"
-                  validate={{
-                    required: { value: true, message: 'Ce champ est requis.' },
-                    minLength: {
-                      value: 1,
-                      message: 'Ce champ est requis et doit avoir au moins 1 caractère.'
-                    },
-                    maxLength: {
-                      value: 50,
-                      message: 'Ce champ ne peut pas dépasser plus de 50 caractères.'
-                    }
-                  }}
-                />
-                <ValidatedField
-                  label="Age"
-                  id="customer-age"
-                  name="age"
-                  data-cy="age"
-                  type="number"
-                  validate={{
-                    min: { value: 1, message: 'Age minimum: 1 an.' },
-                    max: { value: 125, message: 'Age maximum: 125 ans.' },
-                    validate: v => isNumber(v) || 'Ce champ doit contenir un nombre.'
-                  }}
-                />
-                <ValidatedField
-                  label="Téléphone"
-                  id="customer-phoneNumber"
-                  name="phoneNumber"
-                  data-cy="phoneNumber"
-                  type="text"
-                  validate={{
-                    required: { value: true, message: 'Le numéro de téléphone est obligatoire.' },
-                    minLength: { value: 10, message: 'Minimum 10' },
-                    maxLength: { value: 16, message: 'Maximum 16' }
-                  }}
-                />
-                <ValidatedField
-                  label="Email"
-                  id="customer-email"
-                  name="email"
-                  data-cy="email"
-                  type="text"
-                  validate={{
-                    required: { value: true, message: 'Ce champ est requis.' },
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: 'Adresse email invalide.'
-                    }
-                  }}
-                />
-                <ValidatedField
-                  label="Remarque sur le client"
-                  id="customer-comment"
-                  name="customerComment"
-                  data-cy="comment"
-                  type="textarea"
-                  validate={{
-                    maxLength: {
-                      value: 400,
-                      message: 'Ce champ ne doit pas dépasser 400 caractères.'
-                    }
-                  }}
-                />
-                <ValidatedField
-                  label="Nombre de personnes à héberger"
-                  id="reservation-personNumber"
-                  name="personNumber"
-                  data-cy="personNumber"
-                  type="number"
-                  validate={{
-                    required: { value: true, message: 'Valeur requise' },
-                    min: { value: 1, message: 'Le nombre doit être au minimum 1.' },
-                    max: { value: 1000, message: 'Le nombre ne doit pas dépasser 1000.' },
-                    validate: v => isNumber(v) || 'Ce champ doit contenir un nombre.'
-                  }}
-                />
-                <ValidatedField
-                  label="Nombre de régimes sans gluten OU sans lactose."
-                  id="reservation-specialDietNumber"
-                  name="specialDietNumber"
-                  data-cy="specialDietNumber"
-                  type="number"
-                  validate={{
-                    required: { value: true, message: 'Valeur requise' },
-                    min: { value: 0, message: 'Minimum 0' },
-                    max: { value: 1000, message: 'Max 1000' },
-                    validate: value => isNumber(value) || 'Tapez un nombre'
-                  }}
-                />
+    <VStack>
+      <Heading>
+        {`${isNew ? 'Créer' : 'Modifier'} la réservation et le client`}
+      </Heading>
 
-                <ValidatedField
-                  label="Prévoir le repas du midi, d'arrivée"
-                  id="reservation-isArrivalLunch"
-                  name="isArrivalLunch"
-                  data-cy="isArrivalLunch"
-                  type="checkbox"
-                  check
-                />
-                <ValidatedField
-                  label="Prévoir le repas du soir, d'arrivée"
-                  id="reservation-isArrivalDiner"
-                  name="isArrivalDiner"
-                  data-cy="isArrivalDiner"
-                  type="checkbox"
-                  check
-                />
-                <ValidatedField
-                  label="Prévoir le repas du midi, du départ"
-                  id="reservation-isDepartureLunch"
-                  name="isDepartureLunch"
-                  data-cy="isDepartureLunch"
-                  type="checkbox"
-                  check
-                />
-                <ValidatedField
-                  label="Prévoir le repas du soir, du départ"
-                  id="reservation-isDepartureDiner"
-                  name="isDepartureDiner"
-                  data-cy="isDepartureDiner"
-                  type="checkbox"
-                  check
-                />
-                <ValidatedField
-                  label="Date d'arrivée"
-                  id="reservation-arrivalDate"
-                  name="arrivalDate"
-                  data-cy="arrivalDate"
-                  type="date"
-                  validate={{
-                    required: { value: true, message: 'Valeur requise' }
-                  }}
-                />
-                <ValidatedField
-                  label="Date de départ"
-                  id="reservation-departureDate"
-                  name="departureDate"
-                  data-cy="departureDate"
-                  type="date"
-                  validate={{
-                    required: { value: true, message: 'Valeur requise' }
-                  }}
-                />
-                <ValidatedField
-                  label="Commentaire"
-                  id="reservation-comment"
-                  name="reservationComment"
-                  data-cy="comment"
-                  type="textarea"
-                  validate={{
-                    maxLength: { value: 400, message: 'Max 400' }
-                  }}
-                />
-                <ValidatedField
-                  id="reservation-pricing"
-                  name="pricingId"
-                  data-cy="pricing"
-                  label="Tarif"
-                  type="select"
-                >
-                  <option value="" key="0" />
-                  {pricing ?
-                    pricing.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.wording}
-                      </option>
-                    )) :
-                    null}
-                </ValidatedField>
+      {loading ?
+        <p>Chargement...</p> :
+        (
+          <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
+            <Button
+              as={Link}
+              variant="back"
+              to="/planning"
+            >
+              Annuler
+            </Button>
+            &nbsp;
+            <Button variant={'save'} type="submit" leftIcon={<FaSave />}>
+              Suivant
+            </Button>
+            <ValidatedField
+              label="Prénom"
+              id="customer-firstname"
+              name="firstname"
+              data-cy="firstname"
+              type="text"
+              validate={{
+                required: { value: true, message: 'Ce champ est requis.' },
+                minLength: {
+                  value: 1,
+                  message: 'Ce champ est requis et doit avoir au moins 1 caractère.'
+                },
+                maxLength: {
+                  value: 50,
+                  message: 'Ce champ ne peut pas dépasser plus de 50 caractères.'
+                }
+              }}
+            />
+            <ValidatedField
+              label="Nom"
+              id="customer-lastname"
+              name="lastname"
+              data-cy="lastname"
+              type="text"
+              validate={{
+                required: { value: true, message: 'Ce champ est requis.' },
+                minLength: {
+                  value: 1,
+                  message: 'Ce champ est requis et doit avoir au moins 1 caractère.'
+                },
+                maxLength: {
+                  value: 50,
+                  message: 'Ce champ ne peut pas dépasser plus de 50 caractères.'
+                }
+              }}
+            />
+            <ValidatedField
+              label="Age"
+              id="customer-age"
+              name="age"
+              data-cy="age"
+              type="number"
+              validate={{
+                min: { value: 1, message: 'Age minimum: 1 an.' },
+                max: { value: 125, message: 'Age maximum: 125 ans.' },
+                validate: v => isNumber(v) || 'Ce champ doit contenir un nombre.'
+              }}
+            />
+            <ValidatedField
+              label="Téléphone"
+              id="customer-phoneNumber"
+              name="phoneNumber"
+              data-cy="phoneNumber"
+              type="text"
+              validate={{
+                required: { value: true, message: 'Le numéro de téléphone est obligatoire.' },
+                minLength: { value: 10, message: 'Minimum 10' },
+                maxLength: { value: 16, message: 'Maximum 16' }
+              }}
+            />
+            <ValidatedField
+              label="Email"
+              id="customer-email"
+              name="email"
+              data-cy="email"
+              type="text"
+              validate={{
+                required: { value: true, message: 'Ce champ est requis.' },
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: 'Adresse email invalide.'
+                }
+              }}
+            />
+            <ValidatedField
+              label="Remarque sur le client"
+              id="customer-comment"
+              name="customerComment"
+              data-cy="comment"
+              type="textarea"
+              validate={{
+                maxLength: {
+                  value: 400,
+                  message: 'Ce champ ne doit pas dépasser 400 caractères.'
+                }
+              }}
+            />
+            <ValidatedField
+              label="Nombre de personnes à héberger"
+              id="reservation-personNumber"
+              name="personNumber"
+              data-cy="personNumber"
+              type="number"
+              validate={{
+                required: { value: true, message: 'Valeur requise' },
+                min: { value: 1, message: 'Le nombre doit être au minimum 1.' },
+                max: { value: 1000, message: 'Le nombre ne doit pas dépasser 1000.' },
+                validate: v => isNumber(v) || 'Ce champ doit contenir un nombre.'
+              }}
+            />
+            <ValidatedField
+              label="Nombre de régimes sans gluten OU sans lactose."
+              id="reservation-specialDietNumber"
+              name="specialDietNumber"
+              data-cy="specialDietNumber"
+              type="number"
+              validate={{
+                required: { value: true, message: 'Valeur requise' },
+                min: { value: 0, message: 'Minimum 0' },
+                max: { value: 1000, message: 'Max 1000' },
+                validate: value => isNumber(value) || 'Tapez un nombre'
+              }}
+            />
 
-                {!isNew ?
-                  (
-                    <Button
-                      tag={Link}
-                      id="back"
-                      data-cy="entityBackButton"
-                      to={`/bookingbeds/${reservationEntity.id}`}
-                      replace
-                      color="info"
-                    >
-                      &nbsp;
-                      <FontAwesomeIcon icon={faArrowLeft} />
-                      <span className="d-none d-md-inline">Retour</span>
-                    </Button>
-                  ) :
-                  ('')}
-                &nbsp;
+            <ValidatedField
+              label="Prévoir le repas du midi, d'arrivée"
+              id="reservation-isArrivalLunch"
+              name="isArrivalLunch"
+              data-cy="isArrivalLunch"
+              type="checkbox"
+              check
+            />
+            <ValidatedField
+              label="Prévoir le repas du soir, d'arrivée"
+              id="reservation-isArrivalDiner"
+              name="isArrivalDiner"
+              data-cy="isArrivalDiner"
+              type="checkbox"
+              check
+            />
+            <ValidatedField
+              label="Prévoir le repas du midi, du départ"
+              id="reservation-isDepartureLunch"
+              name="isDepartureLunch"
+              data-cy="isDepartureLunch"
+              type="checkbox"
+              check
+            />
+            <ValidatedField
+              label="Prévoir le repas du soir, du départ"
+              id="reservation-isDepartureDiner"
+              name="isDepartureDiner"
+              data-cy="isDepartureDiner"
+              type="checkbox"
+              check
+            />
+            <ValidatedField
+              label="Date d'arrivée"
+              id="reservation-arrivalDate"
+              name="arrivalDate"
+              data-cy="arrivalDate"
+              type="date"
+              validate={{
+                required: { value: true, message: 'Valeur requise' }
+              }}
+            />
+            <ValidatedField
+              label="Date de départ"
+              id="reservation-departureDate"
+              name="departureDate"
+              data-cy="departureDate"
+              type="date"
+              validate={{
+                required: { value: true, message: 'Valeur requise' }
+              }}
+            />
+            <ValidatedField
+              label="Commentaire"
+              id="reservation-comment"
+              name="reservationComment"
+              data-cy="comment"
+              type="textarea"
+              validate={{
+                maxLength: { value: 400, message: 'Max 400' }
+              }}
+            />
+
+            {!isNew ?
+              (
                 <Button
-                  tag={Link}
-                  id="cancel-save"
-                  data-cy="entityCreateCancelButton"
-                  to="/planning"
-                  replace
-                  style={{ backgroundColor: '#114B5F', color: 'white' }}
+                  as={Link}
+                  variant="back"
+                  to={`/bookingbeds/${reservationEntity.id}`}
+                  leftIcon={<FaArrowLeft />}
                 >
-                  &nbsp;
-                  <span className="d-none d-md-inline">Annuler</span>
+                  Retour
                 </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" data-cy="stepTwo" type="submit">
-                  <FontAwesomeIcon icon={faSave} />
-                  &nbsp; Suivant
-                </Button>
-              </ValidatedForm>
-            )}
-        </Col>
-      </Row>
-    </div>
+              ) :
+              ('')}
+            &nbsp;
+            <Button
+              as={Link}
+              variant="back"
+              to="/planning"
+            >
+              Annuler
+            </Button>
+            &nbsp;
+            <Button variant={'save'} type="submit" leftIcon={<FaSave />}>
+              Suivant
+            </Button>
+          </ValidatedForm>
+        )}
+    </VStack>
   )
 }

@@ -4,7 +4,6 @@ import { Route } from 'react-router-dom'
 
 import { ReservationIntermittentUpdate } from './intermittent/reservation-intermittent-update'
 import { BookingBedsUpdate } from './new-reservation'
-import { ReservationDeleteDialog } from './reservation-delete-dialog'
 import { ReservationDetail } from './reservation-detail'
 
 export const BookingBedsRoutes = (): JSX.Element => (
@@ -21,10 +20,6 @@ export const BookingBedsRoutes = (): JSX.Element => (
     <Route path=":id">
       <Route path={`edit`} element={<BookingBedsUpdate />} />
       <Route index element={<ReservationDetail />} />
-      <Route
-        path={`delete`}
-        element={<ReservationDeleteDialog />}
-      />
     </Route>
   </ErrorBoundaryRoutes>
 )

@@ -1,61 +1,62 @@
-import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay,
+  useDisclosure } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+import type { FunctionComponent } from 'react'
 import React, { useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+import { FaBan, FaTrash } from 'react-icons/fa'
 
-import { deleteEntity, getReservationsWithBedIdsEntity } from './booking-beds.reducer'
+import { deleteEntity } from './booking-beds.reducer'
 
-export const ReservationDeleteDialog = () => {
+export const ReservationDeleteDialog: FunctionComponent<{ reservationId: number }> = (
+  { reservationId }
+): JSX.Element => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const dispatch = useAppDispatch()
 
-  const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
-  useEffect(() => {
-    dispatch(getReservationsWithBedIdsEntity(id))
-  }, [])
-
-  const reservationEntity = useAppSelector(state => state.bookingBeds.entity)
-  const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
-
-  const handleClose = () => {
-    navigate('/planning')
-  }
+  const updateSuccess = useAppSelector(state => state.reservation.updateSuccess)
 
   useEffect(() => {
     if (updateSuccess) {
-      handleClose()
+      onClose()
     }
   }, [updateSuccess])
 
   const confirmDelete = () => {
-    dispatch(deleteEntity(reservationEntity.id))
+    dispatch(deleteEntity(reservationId))
   }
 
   return (
-    <Modal isOpen toggle={handleClose}>
-      <ModalHeader toggle={handleClose} data-cy="reservationDeleteDialogHeading">
-        Confirmer l&apos;opération de suppression
-      </ModalHeader>
-      <ModalBody id="gestionhebergementApp.reservation.delete.question">
-        Êtes-vous sûr de vouloir supprimer cette réservation ?
-      </ModalBody>
-      <ModalFooter>
-        <Button color="secondary" onClick={handleClose}>
-          <FontAwesomeIcon icon="ban" />
-          &nbsp; Retour
-        </Button>
-        <Button
-          id="jhi-confirm-delete-reservation"
-          data-cy="entityConfirmDeleteButton"
-          color="danger"
-          onClick={confirmDelete}
-        >
-          <FontAwesomeIcon icon={faTrash} />
-          &nbsp; Supprimer
-        </Button>
-      </ModalFooter>
-    </Modal>
+    <>
+      <Button
+        variant="danger"
+        onClick={onOpen}
+        leftIcon={<FaTrash />}
+      >
+        Supprimer
+      </Button>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>
+            Confirmer l&apos;opération de suppression
+          </ModalHeader>
+          <ModalBody id="gestionhebergementApp.reservation.delete.question">
+            Êtes-vous sûr de vouloir supprimer ce lit ?
+          </ModalBody>
+          <ModalFooter justifyContent={'space-between'}>
+            <Button onClick={onClose} leftIcon={<FaBan />} variant="back">
+              Retour
+            </Button>
+            <Button
+              onClick={confirmDelete}
+              leftIcon={<FaTrash />}
+              variant="danger"
+            >
+              Supprimer
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   )
 }
