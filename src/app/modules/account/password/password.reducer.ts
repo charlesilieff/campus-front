@@ -46,7 +46,7 @@ export const PasswordSlice = createSlice({
         state.loading = false
         state.updateSuccess = false
         state.updateFailure = true
-        state.errorMessage = 'An error has occurred! The password could not be changed.'
+        state.errorMessage = "Une erreur s'est produite ! Le mot de passe n'a pas pu être modifié."
       })
       .addCase(savePassword.fulfilled, state => {
         state.loading = false
