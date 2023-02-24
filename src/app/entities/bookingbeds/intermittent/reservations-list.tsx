@@ -75,7 +75,7 @@ export const IntermittentReservations = () => {
       <Box>
         {reservationList && reservationList.length > 0 ?
           (
-            <Table variant={'striped'}>
+            <Table>
               <Thead>
                 <Tr>
                   <Th>Régime sans gluten/lactose</Th>
@@ -146,6 +146,7 @@ export const IntermittentReservations = () => {
                         {O.isSome(customerId) ?
                           (
                             <Button
+                              size="sm"
                               as={Link}
                               to={`/bookingbeds/intermittent/${reservation.id}`}
                               _hover={{ textDecoration: 'none', color: 'orange' }}

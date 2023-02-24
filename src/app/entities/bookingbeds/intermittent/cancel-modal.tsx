@@ -38,6 +38,7 @@ export const CancelReservationModal = (
   return (
     <>
       <Button
+        size="sm"
         isLoading={isDeleting}
         color="white"
         backgroundColor={'#df382c'}

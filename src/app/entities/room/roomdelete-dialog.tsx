@@ -22,6 +22,7 @@ export const RoomDeleteDialog: FunctionComponent<{ roomId: number }> = (
   }, [updateSuccess])
 
   const confirmDelete = () => {
+    console.log(roomId)
     dispatch(deleteEntity(roomId))
   }
 
