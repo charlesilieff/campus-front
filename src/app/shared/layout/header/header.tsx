@@ -42,7 +42,7 @@ export const Header = (props: IHeaderProps) => {
         <NavbarToggler aria-label="Menu" onClick={toggleMenu} />
         <Brand />
         <Collapse isOpen={menuOpen} navbar>
-          <Nav id="header-tabs" className="ml-auto" navbar>
+          <Nav className="ml-auto" navbar>
             {!window.location.pathname.endsWith('reservation-request/new') && <Help />}
             {!window.location.pathname.endsWith('reservation-request/new') && <Home />}
 
