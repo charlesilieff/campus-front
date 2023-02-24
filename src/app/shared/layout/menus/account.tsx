@@ -37,6 +37,7 @@ const accountMenuItems = (
 export const AccountMenu = ({ isAuthenticated = false }) => (
   <Menu>
     <MenuButton
+      variant="menu"
       as={Button}
       aria-label="Options"
       leftIcon={<HiUser />}

@@ -1,25 +1,35 @@
+import { Button, Menu, MenuButton, MenuList } from '@chakra-ui/react'
 import React from 'react'
+import { FaUsersCog } from 'react-icons/fa'
+import { GoTriangleDown } from 'react-icons/go'
 
-import { NavDropdown } from './menu-components'
-import { MenuItem } from './menu-item'
+import { MenuItem2 } from './menu-item-2'
 
 const adminMenuItems = (
   <>
-    <MenuItem icon="users" to="/admin/user-management">
+    <MenuItem2 icon="users" to="/admin/user-management">
       Gestion des utilisateurs
-    </MenuItem>
+    </MenuItem2>
   </>
 )
 
 const openAPIItem = (
-  <MenuItem icon="book" to="/admin/docs">
+  <MenuItem2 icon="book" to=":8080/docs">
     API
-  </MenuItem>
+  </MenuItem2>
 )
 
 export const AdminMenu = ({ showOpenAPI }) => (
-  <NavDropdown icon="users-cog" name="Administration" id="admin-menu" data-cy="adminMenu">
-    {adminMenuItems}
-    {showOpenAPI && openAPIItem}
-  </NavDropdown>
+  <Menu>
+    <MenuButton
+      variant="menu"
+      as={Button}
+      aria-label="Options"
+      leftIcon={<FaUsersCog />}
+      rightIcon={<GoTriangleDown />}
+    >
+      Compte
+    </MenuButton>
+    <MenuList>{adminMenuItems} {showOpenAPI && openAPIItem}</MenuList>
+  </Menu>
 )

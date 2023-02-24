@@ -1,11 +1,11 @@
+import { Alert } from '@chakra-ui/react'
 import React from 'react'
-import { Alert } from 'reactstrap'
 
 export class PageNotFound extends React.Component {
   render() {
     return (
       <div>
-        <Alert color="danger">The page does not exist.</Alert>
+        <Alert status="error">The page does not exist.</Alert>
       </div>
     )
   }

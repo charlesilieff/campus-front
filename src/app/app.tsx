@@ -43,7 +43,6 @@ export const App = () => {
   )
   const ribbonEnv = useAppSelector(state => state.applicationProfile.ribbonEnv)
   const isInProduction = useAppSelector(state => state.applicationProfile.inProduction)
-  const isOpenAPIEnabled = useAppSelector(state => state.applicationProfile.isOpenAPIEnabled)
 
   const paddingTop = '60px'
   return (
@@ -60,7 +59,7 @@ export const App = () => {
             isAdmin={isAdmin}
             ribbonEnv={ribbonEnv}
             isInProduction={isInProduction}
-            isOpenAPIEnabled={isOpenAPIEnabled}
+            isOpenAPIEnabled={true}
             isIntermittent={isIntermittent}
             isUser={isUser}
             isResp={isResp}

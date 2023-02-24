@@ -52,8 +52,13 @@ const Button = defineStyleConfig({
         color: 'white',
         textDecoration: 'none'
       }
+    },
+    menu: {
+      bg: 'transparent',
+      color: 'white'
     }
   },
+
   // The default `size` or `variant` values
   defaultProps: {}
 })
