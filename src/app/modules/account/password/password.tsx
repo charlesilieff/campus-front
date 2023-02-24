@@ -93,7 +93,6 @@ export const Password = () => {
               },
               validate: v => v === password || 'The password and its confirmation do not match!'
             }}
-            data-cy="confirmPassword"
           />
           <Button variant={'save'} type="submit" leftIcon={<FaSave />}>
             Enregistrer

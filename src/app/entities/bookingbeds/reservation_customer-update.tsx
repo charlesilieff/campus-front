@@ -20,7 +20,7 @@ export const ReservationCustomerUpdate = () => {
   const creating = useAppSelector(state => state.bookingBeds.creating)
   const pricing = useAppSelector(state => state.pricing.entities)
   const reservationEntity = useAppSelector(state => state.bookingBeds.entity)
-  console.log(reservationEntity)
+
   const loading = useAppSelector(state => state.bookingBeds.loading)
   const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
 
@@ -96,7 +96,7 @@ export const ReservationCustomerUpdate = () => {
       pricing: pricing.find(it => it.id.toString() === values.pricingId.toString()),
       customer
     }
-    console.log(reservation)
+
     dispatch(setData(reservation))
   }
 
