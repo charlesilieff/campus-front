@@ -1,3 +1,4 @@
+import { Button, Heading, VStack } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { PasswordStrengthBar } from 'app/shared/layout/password/password-strength-bar'
 import React, { useEffect, useState } from 'react'
@@ -5,7 +6,6 @@ import type { FieldValues } from 'react-hook-form'
 import { ValidatedField, ValidatedForm } from 'react-jhipster'
 import { useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { Button, Col, Row } from 'reactstrap'
 
 import { handlePasswordResetFinish, reset } from '../password-reset.reducer'
 
@@ -71,7 +71,7 @@ export const PasswordResetFinish = () => {
       }}
       data-cy="confirmResetPassword"
     />
-    <Button color="success" type="submit" data-cy="submit">
+    <Button variant={'save'} type="submit">
       Réinitialiser le mot de passe
     </Button>
   </ValidatedForm>)
@@ -86,13 +86,9 @@ export const PasswordResetFinish = () => {
   }, [successMessage])
 
   return (
-    <div>
-      <Row className="justify-content-center">
-        <Col md="4">
-          <h1>Réinitialisation du mot de passe</h1>
-          <div>{key ? getResetForm() : null}</div>
-        </Col>
-      </Row>
-    </div>
+    <VStack>
+      <Heading>Réinitialisation du mot de passe</Heading>
+      <div>{key ? getResetForm() : null}</div>
+    </VStack>
   )
 }
