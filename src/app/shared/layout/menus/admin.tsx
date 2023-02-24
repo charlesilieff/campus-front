@@ -3,20 +3,20 @@ import React from 'react'
 import { FaUsersCog } from 'react-icons/fa'
 import { GoTriangleDown } from 'react-icons/go'
 
-import { MenuItem2 } from './menu-item-2'
+import { MenuItem } from './menu-item'
 
 const adminMenuItems = (
   <>
-    <MenuItem2 icon="users" to="/admin/user-management">
+    <MenuItem icon="users" to="/admin/user-management">
       Gestion des utilisateurs
-    </MenuItem2>
+    </MenuItem>
   </>
 )
 
 const openAPIItem = (
-  <MenuItem2 icon="book" to=":8080/docs">
+  <MenuItem icon="book" to=":8080/docs">
     API
-  </MenuItem2>
+  </MenuItem>
 )
 
 export const AdminMenu = ({ showOpenAPI }) => (
