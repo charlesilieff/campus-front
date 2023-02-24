@@ -169,7 +169,7 @@ export const UserManagement = () => {
                 {user.authorities ?
                   user.authorities.map((authority, j) => (
                     <div key={`user-auth-${i}-${j}`}>
-                      <Badge color="info">{authority}</Badge>
+                      <Badge backgroundColor="#3498db">{authority}</Badge>
                     </div>
                   )) :
                   null}
