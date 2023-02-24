@@ -3,7 +3,6 @@ import { Box, HStack, Link as ChakraLink, Text } from '@chakra-ui/react'
 import React from 'react'
 import { FaHome } from 'react-icons/fa'
 import { NavLink as Link } from 'react-router-dom'
-import { NavLink } from 'reactstrap'
 
 const logo = new URL('../../../../content/images/logo-Campus-2018.png', import.meta.url).href
 export const BrandIcon = props => (
@@ -12,18 +11,17 @@ export const BrandIcon = props => (
   </div>
 )
 
-export const Brand = _ => (
+export const Brand = () => (
   <Box as={Link} to="/" className="brand-logo">
     <BrandIcon />
     <span className="brand-title">Gestion de l&apos;hébergement</span>
-    {/* <span className="navbar-version">{appConfig.VERSION}</span> */}
   </Box>
 )
 
 export const Home = () => (
   <ChakraLink
     _hover={{ color: 'white', textDecoration: 'none' }}
-    as={NavLink}
+    as={Link}
     to="/"
     verticalAlign={'center'}
     p={2}
