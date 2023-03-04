@@ -49,11 +49,11 @@ export const RegisterIntermittentPage = (): JSX.Element => {
   const password = useRef({})
   password.current = watch('firstPassword', '')
 
-  const handleValidSubmit = (
+  const handleValidSubmit = async (
     { age, email, firstname, firstPassword, lastname, phoneNumber, username }: FormValues
-  ): void => {
+  ) => {
     setIsLoading(true)
-    dispatch(
+    await dispatch(
       handleIntermittentRegister({
         login: username,
         email,
@@ -64,10 +64,9 @@ export const RegisterIntermittentPage = (): JSX.Element => {
         phoneNumber,
         age: O.getOrNull(age)
       })
-    ).then(() => {
-      setIsLoading(false)
-      navigate('/')
-    })
+    )
+    setIsLoading(false)
+    navigate('/')
   }
 
   const successMessage = useAppSelector(state => state.register.successMessage)

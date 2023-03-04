@@ -27,12 +27,13 @@ export const CancelReservationModal = (
   const dispatch = useAppDispatch()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isDeleting, setIsDeleting] = useState(false)
-  const cancelReservation = (id: number) => {
+  const cancelReservation = async (id: number) => {
     setIsDeleting(true)
-    dispatch(deleteEntity(id)).then(() => {
-      setIsDeleting(false)
-      pipe(userId, O.map(userId => dispatch(getReservations(userId))))
-    })
+    await dispatch(deleteEntity(id))
+
+    setIsDeleting(false)
+    pipe(userId, O.map(userId => dispatch(getReservations(userId))))
+
     onClose()
   }
   return (

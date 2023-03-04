@@ -18,33 +18,31 @@ export const PlaceIntermittent = () => {
   const saveIntermittentPlaces = async (selectedPlaceIds: ReadonlyArray<string>) => {
     const requestUrl = `api/places/intermittent`
     setIsLoading(true)
-    return axios.post(requestUrl, selectedPlaceIds).then(() => {
-      const placesUpdatedNames = places.filter(place =>
-        selectedPlaceIds.includes(place.id.toString())
-      ).map(place => place.name).join(', ')
-      const message = placesUpdatedNames.length > 0 ?
-        `Les intermittents peuvent réserver ces lieux : ${placesUpdatedNames}` :
-        "Aucun lieu n'est disponible pour les intermittents"
-      toast({
-        position: 'top',
-        title: 'Lieux modifiés',
-        description: message,
-        status: placesUpdatedNames.length > 0 ? 'success' : 'warning',
-        duration: 9000,
-        isClosable: true
-      })
-
-      setIsLoading(false)
-    }).catch(() => {
-      alert('Une erreur est survenue')
-      setIsLoading(false)
+    await axios.post(requestUrl, selectedPlaceIds)
+    const placesUpdatedNames = places.filter(place =>
+      selectedPlaceIds.includes(place.id.toString())
+    ).map(place => place.name).join(', ')
+    const message = placesUpdatedNames.length > 0 ?
+      `Les intermittents peuvent réserver ces lieux : ${placesUpdatedNames}` :
+      "Aucun lieu n'est disponible pour les intermittents"
+    toast({
+      position: 'top',
+      title: 'Lieux modifiés',
+      description: message,
+      status: placesUpdatedNames.length > 0 ? 'success' : 'warning',
+      duration: 9000,
+      isClosable: true
     })
+
+    setIsLoading(false)
   }
 
   useEffect(() => {
-    getPlaces().then(res => {
-      setPlaces(res.data)
-    })
+    const getPlacesAync = async () => {
+      const { data } = await getPlaces()
+      setPlaces(data)
+    }
+    getPlacesAync()
   }, [])
 
   useEffect(() => {
@@ -79,7 +77,11 @@ export const PlaceIntermittent = () => {
       </CheckboxGroup>
       <Button
         variant={'save'}
-        onClick={() => saveIntermittentPlaces(selectedPlaceIds)}
+        onClick={() =>
+          saveIntermittentPlaces(selectedPlaceIds).catch(() => {
+            alert('Une erreur est survenue')
+            setIsLoading(false)
+          })}
         isLoading={isLoading}
         leftIcon={<FaSave />}
       >

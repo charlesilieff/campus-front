@@ -40,19 +40,18 @@ export const RegisterPage = () => {
     register,
     formState: { errors }
   } = useForm<FormValues>()
-  const handleValidSubmit = ({ username, email, firstPassword }) => {
+  const handleValidSubmit = async ({ username, email, firstPassword }) => {
     setIsLoading(true)
-    dispatch(
+    await dispatch(
       handleRegister({
         login: username,
         email,
         password: firstPassword,
         langKey: 'en'
       })
-    ).then(() => {
-      setIsLoading(false)
-      navigate('/')
-    })
+    )
+    setIsLoading(false)
+    navigate('/')
   }
 
   const password = useRef({})

@@ -26,19 +26,18 @@ export const ReservationRequestDeleteDialog: FunctionComponent<{ reservationRequ
 
   const toast = useToast()
 
-  const confirmDelete = () => {
-    dispatch(deleteEntity(reservationRequestId)).then(() => {
-      toast({
-        position: 'top',
-        title: 'Réservation annulée',
-        description: 'La demande de réservation a bien été annulée.',
-        status: 'success',
-        duration: 4000,
-        isClosable: true
-      })
-      dispatch(reset())
-      navigate('/reservation-request/new')
+  const confirmDelete = async () => {
+    await dispatch(deleteEntity(reservationRequestId))
+    toast({
+      position: 'top',
+      title: 'Réservation annulée',
+      description: 'La demande de réservation a bien été annulée.',
+      status: 'success',
+      duration: 4000,
+      isClosable: true
     })
+    dispatch(reset())
+    navigate('/reservation-request/new')
   }
 
   return (

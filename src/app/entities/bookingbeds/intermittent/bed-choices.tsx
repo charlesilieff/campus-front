@@ -26,18 +26,29 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
   const [loading, setLoading] = useState(false)
   useEffect(() => {
     setLoading(true)
+    const getIntermittentPlaceWithFreeAndBookedBedsAsync = async (
+      arrivalDate: string,
+      departureDate: string,
+      reservationId: O.Option<string>
+    ) => {
+      const data = await getIntermittentPlaceWithFreeAndBookedBeds(
+        arrivalDate,
+        departureDate,
+        reservationId
+      )
+      const roomsData = data?.flatMap(place => place.rooms)
+
+      setLoading(false)
+
+      setRooms(roomsData)
+    }
+
     if (O.isSome(props.datesAndMeals)) {
-      getIntermittentPlaceWithFreeAndBookedBeds(
+      getIntermittentPlaceWithFreeAndBookedBedsAsync(
         props.datesAndMeals.value.arrivalDate,
         props.datesAndMeals.value.departureDate,
         props.reservationId
-      ).then(data => {
-        const roomsData = data?.flatMap(place => place.rooms)
-
-        setLoading(false)
-
-        setRooms(roomsData)
-      })
+      )
     }
   }, [])
 

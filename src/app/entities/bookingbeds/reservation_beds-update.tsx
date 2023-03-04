@@ -67,12 +67,14 @@ export const ReservationBedsUpdate = (): JSX.Element => {
   const [rooms, setRooms] = useState([] as IRoom[])
 
   const [placeImage, setPlace] = useState(null as IPlace)
-  // const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
 
   useEffect(() => {
-    getPlaces().then(data => setPlaces([...data]))
+    const setPlacesAsync = async () => {
+      const data = await getPlaces()
+      setPlaces([...data])
+    }
+    setPlacesAsync()
     getBookingBeds()
-    // let updatedBedsToBook: number[]
 
     // Pour la modif d'une réservation déjà existante
     // @ts-expect-error : should be re written

@@ -18,9 +18,10 @@ export const ReservationsToBeProcessed = () => {
   useEffect(() => {
     const fetchReservationsToBeProcessed = async () => {
       const requestUrl = 'api/reservation-to-be-processed-count'
-      return (await axios.get<ReservationToBeProcessed>(requestUrl)).data
+      const { data } = await axios.get<ReservationToBeProcessed>(requestUrl)
+      setReservationToBeProcessed(O.some(data))
     }
-    fetchReservationsToBeProcessed().then(response => setReservationToBeProcessed(O.some(response)))
+    fetchReservationsToBeProcessed()
   }, [])
 
   return (
