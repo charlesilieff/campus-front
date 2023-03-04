@@ -1,17 +1,26 @@
-import { Button, Heading, HStack, Select, Text, VStack } from '@chakra-ui/react'
+import {
+  Button,
+  Checkbox,
+  FormControl,
+  FormErrorMessage,
+  Heading,
+  HStack,
+  Select,
+  Text,
+  VStack
+} from '@chakra-ui/react'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { IBedroomKind } from 'app/shared/model/bedroom-kind.model'
 import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
 import type { IPlace } from 'app/shared/model/place.model'
 import type { IRoom } from 'app/shared/model/room.model'
-import { CustomValidatedField } from 'app/shared/util/cross-validation-form'
 import axios from 'axios'
 import dayjs from 'dayjs'
 import { Option as O, pipe } from 'effect'
 import { ReadonlyArray as A } from 'effect/collection'
 import React, { useEffect, useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
 import { useParams } from 'react-router-dom'
 
@@ -22,11 +31,29 @@ import { TextFormat } from './text-format'
 import { getOnePlace, getPlaces } from './utils'
 
 export const ReservationBedsUpdate = (): JSX.Element => {
+  const [bedsToBook, setBedsToBook] = useState([] as number[])
+  const reservationEntity = useAppSelector(state => state.bookingBeds.entity)
+  const defaultValues = (): IBookingBeds => {
+    console.log('reservationEntity', reservationEntity.bedIds)
+    const idBeds = reservationEntity.bedIds?.reduce(
+      (acc, bedId) => ({ ...acc, [bedId?.toString()]: true }),
+      new Object()
+    )
+
+    return { ...idBeds, ...reservationEntity }
+  }
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    getValues
+  } = useForm<IBookingBeds>({
+    defaultValues: defaultValues()
+  })
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useAppDispatch()
   const { id } = useParams<{ id: string }>()
 
-  const reservationEntity = useAppSelector(state => state.bookingBeds.entity)
   const loading = useAppSelector(state => state.bookingBeds.loading)
 
   const arrivalDate = dayjs(reservationEntity.arrivalDate).format('YYYY-MM-DD')
@@ -38,30 +65,35 @@ export const ReservationBedsUpdate = (): JSX.Element => {
   const [places, setPlaces] = useState([] as IPlace[])
   const [roomKinds, setRoomKinds] = useState([] as IBedroomKind[])
   const [rooms, setRooms] = useState([] as IRoom[])
-  const [bedsToBook, setBedsToBook] = useState([] as number[])
+
   const [placeImage, setPlace] = useState(null as IPlace)
   // const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
+
   useEffect(() => {
     getPlaces().then(data => setPlaces([...data]))
     getBookingBeds()
-    let updatedBedsToBook: number[]
+    // let updatedBedsToBook: number[]
 
     // Pour la modif d'une réservation déjà existante
     // @ts-expect-error : should be re written
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    updatedBedsToBook = reservationEntity.beds?.map(b => b.id).reduce(
-      (acc: number[], bedId: number) => acc.concat(bedId),
-      [] as number[]
-    )
-
-    // Pour créer l'object quand on fait des aller-retour avec le premier formulaire.
-    updatedBedsToBook = updatedBedsToBook?.concat(
-      Object.keys(reservationEntity).map(key =>
-        Number(key) && reservationEntity[key] ? Number(key) : null
+    const updatedBedsToBook: number[] = reservationEntity.beds?.map((b: { id: number }) => b.id)
+      .reduce(
+        (acc: number[], bedId: number) => acc.concat(bedId),
+        [] as number[]
       )
+
+    console.log(updatedBedsToBook)
+    pipe(
+      updatedBedsToBook,
+      O.fromNullable,
+      O.getOrElse(() => [] as number[]),
+      bedIds =>
+        bedIds.concat(
+          pipe(O.fromNullable(reservationEntity.bedIds), O.getOrElse(() => [] as number[]))
+        ),
+      setBedsToBook
     )
-    console.log(reservationEntity)
-    setBedsToBook(updatedBedsToBook)
   }, [])
 
   const getBookingBeds = async (): Promise<void> => {
@@ -117,7 +149,7 @@ export const ReservationBedsUpdate = (): JSX.Element => {
 
   const back = (formValues: IBookingBeds): void => {
     formValues.bedIds = bedsToBook
-
+    console.log(formValues)
     dispatch(backToOne(formValues))
   }
 
@@ -136,12 +168,10 @@ export const ReservationBedsUpdate = (): JSX.Element => {
 
   const saveEntity = (values: IBookingBeds): void => {
     setIsLoading(true)
+    console.log('values', values)
     // On sélectionne et on créer une liste d'object bed (id seulement comme attribut)
-    const bedIds = pipe(
-      Object.keys(values).map(key => Number(key) && values[key] ? O.some(Number(key)) : O.none),
-      A.compact
-    )
-
+    const bedIds = pipe(Object.values(bedsToBook), A.map(O.fromNullable), A.compact)
+    console.log('bedIds', bedIds)
     const customerReservation = Object.fromEntries(
       Object.entries(values).filter(entry => !Number(entry[0]))
     )
@@ -186,19 +216,6 @@ export const ReservationBedsUpdate = (): JSX.Element => {
         (acc, bed) => acc + (bedsToBook?.includes(bed.id) ? bed.numberOfPlaces : 0),
         0
       )), 0)), 0)
-
-  const defaultValues = (): IBookingBeds => {
-    const idBeds = reservationEntity.bedIds?.reduce(
-      (acc, bedId) => ({ ...acc, [bedId?.toString()]: true }),
-      new Object()
-    )
-    return { ...idBeds, ...reservationEntity }
-  }
-
-  const form = useForm({
-    mode: 'onBlur',
-    defaultValues: defaultValues()
-  })
 
   return (
     <VStack>
@@ -288,61 +305,51 @@ export const ReservationBedsUpdate = (): JSX.Element => {
         </p>
 
         {loading ? <p>Chargement...</p> : (
-          <FormProvider {...form}>
-            <form
-              onSubmit={form.handleSubmit(saveEntity)}
-            >
-              <Beds rooms={rooms} bedsToBook={bedsToBook} checkBedsToBook={checkBedsToBook} />
-              <CustomValidatedField
-                label="Moyen de paiement"
-                id="reservation-paymentMode"
-                name="paymentMode"
-                data-cy="paymentMode"
-                type="text"
-                registerOptions={{
-                  minLength: { value: 2, message: 'Minimum 2.' },
-                  maxLength: { value: 40, message: 'Maximum 40.' }
-                }}
-              />
-              <CustomValidatedField
-                label="Réservation payée ?"
-                id="reservation-isPaid"
-                name="isPaid"
-                data-cy="isPaid"
-                type="checkbox"
-              />
-              <br />
-              <CustomValidatedField
-                label={`Réservation confirmée si cochée ? ${
-                  reservationEntity.isConfirmed ? '' : "(envoi d'un email en cas de confirmation)"
-                }`}
-                id="reservation-isConfirmed"
-                name="isConfirmed"
-                data-cy="isConfirmed"
-                type="checkbox"
-                style={{ fontWeight: 'bold', fontSize: '1.3em', color: 'red' }}
-              />
-              <br />
-              <Button
-                backgroundColor={'#17A2B8'}
-                color={'white'}
-                leftIcon={<FaArrowLeft />}
-                onClick={() => back(form.getValues())}
-              >
-                Retour
-              </Button>
-              &nbsp;
-              <Button
-                backgroundColor={'#E95420'}
-                color={'white'}
-                type="submit"
-                leftIcon={<FaSave />}
-                isLoading={isLoading}
-              >
-                Enregistrer
-              </Button>
-            </form>
-          </FormProvider>
+          <form onSubmit={handleSubmit(saveEntity)}>
+            <VStack minW={'300px'}>
+              <FormControl>
+                <Beds rooms={rooms} bedsToBook={bedsToBook} checkBedsToBook={checkBedsToBook} />
+                <HStack>
+                  <Text fontWeight={'bold'} fontSize="1.3em" color="red">
+                    {`Réservation confirmée si cochée ? ${
+                      reservationEntity.isConfirmed ?
+                        '' :
+                        "(envoi d'un email en cas de confirmation)"
+                    }`}
+                  </Text>
+                  <Checkbox
+                    id="isConfirmed"
+                    placeholder="Type"
+                    {...register('isConfirmed')}
+                  />
+                </HStack>
+
+                <FormErrorMessage>
+                  {errors.isConfirmed && errors.isConfirmed.message}
+                </FormErrorMessage>
+              </FormControl>
+              <HStack>
+                <Button
+                  backgroundColor={'#17A2B8'}
+                  color={'white'}
+                  leftIcon={<FaArrowLeft />}
+                  onClick={() => back(getValues())}
+                >
+                  Retour
+                </Button>
+                &nbsp;
+                <Button
+                  backgroundColor={'#E95420'}
+                  color={'white'}
+                  type="submit"
+                  leftIcon={<FaSave />}
+                  isLoading={isLoading}
+                >
+                  Enregistrer
+                </Button>
+              </HStack>
+            </VStack>
+          </form>
         )}
       </VStack>
     </VStack>

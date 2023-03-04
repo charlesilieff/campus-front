@@ -18,7 +18,7 @@ export const ReservationCustomerUpdate = () => {
   const isNew = id === undefined
 
   const creating = useAppSelector(state => state.bookingBeds.creating)
-  const pricing = useAppSelector(state => state.pricing.entities)
+
   const reservationEntity = useAppSelector(state => state.bookingBeds.entity)
 
   const loading = useAppSelector(state => state.bookingBeds.loading)
@@ -93,7 +93,7 @@ export const ReservationCustomerUpdate = () => {
       comment: values.reservationComment,
       personNumber: values.personNumber,
       specialDietNumber: values.specialDietNumber,
-      pricing: pricing.find(it => it.id.toString() === values.pricingId.toString()),
+
       customer
     }
 
@@ -198,7 +198,7 @@ export const ReservationCustomerUpdate = () => {
               id="customer-email"
               name="email"
               data-cy="email"
-              type="text"
+              type="email"
               validate={{
                 required: { value: true, message: 'Ce champ est requis.' },
                 pattern: {
