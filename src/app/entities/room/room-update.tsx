@@ -45,10 +45,13 @@ export const RoomUpdate = () => {
   const {
     handleSubmit,
     register,
-    formState: { errors }
-  } = useForm<RoomForm>({
-    defaultValues: defaultValues()
-  })
+    formState: { errors },
+    reset: resetForm
+  } = useForm<RoomForm>({})
+
+  useEffect(() => {
+    resetForm(defaultValues())
+  }, [roomEntity.id])
 
   const loading = useAppSelector(state => state.room.loading)
   const updating = useAppSelector(state => state.room.updating)
@@ -96,7 +99,7 @@ export const RoomUpdate = () => {
   return (
     <VStack>
       <Heading>
-        Créer ou éditer une chambre
+        {isNew ? 'Créer' : 'Éditer'} une chambre
       </Heading>
 
       {loading ? <p>Chargement...</p> : (

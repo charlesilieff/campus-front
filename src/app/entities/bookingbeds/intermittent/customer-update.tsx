@@ -11,7 +11,7 @@ import {
   VStack
 } from '@chakra-ui/react'
 import { Option as O } from 'effect'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
@@ -38,12 +38,16 @@ export const CustomerUpdate = (
   const {
     handleSubmit,
     register,
-    formState: { errors }
-  } = useForm<FormCustomer>({
-    defaultValues: O.isSome(props.customer) ?
-      { ...props.customer.value, age: O.getOrUndefined(props.customer.value.age) } :
-      {}
-  })
+    formState: { errors },
+    reset: resetForm
+  } = useForm<FormCustomer>()
+  useEffect(() => {
+    resetForm(
+      O.isSome(props.customer) ?
+        { ...props.customer.value, age: O.getOrUndefined(props.customer.value.age) } :
+        {}
+    )
+  }, [props.customer])
 
   const handleValidCustomerSubmit = (
     customer: FormCustomer

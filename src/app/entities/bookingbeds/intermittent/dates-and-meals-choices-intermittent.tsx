@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react'
 import { LocalDate } from '@js-joda/core'
 import { Option as O, pipe } from 'effect'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
@@ -36,10 +36,15 @@ export const DatesAndMealsChoices = (
     handleSubmit,
     register,
     watch,
-    formState: { errors }
-  } = useForm<DatesAndMeals>({
-    defaultValues: O.isSome(props.datesAndMeals) ? props.datesAndMeals.value : {}
-  })
+    formState: { errors },
+    reset: resetForm
+  } = useForm<DatesAndMeals>()
+
+  useEffect(() => {
+    resetForm(
+      O.isSome(props.datesAndMeals) ? props.datesAndMeals.value : {}
+    )
+  }, [props.datesAndMeals])
 
   const departureDate = useRef({})
   departureDate.current = watch('departureDate', '')

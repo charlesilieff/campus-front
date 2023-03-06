@@ -48,10 +48,13 @@ export const PlaceUpdate = () => {
   const {
     handleSubmit,
     register,
-    formState: { errors }
-  } = useForm<PlaceForm>({
-    defaultValues: defaultValues()
-  })
+    formState: { errors },
+    reset: resetForm
+  } = useForm<PlaceForm>({})
+
+  useEffect(() => {
+    resetForm(defaultValues())
+  }, [placeEntity.id])
 
   const loading = useAppSelector(state => state.place.loading)
   const updating = useAppSelector(state => state.place.updating)
@@ -95,7 +98,7 @@ export const PlaceUpdate = () => {
   return (
     <VStack spacing={8}>
       <Heading>
-        Créez ou modifiez un lieu
+        {isNew ? 'Créer' : 'Éditer'} un lieu
       </Heading>
 
       {loading ? <p>Chargement...</p> : (

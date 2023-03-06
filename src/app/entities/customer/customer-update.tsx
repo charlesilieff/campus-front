@@ -39,10 +39,13 @@ export const CustomerUpdate = (): JSX.Element => {
   const {
     handleSubmit,
     register,
-    formState: { errors }
-  } = useForm<CustomerForm>({
-    defaultValues: defaultValues()
-  })
+    formState: { errors },
+    reset: resetForm
+  } = useForm<CustomerForm>()
+
+  useEffect(() => {
+    resetForm(defaultValues())
+  }, [customerEntity.id])
 
   const loading = useAppSelector(state => state.customer.loading)
   const updating = useAppSelector(state => state.customer.updating)

@@ -34,7 +34,6 @@ export const ReservationBedsUpdate = (): JSX.Element => {
   const [bedsToBook, setBedsToBook] = useState([] as number[])
   const reservationEntity = useAppSelector(state => state.bookingBeds.entity)
   const defaultValues = (): IBookingBeds => {
-    console.log('reservationEntity', reservationEntity.bedIds)
     const idBeds = reservationEntity.bedIds?.reduce(
       (acc, bedId) => ({ ...acc, [bedId?.toString()]: true }),
       new Object()
@@ -46,10 +45,14 @@ export const ReservationBedsUpdate = (): JSX.Element => {
     handleSubmit,
     register,
     formState: { errors },
-    getValues
-  } = useForm<IBookingBeds>({
-    defaultValues: defaultValues()
-  })
+    getValues,
+    reset: resetForm
+  } = useForm<IBookingBeds>({})
+
+  useEffect(() => {
+    resetForm(defaultValues())
+  }, [reservationEntity.id])
+
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useAppDispatch()
   const { id } = useParams<{ id: string }>()

@@ -41,10 +41,12 @@ export const BedUpdate = () => {
   const {
     handleSubmit,
     register,
-    formState: { errors }
-  } = useForm<BedForm>({
-    defaultValues: defaultValues()
-  })
+    formState: { errors },
+    reset: resetForm
+  } = useForm<BedForm>()
+  useEffect(() => {
+    resetForm(defaultValues())
+  }, [bedEntity.id])
 
   const dispatch = useAppDispatch()
 

@@ -37,6 +37,10 @@ export const UserManagementUpdate = () => {
   const { login } = useParams<'login'>()
   const isNew = login === undefined
   const user = useAppSelector(state => state.userManagement.user)
+  const defaultValues = () =>
+    isNew ? {} : {
+      ...user
+    }
   useEffect(() => {
     if (isNew) {
       dispatch(reset())
@@ -54,10 +58,14 @@ export const UserManagementUpdate = () => {
   const {
     handleSubmit,
     register,
-    formState: { errors }
-  } = useForm<UserForm>({
-    defaultValues: user
-  })
+    formState: { errors },
+    reset: resetForm
+  } = useForm<UserForm>({})
+
+  useEffect(() => {
+    resetForm(defaultValues())
+  }, [user.id])
+
   const handleClose = () => {
     navigate('/admin/user-management')
   }

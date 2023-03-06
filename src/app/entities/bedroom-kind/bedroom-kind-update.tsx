@@ -35,11 +35,13 @@ export const BedroomKindUpdate = () => {
   const {
     handleSubmit,
     register,
-    formState: { errors }
-  } = useForm<BedroomKindForm>({
-    defaultValues: defaultValues()
-  })
+    formState: { errors },
+    reset: resetForm
+  } = useForm<BedroomKindForm>({})
 
+  useEffect(() => {
+    resetForm(defaultValues())
+  }, [bedroomKindEntity.id])
   const navigate = useNavigate()
 
   const loading = useAppSelector(state => state.bedroomKind.loading)
@@ -80,7 +82,7 @@ export const BedroomKindUpdate = () => {
   return (
     <VStack>
       <Heading>
-        Créez ou modifiez un type de chambre
+        {isNew ? 'Créer' : 'Éditer'} un type de chambre
       </Heading>
 
       {loading ? <p>Chargement...</p> : (
