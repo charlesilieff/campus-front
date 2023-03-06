@@ -16,10 +16,10 @@ import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { Option as O, pipe } from 'effect'
 import React, { useEffect } from 'react'
 import { FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
-import { TextFormat } from 'react-jhipster'
 import { Link } from 'react-router-dom'
 
 import { getIntermittentReservations } from '../../reservation/reservation.reducer'
+import { TextFormat } from '../text-format'
 import { CancelReservationModal } from './cancel-modal'
 
 export const IntermittentReservations = () => {

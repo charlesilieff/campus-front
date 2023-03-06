@@ -1,9 +1,9 @@
 import { Badge, Button, Heading, VStack } from '@chakra-ui/react'
 import { APP_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { TextFormat } from 'app/entities/bookingbeds/text-format'
 import React, { useEffect } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
-import { TextFormat } from 'react-jhipster'
 import { Link, useParams } from 'react-router-dom'
 
 import { getUser } from './user-management.reducer'

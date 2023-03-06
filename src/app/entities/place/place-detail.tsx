@@ -2,10 +2,10 @@ import { Button, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { FaArrowLeft, FaPencilAlt } from 'react-icons/fa'
-import { byteSize, openFile } from 'react-jhipster'
 import { Link, useParams } from 'react-router-dom'
 
 import { getEntity } from './place.reducer'
+import { byteSize, openFile } from './utils'
 
 export const PlaceDetail = () => {
   const dispatch = useAppDispatch()
