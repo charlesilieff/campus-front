@@ -22,8 +22,8 @@ export const Pricing = () => {
   }
 
   return (
-    <VStack alignItems={'flex-start'}>
-      <Heading>Tarifs</Heading>
+    <VStack>
+      <Heading alignSelf={'flex-start'}>Tarifs</Heading>
       <HStack alignSelf={'flex-end'}>
         <Button
           variant={'see'}
@@ -45,59 +45,57 @@ export const Pricing = () => {
         </Button>
       </HStack>
 
-      <div className="table-responsive">
-        {pricingList && pricingList.length > 0 ?
-          (
-            <Table>
-              <Thead>
-                <Tr>
-                  <Th>Nom</Th>
-                  <Th>Prix</Th>
-                  <Th>Commentaire</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {pricingList.map((pricing, i) => (
-                  <Tr key={`entity-${i}`} data-cy="entityTable">
-                    <Td>
-                      <Button as={Link} to={`${pricing.id}`} variant="see" size="sm">
-                        {pricing.wording}
+      {pricingList && pricingList.length > 0 ?
+        (
+          <Table>
+            <Thead>
+              <Tr>
+                <Th>Nom</Th>
+                <Th>Prix</Th>
+                <Th>Commentaire</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {pricingList.map((pricing, i) => (
+                <Tr key={`entity-${i}`} data-cy="entityTable">
+                  <Td>
+                    <Button as={Link} to={`${pricing.id}`} variant="see" size="sm">
+                      {pricing.wording}
+                    </Button>
+                  </Td>
+                  <Td>{pricing.price}</Td>
+                  <Td>{pricing.comment}</Td>
+                  <Td>
+                    <HStack justifyContent={'flex-end'} spacing={0}>
+                      <Button
+                        as={Link}
+                        to={`${pricing.id}`}
+                        variant={'see'}
+                        leftIcon={<FaEye />}
+                        size="sm"
+                        borderRightRadius="0"
+                      >
+                        Voir
                       </Button>
-                    </Td>
-                    <Td>{pricing.price}</Td>
-                    <Td>{pricing.comment}</Td>
-                    <Td className="text-right">
-                      <div className="btn-group flex-btn-group-container">
-                        <Button
-                          as={Link}
-                          to={`${pricing.id}`}
-                          variant={'see'}
-                          leftIcon={<FaEye />}
-                          size="sm"
-                          borderRightRadius="0"
-                        >
-                          Voir
-                        </Button>
-                        <Button
-                          as={Link}
-                          to={`${pricing.id}/edit`}
-                          variant={'modify'}
-                          leftIcon={<FaPencilAlt />}
-                          size="sm"
-                          borderRadius={0}
-                        >
-                          Modifier
-                        </Button>
-                        <PricingDeleteDialog pricingId={pricing.id} />
-                      </div>
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          ) :
-          (!loading && <div className="alert alert-warning">No Pricing found</div>)}
-      </div>
+                      <Button
+                        as={Link}
+                        to={`${pricing.id}/edit`}
+                        variant={'modify'}
+                        leftIcon={<FaPencilAlt />}
+                        size="sm"
+                        borderRadius={0}
+                      >
+                        Modifier
+                      </Button>
+                      <PricingDeleteDialog pricingId={pricing.id} />
+                    </HStack>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        ) :
+        (!loading && <div className="alert alert-warning">No Pricing found</div>)}
     </VStack>
   )
 }

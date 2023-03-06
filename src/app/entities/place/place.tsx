@@ -88,7 +88,7 @@ export const Place = () => {
                       null}
                   </Td>
                   <Td className="text-right">
-                    <HStack spacing={0}>
+                    <HStack justifyContent={'flex-end'} spacing={0}>
                       <Button
                         as={Link}
                         to={`${place.id}`}

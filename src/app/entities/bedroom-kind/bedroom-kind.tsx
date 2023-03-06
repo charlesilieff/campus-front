@@ -5,7 +5,6 @@ import {
   Table,
   Tbody,
   Td,
-  Text,
   Th,
   Thead,
   Tr,
@@ -48,23 +47,22 @@ export const BedroomKind = () => {
           >
             Rafraîchir la liste
           </Button>
-          <Link
-            className="btn btn-primary jh-create-entity"
-            id="jh-create-entity"
-            data-cy="entityCreateButton"
+          <Button
+            as={Link}
+            color={'white'}
+            backgroundColor={'#e95420'}
+            _hover={{ textDecoration: 'none', color: 'orange' }}
             to={`new`}
+            leftIcon={<FaPlus />}
           >
-            <HStack>
-              <FaPlus />
-              <Text>Créez un nouveau type de chambre</Text>
-            </HStack>
-          </Link>
+            Créez un nouveau type de chambre
+          </Button>
         </HStack>
       </HStack>
 
       {bedroomKindList && bedroomKindList.length > 0 ?
         (
-          <Table variant={'striped'}>
+          <Table>
             <Thead>
               <Tr>
                 <Th>Nom</Th>
@@ -86,28 +84,31 @@ export const BedroomKind = () => {
                   </Td>
 
                   <Td>{bedroomKind.description}</Td>
-                  <Td className="text-right">
-                    <Button
-                      as={Link}
-                      to={`${bedroomKind.id}`}
-                      variant="see"
-                      size="sm"
-                      borderRightRadius={0}
-                      leftIcon={<FaEye />}
-                    >
-                      Voir
-                    </Button>
-                    <Button
-                      as={Link}
-                      to={`${bedroomKind.id}/edit`}
-                      variant={'modify'}
-                      borderRadius={0}
-                      size="sm"
-                      leftIcon={<FaPencilAlt />}
-                    >
-                      Modifier
-                    </Button>
-                    <BedroomKindDeleteDialog bedroomKindId={bedroomKind.id} />
+                  <Td>
+                    <HStack justifyContent={'flex-end'} spacing={0}>
+                      <Button
+                        as={Link}
+                        to={`${bedroomKind.id}`}
+                        variant="see"
+                        size="sm"
+                        borderRightRadius={0}
+                        leftIcon={<FaEye />}
+                      >
+                        Voir
+                      </Button>
+                      <Button
+                        as={Link}
+                        to={`${bedroomKind.id}/edit`}
+                        variant={'modify'}
+                        borderRadius={0}
+                        size="sm"
+                        leftIcon={<FaPencilAlt />}
+                      >
+                        Modifier
+                      </Button>
+
+                      <BedroomKindDeleteDialog bedroomKindId={bedroomKind.id} />
+                    </HStack>
                   </Td>
                 </Tr>
               ))}

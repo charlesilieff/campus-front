@@ -32,10 +32,7 @@ export const getUsers = createAsyncThunk(
 
 export const getUsersAsAdmin = createAsyncThunk(
   'userManagement/fetch_users_as_admin',
-  async ({ page, size, sort }: IQueryParams) => {
-    const requestUrl = `${adminUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`
-    return axios.get<IUser[]>(requestUrl)
-  }
+  async () => axios.get<IUser[]>(adminUrl)
 )
 
 export const getRoles = createAsyncThunk(
@@ -56,7 +53,7 @@ export const createUser = createAsyncThunk(
   'userManagement/create_user',
   async (user: IUser, thunkAPI) => {
     const result = await axios.post<IUser>(adminUrl, user)
-    thunkAPI.dispatch(getUsersAsAdmin({}))
+    thunkAPI.dispatch(getUsersAsAdmin())
     return result
   },
   { serializeError: serializeAxiosError }
@@ -66,7 +63,7 @@ export const updateUser = createAsyncThunk(
   'userManagement/update_user',
   async (user: IUser, thunkAPI) => {
     const result = await axios.put<IUser>(adminUrl, user)
-    thunkAPI.dispatch(getUsersAsAdmin({}))
+    thunkAPI.dispatch(getUsersAsAdmin())
     return result
   },
   { serializeError: serializeAxiosError }
@@ -77,7 +74,7 @@ export const deleteUser = createAsyncThunk(
   async (id: string, thunkAPI) => {
     const requestUrl = `${adminUrl}/${id}`
     const result = await axios.delete<IUser>(requestUrl)
-    thunkAPI.dispatch(getUsersAsAdmin({}))
+    thunkAPI.dispatch(getUsersAsAdmin())
     return result
   },
   { serializeError: serializeAxiosError }

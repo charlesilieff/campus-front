@@ -1,13 +1,34 @@
-import { Button, Heading, HStack, VStack } from '@chakra-ui/react'
+import {
+  Button,
+  Checkbox,
+  CheckboxGroup,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  HStack,
+  Input,
+  VStack
+} from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { IUser } from 'app/shared/model/user.model'
 import React, { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
-import { isEmail, ValidatedField, ValidatedForm } from 'react-jhipster'
+import { ValidatedField } from 'react-jhipster'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { createUser, getRoles, getUser, reset, updateUser } from './user-management.reducer'
 
+interface UserForm {
+  login: string
+  firstName: string
+  lastName: string
+  email: string
+  activated: boolean
+  langKey: string
+  authorities: string[]
+}
 export const UserManagementUpdate = () => {
   const dispatch = useAppDispatch()
 
@@ -15,12 +36,13 @@ export const UserManagementUpdate = () => {
 
   const { login } = useParams<'login'>()
   const isNew = login === undefined
-
+  const user = useAppSelector(state => state.userManagement.user)
   useEffect(() => {
     if (isNew) {
       dispatch(reset())
     } else {
       dispatch(getUser(login))
+      setIsActivated(user.activated)
     }
     dispatch(getRoles())
     return () => {
@@ -28,6 +50,14 @@ export const UserManagementUpdate = () => {
     }
   }, [login])
 
+  const [isActivated, setIsActivated] = React.useState(true)
+  const {
+    handleSubmit,
+    register,
+    formState: { errors }
+  } = useForm<UserForm>({
+    defaultValues: user
+  })
   const handleClose = () => {
     navigate('/admin/user-management')
   }
@@ -42,7 +72,7 @@ export const UserManagementUpdate = () => {
   }
 
   const isInvalid = false
-  const user = useAppSelector(state => state.userManagement.user)
+
   const loading = useAppSelector(state => state.userManagement.loading)
   const updating = useAppSelector(state => state.userManagement.updating)
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -50,113 +80,153 @@ export const UserManagementUpdate = () => {
 
   return (
     <VStack>
-      <Heading>Créer ou éditer un utilisateur</Heading>
+      <Heading>{isNew ? 'Créer' : 'Éditer'} un utilisateur</Heading>
 
       {loading ? <p>Loading...</p> : (
-        <ValidatedForm onSubmit={saveUser} defaultValues={user}>
-          <ValidatedField
-            type="text"
-            name="login"
-            label="Login"
-            validate={{
-              required: {
-                value: true,
-                message: "Votre nom d'utilisateur est obligatoire."
-              },
-              pattern: {
-                value:
-                  /^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$/,
-                message: "Votre nom d'utilisateur est invalide."
-              },
-              minLength: {
-                value: 1,
-                message: "Votre nom d'utilisateur doit contenir plus d'un caractère."
-              },
-              maxLength: {
-                value: 50,
-                message: "Votre nom d'utilisateur ne peut pas contenir plus de 50 caractères."
-              }
-            }}
-          />
-          <ValidatedField
-            type="text"
-            name="firstName"
-            label="Prénom"
-            validate={{
-              maxLength: {
-                value: 50,
-                message: 'Ce champ doit faire moins de 50 caractères.'
-              }
-            }}
-          />
-          <ValidatedField
-            type="text"
-            name="lastName"
-            label="Nom"
-            validate={{
-              maxLength: {
-                value: 50,
-                message: 'Ce champ doit faire moins de 50 caractères.'
-              }
-            }}
-          />
+        <form
+          onSubmit={handleSubmit(saveUser)}
+        >
+          <VStack spacing={4}>
+            <FormControl isRequired isInvalid={errors.login !== undefined}>
+              <FormLabel htmlFor="login" fontWeight={'bold'}>
+                {'Login'}
+              </FormLabel>
+              <Input
+                id="login"
+                type="text"
+                placeholder="Login"
+                {...register('login', {
+                  required: 'Le login est obligatoire',
+                  minLength: {
+                    value: 2,
+                    message: 'This field is required to be at least 4 characters.'
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: 'This field cannot be longer than 20 characters.'
+                  }
+                })}
+              />
 
-          <ValidatedField
-            name="email"
-            label="Email"
-            placeholder="Votre email"
-            type="email"
-            validate={{
-              required: {
-                value: true,
-                message: 'Votre email est requis.'
-              },
-              minLength: {
-                value: 5,
-                message: 'Votre email doit comporter au moins 5 caractères.'
-              },
-              maxLength: {
-                value: 254,
-                message: 'Votre email ne doit pas comporter plus de 50 caractères.'
-              },
-              validate: v => isEmail(v) || "Votre email n'est pas valide."
-            }}
-          />
-          <ValidatedField
-            type="checkbox"
-            name="activated"
-            check
-            value={true}
-            disabled={!user.id}
-            label="Activé"
-          />
-          <ValidatedField type="select" name="authorities" multiple label="Droits">
-            {authorities.map(role => (
-              <option value={role} key={role}>
-                {role}
-              </option>
-            ))}
-          </ValidatedField>
-          <HStack>
-            <Button
-              as={Link}
-              to="/admin/user-management"
-              variant={'back'}
-              leftIcon={<FaArrowLeft />}
-            >
-              Retour
-            </Button>
+              <FormErrorMessage>
+                {errors.login && errors.login.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={errors.firstName !== undefined}>
+              <FormLabel htmlFor="firstName" fontWeight={'bold'}>
+                {'Prénom'}
+              </FormLabel>
+              <Input
+                id="firstName"
+                type="text"
+                placeholder="Prénom"
+                {...register('firstName', {
+                  maxLength: {
+                    value: 50,
+                    message: 'Ce champ doit faire moins de 50 caractères.'
+                  }
+                })}
+              />
 
-            <Button
-              variant="save"
-              type="submit"
-              disabled={isInvalid || updating}
-              leftIcon={<FaSave />}
-            >
-              Sauvegarder
-            </Button>
-          </HStack>
-        </ValidatedForm>
+              <FormErrorMessage>
+                {errors.lastName && errors.lastName.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={errors.lastName !== undefined}>
+              <FormLabel htmlFor="lastName" fontWeight={'bold'}>
+                {'Nom'}
+              </FormLabel>
+              <Input
+                id="lastName"
+                type="text"
+                placeholder="Nom"
+                {...register('lastName', {
+                  maxLength: {
+                    value: 50,
+                    message: 'Ce champ doit faire moins de 50 caractères.'
+                  }
+                })}
+              />
+
+              <FormErrorMessage>
+                {errors.lastName && errors.lastName.message}
+              </FormErrorMessage>
+            </FormControl>
+
+            <FormControl isRequired isInvalid={errors.email !== undefined}>
+              <FormLabel htmlFor="email" fontWeight={'bold'}>
+                {'Email'}
+              </FormLabel>
+              <Input
+                id="email"
+                type="email"
+                placeholder="Email"
+                {...register('email', {
+                  required: "L'email est obligatoire",
+                  minLength: {
+                    value: 2,
+                    message: 'This field is required to be at least 4 characters.'
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: 'This field cannot be longer than 20 characters.'
+                  }
+                })}
+              />
+
+              <FormErrorMessage>
+                {errors.email && errors.email.message}
+              </FormErrorMessage>
+            </FormControl>
+            <CheckboxGroup>
+              <VStack>
+                <Checkbox
+                  disabled={!user.id}
+                  isChecked={isActivated}
+                  alignSelf={'flex-start'}
+                  pl={12}
+                  onChange={e => setIsActivated(e.target.checked)}
+                >
+                  Activé
+                </Checkbox>
+              </VStack>
+            </CheckboxGroup>
+            <ValidatedField
+              type="checkbox"
+              name="activated"
+              check
+              value={true}
+              disabled={!user.id}
+              label="Activé"
+            />
+            <ValidatedField type="select" name="authorities" multiple label="Droits">
+              {authorities.map(role => (
+                <option value={role} key={role}>
+                  {role}
+                </option>
+              ))}
+            </ValidatedField>
+            <HStack>
+              <Button
+                as={Link}
+                to="/admin/user-management"
+                variant={'back'}
+                leftIcon={<FaArrowLeft />}
+              >
+                Retour
+              </Button>
+
+              <Button
+                variant="save"
+                type="submit"
+                disabled={isInvalid || updating}
+                leftIcon={<FaSave />}
+              >
+                Sauvegarder
+              </Button>
+            </HStack>
+          </VStack>
+        </form>
       )}
     </VStack>
   )

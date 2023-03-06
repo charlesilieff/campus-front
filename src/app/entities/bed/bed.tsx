@@ -1,5 +1,15 @@
-import { Button, Heading, HStack, Table, Tbody, Td, Text, Th, Thead, Tr,
-  VStack } from '@chakra-ui/react'
+import {
+  Button,
+  Heading,
+  HStack,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  VStack
+} from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { PlaceMenu } from 'app/shared/layout/menus/placeMenu'
 import React, { useEffect } from 'react'
@@ -37,23 +47,22 @@ export const Bed = () => {
           >
             Rafraîchir la liste
           </Button>
-          <Link
+          <Button
+            as={Link}
+            color={'white'}
+            backgroundColor={'#e95420'}
+            _hover={{ textDecoration: 'none', color: 'orange' }}
             to={`new`}
-            className="btn btn-primary jh-create-entity"
-            id="jh-create-entity"
-            data-cy="entityCreateButton"
+            leftIcon={<FaPlus />}
           >
-            <HStack>
-              <FaPlus />
-              <Text>Créez un nouveau lit</Text>
-            </HStack>
-          </Link>
+            Créez un nouveau lit
+          </Button>
         </HStack>
       </HStack>
 
       {bedList && bedList.length > 0 ?
         (
-          <Table variant={'striped'}>
+          <Table>
             <Thead>
               <Tr>
                 <Th>Type</Th>
@@ -77,27 +86,29 @@ export const Bed = () => {
                     {bed.room ? <Link to={`/room/${bed.room.id}`}>{bed.room.name}</Link> : ''}
                   </Td>
                   <Td className="text-right">
-                    <Button
-                      as={Link}
-                      to={`${bed.id}`}
-                      variant="see"
-                      size="sm"
-                      leftIcon={<FaEye />}
-                      borderRightRadius={0}
-                    >
-                      Voir
-                    </Button>
-                    <Button
-                      as={Link}
-                      to={`${bed.id}/edit`}
-                      size="sm"
-                      variant="modify"
-                      borderRadius={0}
-                      leftIcon={<FaPencilAlt />}
-                    >
-                      Modifier
-                    </Button>
-                    <BedDeleteDialog bedId={bed.id} />
+                    <HStack justifyContent={'flex-end'} spacing={0}>
+                      <Button
+                        as={Link}
+                        to={`${bed.id}`}
+                        variant="see"
+                        size="sm"
+                        leftIcon={<FaEye />}
+                        borderRightRadius={0}
+                      >
+                        Voir
+                      </Button>
+                      <Button
+                        as={Link}
+                        to={`${bed.id}/edit`}
+                        size="sm"
+                        variant="modify"
+                        borderRadius={0}
+                        leftIcon={<FaPencilAlt />}
+                      >
+                        Modifier
+                      </Button>
+                      <BedDeleteDialog bedId={bed.id} />
+                    </HStack>
                   </Td>
                 </Tr>
               ))}

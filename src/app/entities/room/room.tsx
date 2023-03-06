@@ -87,27 +87,29 @@ export const Room = () => {
                   </Td>
                   <Td>{room.beds?.length}</Td>
                   <Td className="text-right">
-                    <Button
-                      as={Link}
-                      to={`${room.id}`}
-                      variant={'see'}
-                      leftIcon={<FaEye />}
-                      size="sm"
-                      borderRightRadius={0}
-                    >
-                      Voir
-                    </Button>
-                    <Button
-                      as={Link}
-                      to={`${room.id}/edit`}
-                      variant={'modify'}
-                      leftIcon={<FaPencilAlt />}
-                      size="sm"
-                      borderRadius={0}
-                    >
-                      Éditer
-                    </Button>
-                    <RoomDeleteDialog roomId={room.id} />
+                    <HStack justifyContent={'flex-end'} spacing={0}>
+                      <Button
+                        as={Link}
+                        to={`${room.id}`}
+                        variant={'see'}
+                        leftIcon={<FaEye />}
+                        size="sm"
+                        borderRightRadius={0}
+                      >
+                        Voir
+                      </Button>
+                      <Button
+                        as={Link}
+                        to={`${room.id}/edit`}
+                        variant={'modify'}
+                        leftIcon={<FaPencilAlt />}
+                        size="sm"
+                        borderRadius={0}
+                      >
+                        Éditer
+                      </Button>
+                      <RoomDeleteDialog roomId={room.id} />
+                    </HStack>
                   </Td>
                 </Tr>
               ))}

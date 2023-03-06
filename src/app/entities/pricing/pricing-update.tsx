@@ -30,17 +30,13 @@ export const PricingUpdate = () => {
   const navigate = useNavigate()
   const isNew = id === undefined
   const pricingEntity = useAppSelector(state => state.pricing.entity)
-  const defaultValues = () =>
-    isNew ? {} : {
-      ...pricingEntity
-    }
+
   const {
     handleSubmit,
     register,
+    reset: resetForm,
     formState: { errors }
-  } = useForm<PricingForm>({
-    defaultValues: defaultValues()
-  })
+  } = useForm<PricingForm>()
 
   const loading = useAppSelector(state => state.pricing.loading)
   const updating = useAppSelector(state => state.pricing.updating)
@@ -49,7 +45,12 @@ export const PricingUpdate = () => {
   const handleClose = () => {
     navigate('/pricing')
   }
-
+  useEffect(() => {
+    const defaultValue = isNew ? {} : {
+      ...pricingEntity
+    }
+    resetForm(defaultValue)
+  }, [pricingEntity.id])
   useEffect(() => {
     if (isNew) {
       dispatch(reset())
@@ -80,7 +81,7 @@ export const PricingUpdate = () => {
   return (
     <VStack spacing={8}>
       <Heading>
-        Créez ou modifiez un tarif
+        {isNew ? 'Créez' : 'Modifiez'} un tarif
       </Heading>
 
       {loading ? <p>Chargement...</p> : (
