@@ -2,9 +2,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import './app.scss'
 import './config/dayjs'
 
-import { Card } from '@chakra-ui/react'
-import { useEffect } from 'react'
-import React from 'react'
+import { Box, Card } from '@chakra-ui/react'
+import React, { useEffect } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 
@@ -14,7 +13,7 @@ import { Routes as AppRoutes } from './routes'
 import { hasAnyAuthority } from './shared/auth/private-route'
 import { ErrorBoundary } from './shared/error/error-boundary'
 import { Footer } from './shared/layout/footer/footer'
-import { Header } from './shared/layout/header/header'
+import { MainLayout } from './shared/layout/main-layout'
 import { getProfile } from './shared/reducers/application-profile'
 import { getSession } from './shared/reducers/authentication'
 
@@ -44,35 +43,35 @@ export const App = () => {
   const ribbonEnv = useAppSelector(state => state.applicationProfile.ribbonEnv)
   const isInProduction = useAppSelector(state => state.applicationProfile.inProduction)
 
-  const paddingTop = '60px'
   return (
     <Router basename={baseHref}>
-      <div className="app-container" style={{ paddingTop }}>
-        <ToastContainer
-          position={toast.POSITION.TOP_LEFT}
-          className="toastify-container"
-          toastClassName="toastify-toast"
+      <ToastContainer
+        position={toast.POSITION.TOP_LEFT}
+        className="toastify-container"
+        toastClassName="toastify-toast"
+      />
+      <ErrorBoundary>
+        <MainLayout
+          isAuthenticated={isAuthenticated}
+          isAdmin={isAdmin}
+          ribbonEnv={ribbonEnv}
+          isInProduction={isInProduction}
+          isOpenAPIEnabled={true}
+          isIntermittent={isIntermittent}
+          isUser={isUser}
+          isResp={isResp}
+          main={
+            <Box>
+              <Card variant="outline" m={4} p={4}>
+                <ErrorBoundary>
+                  <AppRoutes />
+                </ErrorBoundary>
+              </Card>
+              <Footer />
+            </Box>
+          }
         />
-        <ErrorBoundary>
-          <Header
-            isAuthenticated={isAuthenticated}
-            isAdmin={isAdmin}
-            ribbonEnv={ribbonEnv}
-            isInProduction={isInProduction}
-            isOpenAPIEnabled={true}
-            isIntermittent={isIntermittent}
-            isUser={isUser}
-            isResp={isResp}
-          />
-        </ErrorBoundary>
-
-        <Card variant="outline" m={4} p={4}>
-          <ErrorBoundary>
-            <AppRoutes />
-          </ErrorBoundary>
-        </Card>
-        <Footer />
-      </div>
+      </ErrorBoundary>
     </Router>
   )
 }

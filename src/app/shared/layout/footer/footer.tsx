@@ -4,8 +4,8 @@ import { HStack, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export const Footer = _ => (
-  <VStack alignItems={'flex-start'}>
+export const Footer = () => (
+  <VStack alignItems={'flex-start'} px={4}>
     <HStack>
       <Text>
         Développé par <a href="https://herve-caujolle.fr">Hervé Caujolle</a> et{' '}
