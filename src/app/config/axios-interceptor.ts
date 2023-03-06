@@ -1,6 +1,6 @@
+import { Storage } from 'app/shared/util/storage-util'
 import type { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import axios from 'axios'
-import { Storage } from 'react-jhipster'
 
 import { SERVER_API_URL } from './constants'
 

@@ -2,9 +2,9 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { AppThunk } from 'app/config/store'
 import type { AxiosResponse } from 'axios'
 import axios from 'axios'
-import { Storage } from 'react-jhipster'
 
 import type { IUser } from '../model/user.model'
+import { Storage } from '../util/storage-util'
 import { serializeAxiosError } from './reducer.utils'
 
 const AUTH_TOKEN_KEY = 'jhi-authenticationToken'

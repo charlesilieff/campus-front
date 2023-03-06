@@ -64,8 +64,6 @@
 
 ### Built With
 
-- [SpringBoot](https://spring.io/projects/spring-boot)
-- [JHipster](https://www.jhipster.tech/)
 - [ReactJS](https://fr.reactjs.org/)
 
 Les outils utilisés :
