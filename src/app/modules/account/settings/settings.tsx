@@ -1,15 +1,36 @@
-import { Button, Heading, VStack } from '@chakra-ui/react'
+import {
+  Button,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  HStack,
+  Input,
+  VStack
+} from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { IUser } from 'app/shared/model/user.model'
 import { getSession } from 'app/shared/reducers/authentication'
 import React, { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
 import { FaSave } from 'react-icons/fa'
-import { isEmail, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { toast } from 'react-toastify'
 
 import { reset, saveAccountSettings } from './settings.reducer'
 
+interface UserForm {
+  firstName: string
+  lastName: string
+  email: string
+}
+
 export const Settings = () => {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    reset: resetForm
+  } = useForm<UserForm>({})
   const dispatch = useAppDispatch()
   const account: IUser = useAppSelector(state => state.authentication.account)
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -36,70 +57,90 @@ export const Settings = () => {
       })
     )
   }
-
+  useEffect(() => {
+    resetForm(account)
+  }, [account.id])
   return (
     <VStack>
       <Heading size={'md'}>User settings for {account.login}</Heading>
-      <ValidatedForm id="settings-form" onSubmit={handleValidSubmit} defaultValues={account}>
-        <ValidatedField
-          name="firstName"
-          label="Prénom"
-          id="firstName"
-          placeholder="Prénom"
-          validate={{
-            required: { value: true, message: 'Prénom is required.' },
-            minLength: {
-              value: 1,
-              message: 'Prénom is required to be at least 1 character'
-            },
-            maxLength: {
-              value: 50,
-              message: 'Prénom cannot be longer than 50 characters'
-            }
-          }}
-          data-cy="firstname"
-        />
-        <ValidatedField
-          name="lastName"
-          label="Nom"
-          id="lastName"
-          placeholder="Votre nom"
-          validate={{
-            required: { value: true, message: 'Your nom is required.' },
-            minLength: {
-              value: 1,
-              message: 'Your nom is required to be at least 1 character'
-            },
-            maxLength: {
-              value: 50,
-              message: 'Your nom cannot be longer than 50 characters'
-            }
-          }}
-          data-cy="lastname"
-        />
-        <ValidatedField
-          name="email"
-          label="Email"
-          placeholder={'Your email'}
-          type="email"
-          validate={{
-            required: { value: true, message: 'Your email is required.' },
-            minLength: {
-              value: 5,
-              message: 'Your email is required to be at least 5 characters.'
-            },
-            maxLength: {
-              value: 254,
-              message: 'Your email cannot be longer than 50 characters.'
-            },
-            validate: v => isEmail(v) || 'Your email is invalid.'
-          }}
-          data-cy="email"
-        />
-        <Button variant={'save'} type="submit" leftIcon={<FaSave />}>
-          Save
-        </Button>
-      </ValidatedForm>
+      <form
+        onSubmit={handleSubmit(handleValidSubmit)}
+      >
+        <VStack spacing={4}>
+          <FormControl isInvalid={errors.firstName !== undefined}>
+            <FormLabel htmlFor="firstName" fontWeight={'bold'}>
+              {'Prénom'}
+            </FormLabel>
+            <Input
+              id="firstName"
+              type="text"
+              placeholder="Prénom"
+              {...register('firstName', {
+                maxLength: {
+                  value: 50,
+                  message: 'Ce champ doit faire moins de 50 caractères.'
+                }
+              })}
+            />
+
+            <FormErrorMessage>
+              {errors.lastName && errors.lastName.message}
+            </FormErrorMessage>
+          </FormControl>
+          <FormControl isInvalid={errors.lastName !== undefined}>
+            <FormLabel htmlFor="lastName" fontWeight={'bold'}>
+              {'Nom'}
+            </FormLabel>
+            <Input
+              id="lastName"
+              type="text"
+              placeholder="Nom"
+              {...register('lastName', {
+                maxLength: {
+                  value: 50,
+                  message: 'Ce champ doit faire moins de 50 caractères.'
+                }
+              })}
+            />
+
+            <FormErrorMessage>
+              {errors.lastName && errors.lastName.message}
+            </FormErrorMessage>
+          </FormControl>
+
+          <FormControl isRequired isInvalid={errors.email !== undefined}>
+            <FormLabel htmlFor="email" fontWeight={'bold'}>
+              {'Email'}
+            </FormLabel>
+            <Input
+              id="email"
+              type="email"
+              placeholder="Email"
+              {...register('email', {
+                required: "L'email est obligatoire",
+                minLength: {
+                  value: 4,
+                  message: 'This field is required to be at least 4 characters.'
+                }
+              })}
+            />
+
+            <FormErrorMessage>
+              {errors.email && errors.email.message}
+            </FormErrorMessage>
+          </FormControl>
+
+          <HStack>
+            <Button
+              variant="save"
+              type="submit"
+              leftIcon={<FaSave />}
+            >
+              Sauvegarder
+            </Button>
+          </HStack>
+        </VStack>
+      </form>
     </VStack>
   )
 }

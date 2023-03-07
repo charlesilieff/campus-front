@@ -1,17 +1,38 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { Button, Heading, VStack } from '@chakra-ui/react'
+import {
+  Button,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  Input,
+  VStack
+} from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { PasswordStrengthBar } from 'app/shared/layout/password/password-strength-bar'
 import { getSession } from 'app/shared/reducers/authentication'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
+import { useForm } from 'react-hook-form'
 import { FaSave } from 'react-icons/fa'
-import { ValidatedField, ValidatedForm } from 'react-jhipster'
 import { toast } from 'react-toastify'
 
 import { reset, savePassword } from './password.reducer'
 
+interface PasswordForm {
+  currentPassword: string
+  newPassword: string
+  secondPassword: string
+}
+
 export const Password = () => {
-  const [password, setPassword] = useState('')
+  const {
+    handleSubmit,
+    register,
+    watch,
+    formState: { errors }
+  } = useForm<PasswordForm>({})
+  const password = useRef({})
+  password.current = watch('newPassword', '')
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -25,9 +46,6 @@ export const Password = () => {
   const handleValidSubmit = ({ currentPassword, newPassword }) => {
     dispatch(savePassword({ currentPassword, newPassword }))
   }
-
-  const updatePassword = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setPassword(event.target.value)
 
   const account = useAppSelector(state => state.authentication.account)
   const successMessage = useAppSelector(state => state.password.successMessage)
@@ -43,61 +61,89 @@ export const Password = () => {
 
   return (
     <VStack>
-      <Heading>Mot de passe pour {account.login}</Heading>
+      <Heading size="md">Mot de passe pour {account.login}</Heading>
+
       <VStack p={8}>
-        <ValidatedForm id="password-form" onSubmit={handleValidSubmit}>
-          <ValidatedField
-            name="currentPassword"
-            label="Mot de passe actuel"
-            placeholder={'Mot de passe actuel'}
-            type="password"
-            validate={{
-              required: { value: true, message: 'Your password is required.' }
-            }}
-            data-cy="currentPassword"
-          />
-          <ValidatedField
-            name="newPassword"
-            label="Nouveau mot de passe"
-            placeholder={'Nouveau mot de passe'}
-            type="password"
-            validate={{
-              required: { value: true, message: 'Your password is required.' },
-              minLength: {
-                value: 4,
-                message: 'Your password is required to be at least 4 characters.'
-              },
-              maxLength: {
-                value: 50,
-                message: 'Your password cannot be longer than 50 characters.'
-              }
-            }}
-            onChange={updatePassword}
-            data-cy="newPassword"
-          />
-          <PasswordStrengthBar password={password} />
-          <ValidatedField
-            name="confirmPassword"
-            label="Confirmation du nouveau mot de passe"
-            placeholder="Confirmation du nouveau mot de passe"
-            type="password"
-            validate={{
-              required: { value: true, message: 'Your confirmation password is required.' },
-              minLength: {
-                value: 4,
-                message: 'Your confirmation password is required to be at least 4 characters.'
-              },
-              maxLength: {
-                value: 50,
-                message: 'Your confirmation password cannot be longer than 50 characters.'
-              },
-              validate: v => v === password || 'The password and its confirmation do not match!'
-            }}
-          />
-          <Button variant={'save'} type="submit" leftIcon={<FaSave />}>
-            Enregistrer
-          </Button>
-        </ValidatedForm>
+        <form
+          onSubmit={handleSubmit(handleValidSubmit)}
+        >
+          <VStack spacing={4} alignItems={'flex-start'}>
+            <FormControl isRequired isInvalid={errors.currentPassword !== undefined}>
+              <FormLabel htmlFor="currentPassword">Mot de passe actuel</FormLabel>
+              <Input
+                placeholder="Mot de passe actuel"
+                type="password"
+                {...register('currentPassword', {
+                  required: { value: true, message: 'Votre mot de passe est requis.' },
+                  minLength: {
+                    value: 4,
+                    message: 'Votre mot de passe doit comporter au moins 4 caractères.'
+                  },
+                  maxLength: {
+                    value: 50,
+                    message: 'Votre mot de passe ne doit pas comporter plus de 50 caractères.'
+                  }
+                })}
+              />
+              <FormErrorMessage>
+                {errors.currentPassword && errors.currentPassword.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isRequired isInvalid={errors.newPassword !== undefined}>
+              <FormLabel htmlFor="newPassword">Nouveau mot de passe</FormLabel>
+              <Input
+                placeholder="Nouveau mot de passe"
+                type="password"
+                {...register('newPassword', {
+                  required: { value: true, message: 'Votre mot de passe est requis.' },
+                  minLength: {
+                    value: 4,
+                    message: 'Votre mot de passe doit comporter au moins 4 caractères.'
+                  },
+                  maxLength: {
+                    value: 50,
+                    message: 'Votre mot de passe ne doit pas comporter plus de 50 caractères.'
+                  }
+                })}
+              />
+              <FormErrorMessage>
+                {errors.newPassword && errors.newPassword.message}
+              </FormErrorMessage>
+            </FormControl>
+            <PasswordStrengthBar password={password.current} />
+            <FormControl isRequired isInvalid={errors.secondPassword !== undefined}>
+              <FormLabel htmlFor="secondPassword">Confirmation du mot de passe</FormLabel>
+              <Input
+                id="secondPassword"
+                placeholder="Confirmez votre mot de passe"
+                type="password"
+                {...register('secondPassword', {
+                  required: 'La confirmation du mot de passe est obligatoire.',
+                  minLength: {
+                    value: 4,
+                    message:
+                      'Votre confirmation de mot de passe ne doit pas comporter moins de 4 caractères.'
+                  },
+                  maxLength: {
+                    value: 50,
+                    message:
+                      'Votre confirmation de mot de passe ne doit pas comporter plus de 50 caractères.'
+                  },
+                  validate: v =>
+                    v === password.current
+                    || 'Le mot de passe et la confirmation ne correspondent pas.'
+                })}
+              />
+              <FormErrorMessage>
+                {errors.secondPassword && errors.secondPassword.message}
+              </FormErrorMessage>
+            </FormControl>
+
+            <Button variant={'save'} type="submit" leftIcon={<FaSave />}>
+              Enregistrer
+            </Button>
+          </VStack>
+        </form>
       </VStack>
     </VStack>
   )

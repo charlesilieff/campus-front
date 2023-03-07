@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import pick from 'lodash/pick'
-import type { IPaginationBaseState } from 'react-jhipster'
 
 /**
  * Removes fields with an 'id' field that equals ''.
@@ -26,19 +25,3 @@ export const cleanEntity = (entity: Record<string, any>) => {
  */
 export const mapIdList = (idList: readonly any[]) =>
   idList.filter((id: any) => id !== '').map((id: any) => ({ id }))
-
-export const overridePaginationStateWithQueryParams = (
-  paginationBaseState: IPaginationBaseState,
-  locationSearch: string
-) => {
-  const params = new URLSearchParams(locationSearch)
-  const page = params.get('page')
-  const sort = params.get('sort')
-  if (page && sort) {
-    const sortSplit = sort.split(',')
-    paginationBaseState.activePage = +page
-    paginationBaseState.sort = sortSplit[0]
-    paginationBaseState.order = sortSplit[1]
-  }
-  return paginationBaseState
-}

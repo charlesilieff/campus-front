@@ -1,7 +1,6 @@
 import { useAppSelector } from 'app/config/store'
 import { ErrorBoundary } from 'app/shared/error/error-boundary'
 import React from 'react'
-import { Translate } from 'react-jhipster'
 import type { PathRouteProps } from 'react-router-dom'
 import { Navigate, useLocation } from 'react-router-dom'
 
@@ -35,9 +34,7 @@ export const PrivateRoute = ({ children, hasAnyAuthorities = [], ...rest }: IOwn
     return (
       <div className="insufficient-authority">
         <div className="alert alert-danger">
-          <Translate contentKey="error.http.403">
-            You are not authorized to access this page.
-          </Translate>
+          {"Vous n'êtes pas autorisé à accéder à cette page."}
         </div>
       </div>
     )
