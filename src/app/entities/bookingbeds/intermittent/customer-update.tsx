@@ -10,7 +10,7 @@ import {
   Input,
   VStack
 } from '@chakra-ui/react'
-import { Option as O } from 'effect'
+import * as O from '@effect/data/Option'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
@@ -53,7 +53,7 @@ export const CustomerUpdate = (
     customer: FormCustomer
   ): void => {
     // @ts-expect-error react hook form ne gère pas bien le type de age
-    const age = customer.age === undefined || customer.age === '' ? O.none : O.some(customer.age)
+    const age = customer.age === undefined || customer.age === '' ? O.none() : O.some(customer.age)
     props.setCustomer(O.some({ ...customer, age }))
     props.setUpdateCustomer(false)
   }

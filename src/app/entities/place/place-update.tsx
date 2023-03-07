@@ -10,9 +10,9 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
+import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { IPlace } from 'app/shared/model/place.model'
-import { Option as O } from 'effect'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'

@@ -9,6 +9,9 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
+import * as A from '@effect/data/ReadonlyArray'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { IBedroomKind } from 'app/shared/model/bedroom-kind.model'
@@ -17,8 +20,6 @@ import type { IPlace } from 'app/shared/model/place.model'
 import type { IRoom } from 'app/shared/model/room.model'
 import axios from 'axios'
 import dayjs from 'dayjs'
-import { Option as O, pipe } from 'effect'
-import { ReadonlyArray as A } from 'effect/collection'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'

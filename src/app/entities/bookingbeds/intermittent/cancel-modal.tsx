@@ -10,10 +10,11 @@ import {
   Text,
   useDisclosure
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
 import { useAppDispatch } from 'app/config/store'
 import { deleteEntity } from 'app/entities/bookingbeds/booking-beds.reducer'
 import type { getIntermittentReservations } from 'app/entities/reservation/reservation.reducer'
-import { Option as O, pipe } from 'effect'
 import React, { useState } from 'react'
 import { FaTrash } from 'react-icons/fa'
 

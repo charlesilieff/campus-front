@@ -5,7 +5,7 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
-import { Option as O } from 'effect'
+import * as O from '@effect/data/Option'
 import React from 'react'
 import { BsPencil } from 'react-icons/bs'
 
@@ -89,7 +89,7 @@ export const DatesAndMealsSummary = (
         colorScheme="blue"
         rightIcon={<BsPencil />}
         onClick={() => {
-          setBedId(O.none)
+          setBedId(O.none())
           setUpdate(true)
         }}
       >

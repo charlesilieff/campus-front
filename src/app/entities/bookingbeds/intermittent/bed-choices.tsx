@@ -3,7 +3,8 @@ import {
   Spinner,
   VStack
 } from '@chakra-ui/react'
-import { Option as O, pipe } from 'effect'
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
 import type { FunctionComponent } from 'react'
 import React, { useEffect, useState } from 'react'
 

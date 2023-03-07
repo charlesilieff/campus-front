@@ -9,9 +9,9 @@ import {
   Input,
   VStack
 } from '@chakra-ui/react'
+import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { PasswordStrengthBar } from 'app/shared/layout/password/password-strength-bar'
-import { Option as O } from 'effect'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'

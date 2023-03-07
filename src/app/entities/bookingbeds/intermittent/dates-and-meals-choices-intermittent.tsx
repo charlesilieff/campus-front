@@ -15,8 +15,9 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
 import { LocalDate } from '@js-joda/core'
-import { Option as O, pipe } from 'effect'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'

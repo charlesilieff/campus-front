@@ -51,7 +51,7 @@
   "Array": {
     "prefix": "+A",
     "body": [
-      "import { ReadonlyArray as A } from 'effect/collection'"
+      "import * as A from '@effect/data/ReadonlyArray'"
     ],
     "description": "Array as A"
   },
@@ -142,7 +142,7 @@
   "Option": {
     "prefix": "+O",
     "body": [
-      "import { Option as O } from 'effect'"
+      "import * as O from '@effect/data/Option'"
     ],
     "description": "Option as O"
   },

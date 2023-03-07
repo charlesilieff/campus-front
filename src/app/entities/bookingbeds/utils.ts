@@ -1,6 +1,6 @@
+import * as O from '@effect/data/Option'
 import type { IBedroomKind } from 'app/shared/model/bedroom-kind.model'
 import axios from 'axios'
-import { Option as O } from 'effect'
 
 const apiUrlAllPlaces = 'api/planning/places'
 const apiUrlPlacesWithoutImage = 'api/places/noimage'

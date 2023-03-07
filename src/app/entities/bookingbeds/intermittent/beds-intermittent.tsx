@@ -1,5 +1,5 @@
 import { Radio, RadioGroup, Text, VStack } from '@chakra-ui/react'
-import { Option as O } from 'effect'
+import * as O from '@effect/data/Option'
 import type { FunctionComponent } from 'react'
 import React from 'react'
 
