@@ -1,16 +1,12 @@
-import { Box, MenuItem as MenuItemChakra } from '@chakra-ui/react'
-import type { IconProp } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { HStack, MenuItem as MenuItemChakra, Text } from '@chakra-ui/react'
 import React from 'react'
 import { NavLink as Link } from 'react-router-dom'
 
 export interface IMenuItem {
   children: React.ReactNode
-  icon: IconProp
+  icon: React.ReactNode
   to: string
   id?: string
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  'data-cy'?: string
 }
 
 export class MenuItem extends React.Component<IMenuItem> {
@@ -26,7 +22,10 @@ export class MenuItem extends React.Component<IMenuItem> {
         data-cy={this.props['data-cy']}
         fontWeight={'normal'}
       >
-        <FontAwesomeIcon icon={icon} fixedWidth /> <Box ml={2}>{children}</Box>
+        <HStack ml={2}>
+          {icon}
+          <Text>{children}</Text>
+        </HStack>
       </MenuItemChakra>
     )
   }

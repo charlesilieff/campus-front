@@ -1,7 +1,7 @@
 import './home.scss'
 
+import { CopyIcon } from '@chakra-ui/icons'
 import { Box, Button, HStack, Image, Text, VStack } from '@chakra-ui/react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { AUTHORITIES } from 'app/config/constants'
 import { useAppSelector } from 'app/config/store'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
@@ -66,13 +66,12 @@ export const Home = (): JSX.Element => {
               data-cy="entityCopyLink"
               colorScheme={'blue'}
               onClick={copyLink}
+              leftIcon={<CopyIcon />}
             >
-              <FontAwesomeIcon icon="copy" />
-              &nbsp; Copier le lien de demande de réservation
+              Copier le lien de demande de réservation
             </Button>
           </VStack>
         </Box>
-        <p></p>
 
         {account && account.login ?
           (

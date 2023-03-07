@@ -1,16 +1,8 @@
 import { Button, Menu, MenuButton, MenuList } from '@chakra-ui/react'
-import {
-  faBed,
-  faCalendar,
-  faEuroSign,
-  faIgloo,
-  faMapMarkedAlt,
-  faPersonBooth,
-  faSnowman,
-  faUtensils
-} from '@fortawesome/free-solid-svg-icons'
 import { MenuItem } from 'app/shared/layout/menus/menu-item'
 import React from 'react'
+import { FaBed, FaCalendar, FaEuroSign, FaIgloo, FaMapMarkedAlt, FaPersonBooth, FaSnowman,
+  FaUtensils } from 'react-icons/fa'
 import { GoTriangleDown } from 'react-icons/go'
 import { HiViewList } from 'react-icons/hi'
 
@@ -34,41 +26,41 @@ export const EntitiesMenu = (props: EntitiesMenuProps) => (
     <MenuList>
       {props.isResp && (
         <>
-          <MenuItem icon={faSnowman} to="/customer">
+          <MenuItem icon={<FaSnowman />} to="/customer">
             Clients
           </MenuItem>
-          <MenuItem icon={faEuroSign} to="/pricing">
+          <MenuItem icon={<FaEuroSign />} to="/pricing">
             Tarifications
           </MenuItem>
-          <MenuItem icon={faBed} to="/bed">
+          <MenuItem icon={<FaBed />} to="/bed">
             Lits
           </MenuItem>
-          <MenuItem icon={faPersonBooth} to="/room">
+          <MenuItem icon={<FaPersonBooth />} to="/room">
             Chambres
           </MenuItem>
-          <MenuItem icon={faIgloo} to="/bedroom-kind">
+          <MenuItem icon={<FaIgloo />} to="/bedroom-kind">
             Type de chambres
           </MenuItem>
-          <MenuItem icon={faMapMarkedAlt} to="/place">
+          <MenuItem icon={<FaMapMarkedAlt />} to="/place">
             Lieux
           </MenuItem>
-          <MenuItem icon={faMapMarkedAlt} to="/place/intermittent">
+          <MenuItem icon={<FaMapMarkedAlt />} to="/place/intermittent">
             Intermittent
           </MenuItem>
         </>
       )}
       {
-        <MenuItem icon={faUtensils} to="/kitchen/planning">
+        <MenuItem icon={<FaUtensils />} to="/kitchen/planning">
           Repas
         </MenuItem>
       }
       {(props.isResp || props.isUser) && (
-        <MenuItem icon={faCalendar} to="/planning">
+        <MenuItem icon={<FaCalendar />} to="/planning">
           Planning
         </MenuItem>
       )}
       {(props.isIntermittent) && (
-        <MenuItem icon={faCalendar} to="/reservation/intermittent">
+        <MenuItem icon={<FaCalendar />} to="/reservation/intermittent">
           Mes réservations
         </MenuItem>
       )}

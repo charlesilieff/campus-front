@@ -1,5 +1,3 @@
-// import { faTrash } from '@fortawesome/free-solid-svg-icons'
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { useAppDispatch, useAppSelector } from 'app/config/store'
 // import React, { useEffect } from 'react'
 // import { useNavigate, useParams } from 'react-router-dom'

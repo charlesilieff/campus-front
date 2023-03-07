@@ -1,6 +1,5 @@
 import { CheckCircleIcon, EditIcon, TimeIcon, WarningIcon } from '@chakra-ui/icons'
-import { Box, Button, HStack, Select, Text, VStack } from '@chakra-ui/react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Box, Button, HStack, Input, Select, Text, VStack } from '@chakra-ui/react'
 import { AUTHORITIES } from 'app/config/constants'
 import { useAppSelector } from 'app/config/store'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
@@ -9,8 +8,7 @@ import axios from 'axios'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
-import { BsFillExclamationCircleFill } from 'react-icons/bs'
-import { ValidatedField } from 'react-jhipster'
+import { BsFillExclamationCircleFill, BsPlusCircle } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 
 import type { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
@@ -71,24 +69,18 @@ export const IndexPlanning = () => {
     <>
       <HStack w={'100%'} justifyContent={'space-between'} alignItems={'flex-end'}>
         <HStack>
-          <Box alignSelf={'flex-end'}>
-            <ValidatedField
-              className="inline-block"
-              id="date"
-              name="date"
-              data-cy="date"
+          <Box>
+            <Input
               type="date"
               onChange={newDatePlanning}
             >
-            </ValidatedField>
+            </Input>
           </Box>
           <Select
             alignSelf={'flex-end'}
             width={'200px'}
             className="block"
-            id="place"
             name="placeId"
-            data-cy="place"
             pl={10}
             py={4}
             onChange={e => {
@@ -121,10 +113,9 @@ export const IndexPlanning = () => {
                     replace
                     backgroundColor={'green'}
                     color={'white'}
+                    leftIcon={<BsPlusCircle />}
                   >
-                    <FontAwesomeIcon icon="plus-circle" />
-                    &nbsp;
-                    <span className="d-none d-md-inline">Nouvelle réservation</span>
+                    Nouvelle réservation
                   </Button>
                 </Box>
                 &nbsp;&nbsp;&nbsp;

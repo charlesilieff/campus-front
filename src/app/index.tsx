@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux'
 
 import { App as AppComponent } from './app'
 import { setupAxiosInterceptors } from './config/axios-interceptor'
-import { loadIcons } from './config/icon-loader'
 import { getStore } from './config/store'
 import { theme } from './config/theme'
 import { ErrorBoundary } from './shared/error/error-boundary'
@@ -16,8 +15,6 @@ const store = getStore()
 
 const actions = bindActionCreators({ clearAuthentication }, store.dispatch)
 setupAxiosInterceptors(() => actions.clearAuthentication('login.error.unauthorized'))
-
-loadIcons()
 
 const rootEl = document.getElementById('root')
 const root = rootEl !== null ? createRoot(rootEl) : null

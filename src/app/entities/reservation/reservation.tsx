@@ -1,9 +1,7 @@
-// import { faEye, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 // import { useAppDispatch, useAppSelector } from 'app/config/store'
 // import React, { useEffect } from 'react'
-// import { TextFormat } from 'react-jhipster'
+
 // import { Link } from 'react-router-dom'
 // import { Button, Table } from 'rectstrap'
 

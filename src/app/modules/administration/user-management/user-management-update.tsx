@@ -24,7 +24,6 @@ interface UserForm {
   lastName: string
   email: string
   activated: boolean
-  langKey: string
   authorities: string[]
 }
 export const UserManagementUpdate = () => {

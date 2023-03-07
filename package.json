@@ -21,9 +21,6 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.0.17",
     "@chakra-ui/react": "^2.5.1",
-    "@fortawesome/fontawesome-svg-core": "6.2.1",
-    "@fortawesome/free-solid-svg-icons": "6.2.1",
-    "@fortawesome/react-fontawesome": "^0.2.0",
     "@js-joda/core": "^5.5.2",
     "@js-joda/locale_fr": "^4.8.6",
     "@js-joda/timezone": "^2.17.2",
