@@ -1,7 +1,6 @@
 import {
   Button,
   Checkbox,
-  CheckboxGroup,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -15,7 +14,6 @@ import type { IUser } from 'app/shared/model/user.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
-import { ValidatedField } from 'react-jhipster'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { createUser, getRoles, getUser, reset, updateUser } from './user-management.reducer'
@@ -30,6 +28,8 @@ interface UserForm {
   authorities: string[]
 }
 export const UserManagementUpdate = () => {
+  const [authoritiesSelected, setAuthoritiesSelected] = React.useState<string[]>([])
+
   const dispatch = useAppDispatch()
 
   const navigate = useNavigate()
@@ -46,7 +46,6 @@ export const UserManagementUpdate = () => {
       dispatch(reset())
     } else {
       dispatch(getUser(login))
-      setIsActivated(user.activated)
     }
     dispatch(getRoles())
     return () => {
@@ -54,7 +53,6 @@ export const UserManagementUpdate = () => {
     }
   }, [login])
 
-  const [isActivated, setIsActivated] = React.useState(true)
   const {
     handleSubmit,
     register,
@@ -65,26 +63,32 @@ export const UserManagementUpdate = () => {
   useEffect(() => {
     resetForm(defaultValues())
   }, [user.id])
-
+  useEffect(() => {
+    setAuthoritiesSelected(user.authorities)
+  }, [user.authorities])
   const handleClose = () => {
     navigate('/admin/user-management')
   }
 
-  const saveUser = (values: IUser) => {
+  const saveUser = (authoritiesSelected: Array<string>) => (values: IUser) => {
     if (isNew) {
-      dispatch(createUser(values))
+      dispatch(createUser({ ...values, authorities: authoritiesSelected }))
     } else {
-      dispatch(updateUser(values))
+      dispatch(updateUser({ ...values, authorities: authoritiesSelected }))
     }
     handleClose()
   }
-
+  const saveUserWithAuthorities = saveUser(authoritiesSelected)
   const isInvalid = false
 
   const loading = useAppSelector(state => state.userManagement.loading)
   const updating = useAppSelector(state => state.userManagement.updating)
+  // const [selectedAuthorities, setSelectedAuthorities] = useState<ReadonlyArray<string>>(A.empty)
+  // useEffect(() => {
+  //   setSelectedAuthorities(user.authorities)
+  // }, [user.authorities])
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  const authorities = useAppSelector(state => state.userManagement.authorities)
+  const authorities: string[] = useAppSelector(state => state.userManagement.authorities)
 
   return (
     <VStack>
@@ -92,7 +96,7 @@ export const UserManagementUpdate = () => {
 
       {loading ? <p>Loading...</p> : (
         <form
-          onSubmit={handleSubmit(saveUser)}
+          onSubmit={handleSubmit(saveUserWithAuthorities)}
         >
           <VStack spacing={4}>
             <FormControl isRequired isInvalid={errors.login !== undefined}>
@@ -172,12 +176,8 @@ export const UserManagementUpdate = () => {
                 {...register('email', {
                   required: "L'email est obligatoire",
                   minLength: {
-                    value: 2,
+                    value: 4,
                     message: 'This field is required to be at least 4 characters.'
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: 'This field cannot be longer than 20 characters.'
                   }
                 })}
               />
@@ -186,34 +186,40 @@ export const UserManagementUpdate = () => {
                 {errors.email && errors.email.message}
               </FormErrorMessage>
             </FormControl>
-            <CheckboxGroup>
-              <VStack>
-                <Checkbox
-                  disabled={!user.id}
-                  isChecked={isActivated}
-                  alignSelf={'flex-start'}
-                  pl={12}
-                  onChange={e => setIsActivated(e.target.checked)}
-                >
-                  Activé
-                </Checkbox>
-              </VStack>
-            </CheckboxGroup>
-            <ValidatedField
-              type="checkbox"
-              name="activated"
-              check
-              value={true}
+
+            <Checkbox
               disabled={!user.id}
-              label="Activé"
-            />
-            <ValidatedField type="select" name="authorities" multiple label="Droits">
-              {authorities.map(role => (
-                <option value={role} key={role}>
-                  {role}
-                </option>
-              ))}
-            </ValidatedField>
+              isChecked={user.activated}
+              alignSelf={'flex-start'}
+              {...register('activated')}
+            >
+              Activé
+            </Checkbox>
+
+            <VStack alignItems={'flex-start'}>
+              <FormLabel fontWeight={'bold'}>
+                {'Rôles'}
+              </FormLabel>
+              <VStack alignItems={'flex-start'}>
+                {authorities.map(role => (
+                  <Checkbox
+                    value={role}
+                    onChange={e => {
+                      if (e.target.checked) {
+                        setAuthoritiesSelected([...authoritiesSelected, role])
+                      } else {
+                        setAuthoritiesSelected(authoritiesSelected.filter(a => a !== role))
+                      }
+                    }}
+                    isChecked={authoritiesSelected.includes(role)}
+                    key={role}
+                  >
+                    {role}
+                  </Checkbox>
+                ))}
+              </VStack>
+            </VStack>
+
             <HStack>
               <Button
                 as={Link}

@@ -46,11 +46,11 @@ export const PlaceIntermittent = () => {
   }, [])
 
   useEffect(() => {
-    const places2 = places.filter(place => place.intermittentAllowed).map(place =>
+    const intermittentPlacesIds = places.filter(place => place.intermittentAllowed).map(place =>
       place.id.toString()
     )
 
-    setSelectedPlaceIds(places2)
+    setSelectedPlaceIds(intermittentPlacesIds)
   }, [places])
 
   return (

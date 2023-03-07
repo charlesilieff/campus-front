@@ -15,7 +15,7 @@ import { APP_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { TextFormat } from 'app/entities/bookingbeds/text-format'
 import type { IUser } from 'app/shared/model/user.model'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FaEye, FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
@@ -24,7 +24,9 @@ import { UserManagementDeleteDialog } from './user-managementdelete-dialog'
 
 export const UserManagement = () => {
   const dispatch = useAppDispatch()
-
+  useEffect(() => {
+    getUsersFromProps()
+  }, [])
   const getUsersFromProps = () => {
     dispatch(
       getUsersAsAdmin()
@@ -151,7 +153,7 @@ export const UserManagement = () => {
                   null}
               </Td>
               <Td className="text-end">
-                <div className="btn-group flex-btn-group-container">
+                <HStack justifyContent={'flex-end'} spacing={0}>
                   <Button
                     as={Link}
                     to={user.login}
@@ -173,7 +175,7 @@ export const UserManagement = () => {
                     Éditer
                   </Button>
                   <UserManagementDeleteDialog login={user.login} />
-                </div>
+                </HStack>
               </Td>
             </Tr>
           ))}

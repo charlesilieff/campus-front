@@ -179,7 +179,7 @@ export const RegisterPage = () => {
               {errors.secondPassword && errors.secondPassword.message}
             </FormErrorMessage>
           </FormControl>
-          <Button colorScheme={'green'} type="submit" isLoading={isLoading} my={8}>
+          <Button colorScheme={'green'} type="submit" isLoading={isLoading}>
             Enregistrez-vous
           </Button>
         </form>
