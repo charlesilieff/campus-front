@@ -11,6 +11,7 @@ import {
   VStack
 } from '@chakra-ui/react'
 import * as O from '@effect/data/Option'
+import * as A from '@effect/data/ReadonlyArray'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'

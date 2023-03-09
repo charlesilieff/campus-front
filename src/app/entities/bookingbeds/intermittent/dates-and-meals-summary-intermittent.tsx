@@ -6,6 +6,8 @@ import {
   VStack
 } from '@chakra-ui/react'
 import * as O from '@effect/data/Option'
+import * as A from '@effect/data/ReadonlyArray'
+
 import React from 'react'
 import { BsPencil } from 'react-icons/bs'
 
