@@ -39,6 +39,8 @@ export const Help = () => (
     isExternal
     href="https://docs.google.com/document/d/1cn06oT9xgk26M6tQDHyq9GNug_EHe_sD9bxa-Wbl_X0/edit?usp=sharing"
   >
-    <InfoOutlineIcon /> Aide
+    <HStack>
+      <InfoOutlineIcon /> <Text>Aide</Text>
+    </HStack>
   </ChakraLink>
 )
