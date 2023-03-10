@@ -203,9 +203,9 @@ export const ReservationBedsUpdate = (): JSX.Element => {
     if (reservation?.specialDietNumber > reservation?.personNumber) {
       reservation.specialDietNumber = reservation.personNumber
     }
-    console.log('reservation', reservation)
+
     if (isNew) {
-      dispatch(createEntity(reservation)).then(() => {
+      dispatch(createEntity({ entity: reservation, sendMail: true })).then(() => {
         setIsLoading(false)
       })
     } else {

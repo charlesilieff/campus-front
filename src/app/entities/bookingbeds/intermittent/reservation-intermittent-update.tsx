@@ -110,7 +110,9 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
       )
     } else {
       if (O.isSome(customerId)) {
-        dispatch(createEntity(reservation)).then(() => setIsLoading(false))
+        dispatch(createEntity({ entity: reservation, sendMail: false })).then(() =>
+          setIsLoading(false)
+        )
       } else {
         dispatch(createReservationAndUpdateUser({ entity: reservation, userId })).then(() => {
           dispatch(getSession())

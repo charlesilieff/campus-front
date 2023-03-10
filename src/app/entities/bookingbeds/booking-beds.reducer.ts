@@ -55,10 +55,21 @@ export const getReservationsWithBedIdsEntity = createAsyncThunk(
   { serializeError: serializeAxiosError }
 )
 
+interface ReservationAndSendMail {
+  entity: IBookingBeds
+  sendMail: boolean
+}
+
 export const createEntity = createAsyncThunk(
   'bookingBeds/create_entity',
-  async (entity: IBookingBeds) => {
-    const result = await axios.post<IBookingBeds>(apiUrlBookingBeds, cleanEntity(entity))
+  async (reservationAndSendMail: ReservationAndSendMail) => {
+    const result = await axios.post<IBookingBeds>(
+      apiUrlBookingBeds,
+      cleanEntity(reservationAndSendMail.entity),
+      {
+        params: { sendMail: reservationAndSendMail.sendMail }
+      }
+    )
     // thunkAPI.dispatch(getEntities())
     return result
   },
