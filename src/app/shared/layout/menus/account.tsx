@@ -1,6 +1,6 @@
 import { Button, Menu, MenuButton, MenuList } from '@chakra-ui/react'
 import React from 'react'
-import { FaLock, FaSign, FaSignInAlt, FaSignOutAlt, FaUserPlus, FaWrench } from 'react-icons/fa'
+import { FaLock, FaSignInAlt, FaSignOutAlt, FaUserPlus, FaWrench } from 'react-icons/fa'
 import { GoTriangleDown } from 'react-icons/go'
 import { HiUser } from 'react-icons/hi'
 
@@ -12,7 +12,7 @@ const accountMenuItemsAuthenticated = (
       Paramètres
     </MenuItem>
     <MenuItem icon={<FaLock />} to="/account/password" data-cy="passwordItem">
-      Modifier le mot de passe
+      Modifier le mot de passe{' '}
     </MenuItem>
 
     <MenuItem icon={<FaSignOutAlt />} to="/logout" data-cy="logout">

@@ -144,9 +144,9 @@ export const DatesAndMealsChoices = (
                   <Input
                     id="username"
                     type="date"
-                    placeholder="Date d'arrivée'"
+                    placeholder="Date de départ"
                     {...register('departureDate', {
-                      required: "la date d'arrivée' est obligatoire"
+                      required: 'la date de départ est obligatoire'
                     })}
                   />
 

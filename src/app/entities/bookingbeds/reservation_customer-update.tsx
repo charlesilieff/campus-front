@@ -1,16 +1,44 @@
-import { Button, Heading, useToast, VStack } from '@chakra-ui/react'
+import {
+  Button,
+  Checkbox,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  HStack,
+  Input,
+  Text,
+  Textarea,
+  useToast,
+  VStack
+} from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getPricings } from 'app/entities/pricing/pricing.reducer'
 import type { ICustomer } from 'app/shared/model/customer.model'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
+import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
-import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import type { IBookingBeds } from '../../shared/model/bookingBeds.model'
 import { getReservationsWithBedEntity, reset, setData } from './booking-beds.reducer'
 
 export const ReservationCustomerUpdate = () => {
+  const reservationEntity = useAppSelector(state => state.bookingBeds.entity)
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    reset: resetForm,
+    watch
+  } = useForm<IBookingBeds>({})
+
+  useEffect(() => {
+    resetForm(defaultValues())
+  }, [reservationEntity.id])
+  const personNumber = useRef({})
+  personNumber.current = watch('personNumber', 0)
+
   const dispatch = useAppDispatch()
   const toast = useToast()
   const { id } = useParams<'id'>()
@@ -18,8 +46,6 @@ export const ReservationCustomerUpdate = () => {
   const isNew = id === undefined
 
   const creating = useAppSelector(state => state.bookingBeds.creating)
-
-  const reservationEntity = useAppSelector(state => state.bookingBeds.entity)
 
   const loading = useAppSelector(state => state.bookingBeds.loading)
   const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
@@ -77,11 +103,6 @@ export const ReservationCustomerUpdate = () => {
       phoneNumber: values.phoneNumber
     }
 
-    // HCau Vérue: imposer une valeur specialDiet ne pouvant pas dépasser le nombre de visiteurs.
-    if (values.specialDietNumber > values.personNumber) {
-      values.specialDietNumber = values.personNumber
-    }
-
     const reservation: IBookingBeds = {
       ...reservationEntity,
       arrivalDate: values.arrivalDate,
@@ -118,197 +139,195 @@ export const ReservationCustomerUpdate = () => {
         {`${isNew ? 'Créer' : 'Modifier'} la réservation et le client`}
       </Heading>
 
-      {loading ?
-        <p>Chargement...</p> :
-        (
-          <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
-            <Button
-              as={Link}
-              variant="back"
-              to="/planning"
-            >
-              Annuler
-            </Button>
-            &nbsp;
-            <Button variant={'save'} type="submit" leftIcon={<FaSave />}>
-              Suivant
-            </Button>
-            <ValidatedField
-              label="Prénom"
-              id="customer-firstname"
-              name="firstname"
-              data-cy="firstname"
-              type="text"
-              validate={{
-                required: { value: true, message: 'Ce champ est requis.' },
-                minLength: {
-                  value: 1,
-                  message: 'Ce champ est requis et doit avoir au moins 1 caractère.'
-                },
-                maxLength: {
-                  value: 50,
-                  message: 'Ce champ ne peut pas dépasser plus de 50 caractères.'
-                }
-              }}
-            />
-            <ValidatedField
-              label="Nom"
-              id="customer-lastname"
-              name="lastname"
-              data-cy="lastname"
-              type="text"
-              validate={{
-                required: { value: true, message: 'Ce champ est requis.' },
-                minLength: {
-                  value: 1,
-                  message: 'Ce champ est requis et doit avoir au moins 1 caractère.'
-                },
-                maxLength: {
-                  value: 50,
-                  message: 'Ce champ ne peut pas dépasser plus de 50 caractères.'
-                }
-              }}
-            />
-            <ValidatedField
-              label="Age"
-              id="customer-age"
-              name="age"
-              data-cy="age"
-              type="number"
-              validate={{
-                min: { value: 1, message: 'Age minimum: 1 an.' },
-                max: { value: 125, message: 'Age maximum: 125 ans.' },
-                validate: v => isNumber(v) || 'Ce champ doit contenir un nombre.'
-              }}
-            />
-            <ValidatedField
-              label="Téléphone"
-              id="customer-phoneNumber"
-              name="phoneNumber"
-              data-cy="phoneNumber"
-              type="text"
-              validate={{
-                required: { value: true, message: 'Le numéro de téléphone est obligatoire.' },
-                minLength: { value: 10, message: 'Minimum 10' },
-                maxLength: { value: 16, message: 'Maximum 16' }
-              }}
-            />
-            <ValidatedField
-              label="Email"
-              id="customer-email"
-              name="email"
-              data-cy="email"
-              type="email"
-              validate={{
-                required: { value: true, message: 'Ce champ est requis.' },
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: 'Adresse email invalide.'
-                }
-              }}
-            />
-            <ValidatedField
-              label="Remarque sur le client"
-              id="customer-comment"
-              name="customerComment"
-              data-cy="comment"
-              type="textarea"
-              validate={{
-                maxLength: {
-                  value: 400,
-                  message: 'Ce champ ne doit pas dépasser 400 caractères.'
-                }
-              }}
-            />
-            <ValidatedField
-              label="Nombre de personnes à héberger"
-              id="reservation-personNumber"
-              name="personNumber"
-              data-cy="personNumber"
-              type="number"
-              validate={{
-                required: { value: true, message: 'Valeur requise' },
-                min: { value: 1, message: 'Le nombre doit être au minimum 1.' },
-                max: { value: 1000, message: 'Le nombre ne doit pas dépasser 1000.' },
-                validate: v => isNumber(v) || 'Ce champ doit contenir un nombre.'
-              }}
-            />
-            <ValidatedField
-              label="Nombre de régimes sans gluten OU sans lactose."
-              id="reservation-specialDietNumber"
-              name="specialDietNumber"
-              data-cy="specialDietNumber"
-              type="number"
-              validate={{
-                required: { value: true, message: 'Valeur requise' },
-                min: { value: 0, message: 'Minimum 0' },
-                max: { value: 1000, message: 'Max 1000' },
-                validate: value => isNumber(value) || 'Tapez un nombre'
-              }}
-            />
+      {loading ? <p>Chargement...</p> : (
+        <form onSubmit={handleSubmit(saveEntity)}>
+          <VStack minW={'300px'}>
+            <HStack>
+              <Button
+                as={Link}
+                variant="back"
+                to="/planning"
+              >
+                Annuler
+              </Button>
+              &nbsp;
+              <Button variant={'save'} type="submit" leftIcon={<FaSave />}>
+                Suivant
+              </Button>
+            </HStack>
+            <FormControl isRequired isInvalid={errors.lastname !== undefined}>
+              <FormLabel htmlFor="firstname" fontWeight={'bold'}>
+                {'Prénom'}
+              </FormLabel>
+              <Input
+                id="firstname"
+                type="text"
+                placeholder="Prénom"
+                {...register('firstname', {
+                  required: 'Le prénom est obligatoire',
+                  minLength: {
+                    value: 1,
+                    message: 'This field is required to be at least 1 characters.'
+                  },
+                  maxLength: {
+                    value: 50,
+                    message: 'This field cannot be longer than 50 characters.'
+                  }
+                })}
+              />
 
-            <ValidatedField
-              label="Prévoir le repas du midi, d'arrivée"
-              id="reservation-isArrivalLunch"
-              name="isArrivalLunch"
-              data-cy="isArrivalLunch"
-              type="checkbox"
-              check
-            />
-            <ValidatedField
-              label="Prévoir le repas du soir, d'arrivée"
-              id="reservation-isArrivalDiner"
-              name="isArrivalDiner"
-              data-cy="isArrivalDiner"
-              type="checkbox"
-              check
-            />
-            <ValidatedField
-              label="Prévoir le repas du midi, du départ"
-              id="reservation-isDepartureLunch"
-              name="isDepartureLunch"
-              data-cy="isDepartureLunch"
-              type="checkbox"
-              check
-            />
-            <ValidatedField
-              label="Prévoir le repas du soir, du départ"
-              id="reservation-isDepartureDiner"
-              name="isDepartureDiner"
-              data-cy="isDepartureDiner"
-              type="checkbox"
-              check
-            />
-            <ValidatedField
-              label="Date d'arrivée"
-              id="reservation-arrivalDate"
-              name="arrivalDate"
-              data-cy="arrivalDate"
-              type="date"
-              validate={{
-                required: { value: true, message: 'Valeur requise' }
-              }}
-            />
-            <ValidatedField
-              label="Date de départ"
-              id="reservation-departureDate"
-              name="departureDate"
-              data-cy="departureDate"
-              type="date"
-              validate={{
-                required: { value: true, message: 'Valeur requise' }
-              }}
-            />
-            <ValidatedField
-              label="Commentaire"
-              id="reservation-comment"
-              name="reservationComment"
-              data-cy="comment"
-              type="textarea"
-              validate={{
-                maxLength: { value: 400, message: 'Max 400' }
-              }}
-            />
+              <FormErrorMessage>
+                {errors.firstname && errors.firstname.message}
+              </FormErrorMessage>
+            </FormControl>
+
+            <FormControl isRequired isInvalid={errors.lastname !== undefined}>
+              <FormLabel htmlFor="lastname" fontWeight={'bold'}>
+                {'Nom'}
+              </FormLabel>
+              <Input
+                id="lastname"
+                type="text"
+                placeholder="Nom"
+                {...register('lastname', {
+                  required: 'Le nom est obligatoire',
+                  minLength: {
+                    value: 1,
+                    message: 'This field is required to be at least 1 characters.'
+                  },
+                  maxLength: {
+                    value: 50,
+                    message: 'This field cannot be longer than 50 characters.'
+                  }
+                })}
+              />
+
+              <FormErrorMessage>
+                {errors.lastname && errors.lastname.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={errors.age !== undefined}>
+              <FormLabel htmlFor="age" fontWeight={'bold'}>
+                {'Age'}
+              </FormLabel>
+              <Input
+                id="age"
+                type="number"
+                placeholder="Age"
+                {...register('age', {})}
+              />
+
+              <FormErrorMessage>
+                {errors.age && errors.age.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isRequired isInvalid={errors.phoneNumber !== undefined}>
+              <FormLabel htmlFor="phoneNumber" fontWeight={'bold'}>
+                {'Téléphone'}
+              </FormLabel>
+              <Input
+                id="phoneNumber"
+                type="text"
+                placeholder="Téléphone"
+                {...register('phoneNumber', {})}
+              />
+
+              <FormErrorMessage>
+                {errors.phoneNumber && errors.phoneNumber.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isRequired isInvalid={errors.email !== undefined}>
+              <FormLabel htmlFor="email" fontWeight={'bold'}>
+                {'Email'}
+              </FormLabel>
+              <Input
+                id="email"
+                type="email"
+                placeholder="Email"
+                {...register('email', {
+                  required: "L'email est obligatoire",
+                  minLength: {
+                    value: 1,
+                    message: 'This field is required to be at least 1 characters.'
+                  },
+                  maxLength: {
+                    value: 50,
+                    message: 'This field cannot be longer than 50 characters.'
+                  }
+                })}
+              />
+
+              <FormErrorMessage>
+                {errors.email && errors.email.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={errors.comment !== undefined}>
+              <FormLabel htmlFor="comment" fontWeight={'bold'}>
+                {'Remarque sur le client'}
+              </FormLabel>
+              <Textarea
+                id="comment"
+                placeholder="Commentaire"
+                {...register('comment', {
+                  maxLength: {
+                    value: 400,
+                    message: 'Ce champ ne doit pas dépasser 400 caractères.'
+                  }
+                })}
+              />
+
+              <FormErrorMessage>
+                {errors.comment && errors.comment.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isRequired isInvalid={errors.personNumber !== undefined}>
+              <FormLabel htmlFor="personNumber" fontWeight={'bold'}>
+                {'Nombre de personnes à héberger'}
+              </FormLabel>
+              <Input
+                type="number"
+                {...register('personNumber', {})}
+              />
+
+              <FormErrorMessage>
+                {errors.personNumber && errors.personNumber.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isRequired isInvalid={errors.specialDietNumber !== undefined}>
+              <FormLabel htmlFor="specialDietNumber" fontWeight={'bold'}>
+                {'Nombre de régimes sans gluten OU sans lactose.'}
+              </FormLabel>
+              <Input
+                type="number"
+                {...register('specialDietNumber', {
+                  required: 'Le nombre de régimes spéciaux est obligatoire',
+                  validate(v) {
+                    if (v > personNumber.current) {
+                      return 'Le nombre de régimes spéciaux ne peut pas être supérieur au nombre de personnes'
+                    }
+                  }
+                })}
+              />
+
+              <FormErrorMessage>
+                {errors.specialDietNumber && errors.specialDietNumber.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="selectionRepas" fontWeight={'bold'}>
+                {'Sélection des repas :'}
+              </FormLabel>
+              <HStack>
+                <Text fontWeight={'bold'}>{"Jour d'arrivée :"}</Text>
+                <Checkbox {...register('isArrivalLunch')}>déjeuner</Checkbox>
+                <Checkbox {...register('isArrivalDiner')}>dîner</Checkbox>
+              </HStack>
+              <HStack>
+                <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>
+                <Checkbox {...register('isDepartureLunch')}>déjeuner</Checkbox>
+                <Checkbox {...register('isDepartureDiner')}>dîner</Checkbox>
+              </HStack>
+            </FormControl>
 
             {!isNew ?
               (
@@ -322,20 +341,22 @@ export const ReservationCustomerUpdate = () => {
                 </Button>
               ) :
               ('')}
-            &nbsp;
-            <Button
-              as={Link}
-              variant="back"
-              to="/planning"
-            >
-              Annuler
-            </Button>
-            &nbsp;
-            <Button variant={'save'} type="submit" leftIcon={<FaSave />}>
-              Suivant
-            </Button>
-          </ValidatedForm>
-        )}
+            <HStack>
+              <Button
+                as={Link}
+                variant="back"
+                to="/planning"
+              >
+                Annuler
+              </Button>
+
+              <Button variant={'save'} type="submit" leftIcon={<FaSave />}>
+                Suivant
+              </Button>
+            </HStack>
+          </VStack>
+        </form>
+      )}
     </VStack>
   )
 }

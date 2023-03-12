@@ -89,7 +89,6 @@ export const ReservationBedsUpdate = (): JSX.Element => {
         [] as number[]
       )
 
-    console.log(updatedBedsToBook)
     pipe(
       updatedBedsToBook,
       O.fromNullable,
