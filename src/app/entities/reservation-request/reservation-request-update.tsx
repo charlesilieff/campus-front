@@ -1,13 +1,24 @@
 /* eslint-disable simple-import-sort/imports */
-import { Button, Heading, HStack, VStack } from '@chakra-ui/react'
+import {
+  Button,
+  Checkbox,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  HStack,
+  Input,
+  Text,
+  Textarea,
+  VStack
+} from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { IReservationRequest } from 'app/shared/model/reservation-request.model'
-import type { IReservation } from 'app/shared/model/reservation.model'
-import React, { useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
-import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster'
 import { Link, useParams } from 'react-router-dom'
+import { isArrivalDateIsBeforeDepartureDate, isDateBeforeNow } from '../bookingbeds/utils'
 
 import {
   backToOne,
@@ -15,25 +26,64 @@ import {
   updateEntity
 } from './reservation-request.reducer'
 
+export interface ReservationForm {
+  id?: number
+  personNumber?: number
+  paymentMode?: string | null
+  isPaid?: boolean
+  isConfirmed?: boolean
+  reservationNumber?: string | null
+  specialDietNumber?: number
+  isArrivalDiner?: boolean
+  isDepartureDiner?: boolean
+  isArrivalLunch?: boolean
+  isDepartureLunch?: boolean
+  arrivalDate?: string
+  departureDate?: string
+  comment?: string | null
+}
+
 export const ReservationUpdate = () => {
+  const reservationEntity = useAppSelector(state => state.requestReservation.entity.reservation)
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    reset: resetForm,
+    watch
+  } = useForm<ReservationForm>({})
+
+  useEffect(() => {
+    const defaultReservationForm: ReservationForm = {
+      ...defaultValues,
+      arrivalDate: defaultValues?.arrivalDate?.toString(),
+      departureDate: defaultValues?.departureDate?.toString()
+    }
+
+    resetForm(defaultReservationForm)
+  }, [reservationEntity?.id])
+  const personNumber = useRef({})
+  personNumber.current = watch('personNumber', 0)
   const dispatch = useAppDispatch()
   const { uuid } = useParams<'uuid'>()
 
   const isNew = uuid === undefined
 
   const customerEntity = useAppSelector(state => state.requestReservation.entity.customer)
-  const reservationEntity = useAppSelector(state => state.requestReservation.entity.reservation)
+
   const loading = useAppSelector(state => state.requestReservation.loading)
   const updateSuccess = useAppSelector(state => state.requestReservation.updateSuccess)
 
-  const today = new Date().setHours(0) as unknown as Date
+  const departureDate = useRef({})
+  departureDate.current = watch('departureDate', null)
 
-  const [arrivalDate, setArrivalDate] = useState('')
-
-  const [personNumber, setPersonNumber] = useState(0)
-  const saveEntity = (values: IReservation): void => {
+  const saveEntity = (values: ReservationForm): void => {
     const entity: IReservationRequest = {
-      reservation: { ...reservationEntity, ...values },
+      // @ts-expect-error : date is not in good format
+      reservation: {
+        ...reservationEntity,
+        ...values
+      },
 
       customer: {
         ...customerEntity,
@@ -93,133 +143,143 @@ export const ReservationUpdate = () => {
           </div>
         ) :
         (
-          <ValidatedForm onSubmit={saveEntity} defaultValues={defaultValues}>
-            <ValidatedField
-              className="inline-block"
-              label="Nombre de personnes à héberger"
-              id="reservation-personNumber"
-              name="personNumber"
-              onChange={e => setPersonNumber(Number(e.target.value))}
-              type="number"
-              validate={{
-                required: { value: true, message: 'Valeur requise' },
-                min: { value: 1, message: 'Minimum 1' },
-                max: { value: 1000, message: 'Max 1000' },
-                validate: value => isNumber(value) || 'This field should be a number.'
-              }}
-            />
-            <ValidatedField
-              className="inline-block"
-              label="Nombre de régimes sans gluten OU sans lactose"
-              id="reservation-specialDietNumber"
-              name="specialDietNumber"
-              type="number"
-              validate={{
-                required: { value: true, message: 'Valeur requise' },
-                min: { value: 0, message: 'Minimum 0' },
-                max: { value: 1000, message: 'Max 1000' },
+          <form onSubmit={handleSubmit(saveEntity)}>
+            <VStack minW={'300px'}>
+              <FormControl isRequired isInvalid={errors.personNumber !== undefined}>
+                <FormLabel htmlFor="personNumber" fontWeight={'bold'}>
+                  {'Nombre de personnes à héberger'}
+                </FormLabel>
+                <Input
+                  type="number"
+                  {...register('personNumber', {})}
+                />
 
-                validate(value: number) {
-                  if (Number(value) > personNumber) {
-                    return 'Ne peut pas être supérieur au nombre de personne hébergées.'
-                  }
-                  return true
-                }
-              }}
-            />
-            <ValidatedField
-              label="Prévoir le repas de midi, le jour d'arrivée"
-              name="isArrivalLunch"
-              type="checkbox"
-              check
-            />
-            <ValidatedField
-              label="Prévoir le repas du soir, le jour d'arrivée"
-              name="isArrivalDiner"
-              type="checkbox"
-              check
-            />
-            <ValidatedField
-              label="Prévoir le repas de midi, le jour du départ"
-              id="is_departure_lunch"
-              name="isDepartureLunch"
-              data-cy="isDepartureLunch"
-              type="checkbox"
-              check
-            />
-            <ValidatedField
-              label="Prévoir le repas du soir, le jour du départ"
-              id="is_departure_diner"
-              name="isDepartureDiner"
-              data-cy="isDepartureDiner"
-              type="checkbox"
-              check
-            />
+                <FormErrorMessage>
+                  {errors.personNumber && errors.personNumber.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl isRequired isInvalid={errors.specialDietNumber !== undefined}>
+                <FormLabel htmlFor="specialDietNumber" fontWeight={'bold'}>
+                  {'Nombre de régimes sans gluten OU sans lactose.'}
+                </FormLabel>
+                <Input
+                  type="number"
+                  {...register('specialDietNumber', {
+                    required: 'Le nombre de régimes spéciaux est obligatoire',
+                    validate(v) {
+                      if (v > personNumber.current) {
+                        return 'Le nombre de régimes spéciaux ne peut pas être supérieur au nombre de personnes'
+                      }
+                    }
+                  })}
+                />
 
-            <ValidatedField
-              label="Veuillez indiquer si vous souhaitez des lits doubles, et autres demandes."
-              id="reservation-comment"
-              name="comment"
-              data-cy="comment"
-              type="textarea"
-              validate={{
-                maxLength: {
-                  value: 400,
-                  message: 'Le commentaire ne peut pas faire plus de 400 caractères.'
-                }
-              }}
-            />
-            <ValidatedField
-              label="Date d'arrivée"
-              id="reservation-arrivalDate"
-              name="arrivalDate"
-              type="date"
-              onChange={e => setArrivalDate(e.target.value)}
-              validate={{
-                required: { value: true, message: "La date d'arrivée est obligatoire." },
-                validate(value: string) {
-                  if (new Date(value) <= today) {
-                    return "Veuillez rentrez une date d'arrivée postérieure à hier."
-                  }
-                  return true
-                }
-              }}
-            />
-            <ValidatedField
-              label="Date de départ"
-              id="reservation-departureDate"
-              name="departureDate"
-              type="date"
-              validate={{
-                required: { value: true, message: "La date d'arrivée est obligatoire." },
-                validate(value: string) {
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                  if (new Date(value) <= new Date(arrivalDate)) {
-                    return 'Veuillez rentrez une date postérieure à votre arrivée.'
-                  }
-                  return true
-                }
-              }}
-            />
-            <HStack>
-              <Button
-                onClick={() => dispatch(backToOne(form.getValues()))}
-                leftIcon={<FaArrowLeft />}
-                variant="back"
-              >
-                Retour
-              </Button>
+                <FormErrorMessage>
+                  {errors.specialDietNumber && errors.specialDietNumber.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl>
+                <FormLabel htmlFor="selectionRepas" fontWeight={'bold'}>
+                  {'Sélection des repas :'}
+                </FormLabel>
+                <HStack>
+                  <Text fontWeight={'bold'}>{"Jour d'arrivée :"}</Text>
+                  <Checkbox {...register('isArrivalLunch')}>déjeuner</Checkbox>
+                  <Checkbox {...register('isArrivalDiner')}>dîner (soir)</Checkbox>
+                </HStack>
+                <HStack>
+                  <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>
+                  <Checkbox {...register('isDepartureLunch')}>déjeuner</Checkbox>
+                  <Checkbox {...register('isDepartureDiner')}>dîner (soir)</Checkbox>
+                </HStack>
+              </FormControl>
+              <FormControl isInvalid={errors.comment !== undefined}>
+                <FormLabel htmlFor="comment" fontWeight={'bold'}>
+                  {'Veuillez indiquer si vous souhaitez des lits doubles, et autres demandes.'}
+                </FormLabel>
+                <Textarea
+                  id="comment"
+                  placeholder="Commentaire"
+                  {...register('comment', {
+                    maxLength: {
+                      value: 400,
+                      message: 'Ce champ ne doit pas dépasser 400 caractères.'
+                    }
+                  })}
+                />
 
-              <Button
-                variant={'save'}
-                type="submit"
-                leftIcon={<FaSave />}
-                isLoading={loading}
-              >
-                Envoyer la demande
-              </Button>
-            </HStack>
-          </ValidatedForm>
+                <FormErrorMessage>
+                  {errors.comment && errors.comment.message}
+                </FormErrorMessage>
+              </FormControl>
+
+              <FormControl isRequired isInvalid={errors.arrivalDate !== undefined}>
+                <FormLabel htmlFor="arrivalDate" fontWeight={'bold'}>
+                  {"Date d'arrivée"}
+                </FormLabel>
+                <Input
+                  id="username"
+                  type="date"
+                  placeholder="Date d'arrivée'"
+                  {...register('arrivalDate', {
+                    required: "la date d'arrivée' est obligatoire",
+                    validate(v) {
+                      if (
+                        !isArrivalDateIsBeforeDepartureDate(v, departureDate.current.toString())
+                      ) {
+                        return "La date d'arrivée doit être avant la date de départ"
+                      }
+                      if (isDateBeforeNow(v)) {
+                        return "La date d'arrivée doit être après aujourd’hui"
+                      } else {
+                        return true
+                      }
+                    }
+                  })}
+                />
+
+                <FormErrorMessage>
+                  {errors.arrivalDate && errors.arrivalDate.message}
+                </FormErrorMessage>
+              </FormControl>
+
+              <FormControl isRequired isInvalid={errors.departureDate !== undefined}>
+                <FormLabel htmlFor="departureDate" fontWeight={'bold'}>
+                  {'Date de départ'}
+                </FormLabel>
+                <Input
+                  id="username"
+                  type="date"
+                  placeholder="Date de départ"
+                  {...register('departureDate', {
+                    required: 'la date de départ est obligatoire'
+                  })}
+                />
+
+                <FormErrorMessage>
+                  {errors.departureDate && errors.departureDate.message}
+                </FormErrorMessage>
+              </FormControl>
+              <HStack>
+                <Button
+                  onClick={() => dispatch(backToOne(form.getValues()))}
+                  leftIcon={<FaArrowLeft />}
+                  variant="back"
+                >
+                  Retour
+                </Button>
+
+                <Button
+                  variant={'save'}
+                  type="submit"
+                  leftIcon={<FaSave />}
+                  isLoading={loading}
+                >
+                  Envoyer la demande
+                </Button>
+              </HStack>
+            </VStack>
+          </form>
         )}
     </VStack>
   )

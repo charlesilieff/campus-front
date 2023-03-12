@@ -27,63 +27,50 @@ export const ReservationRequestDetail = (): JSX.Element => {
         <VStack alignItems={'left'} mb={4}>
           <Heading size="md" my={3}>Vous</Heading>
 
-          <dt>
-            <span id="firstname">Prénom</span>
-          </dt>
+          <Heading size={'sm'}>Prénom</Heading>
+
           <dd>{customerEntity?.firstname}</dd>
-          <dt>
-            <span id="lastname">Nom</span>
-          </dt>
+          <Heading size={'sm'}>Nom</Heading>
+
           <dd>{customerEntity?.lastname}</dd>
-          <dt>
-            <span id="age">Age</span>
-          </dt>
+          <Heading size={'sm'}>Age</Heading>
+
           <dd>{customerEntity?.age}</dd>
 
-          <dt>
-            <span id="phoneNumber">Téléphone</span>
-          </dt>
+          <Heading size={'sm'}>Téléphone</Heading>
+
           <dd>{customerEntity?.phoneNumber}</dd>
-          <dt>
-            <span id="email">Email</span>
-          </dt>
+          <Heading size={'sm'}>Email</Heading>
+
           <dd>{customerEntity?.email}</dd>
         </VStack>
         <VStack alignItems={'left'} pt={4} borderTop={'solid'} mt={8}>
           <Heading my={3} size={'md'}>Votre réservations</Heading>
 
-          <dt>
-            <span id="personNumber">Nombre de personnes à héberger</span>
-          </dt>
+          <Heading size={'sm'}>Nombre de personnes à héberger</Heading>
+
           <dd>{reservationEntity?.personNumber}</dd>
 
-          <dt>
-            <span id="isConfirmed">Réservation confirmée</span>
-          </dt>
+          <Heading size={'sm'}>Réservation confirmée</Heading>
+
           <dd>{reservationEntity?.isConfirmed ? 'Oui' : 'Non'}</dd>
-          <dt>
-            <span id="specialDietNumber">Nombre de régimes spéciaux</span>
-          </dt>
+          <Heading size={'sm'}>Nombre de régimes spéciaux</Heading>
+
           <dd>{reservationEntity?.specialDietNumber}</dd>
-          <dt>
-            <span id="isArrivalLunch">Repas du midi, jour d&apos;arrivée</span>
-          </dt>
+          <Heading size={'sm'}>Repas du midi, jour d&apos;arrivée</Heading>
+
           <dd>{reservationEntity?.isArrivalLunch ? 'Oui' : 'Non'}</dd>
-          <dt>
-            <span id="isArrivalDiner">Repas du soir, jour d&apos;arrivée</span>
-          </dt>
+          <Heading size={'sm'}>Repas du soir, jour d&apos;arrivée</Heading>
+
           <dd>{reservationEntity?.isArrivalDiner ? 'Oui' : 'Non'}</dd>
-          <dt>
-            <span id="isDepartureLunch">Repas du midi, jour de départ</span>
-          </dt>
+          <Heading size={'sm'}>Repas du midi, jour de départ</Heading>
+
           <dd>{reservationEntity?.isDepartureLunch ? 'Oui' : 'Non'}</dd>
-          <dt>
-            <span id="isDepartureDiner">Repas du soir, jour de départ</span>
-          </dt>
+          <Heading size={'sm'}>Repas du soir, jour de départ</Heading>
+
           <dd>{reservationEntity?.isDepartureDiner ? 'Oui' : 'Non'}</dd>
-          <dt>
-            <span id="arrivalDate">Date d&apos;arrivée</span>
-          </dt>
+          <Heading size={'sm'}>Date d&apos;arrivée</Heading>
+
           <dd>
             {reservationEntity?.arrivalDate ?
               (
@@ -95,9 +82,8 @@ export const ReservationRequestDetail = (): JSX.Element => {
               ) :
               null}
           </dd>
-          <dt>
-            <span id="departureDate">Date de départ</span>
-          </dt>
+          <Heading size={'sm'}>Date de départ</Heading>
+
           <dd>
             {reservationEntity?.departureDate ?
               (
@@ -109,12 +95,11 @@ export const ReservationRequestDetail = (): JSX.Element => {
               ) :
               null}
           </dd>
-          <dt>
-            <span id="comment">Commentaire</span>
-          </dt>
+          <Heading size={'sm'}>Commentaire</Heading>
+
           <dd>{reservationEntity?.comment}</dd>
 
-          <dt>Chambres réservées à votre nom</dt>
+          <Heading size={'sm'}>Chambres réservées à votre nom</Heading>
           <dd>
             {uniqueRooms === undefined || uniqueRooms?.length === 0 ?
               "Vous n'avez pas encore de chambres attribuées." :

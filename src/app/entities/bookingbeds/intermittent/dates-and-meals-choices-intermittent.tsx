@@ -15,13 +15,12 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
-import { LocalDate } from '@js-joda/core'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
+import { isArrivalDateIsBeforeDepartureDate, isDateBeforeNow } from '../utils'
 import type { DatesAndMeals } from './reservation-intermittent-update'
 
 interface DatesAndMealsChoicesProps {
@@ -49,34 +48,6 @@ export const DatesAndMealsChoices = (
 
   const departureDate = useRef({})
   departureDate.current = watch('departureDate', '')
-
-  const isArrivalDateIsBeforeDepartureDate = (d1: string, d2: string): boolean => {
-    const arrivalDate = pipe(
-      d1 === '' ? O.none : O.some(d1),
-      O.map(d => LocalDate.parse(d))
-    )
-    const departureDate = pipe(
-      d2 === '' ? O.none : O.some(d2),
-      O.map(d => LocalDate.parse(d))
-    )
-    return pipe(
-      O.struct({ arrivalDate, departureDate }),
-      O.map(d => d.arrivalDate.isBefore(d.departureDate)),
-      O.exists(x => x)
-    )
-  }
-
-  const isDateBeforeNow = (date: string): boolean => {
-    const dateToCheck = pipe(
-      date === '' ? O.none : O.some(date),
-      O.map(d => LocalDate.parse(d))
-    )
-    return pipe(
-      dateToCheck,
-      O.map(d => d.isBefore(LocalDate.now())),
-      O.exists(x => x)
-    )
-  }
 
   const handleValidDateAndMealSubmit = (
     datesAndMeal: DatesAndMeals
