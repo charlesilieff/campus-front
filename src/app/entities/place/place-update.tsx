@@ -54,6 +54,8 @@ export const PlaceUpdate = () => {
 
   useEffect(() => {
     resetForm(defaultValues())
+    setImage(O.fromNullable(placeEntity.image))
+    setImageContentType(O.fromNullable(placeEntity.imageContentType))
   }, [placeEntity.id])
 
   const loading = useAppSelector(state => state.place.loading)
@@ -70,8 +72,6 @@ export const PlaceUpdate = () => {
     } else {
       dispatch(getEntity(id))
     }
-    setImage(O.fromNullable(placeEntity.image))
-    setImageContentType(O.fromNullable(placeEntity.imageContentType))
   }, [])
 
   useEffect(() => {

@@ -97,7 +97,7 @@ export const BedUpdate = () => {
   return (
     <VStack spacing={8}>
       <Heading>
-        Créez ou modifiez un lit
+        {isNew ? 'Créez' : 'Modifiez'} un lit
       </Heading>
 
       {loading ? <p>Chargement...</p> : (

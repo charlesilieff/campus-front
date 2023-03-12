@@ -126,11 +126,18 @@ export const ReservationCustomerUpdate = () => {
     isDepartureDiner: false,
     isArrivalLunch: true,
     isDepartureLunch: true,
-    reservationComment: reservationEntity?.comment,
-    customerComment: reservationEntity?.customer?.comment,
+    reservationComment: reservationEntity?.comment ?? '',
+    customerComment: reservationEntity?.customer?.comment ?? '',
+    pricingId: reservationEntity?.pricing?.id ?? null,
+    firstname: reservationEntity?.customer?.firstname ?? '',
+    lastname: reservationEntity?.customer?.lastname ?? '',
+    age: reservationEntity?.customer?.age ?? null,
+    email: reservationEntity?.customer?.email ?? '',
+    phoneNumber: reservationEntity?.customer?.phoneNumber ?? '',
+    personNumber: reservationEntity?.personNumber ?? null,
+    specialDietNumber: reservationEntity?.specialDietNumber ?? null,
     ...reservationEntity,
-    ...reservationEntity.customer,
-    pricingId: reservationEntity?.pricing?.id
+    ...reservationEntity.customer
   })
 
   return (
@@ -147,6 +154,7 @@ export const ReservationCustomerUpdate = () => {
                 as={Link}
                 variant="back"
                 to="/planning"
+                onClick={() => dispatch(reset())}
               >
                 Annuler
               </Button>
@@ -346,6 +354,7 @@ export const ReservationCustomerUpdate = () => {
                 as={Link}
                 variant="back"
                 to="/planning"
+                onClick={() => dispatch(reset())}
               >
                 Annuler
               </Button>
