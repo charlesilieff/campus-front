@@ -10,6 +10,7 @@ import {
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
 import { cleanEntity } from 'app/shared/util/entity-utils'
+import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
 
 const initialState: EntityState<IBookingBeds> = {
@@ -115,11 +116,32 @@ export const partialUpdateEntity = createAsyncThunk(
   { serializeError: serializeAxiosError }
 )
 
+interface CancelReservationAndSendMail {
+  // entity: IBookingBeds
+  id: string | number
+  sendMail: boolean
+}
+
 export const deleteEntity = createAsyncThunk(
   'bookingBeds/delete_entity',
-  async (id: string | number) => {
-    const requestUrl = `${apiUrlBookingBeds}/${id}`
-    const result = await axios.delete<IBookingBeds>(requestUrl)
+  async (cancelReservationAndSendMail: CancelReservationAndSendMail) => {
+    const requestUrl = `${apiUrlBookingBeds}/${cancelReservationAndSendMail.id}`
+    const options: AxiosRequestConfig = {
+      params: { sendMail: cancelReservationAndSendMail.sendMail }
+    }
+    const result = await axios.delete<IBookingBeds>(
+      requestUrl,
+      options
+      // false
+      // cancelReservationAndSendMail.sendMail
+      // cleanEntity(cancelReservationAndSendMail.entity),
+      // {
+      //  params: {
+      //    sendMail: cancelReservationAndSendMail.sendMail
+      //  }
+      // }
+    )
+
     // thunkAPI.dispatch(getEntities())
     return result
   },

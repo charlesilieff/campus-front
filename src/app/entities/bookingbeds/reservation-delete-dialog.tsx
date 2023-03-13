@@ -22,7 +22,8 @@ export const ReservationDeleteDialog: FunctionComponent<{ reservationId: number 
   }, [updateSuccess])
 
   const confirmDelete = () => {
-    dispatch(deleteEntity(reservationId))
+    // dispatch(deleteEntity(reservationId))
+    dispatch(deleteEntity(reservationId, false))
   }
 
   return (
