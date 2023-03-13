@@ -23,7 +23,7 @@ export const ReservationDeleteDialog: FunctionComponent<{ reservationId: number 
 
   const confirmDelete = () => {
     // dispatch(deleteEntity(reservationId))
-    dispatch(deleteEntity(reservationId, false))
+    dispatch(deleteEntity({ id: reservationId, sendMail: false }))
   }
 
   return (
