@@ -13,6 +13,7 @@ export interface IUser {
   lastModifiedDate?: Date | null
   password?: string
   customerId?: string
+  receiveMailReservation?: boolean
 }
 
 export const defaultValue: Readonly<IUser> = {
@@ -29,5 +30,6 @@ export const defaultValue: Readonly<IUser> = {
   lastModifiedBy: '',
   lastModifiedDate: null,
   password: '',
-  customerId: null
+  customerId: null,
+  receiveMailReservation: true
 }

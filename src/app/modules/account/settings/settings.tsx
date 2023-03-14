@@ -1,5 +1,6 @@
 import {
   Button,
+  Checkbox,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -22,6 +23,7 @@ interface UserForm {
   firstName: string
   lastName: string
   email: string
+  receiveMailReservation: boolean
 }
 
 export const Settings = () => {
@@ -33,6 +35,14 @@ export const Settings = () => {
   } = useForm<UserForm>({})
   const dispatch = useAppDispatch()
   const account: IUser = useAppSelector(state => state.authentication.account)
+  const accountModify: IUser = {
+    ...account,
+    receiveMailReservation: account.receiveMailReservation === undefined ?
+      true :
+      account.receiveMailReservation
+  }
+  console.log(accountModify)
+  console.log('test')
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   const successMessage: string = useAppSelector(state => state.settings.successMessage)
 
@@ -52,17 +62,17 @@ export const Settings = () => {
   const handleValidSubmit = (values: IUser) => {
     dispatch(
       saveAccountSettings({
-        ...account,
+        ...accountModify,
         ...values
       })
     )
   }
   useEffect(() => {
-    resetForm(account)
-  }, [account.id])
+    resetForm(accountModify)
+  }, [accountModify.id])
   return (
     <VStack>
-      <Heading size={'md'}>User settings for {account.login}</Heading>
+      <Heading size={'md'}>Modifier utilisateur {accountModify.login}</Heading>
       <form
         onSubmit={handleSubmit(handleValidSubmit)}
       >
@@ -127,6 +137,22 @@ export const Settings = () => {
 
             <FormErrorMessage>
               {errors.email && errors.email.message}
+            </FormErrorMessage>
+          </FormControl>
+
+          <FormControl isInvalid={errors.receiveMailReservation !== undefined}>
+            <FormLabel htmlFor="receiveMailReservation" fontWeight={'bold'}>
+              {'Je souhaite recevoir les emails de resérvation'}
+            </FormLabel>
+            <Checkbox
+              id="receiveMailReservation"
+              type="checkbox"
+              placeholder="reception des emails de resérvation"
+              {...register('receiveMailReservation')}
+            />
+
+            <FormErrorMessage>
+              {errors.receiveMailReservation && errors.receiveMailReservation.message}
             </FormErrorMessage>
           </FormControl>
 
