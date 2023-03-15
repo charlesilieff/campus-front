@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk, createSlice, isPending, isRejected } from '@reduxjs/toolkit'
-import type { AppThunk } from 'app/config/store'
 import { serializeAxiosError } from 'app/shared/reducers/reducer.utils'
 import axios from 'axios'
 
@@ -65,12 +64,6 @@ export const setLoggers = createAsyncThunk(
   }
 )
 
-export const changeLogLevel: (name, configuredLevel) => AppThunk =
-  (name, configuredLevel) => async dispatch => {
-    await dispatch(setLoggers({ name, configuredLevel }))
-    dispatch(getLoggers())
-  }
-
 export const getConfigurations = createAsyncThunk(
   'administration/fetch_configurations',
   async () => axios.get<any>('management/configprops'),
@@ -108,6 +101,7 @@ export const AdministrationSlice = createSlice({
       .addCase(getLoggers.fulfilled, (state, action) => {
         state.loading = false
         state.logs = {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           loggers: action.payload.data.loggers
         }
       })

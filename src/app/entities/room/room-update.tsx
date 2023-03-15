@@ -27,6 +27,7 @@ interface RoomForm {
   placeId: number
   bedroomKindId: number
 }
+
 export const RoomUpdate = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -78,8 +79,13 @@ export const RoomUpdate = () => {
     }
   }, [updateSuccess])
 
-  const saveEntity = values => {
-    const entity: IRoom = {
+  interface ExtendIRoomForTheBAckendToBeDeleted extends IRoom {
+    placeId: string | number
+    bedroomKindId: string | number
+  }
+
+  const saveEntity = (values: ExtendIRoomForTheBAckendToBeDeleted) => {
+    const entity: ExtendIRoomForTheBAckendToBeDeleted = {
       ...roomEntity,
       ...values,
       // this is so bad

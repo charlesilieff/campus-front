@@ -11,6 +11,7 @@ import pick from 'lodash/pick'
  */
 export const cleanEntity = (entity: Record<string, any>) => {
   const keysToKeep = Object.keys(entity).filter(k =>
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     !(entity[k] instanceof Object) || (entity[k]['id'] !== '' && entity[k]['id'] !== -1)
   )
 

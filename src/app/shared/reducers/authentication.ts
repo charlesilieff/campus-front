@@ -62,7 +62,7 @@ async dispatch => {
   const result = await dispatch(authenticate({ username, password, rememberMe }))
 
   const response = result.payload as AxiosResponse
-  const bearerToken = response?.headers?.authorization
+  const bearerToken: string = response?.headers?.authorization
   if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
     const jwt = bearerToken.slice(7, bearerToken.length)
     if (rememberMe) {

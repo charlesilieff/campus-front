@@ -7,7 +7,7 @@ interface IErrorBoundaryProps {
 
 interface IErrorBoundaryState {
   readonly error: any
-  readonly errorInfo: any
+  readonly errorInfo: { componentStack: string }
 }
 
 export class ErrorBoundary extends React.Component<IErrorBoundaryProps, IErrorBoundaryState> {
@@ -27,7 +27,10 @@ export class ErrorBoundary extends React.Component<IErrorBoundaryProps, IErrorBo
       const errorDetails = DEVELOPMENT ?
         (
           <details className="preserve-space">
-            {error && error.toString()}
+            {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+              error && error.toString()
+            }
             <br />
             {errorInfo.componentStack}
           </details>

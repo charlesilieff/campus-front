@@ -37,7 +37,7 @@ export const ReservationBedsUpdate = (): JSX.Element => {
   const defaultValues = (): IBookingBeds => {
     const idBeds = reservationEntity.bedIds?.reduce(
       (acc, bedId) => ({ ...acc, [bedId?.toString()]: true }),
-      new Object()
+      {}
     )
 
     return { ...idBeds, ...reservationEntity }
@@ -82,7 +82,8 @@ export const ReservationBedsUpdate = (): JSX.Element => {
 
     // Pour la modif d'une réservation déjà existante
     // @ts-expect-error : should be re written
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     const updatedBedsToBook: number[] = reservationEntity.beds?.map((b: { id: number }) => b.id)
       .reduce(
         (acc: number[], bedId: number) => acc.concat(bedId),
