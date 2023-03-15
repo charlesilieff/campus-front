@@ -8,7 +8,7 @@ const TIMEOUT = 1 * 60 * 1000
 axios.defaults.timeout = TIMEOUT
 axios.defaults.baseURL = SERVER_API_URL
 
-export const setupAxiosInterceptors = onUnauthenticated => {
+export const setupAxiosInterceptors = (onUnauthenticated: () => void) => {
   const onRequestSuccess = (config: InternalAxiosRequestConfig) => {
     const token = Storage.local.get('jhi-authenticationToken')
       || Storage.session.get('jhi-authenticationToken')

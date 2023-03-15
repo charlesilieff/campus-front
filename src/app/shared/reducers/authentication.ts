@@ -1,3 +1,4 @@
+import type { Dispatch } from '@reduxjs/toolkit'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { AppThunk } from 'app/config/store'
 import type { AxiosResponse } from 'axios'
@@ -88,7 +89,7 @@ export const logout: () => AppThunk = () => dispatch => {
   dispatch(logoutSession())
 }
 
-export const clearAuthentication = messageKey => dispatch => {
+export const clearAuthentication = messageKey => (dispatch: Dispatch) => {
   clearAuthToken()
   dispatch(authError(messageKey))
   dispatch(clearAuth())

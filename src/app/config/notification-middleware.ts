@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { toast } from 'react-toastify'
@@ -60,8 +61,7 @@ export default () => next => action => {
                 }
               })
             if (errorHeader) {
-              const entityName = entityKey
-              addErrorAlert(errorHeader, errorHeader, entityName)
+              addErrorAlert(errorHeader, errorHeader, entityKey)
             } else if (data?.fieldErrors) {
               const fieldErrors = data.fieldErrors
               for (i = 0; i < fieldErrors.length; i++) {

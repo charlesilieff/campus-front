@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable import/no-default-export */
-const getErrorMessage = errorData => {
+const getErrorMessage = (errorData: { message: any; fieldErrors: any[] }) => {
   let message = errorData.message
   if (errorData.fieldErrors) {
     errorData.fieldErrors.forEach(fErr => {
@@ -11,7 +13,7 @@ const getErrorMessage = errorData => {
   return message
 }
 
-export default () => next => action => {
+export default () => (next: (arg0: any) => any) => (action: any) => {
   /**
    * The error middleware serves to log error messages from dispatch
    * It need not run in production

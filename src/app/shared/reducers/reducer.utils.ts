@@ -3,7 +3,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
   ActionReducerMapBuilder,
-  AnyAction,
   AsyncThunk,
   SerializedError,
   SliceCaseReducers,
@@ -30,21 +29,21 @@ export type FulfilledAction = ReturnType<GenericAsyncThunk['fulfilled']>
 /**
  * Check if the async action type is rejected
  */
-export function isRejectedAction(action: AnyAction) {
+export function isRejectedAction(action: RejectedAction) {
   return action.type.endsWith('/rejected')
 }
 
 /**
  * Check if the async action type is pending
  */
-export function isPendingAction(action: AnyAction) {
+export function isPendingAction(action: PendingAction) {
   return action.type.endsWith('/pending')
 }
 
 /**
  * Check if the async action type is completed
  */
-export function isFulfilledAction(action: AnyAction) {
+export function isFulfilledAction(action: FulfilledAction) {
   return action.type.endsWith('/fulfilled')
 }
 

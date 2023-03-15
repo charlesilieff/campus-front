@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint no-console: off */
 // eslint-disable-next-line import/no-default-export
-export default () => next => action => {
+export default () => (next: (arg0: any) => any) => (action: any) => {
   if (process.env.NODE_ENV !== 'production') {
     const { type, payload, meta, error } = action
 
