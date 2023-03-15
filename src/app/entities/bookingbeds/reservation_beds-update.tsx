@@ -83,7 +83,7 @@ export const ReservationBedsUpdate = (): JSX.Element => {
     // Pour la modif d'une réservation déjà existante
     // @ts-expect-error : should be re written
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
     const updatedBedsToBook: number[] = reservationEntity.beds?.map((b: { id: number }) => b.id)
       .reduce(
         (acc: number[], bedId: number) => acc.concat(bedId),
@@ -190,6 +190,7 @@ export const ReservationBedsUpdate = (): JSX.Element => {
       ...reservationLast,
       ...{
         ...customerReservation,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         age: customerReservation.age === '' ? null : customerReservation.age
       },
       bedIds: [...bedIds]

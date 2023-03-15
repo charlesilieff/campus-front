@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk, createSlice, isPending, isRejected } from '@reduxjs/toolkit'
 import { serializeAxiosError } from 'app/shared/reducers/reducer.utils'

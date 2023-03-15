@@ -40,7 +40,7 @@ export const RegisterPage = () => {
     register,
     formState: { errors }
   } = useForm<FormValues>()
-  const handleValidSubmit = async ({ username, email, firstPassword }) => {
+  const handleValidSubmit = async ({ username, email, firstPassword }: FormValues) => {
     setIsLoading(true)
     await dispatch(
       handleRegister({

@@ -84,6 +84,7 @@ export const Reservation: FunctionComponent<IProps> = (
         const endTable = 39
         const arrivalDate = dayjs(reservation.arrivalDate)
 
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         let gridColumnStart: number = positionX[getDateKey(arrivalDate)] === undefined ?
           8 :
           positionX[getDateKey(arrivalDate)]
@@ -101,6 +102,7 @@ export const Reservation: FunctionComponent<IProps> = (
           gridColumnStart + difference + 1
 
         if (arrivalDate.isBefore(date, 'day')) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           gridColumnStart = positionX[getDateKey(date)]
 
           const difference3 = dayjs(reservation?.departureDate).diff(date, 'day')
@@ -144,6 +146,7 @@ export const Reservation: FunctionComponent<IProps> = (
         if (indexBed < reservation.bedsId.length - 1) {
           if (positionY[bedId] - 1 === positionY[reservation.bedsId[indexBed + 1]]) {
             positionYEnd[reservation.bedsId[indexBed + 1]] = positionY[bedId] + 2
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             positionYEnd[reservation.bedsId[indexBed + 1]] = positionYEnd[bedId]
             return
           } else {
@@ -157,6 +160,7 @@ export const Reservation: FunctionComponent<IProps> = (
           <ReservationBed
             isRespHebergement={isRespHebergement}
             gridRowStart={positionY[bedId]}
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             gridRowEnd={positionYEnd[bedId]}
             gridColumnStart={gridColumnStart}
             gridColumnEnd={gridColumnEnd}

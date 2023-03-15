@@ -48,7 +48,7 @@ export const Settings = () => {
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.RESPHEBERGEMENT])
   )
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment
   const successMessage: string = useAppSelector(state => state.settings.successMessage)
 
   useEffect(() => {

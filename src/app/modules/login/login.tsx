@@ -26,8 +26,10 @@ export const Login = () => {
     navigate('/')
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { from } = (location.state) || { from: { pathname: '/', search: location.search } }
   if (isAuthenticated) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     return <Navigate to={from} replace />
   }
 

@@ -10,7 +10,7 @@ const initialState = {
   loading: false,
   errorMessage: null,
   users: [] as readonly IUser[],
-  authorities: [] as any[],
+  authorities: [] as string[],
   user: defaultValue,
   updating: false,
   updateSuccess: false,
@@ -93,6 +93,7 @@ export const UserManagementSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(getRoles.fulfilled, (state, action) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         state.authorities = action.payload.data
       })
       .addCase(getUser.fulfilled, (state, action) => {

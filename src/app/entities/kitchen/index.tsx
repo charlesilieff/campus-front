@@ -87,6 +87,7 @@ export const Index = () => {
   }
 
   let resultTotalMeals: number[]
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   let mealsDataDays: IMeal[] = new Array(numberOfDays)
   ;({ mealsDataDays, resultTotalMeals } = calculateAccordingToNumberOfDays(
     mealsDataDays,
@@ -155,6 +156,7 @@ function calculateAccordingToNumberOfDays(
   resultTotalMeals: number[],
   totalMeals: (table: number[]) => number
 ) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   mealsDataDays = new Array(numberOfDays)
   for (let i = 0; i < numberOfDays; i++) {
     mealsDataDays[i] = { ...mealsData[i] }

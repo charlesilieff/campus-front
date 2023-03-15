@@ -19,7 +19,6 @@ export class MenuItem extends React.Component<IMenuItem> {
         to={to}
         id={id}
         _hover={{ textDecoration: 'none', color: 'gray.900' }}
-        data-cy={this.props['data-cy']}
         fontWeight={'normal'}
       >
         <HStack ml={2}>

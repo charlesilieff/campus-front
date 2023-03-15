@@ -63,6 +63,7 @@ async dispatch => {
   const result = await dispatch(authenticate({ username, password, rememberMe }))
 
   const response = result.payload as AxiosResponse
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const bearerToken: string = response?.headers?.authorization
   if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
     const jwt = bearerToken.slice(7, bearerToken.length)
@@ -109,6 +110,7 @@ export const AuthenticationSlice = createSlice({
       return {
         ...state,
         showModalLogin: true,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         redirectMessage: action.payload
       }
     },

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react'
 
@@ -6,14 +7,14 @@ interface IErrorBoundaryProps {
 }
 
 interface IErrorBoundaryState {
-  readonly error: any
+  readonly error: string
   readonly errorInfo: { componentStack: string }
 }
 
 export class ErrorBoundary extends React.Component<IErrorBoundaryProps, IErrorBoundaryState> {
   readonly state: IErrorBoundaryState = { error: undefined, errorInfo: undefined }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: any, errorInfo: any) {
     this.setState({
       error,
       errorInfo

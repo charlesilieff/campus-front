@@ -42,8 +42,12 @@ export const Password = () => {
       dispatch(reset())
     }
   }, [])
+  interface PasswordCompare {
+    currentPassword: string
+    newPassword: string
+  }
 
-  const handleValidSubmit = ({ currentPassword, newPassword }) => {
+  const handleValidSubmit = ({ currentPassword, newPassword }: PasswordCompare) => {
     dispatch(savePassword({ currentPassword, newPassword }))
   }
 

@@ -61,6 +61,7 @@ export const serializeAxiosError = (value: any): AxiosError | SerializedError =>
       const simpleError: SerializedError = {}
       for (const property of commonErrorProperties) {
         if (typeof value[property] === 'string') {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           simpleError[property] = value[property]
         }
       }
@@ -125,6 +126,7 @@ export const createEntitySlice = <T, Reducers extends SliceCaseReducers<EntitySt
           state.loading = false
           state.updating = false
           state.updateSuccess = false
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           state.errorMessage = action.error.message
         })
       }

@@ -4,6 +4,7 @@
 // eslint-disable-next-line import/no-default-export
 export default () => (next: (arg0: any) => any) => (action: any) => {
   if (process.env.NODE_ENV !== 'production') {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { type, payload, meta, error } = action
 
     console.groupCollapsed(type)
