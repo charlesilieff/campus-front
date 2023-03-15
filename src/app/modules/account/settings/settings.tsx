@@ -43,7 +43,6 @@ export const Settings = () => {
       true :
       account.receiveMailReservation
   }
-  console.log(accountModify)
 
   const isRespHebergement = useAppSelector(state =>
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.RESPHEBERGEMENT])

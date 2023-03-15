@@ -78,8 +78,12 @@ export const BedUpdate = () => {
     }
   }, [updateSuccess])
 
-  const saveEntity = values => {
-    const entity: IBed = {
+  interface ExtendIBedForTheBAckendToBeDeleted extends IBed {
+    roomId: string
+  }
+
+  const saveEntity = (values: ExtendIBedForTheBAckendToBeDeleted) => {
+    const entity: ExtendIBedForTheBAckendToBeDeleted = {
       ...bedEntity,
       ...values,
       // this is very important but  very bad, otherwise the backend will not be able to find the room
