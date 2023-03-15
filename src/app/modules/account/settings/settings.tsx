@@ -9,7 +9,9 @@ import {
   Input,
   VStack
 } from '@chakra-ui/react'
+import { AUTHORITIES } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { hasAnyAuthority } from 'app/shared/auth/private-route'
 import type { IUser } from 'app/shared/model/user.model'
 import { getSession } from 'app/shared/reducers/authentication'
 import React, { useEffect } from 'react'
@@ -42,7 +44,11 @@ export const Settings = () => {
       account.receiveMailReservation
   }
   console.log(accountModify)
-  console.log('test')
+
+  const isRespHebergement = useAppSelector(state =>
+    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.RESPHEBERGEMENT])
+  )
+
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   const successMessage: string = useAppSelector(state => state.settings.successMessage)
 
@@ -140,21 +146,24 @@ export const Settings = () => {
             </FormErrorMessage>
           </FormControl>
 
-          <FormControl isInvalid={errors.receiveMailReservation !== undefined}>
-            <FormLabel htmlFor="receiveMailReservation" fontWeight={'bold'}>
-              {'Je souhaite recevoir les emails de resérvation'}
-            </FormLabel>
-            <Checkbox
-              id="receiveMailReservation"
-              type="checkbox"
-              placeholder="reception des emails de resérvation"
-              {...register('receiveMailReservation')}
-            />
+          {isRespHebergement
+            && (
+              <FormControl isInvalid={errors.receiveMailReservation !== undefined}>
+                <FormLabel htmlFor="receiveMailReservation" fontWeight={'bold'}>
+                  {'Je souhaite recevoir les emails de resérvation'}
+                </FormLabel>
+                <Checkbox
+                  id="receiveMailReservation"
+                  type="checkbox"
+                  placeholder="reception des emails de resérvation"
+                  {...register('receiveMailReservation')}
+                />
 
-            <FormErrorMessage>
-              {errors.receiveMailReservation && errors.receiveMailReservation.message}
-            </FormErrorMessage>
-          </FormControl>
+                <FormErrorMessage>
+                  {errors.receiveMailReservation && errors.receiveMailReservation.message}
+                </FormErrorMessage>
+              </FormControl>
+            )}
 
           <HStack>
             <Button
