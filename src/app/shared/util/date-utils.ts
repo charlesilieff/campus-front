@@ -7,11 +7,11 @@ import dayjs from 'dayjs'
 dayjs.locale('fr')
 export const convertDateTimeFromServer = (
   date: string | undefined
-): string => (date ? dayjs(date).format(APP_LOCAL_DATETIME_FORMAT) : null)
+): string | null => (date ? dayjs(date).format(APP_LOCAL_DATETIME_FORMAT) : null)
 
 export const convertDateTimeToServer = (
   date: string | undefined
-): Date => (date ? dayjs(date).toDate() : null)
+): Date | null => (date ? dayjs(date).toDate() : null)
 
 export const displayDefaultDateTime = (): string =>
   dayjs().startOf('day').format(APP_LOCAL_DATETIME_FORMAT)
