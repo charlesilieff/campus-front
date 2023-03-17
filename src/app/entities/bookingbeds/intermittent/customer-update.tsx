@@ -141,9 +141,7 @@ export const CustomerUpdate = (
                     id="phoneNumber"
                     type="string"
                     placeholder="Téléphone"
-                    {...register('phoneNumber', {
-                      required: "L'email est obligatoire"
-                    })}
+                    {...register('phoneNumber', {})}
                   />
 
                   <FormErrorMessage>

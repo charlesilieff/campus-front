@@ -263,24 +263,13 @@ export const RegisterIntermittentPage = (): JSX.Element => {
               </FormErrorMessage>
             </FormControl>
 
-            <FormControl isRequired isInvalid={errors.phoneNumber !== undefined}>
+            <FormControl isInvalid={errors.phoneNumber !== undefined}>
               <FormLabel htmlFor="phoneNumber">Téléphone</FormLabel>
               <Input
                 id="phoneNumber"
                 placeholder="Téléphone"
                 type="text"
-                {...register('phoneNumber', {
-                  required: 'Votre numéro de téléphone est obligatoire.',
-                  minLength: {
-                    value: 10,
-                    message: 'Votre numéro de téléphone doit comporter au moins 10 caractères.'
-                  },
-                  maxLength: {
-                    value: 16,
-                    message:
-                      'Votre numéro de téléphone ne doit pas comporter plus de 16 caractères.'
-                  }
-                })}
+                {...register('phoneNumber', {})}
               />
               <FormErrorMessage>
                 {errors.phoneNumber && errors.phoneNumber.message}

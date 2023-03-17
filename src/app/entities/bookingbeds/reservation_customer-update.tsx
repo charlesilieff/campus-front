@@ -229,7 +229,7 @@ export const ReservationCustomerUpdate = () => {
                 {errors.age && errors.age.message}
               </FormErrorMessage>
             </FormControl>
-            <FormControl isRequired isInvalid={errors.phoneNumber !== undefined}>
+            <FormControl isInvalid={errors.phoneNumber !== undefined}>
               <FormLabel htmlFor="phoneNumber" fontWeight={'bold'}>
                 {'Téléphone'}
               </FormLabel>
