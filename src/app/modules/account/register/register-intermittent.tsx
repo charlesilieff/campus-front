@@ -26,7 +26,7 @@ interface FormValues {
   secondPassword: string
   firstname: string
   lastname: string
-  phoneNumber: string
+  phoneNumber: O.Option<string>
   age: O.Option<number>
 }
 

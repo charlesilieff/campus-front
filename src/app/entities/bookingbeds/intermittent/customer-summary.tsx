@@ -70,7 +70,7 @@ export const CustomerSummary = (
       <Text fontWeight={'bold'}>{'Email :'}</Text>
       <Text>{email}</Text>
       <Text pl={12} fontWeight={'bold'}>{'Téléphone :'}</Text>
-      <Text>{phoneNumber}</Text>
+      <Text>{O.isSome(phoneNumber)}</Text>
     </HStack>
 
     <Button

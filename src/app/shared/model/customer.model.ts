@@ -5,7 +5,7 @@ export interface ICustomer {
   firstname?: string
   lastname?: string
   age?: number | null
-  phoneNumber?: string
+  phoneNumber?: string | null
   email?: string
   comment?: string | null
   reservations?: IReservation[] | null

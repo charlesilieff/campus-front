@@ -42,7 +42,7 @@ export interface Customer {
   firstname: string
   lastname: string
   email: string
-  phoneNumber: string
+  phoneNumber: O.Option<string>
   age: O.Option<number>
 }
 
@@ -73,7 +73,7 @@ const createIReservationWithBedIds = (
     firstname: customer.firstname,
     lastname: customer.lastname,
     email: customer.email,
-    phoneNumber: customer.phoneNumber,
+    phoneNumber: O.getOrUndefined(customer.phoneNumber),
     age: O.getOrUndefined(customer.age)
   }
 })
@@ -114,10 +114,11 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
           setIsLoading(false)
         )
       } else {
-        dispatch(createReservationAndUpdateUser({ entity: reservation, userId })).then(() => {
-          dispatch(getSession())
-          setIsLoading(false)
-        })
+        dispatch(createReservationAndUpdateUser({ entity: reservation, sendMail: false, userId }))
+          .then(() => {
+            dispatch(getSession())
+            setIsLoading(false)
+          })
       }
     }
   }
@@ -136,7 +137,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
         firstname: backendCustomer?.firstname,
         lastname: backendCustomer?.lastname,
         email: backendCustomer?.email,
-        phoneNumber: backendCustomer?.phoneNumber,
+        phoneNumber: O.some(backendCustomer?.phoneNumber),
         age: O.some(backendCustomer?.age)
       }))
     }

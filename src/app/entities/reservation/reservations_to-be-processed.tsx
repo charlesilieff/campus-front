@@ -12,6 +12,7 @@ export const ReservationsToBeProcessed = () => {
   const dispatch = useAppDispatch()
 
   const reservationList = useAppSelector(state => state.reservation.entities)
+
   const loading = useAppSelector(state => state.reservation.loading)
 
   useEffect(() => {

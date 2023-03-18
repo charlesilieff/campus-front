@@ -77,12 +77,21 @@ export const createEntity = createAsyncThunk(
   { serializeError: serializeAxiosError }
 )
 
+interface ReservationAndSendMailAndUpdateUser {
+  entity: IBookingBeds
+  sendMail: boolean
+  userId: number
+}
 export const createReservationAndUpdateUser = createAsyncThunk(
   'bookingBeds/create_entity',
-  async ({ entity, userId }: { entity: IBookingBeds; userId: number }) => {
+  async (reservationAndSendMailAndUpdateUser: ReservationAndSendMailAndUpdateUser) => {
+    const requestUrl = `${apiUrlBookingBeds}/${reservationAndSendMailAndUpdateUser.userId}`
     const result = await axios.post<IBookingBeds>(
-      `${apiUrlBookingBeds}/${userId}`,
-      cleanEntity(entity)
+      requestUrl,
+      cleanEntity(reservationAndSendMailAndUpdateUser.entity),
+      {
+        params: { sendMail: reservationAndSendMailAndUpdateUser.sendMail }
+      }
     )
 
     return result

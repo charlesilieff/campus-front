@@ -133,7 +133,7 @@ export const ReservationCustomerUpdate = () => {
     lastname: reservationEntity?.customer?.lastname ?? '',
     age: reservationEntity?.customer?.age ?? null,
     email: reservationEntity?.customer?.email ?? '',
-    phoneNumber: reservationEntity?.customer?.phoneNumber ?? '',
+    phoneNumber: reservationEntity?.customer?.phoneNumber ?? null,
     personNumber: reservationEntity?.personNumber ?? null,
     specialDietNumber: reservationEntity?.specialDietNumber ?? null,
     ...reservationEntity,

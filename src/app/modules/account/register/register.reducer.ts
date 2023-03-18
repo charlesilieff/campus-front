@@ -23,7 +23,7 @@ interface IRegister {
 interface IRegisterIntermittent extends IRegister {
   firstname: string
   lastname: string
-  phoneNumber: string
+  phoneNumber?: string
   age?: number
 }
 

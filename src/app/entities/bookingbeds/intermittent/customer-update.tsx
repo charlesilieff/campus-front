@@ -28,7 +28,7 @@ export interface FormCustomer {
   firstname: string
   lastname: string
   email: string
-  phoneNumber: string
+  phoneNumber?: string
   age?: number
 }
 
@@ -44,7 +44,11 @@ export const CustomerUpdate = (
   useEffect(() => {
     resetForm(
       O.isSome(props.customer) ?
-        { ...props.customer.value, age: O.getOrUndefined(props.customer.value.age) } :
+        {
+          ...props.customer.value,
+          age: O.getOrUndefined(props.customer.value.age),
+          phoneNumber: O.getOrUndefined(props.customer.value.phoneNumber)
+        } :
         {}
     )
   }, [props.customer])
@@ -54,7 +58,11 @@ export const CustomerUpdate = (
   ): void => {
     // @ts-expect-error react hook form ne gère pas bien le type de age
     const age = customer.age === undefined || customer.age === '' ? O.none() : O.some(customer.age)
-    props.setCustomer(O.some({ ...customer, age }))
+    const phoneNumber = customer.phoneNumber === undefined || customer.phoneNumber === '' ?
+      O.none() :
+      O.some(customer.phoneNumber)
+    props.setCustomer(O.some({ ...customer, age, phoneNumber }))
+
     props.setUpdateCustomer(false)
   }
 
