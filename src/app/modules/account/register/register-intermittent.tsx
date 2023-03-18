@@ -61,7 +61,7 @@ export const RegisterIntermittentPage = (): JSX.Element => {
         langKey: 'en',
         firstname,
         lastname,
-        phoneNumber,
+        phoneNumber: O.getOrNull(phoneNumber),
         age: O.getOrNull(age)
       })
     )
