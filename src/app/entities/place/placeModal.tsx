@@ -1,4 +1,4 @@
-import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay,
+import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay,
   useDisclosure } from '@chakra-ui/react'
 import type { IPlace } from 'app/shared/model/place.model'
 import React from 'react'
@@ -8,7 +8,7 @@ export const PlaceModal = (place: IPlace) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
-    <>
+    <Box my={2}>
       {place.image ?
         (
           <Button
@@ -20,7 +20,7 @@ export const PlaceModal = (place: IPlace) => {
             Plan
           </Button>
         ) :
-        <p>Pas de plan pour ce lieu.</p>}
+        <Box>Pas de plan pour ce lieu.</Box>}
       <Modal isOpen={isOpen} onClose={onClose} size="4xl">
         <ModalOverlay />
         <ModalContent>
@@ -43,6 +43,6 @@ export const PlaceModal = (place: IPlace) => {
           </ModalBody>
         </ModalContent>
       </Modal>
-    </>
+    </Box>
   )
 }

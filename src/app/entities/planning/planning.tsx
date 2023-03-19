@@ -32,9 +32,28 @@ export const Planning = ({ place, date, totalDays, reservations }: IProps) => {
   const positionY: number[] = []
 
   return (
-    <Grid className="grid-container">
-      <Text className="roomNames" textAlign={'center'} py={2}>Chambres</Text>
-      <Text className="bedNames" textAlign={'center'} py={2}>Lits</Text>
+    <Grid className="grid-container" borderColor={'#D9D9D9'}>
+      <Text
+        className="roomNames"
+        textAlign={'center'}
+        py={2}
+        borderColor={'#D9D9D9'}
+        mt={'-0.1rem'}
+        borderBottom={0}
+        borderLeft={0}
+      >
+        Chambres
+      </Text>
+      <Text
+        className="bedNames"
+        textAlign={'center'}
+        py={2}
+        borderX={'0'}
+        borderColor={'#D9D9D9'}
+        mt={'-0.1rem'}
+      >
+        Lits
+      </Text>
 
       {
         // Affichage des mois
@@ -63,7 +82,7 @@ export const Planning = ({ place, date, totalDays, reservations }: IProps) => {
           roomRowPosition += room.beds.length
 
           return [
-            <Room room={room} gridRowEnd={roomRowPosition} key={room.id}></Room>,
+            <Room room={room} gridRowEnd={roomRowPosition} key={room.id} />,
             room.beds.map((bed, index) => {
               // On construit l'object qui va permettre de récupérer la bonne position en Y pour afficher les réservations.
               positionY[bed.id] = roomRowPosition - index - 1

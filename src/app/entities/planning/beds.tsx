@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react'
 import type { IBed } from 'app/shared/model/bed.model'
 import type { FunctionComponent } from 'react'
 import React from 'react'
@@ -17,18 +18,19 @@ export const Bed: FunctionComponent<IProps> = ({ rowPosition, index, bed }) => {
     gridRowEnd
   } as React.CSSProperties
   if (index === 0) {
-    style = { ...style, borderBottom: '0.15em solid' }
+    style = { ...style, borderBottom: '0.15em solid', borderBottomColor: '#D9D9D9' }
   }
   return (
     <>
-      <div className="beds" style={style}>
+      <Box className="beds" style={style} borderColor={'#D9D9D9'}>
         {bed.number}
-      </div>
+      </Box>
       <div
         style={{
           ...style,
           gridColumnStart: 8,
           gridColumnEnd: 40,
+          // borderolor: '#D9D9D9',
           borderBottom: index === 0 ? '' : '0.02em dashed',
           marginBottom: '-0.1em'
         }}

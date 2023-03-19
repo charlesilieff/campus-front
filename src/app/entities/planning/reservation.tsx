@@ -116,7 +116,7 @@ export const Reservation: FunctionComponent<IProps> = (
               borderBottomLeftRadius: '0em',
               borderTopLeftRadius: '0em',
               borderLeftStyle: 'none',
-              marginLeft: '0.2em'
+              marginLeft: '0.2rem'
             },
             style
           )
@@ -132,8 +132,8 @@ export const Reservation: FunctionComponent<IProps> = (
               borderBottomRightRadius: '0em',
               borderTopRightRadius: '0em',
               borderRightStyle: 'none',
-              margin: '0',
-              marginLeft: '0.5em'
+              marginRight: '0'
+              // marginLeft: '0.5em'
             },
             style
           )

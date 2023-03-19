@@ -68,7 +68,7 @@ export const IndexPlanning = () => {
   return (
     <>
       <HStack w={'100%'} justifyContent={'space-between'} alignItems={'flex-end'}>
-        <HStack>
+        <HStack spacing={12}>
           <Box>
             <Input
               type="date"
@@ -76,33 +76,35 @@ export const IndexPlanning = () => {
             >
             </Input>
           </Box>
-          <Select
-            alignSelf={'flex-end'}
-            width={'200px'}
-            className="block"
-            name="placeId"
-            pl={10}
-            py={4}
-            onChange={e => {
-              getOnePlace(e.target.value)
-            }}
-          >
-            {places ?
-              (places.map(p => (
-                <option value={p.id} key={p.id}>
-                  {p.name}
-                </option>
-              ))) :
-              <option value="" key="0" />}
-            Lieu
-          </Select>
-          <Box alignSelf={'flex-end'} py={4}>
-            <PlaceModal {...place} />
-          </Box>
-          &nbsp;&nbsp;&nbsp;
+          <HStack>
+            <Select
+              alignSelf={'flex-end'}
+              width={'200px'}
+              className="block"
+              name="placeId"
+              pl={10}
+              py={4}
+              onChange={e => {
+                getOnePlace(e.target.value)
+              }}
+            >
+              {places ?
+                (places.map(p => (
+                  <option value={p.id} key={p.id}>
+                    {p.name}
+                  </option>
+                ))) :
+                <option value="" key="0" />}
+              Lieu
+            </Select>
+            <Box alignSelf={'flex-end'} py={4}>
+              <PlaceModal {...place} />
+            </Box>
+          </HStack>
+
           {isAdmin ?
             (
-              <>
+              <HStack spacing={4}>
                 <Box alignSelf={'flex-end'} pb={4}>
                   <Button
                     as={Link}
@@ -118,7 +120,7 @@ export const IndexPlanning = () => {
                     Nouvelle réservation
                   </Button>
                 </Box>
-                &nbsp;&nbsp;&nbsp;
+
                 <Box alignSelf={'flex-end'} py={4}>
                   <Button
                     as={Link}
@@ -134,7 +136,7 @@ export const IndexPlanning = () => {
                     Réservations à traiter
                   </Button>
                 </Box>
-              </>
+              </HStack>
             ) :
             null}
         </HStack>

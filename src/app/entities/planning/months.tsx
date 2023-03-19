@@ -32,6 +32,8 @@ export const Months: FunctionComponent<IProps> = ({ month, date, totalDays }) =>
       gridColumnStart={gridColumnStart}
       textAlign={'center'}
       py={2}
+      borderColor={'#D9D9D9'}
+      borderBottomWidth={'0.1em'}
       textTransform={'capitalize'}
       fontWeight={'bold'}
     >

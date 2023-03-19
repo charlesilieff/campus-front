@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react'
 import type { IRoom } from 'app/shared/model/room.model'
 import type { FunctionComponent } from 'react'
 import React from 'react'
@@ -16,10 +17,17 @@ export const Room: FunctionComponent<IProps> = ({ gridRowEnd, room }) => {
 
   return (
     <>
-      <div className="rooms" style={style}>
+      <Box className="rooms" style={style} borderColor={'#D9D9D9'}>
         {room.name}
-      </div>
-      <div style={{ ...style, gridColumnStart: 8, gridColumnEnd: 40, borderTop: '0.15em solid' }}>
+      </Box>
+      <div
+        style={{
+          ...style,
+          gridColumnStart: 8,
+          gridColumnEnd: 40,
+          borderTop: '0.15em solid #D9D9D9'
+        }}
+      >
       </div>
     </>
   )
