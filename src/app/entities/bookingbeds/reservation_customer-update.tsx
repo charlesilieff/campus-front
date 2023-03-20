@@ -22,6 +22,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import type { IBookingBeds } from '../../shared/model/bookingBeds.model'
 import { getReservationsWithBedEntity, reset, setData } from './booking-beds.reducer'
+import { isArrivalDateIsBeforeDepartureDate, isDateBeforeNow } from './utils'
 
 export const ReservationCustomerUpdate = () => {
   const reservationEntity = useAppSelector(state => state.bookingBeds.entity)
@@ -53,7 +54,8 @@ export const ReservationCustomerUpdate = () => {
   const handleClose = () => {
     navigate('/planning')
   }
-
+  const departureDate = useRef({})
+  departureDate.current = watch('departureDate')
   useEffect(() => {
     if (!creating) {
       if (isNew) {
@@ -335,6 +337,56 @@ export const ReservationCustomerUpdate = () => {
                 <Checkbox {...register('isDepartureLunch')}>déjeuner</Checkbox>
                 <Checkbox {...register('isDepartureDiner')}>dîner</Checkbox>
               </HStack>
+            </FormControl>
+            <FormControl isRequired isInvalid={errors.arrivalDate !== undefined}>
+              <FormLabel htmlFor="arrivalDate" fontWeight={'bold'}>
+                {"Date d'arrivée"}
+              </FormLabel>
+              <Input
+                id="username"
+                type="date"
+                placeholder="Date d'arrivée'"
+                {...register('arrivalDate', {
+                  required: "la date d'arrivée' est obligatoire",
+                  validate(v) {
+                    if (
+                      !isArrivalDateIsBeforeDepartureDate(
+                        v.toString(),
+                        departureDate.current.toString()
+                      )
+                    ) {
+                      return "La date d'arrivée doit être avant la date de départ"
+                    }
+                    if (isDateBeforeNow(v.toString())) {
+                      return "La date d'arrivée doit être après aujourd’hui"
+                    } else {
+                      return true
+                    }
+                  }
+                })}
+              />
+
+              <FormErrorMessage>
+                {errors.arrivalDate && errors.arrivalDate.message}
+              </FormErrorMessage>
+            </FormControl>
+
+            <FormControl isRequired isInvalid={errors.departureDate !== undefined}>
+              <FormLabel htmlFor="departureDate" fontWeight={'bold'}>
+                {'Date de départ'}
+              </FormLabel>
+              <Input
+                id="username"
+                type="date"
+                placeholder="Date de départ"
+                {...register('departureDate', {
+                  required: 'la date de départ est obligatoire'
+                })}
+              />
+
+              <FormErrorMessage>
+                {errors.departureDate && errors.departureDate.message}
+              </FormErrorMessage>
             </FormControl>
 
             {!isNew ?
