@@ -27,7 +27,6 @@ export const UserManagementDeleteDialog: FunctionComponent<{ login: string }> = 
   }, [])
 
   const confirmDelete = (login: string) => {
-    console.log(login)
     dispatch(deleteUser(login))
     onClose()
   }
