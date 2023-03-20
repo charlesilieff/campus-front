@@ -19,13 +19,17 @@ export const PricingDetail = () => {
       <Heading>Tarifs</Heading>
       <dl className="jh-entity-details">
         <dt>
-          <Heading size={'md'}>Nom</Heading>
-        </dt>
-        <dd>{pricingEntity.wording}</dd>
-        <dt>
           <Heading size={'md'}>Prix</Heading>
         </dt>
         <dd>{pricingEntity.price} €</dd>
+        <dt>
+          <Heading size={'md'}>Commentaire</Heading>
+        </dt>
+        <dd>{pricingEntity.comment}</dd>
+        <dt>
+          <Heading size={'md'}>Commentaire</Heading>
+        </dt>
+        <dd>{pricingEntity.comment}</dd>
         <dt>
           <Heading size={'md'}>Commentaire</Heading>
         </dt>
