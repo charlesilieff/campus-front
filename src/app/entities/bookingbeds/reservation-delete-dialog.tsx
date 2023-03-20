@@ -9,6 +9,8 @@ import {
   useDisclosure,
   useToast
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
+import * as Z from '@effect/io/Effect'
 import { useAppDispatch } from 'app/config/store'
 import type { FunctionComponent } from 'react'
 import React from 'react'
@@ -29,37 +31,149 @@ export const ReservationDeleteDialog: FunctionComponent<{ reservationId: number 
 
   const confirmDelete = async () => {
     setIsDeleting(true)
-    const { meta: { requestStatus } } = await dispatch(
-      deleteEntity({ id: reservationId, sendMail: true })
+
+    // Version effectify with Z.gen (équivalent defer dans scala ZIO) :
+    await pipe(
+      Z.gen(function* (_) {
+        const response = yield* _(Z.attemptPromise(() =>
+          dispatch(
+            deleteEntity({ id: reservationId, sendMail: true })
+          )
+        ))
+        const requestStatus = response.meta.requestStatus
+
+        if (requestStatus === 'fulfilled') {
+          toast({
+            position: 'top',
+            title: 'Réservation supprimée !',
+            description: 'La réservation a bien été supprimée.',
+            status: 'success',
+            duration: 4000,
+            isClosable: true
+          })
+          dispatch(reset())
+
+          navigate('/planning')
+        }
+
+        if (requestStatus === 'rejected') {
+          toast({
+            position: 'top',
+            title: 'Erreur !',
+            description: "La réservation n'a pas pu être supprimée.",
+            status: 'error',
+            duration: 4000,
+            isClosable: true
+          })
+        }
+        onClose()
+
+        setIsDeleting(false)
+      }),
+      Z.runPromise
     )
 
-    if (requestStatus === 'fulfilled') {
-      toast({
-        position: 'top',
-        title: 'Réservation supprimée !',
-        description: 'La réservation a bien été supprimée.',
-        status: 'success',
-        duration: 4000,
-        isClosable: true
-      })
-      dispatch(reset())
+    // Version effectify with map and pipe :
 
-      navigate('/planning')
-    }
+    //
+    // await pipe(
+    //   Z.attemptPromise(() =>
+    //     dispatch(
+    //       deleteEntity({ id: reservationId, sendMail: true })
+    //     )
+    //   ),
+    //   Z.map(response => response.meta.requestStatus),
+    //   Z.flatMap(requestStatus => requestStatus === 'fulfilled' ? Z.unit() : Z.fail('ko')),
+    //   Z.map(() =>
+    //     toast({
+    //       position: 'top',
+    //       title: 'Réservation supprimée !',
+    //       description: 'La réservation a bien été supprimée.',
+    //       status: 'success',
+    //       duration: 4000,
+    //       isClosable: true
+    //     })
+    //   ),
+    //   Z.map(() => dispatch(reset())),
+    //   Z.map(() => navigate('/planning')),
+    //   Z.catchAll(() =>
+    //     Z.succeed(toast({
+    //       position: 'top',
+    //       title: 'Erreur !',
+    //       description: "La réservation n'a pas pu être supprimée.",
+    //       status: 'error',
+    //       duration: 4000,
+    //       isClosable: true
+    //     }))
+    //   ),
+    //   Z.map(() => onClose()),
+    //   Z.map(() => setIsDeleting(false)),
+    //   Z.runPromise
+    // )
 
-    if (requestStatus === 'rejected') {
-      toast({
-        position: 'top',
-        title: 'Erreur !',
-        description: "La réservation n'a pas pu être supprimée.",
-        status: 'error',
-        duration: 4000,
-        isClosable: true
-      })
-    }
-    onClose()
+    // Version async await javascript classique :
 
-    setIsDeleting(false)
+    // const {meta:{requestStatus}} = await dispatch(deleteEntity({ id: reservationId, sendMail: true }))
+    // if (requestStatus === 'fulfilled') {
+    //   toast({
+    //     position: 'top',
+    //     title: 'Réservation supprimée !',
+    //     description: 'La réservation a bien été supprimée.',
+    //     status: 'success',
+    //     duration: 4000,
+    //     isClosable: true
+    //   })
+    //   dispatch(reset())
+
+    //   navigate('/planning')
+    // }
+
+    // if (requestStatus === 'rejected') {
+    //   toast({
+    //     position: 'top',
+    //     title: 'Erreur !',
+    //     description: "La réservation n'a pas pu être supprimée.",
+    //     status: 'error',
+    //     duration: 4000,
+    //     isClosable: true
+    //   })
+    // }
+    // onClose()
+
+    // setIsDeleting(false)
+
+    // version oldschool :
+    // dispatch(deleteEntity({ id: reservationId, sendMail: true })).then(
+    //   ({ meta: { requestStatus } }) => {
+    //     if (requestStatus === 'fulfilled') {
+    //       toast({
+    //         position: 'top',
+    //         title: 'Réservation supprimée !',
+    //         description: 'La réservation a bien été supprimée.',
+    //         status: 'success',
+    //         duration: 4000,
+    //         isClosable: true
+    //       })
+    //       dispatch(reset())
+
+    //       navigate('/planning')
+    //     }
+
+    //     if (requestStatus === 'rejected') {
+    //       toast({
+    //         position: 'top',
+    //         title: 'Erreur !',
+    //         description: "La réservation n'a pas pu être supprimée.",
+    //         status: 'error',
+    //         duration: 4000,
+    //         isClosable: true
+    //       })
+    //     }
+    //     onClose()
+
+    //     setIsDeleting(false)
+    //   }
+    // )
   }
 
   return (
