@@ -8,7 +8,8 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
@@ -25,13 +26,21 @@ export const CancelReservationModal = (
     getReservations: typeof getIntermittentReservations
   }
 ): JSX.Element => {
+  const toast = useToast()
   const dispatch = useAppDispatch()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isDeleting, setIsDeleting] = useState(false)
-  const cancelReservation = async (id2: number) => {
+  const cancelReservation = async (id: number) => {
     setIsDeleting(true)
-    await dispatch(deleteEntity({ id: id2, sendMail: false }))
-
+    await dispatch(deleteEntity({ id, sendMail: false }))
+    toast({
+      position: 'top',
+      title: 'Réservation supprimée !',
+      description: 'La réservation a bien été supprimée.',
+      status: 'success',
+      duration: 4000,
+      isClosable: true
+    })
     setIsDeleting(false)
     pipe(userId, O.map(userId => dispatch(getReservations(userId))))
 

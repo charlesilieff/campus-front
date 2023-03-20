@@ -120,8 +120,8 @@ export const BedUpdate = () => {
                 {...register('kind', {
                   required: 'Le type est obligatoire',
                   minLength: {
-                    value: 4,
-                    message: 'This field is required to be at least 4 characters.'
+                    value: 2,
+                    message: 'This field is required to be at least 2 characters.'
                   },
                   maxLength: {
                     value: 20,
