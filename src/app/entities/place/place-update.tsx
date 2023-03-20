@@ -87,7 +87,7 @@ export const PlaceUpdate = () => {
       image: O.getOrUndefined(image),
       imageContentType: O.getOrUndefined(imageContentType)
     }
-    console.log(values)
+
     if (isNew) {
       dispatch(createEntity(entity))
     } else {

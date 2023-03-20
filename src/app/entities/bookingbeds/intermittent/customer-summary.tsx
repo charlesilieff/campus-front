@@ -29,7 +29,6 @@ export const CustomerSummary = (
     setUpdateCustomer
   }: CustomerSummaryProps
 ): JSX.Element => {
-  console.log(phoneNumber)
   const phoneNumberString = O.getOrElse(phoneNumber, () => 'Pas de téléphone renseigné')
   return (
     <VStack

@@ -169,15 +169,14 @@ export const ReservationBedsUpdate = (): JSX.Element => {
     }
 
     setBedsToBook(updatedbedsToBook)
-    console.log('bedsToBook', updatedbedsToBook)
   }
 
   const saveEntity = (values: IBookingBeds): void => {
     setIsLoading(true)
-    console.log('values', values)
+
     // On sélectionne et on créer une liste d'object bed (id seulement comme attribut)
     const bedIds = pipe(Object.values(bedsToBook), A.map(O.fromNullable), A.compact)
-    console.log('bedIds', bedIds)
+
     const customerReservation = Object.fromEntries(
       Object.entries(values).filter(entry => !Number(entry[0]))
     )

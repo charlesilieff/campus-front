@@ -12,7 +12,7 @@ export const Beds: FunctionComponent<IProps> = ({ rooms, bedsToBook, checkBedsTo
   <>
     {rooms.filter(r => r.beds.length !== 0).map(room => {
       const bedRoomKind = room.bedroomKind ? `(${room.bedroomKind.name})` : ''
-      // console.log('bedsToBook', bedsToBook)
+
       return (
         <VStack alignItems={'flex-start'} key={room.id}>
           <p style={{ fontWeight: 'bold' }}>

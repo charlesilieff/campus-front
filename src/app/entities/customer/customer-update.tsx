@@ -76,7 +76,7 @@ export const CustomerUpdate = (): JSX.Element => {
       // @ts-expect-error : age is a number
       age: values.age === '' ? 0 : values.age
     }
-    console.log(entity)
+
     if (isNew) {
       dispatch(createEntity(entity))
     } else {

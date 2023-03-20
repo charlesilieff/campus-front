@@ -234,7 +234,7 @@ function displayTotalMeals(resultTotalMeals: number[]) {
  */
 function totalMealsCalculation(mealsData: IMeal[], totalMeals: (table: number[]) => number) {
   // regularLunch: calculation of total.
-  console.log('mealsData', mealsData)
+
   let table: number[] = mealsData.map(meals => meals.regularLunch)
 
   const totalRegularLunch: number = totalMeals(table)
