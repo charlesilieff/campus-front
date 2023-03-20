@@ -174,7 +174,6 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
   const [bedId, setBedId] = useState<O.Option<number>>(O.none)
 
   useEffect(() => {
-    console.log('cocuou')
     if (updateSuccess) {
       dispatch(resetReservations())
       if (reservationId !== undefined) {
