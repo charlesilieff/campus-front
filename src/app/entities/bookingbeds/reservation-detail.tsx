@@ -68,47 +68,43 @@ export const ReservationDetail = () => {
         <Text>{customerEntity?.email}</Text>
       </HStack>
 
-      <dt>
-        <span id="comment">Commentaire:</span>
-      </dt>
-      <dd>{customerEntity?.comment}</dd>
+      <Text fontWeight={'bold'}>Commentaire:</Text>
+
+      <Text>{customerEntity?.comment}</Text>
 
       <Heading>Réservation</Heading>
-      <dt>
-        <span id="personNumber">Nombre de personnes à héberger</span>
-      </dt>
-      <dd>{reservationEntity.personNumber}</dd>
 
-      <dt>
-        <span id="isConfirmed">Confirmé</span>
-      </dt>
-      <dd>{reservationEntity.isConfirmed ? 'Oui' : 'Non'}</dd>
-      <dt>
-        <span id="specialDietNumber">Nombre de régimes spéciaux</span>
-      </dt>
-      <dd>{reservationEntity.specialDietNumber}</dd>
+      <Text fontWeight={'bold'}>Nombre de personnes à héberger</Text>
 
-      <dt></dt>
-      <dt>
-        <span id="isArrivalLunch">Repas du midi, jour d&apos;arrivée</span>
-      </dt>
-      <dd>{reservationEntity?.isArrivalLunch ? 'Oui' : 'Non'}</dd>
-      <dt>
-        <span id="isArrivalDiner">Repas du soir, jour d&apos;arrivée</span>
-      </dt>
-      <dd>{reservationEntity?.isArrivalDiner ? 'Oui' : 'Non'}</dd>
-      <dt>
-        <span id="isDepartureLunch">Repas du midi, jour de départ</span>
-      </dt>
-      <dd>{reservationEntity?.isDepartureLunch ? 'Oui' : 'Non'}</dd>
-      <dt>
-        <span id="isDepartureDiner">Repas du soir, jour de départ</span>
-      </dt>
-      <dd>{reservationEntity?.isDepartureDiner ? 'Oui' : 'Non'}</dd>
-      <dt>
-        <span id="arrivalDate">Date d&apos;arrivée</span>
-      </dt>
-      <dd>
+      <Text>{reservationEntity.personNumber}</Text>
+
+      <Text fontWeight={'bold'}>Confirmé</Text>
+
+      <Text>{reservationEntity.isConfirmed ? 'Oui' : 'Non'}</Text>
+
+      <Text fontWeight={'bold'}>Nombre de régimes spéciaux</Text>
+
+      <Text>{reservationEntity.specialDietNumber}</Text>
+
+      <Text fontWeight={'bold'}>Repas du midi, jour d&apos;arrivée</Text>
+
+      <Text>{reservationEntity?.isArrivalLunch ? 'Oui' : 'Non'}</Text>
+
+      <Text fontWeight={'bold'}>Repas du soir, jour d&apos;arrivée</Text>
+
+      <Text>{reservationEntity?.isArrivalDiner ? 'Oui' : 'Non'}</Text>
+
+      <Text fontWeight={'bold'}>Repas du midi, jour de départ</Text>
+
+      <Text>{reservationEntity?.isDepartureLunch ? 'Oui' : 'Non'}</Text>
+
+      <Text fontWeight={'bold'}>Repas du soir, jour de départ</Text>
+
+      <Text>{reservationEntity?.isDepartureDiner ? 'Oui' : 'Non'}</Text>
+
+      <Text fontWeight={'bold'}>Date d&apos;arrivée</Text>
+
+      <Text>
         {reservationEntity.arrivalDate ?
           (
             <TextFormat
@@ -118,11 +114,11 @@ export const ReservationDetail = () => {
             />
           ) :
           null}
-      </dd>
-      <dt>
-        <span id="departureDate">Date de départ</span>
-      </dt>
-      <dd>
+      </Text>
+
+      <Text fontWeight={'bold'}>Date de départ</Text>
+
+      <Text>
         {reservationEntity.departureDate ?
           (
             <TextFormat
@@ -132,14 +128,14 @@ export const ReservationDetail = () => {
             />
           ) :
           null}
-      </dd>
-      <dt>
-        <span id="comment">Commentaire</span>
-      </dt>
-      <dd>{reservationEntity.comment}</dd>
+      </Text>
 
-      <dt>Lits</dt>
-      <dd>
+      <Text fontWeight={'bold'}>Commentaire</Text>
+
+      <Text>{reservationEntity.comment}</Text>
+
+      <Text fontWeight={'bold'}>Lits</Text>
+      <Text>
         {reservationEntity.beds ?
           reservationEntity.beds.map((val, i) => (
             <span key={val.id}>
@@ -148,9 +144,9 @@ export const ReservationDetail = () => {
             </span>
           )) :
           null}
-      </dd>
-      <dt>Client</dt>
-      <dd>{reservationEntity.customer ? reservationEntity.customer.email : ''}</dd>
+      </Text>
+      <Text fontWeight={'bold'}>Client</Text>
+      <Text>{reservationEntity.customer ? reservationEntity.customer.email : ''}</Text>
 
       {isAdmin ?
         (
