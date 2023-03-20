@@ -78,10 +78,8 @@ export const IndexPlanning = () => {
           </Box>
           <HStack>
             <Select
-              alignSelf={'flex-end'}
               width={'200px'}
               className="block"
-              name="placeId"
               pl={10}
               py={4}
               onChange={e => {
@@ -97,7 +95,7 @@ export const IndexPlanning = () => {
                 <option value="" key="0" />}
               Lieu
             </Select>
-            <Box alignSelf={'flex-end'} py={4}>
+            <Box py={4}>
               <PlaceModal {...place} />
             </Box>
           </HStack>
