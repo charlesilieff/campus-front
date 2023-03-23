@@ -21,6 +21,8 @@ export const Pricing = () => {
     dispatch(getEntities())
   }
 
+  // const userCategories = useAppSelector(state => state.userCategory.entities)
+
   return (
     <VStack>
       <Heading alignSelf={'flex-start'}>Tarifs</Heading>
@@ -44,27 +46,68 @@ export const Pricing = () => {
           Créez un nouveau tarif
         </Button>
       </HStack>
-
+      {/* {console.log('toto' && pricingList)} */}
       {pricingList && pricingList.length > 0 ?
         (
           <Table>
             <Thead>
               <Tr>
-                <Th>Nom</Th>
                 <Th>Prix</Th>
                 <Th>Commentaire</Th>
+                <Th>Type de réservation</Th>
+                <Th>Categorie utilisateur</Th>
               </Tr>
             </Thead>
             <Tbody>
               {pricingList.map((pricing, i) => (
-                <Tr key={`entity-${i}`} data-cy="entityTable">
-                  <Td>
+                <Tr key={`entity-${i}`}>
+                  {
+                    // data-cy="entityTable"
+                    /* <Td>
                     <Button as={Link} to={`${pricing.id}`} variant="see" size="sm">
                       {pricing.wording}
                     </Button>
-                  </Td>
+                  </Td> */
+                  }
+
                   <Td>{pricing.price}</Td>
                   <Td>{pricing.comment}</Td>
+                  {
+                    /* <Td>{pricing.typeReservation.id}</Td>
+                  <Td>{pricing.userCategory.id}</Td> */
+                  }
+                  <Td>
+                    {/* {pricing.typeReservation.name} */}
+                    {pricing.typeReservation ?
+                      (console.log('toto' && pricing.typeReservation),
+                        (
+                          <Link to={`/type-reservation/${pricing.typeReservation.id}`}>
+                            {pricing.typeReservation.name}
+                          </Link>
+                        )) :
+                      'xxx'}
+                  </Td>
+                  <Td>
+                    {pricing.userCategory ?
+                      (
+                        <Link to={`/user-category/${pricing.userCategory.id}`}>
+                          {pricing.userCategory.name}
+                        </Link>
+                      ) :
+                      'yyy'}
+                  </Td>
+                  {
+                    /* <Td>
+                    {pricing.typeReservation ?
+                      pricing.typeReservation.map((val, j) => (
+                        <span key={j}>
+                          <Link to={`bed/${val.id}`}>{val.number}</Link>
+                          {j === pricing.typeReservation.length - 1 ? '' : ', '}
+                        </span>
+                      )) :
+                      null}
+                  </Td> */
+                  }
                   <Td>
                     <HStack justifyContent={'flex-end'} spacing={0}>
                       <Button

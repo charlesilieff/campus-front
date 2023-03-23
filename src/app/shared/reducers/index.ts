@@ -10,6 +10,8 @@ import pricing from '../../entities/pricing/pricing.reducer'
 import requestReservation from '../../entities/reservation-request/reservation-request.reducer'
 import reservation from '../../entities/reservation/reservation.reducer'
 import room from '../../entities/room/room.reducer'
+import typeReservation from '../../entities/type-reservation/type-reservation.reducer'
+import userCategory from '../../entities/user-category/user-category.reducer'
 import activate from '../../modules/account/activate/activate.reducer'
 import passwordReset from '../../modules/account/password-reset/password-reset.reducer'
 import password from '../../modules/account/password/password.reducer'
@@ -39,5 +41,7 @@ export const rootReducer = {
   requestReservation,
   bookingBeds,
   place,
-  loadingBar
+  loadingBar,
+  userCategory,
+  typeReservation
 }

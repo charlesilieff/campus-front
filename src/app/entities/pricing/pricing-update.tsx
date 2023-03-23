@@ -6,10 +6,14 @@ import {
   Heading,
   HStack,
   Input,
+  Select,
   Textarea,
+  // Tooltip,
   VStack
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { getEntities as getTypeReservations } from 'app/entities/type-reservation/type-reservation.reducer'
+import { getEntities as getUserCategories } from 'app/entities/user-category/user-category.reducer'
 import type { IPricing } from 'app/shared/model/pricing.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -19,17 +23,31 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { createEntity, getEntity, reset, updateEntity } from './pricing.reducer'
 
 interface PricingForm {
-  wording: string
+  // wording: string
   price: number
   comment: string
+  userCategoryId: string
+  typeReservationId: string
 }
 
 export const PricingUpdate = () => {
   const dispatch = useAppDispatch()
   const { id } = useParams<'id'>()
   const navigate = useNavigate()
+
   const isNew = id === undefined
   const pricingEntity = useAppSelector(state => state.pricing.entity)
+  const defaultValues = () =>
+    isNew ? {} : {
+      ...pricingEntity
+      //  @ts-expect-error TODO: fix this
+      // userCategoryId: pricingEntity?.userCategory?.id === '' ?
+      //   undefined :
+      //   pricingEntity?.userCategory?.id
+      // typeReservationId: pricingEntity?.typeReservation?.id === '' ? // todo fix this number
+      //   undefined :
+      //   pricingEntity?.typeReservation?.id
+    }
 
   const {
     handleSubmit,
@@ -37,6 +55,9 @@ export const PricingUpdate = () => {
     reset: resetForm,
     formState: { errors }
   } = useForm<PricingForm>()
+
+  const userCategories = useAppSelector(state => state.userCategory.entities)
+  const typeReservations = useAppSelector(state => state.typeReservation.entities)
 
   const loading = useAppSelector(state => state.pricing.loading)
   const updating = useAppSelector(state => state.pricing.updating)
@@ -46,17 +67,18 @@ export const PricingUpdate = () => {
     navigate('/pricing')
   }
   useEffect(() => {
-    const defaultValue = isNew ? {} : {
-      ...pricingEntity
-    }
-    resetForm(defaultValue)
+    resetForm(defaultValues())
   }, [pricingEntity.id])
+
   useEffect(() => {
     if (isNew) {
       dispatch(reset())
     } else {
       dispatch(getEntity(id))
     }
+
+    dispatch(getUserCategories())
+    dispatch(getTypeReservations())
   }, [])
 
   useEffect(() => {
@@ -65,10 +87,23 @@ export const PricingUpdate = () => {
     }
   }, [updateSuccess])
 
-  const saveEntity = (values: IPricing) => {
+  interface ExtendIPricingForTheBAckendToBeDeleted extends IPricing {
+    userCategoryId: string
+    typeReservationId: string
+  }
+
+  const saveEntity = (values: ExtendIPricingForTheBAckendToBeDeleted) => {
     const entity = {
       ...pricingEntity,
-      ...values
+      ...values,
+      userCategoryId: values.userCategoryId === '' ? undefined : values.userCategoryId,
+      userCategory: userCategories.find(userCategory =>
+        userCategory.id.toString() === values.userCategoryId.toString()
+      ),
+      typeReservationId: values.typeReservationId === '' ? undefined : values.typeReservationId,
+      typeReservation: typeReservations.find(typeReservation =>
+        typeReservation.id.toString() === values.typeReservationId.toString()
+      )
     }
 
     if (isNew) {
@@ -87,31 +122,6 @@ export const PricingUpdate = () => {
       {loading ? <p>Chargement...</p> : (
         <form onSubmit={handleSubmit(saveEntity)}>
           <VStack minW={'300px'}>
-            <FormControl isRequired isInvalid={errors.wording !== undefined}>
-              <FormLabel htmlFor="wording" fontWeight={'bold'}>
-                {'Nom'}
-              </FormLabel>
-              <Input
-                id="wording"
-                type="text"
-                placeholder="Nom"
-                {...register('wording', {
-                  required: 'Le Nom est obligatoire',
-                  minLength: {
-                    value: 1,
-                    message: 'This field is required to be at least 1 characters.'
-                  },
-                  maxLength: {
-                    value: 50,
-                    message: 'This field cannot be longer than 50 characters.'
-                  }
-                })}
-              />
-
-              <FormErrorMessage>
-                {errors.wording && errors.wording.message}
-              </FormErrorMessage>
-            </FormControl>
             <FormControl isRequired isInvalid={errors.price !== undefined}>
               <FormLabel htmlFor="price" fontWeight={'bold'}>
                 {'Prix'}
@@ -130,6 +140,7 @@ export const PricingUpdate = () => {
                 {errors.price && errors.price.message}
               </FormErrorMessage>
             </FormControl>
+
             <FormControl isInvalid={errors.comment !== undefined}>
               <FormLabel htmlFor="comment" fontWeight={'bold'}>
                 {'Commentaire'}
@@ -140,6 +151,46 @@ export const PricingUpdate = () => {
                 {...register('comment', {})}
               />
             </FormControl>
+
+            <FormControl>
+              <FormLabel htmlFor="userCategory" fontWeight={'bold'}>
+                {"Categorie d'utilisateur"}
+              </FormLabel>
+
+              <Select
+                id="userCategory"
+                {...register('userCategoryId', {})}
+              >
+                <option value="" key="0" />
+                {userCategories ?
+                  userCategories.map(userCategory => (
+                    <option value={userCategory.id} key={userCategory.id}>
+                      {userCategory.name}
+                    </option>
+                  )) :
+                  null}
+              </Select>
+            </FormControl>
+
+            <FormControl>
+              <FormLabel htmlFor="typeReservation" fontWeight={'bold'}>
+                {'Type de réservation'}
+              </FormLabel>
+              <Select
+                id="typeReservation"
+                {...register('typeReservationId', {})}
+              >
+                <option value="" key="0" />
+                {typeReservations ?
+                  typeReservations.map(typeReservation => (
+                    <option value={typeReservation.id} key={typeReservation.id}>
+                      {typeReservation.name}
+                    </option>
+                  )) :
+                  null}
+              </Select>
+            </FormControl>
+
             <HStack>
               <Button
                 as={Link}

@@ -27,13 +27,24 @@ export const PricingDetail = () => {
         </dt>
         <dd>{pricingEntity.comment}</dd>
         <dt>
-          <Heading size={'md'}>Commentaire</Heading>
+          <Heading size={'md'}>Type reservation</Heading>
         </dt>
-        <dd>{pricingEntity.comment}</dd>
+        <dd>{pricingEntity.typeReservation ? pricingEntity.typeReservation.name : 'no data'}</dd>
         <dt>
-          <Heading size={'md'}>Commentaire</Heading>
+          <Heading size={'md'}>Categorie utilisateur</Heading>
+          {
+            /* <Button
+            as={Link}
+            to={`/pricing/${pricingEntity.id}/edit`}
+            leftIcon={<FaPencilAlt />}
+            variant="modify"
+          >
+            Ajouter un type de réservation
+          </Button> */
+          }
         </dt>
-        <dd>{pricingEntity.comment}</dd>
+        <dd>{pricingEntity.userCategory ? pricingEntity.userCategory.name : 'no data'}</dd>
+        {/* <dd>{pricingEntity.userCategory.name}</dd> */}
       </dl>
       <HStack>
         <Button as={Link} to="/pricing" leftIcon={<FaArrowLeft />} variant="back">

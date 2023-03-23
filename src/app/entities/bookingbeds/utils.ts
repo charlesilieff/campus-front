@@ -2,6 +2,8 @@ import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import { LocalDate } from '@js-joda/core'
 import type { IBedroomKind } from 'app/shared/model/bedroom-kind.model'
+import type { ITypeReservation } from 'app/shared/model/typeReservation.model'
+import type { IUserCategory } from 'app/shared/model/userCategory.model'
 import axios from 'axios'
 
 const apiUrlAllPlaces = 'api/planning/places'
@@ -60,6 +62,23 @@ export interface IRoomWithBeds {
   beds?: IBedWithStatus[] | null
   bedroomKind?: IBedroomKind | null
   place?: IPlace | null
+}
+
+// export interface IUserCategory {
+//   id?: number
+//   name?: string
+//   pricings?: IPricing[] | null
+// }
+// export interface ITypeReservation {
+//   id?: number
+//   name?: string
+//   pricings?: IPricing[] | null
+// }
+export interface IPricing { // WithReservation
+  id?: number
+  comment?: string | null
+  userCategory?: IUserCategory | null
+  typeReservation?: ITypeReservation | null
 }
 
 export interface IBedWithStatus {
