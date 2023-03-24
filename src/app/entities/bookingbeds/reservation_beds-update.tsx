@@ -171,7 +171,7 @@ export const ReservationBedsUpdate = (): JSX.Element => {
     setBedsToBook(updatedbedsToBook)
   }
 
-  const saveEntity = (values: IBookingBeds): void => {
+  const saveEntity = async (values: IBookingBeds): Promise<void> => {
     setIsLoading(true)
 
     // On sélectionne et on créer une liste d'object bed (id seulement comme attribut)
@@ -205,13 +205,11 @@ export const ReservationBedsUpdate = (): JSX.Element => {
     }
 
     if (isNew) {
-      dispatch(createEntity({ entity: reservation, sendMail: true })).then(() => {
-        setIsLoading(false)
-      })
+      await dispatch(createEntity({ entity: reservation, sendMail: true }))
+      setIsLoading(false)
     } else {
-      dispatch(updateEntity(reservation)).then(() => {
-        setIsLoading(false)
-      })
+      await dispatch(updateEntity(reservation))
+      setIsLoading(false)
     }
   }
 

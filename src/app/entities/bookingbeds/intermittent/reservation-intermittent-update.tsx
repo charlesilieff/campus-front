@@ -95,30 +95,29 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
 
   const userId: number = useAppSelector(state => state.authentication.account.id)
 
-  const handleSubmitReservation = (
+  const handleSubmitReservation = async (
     datesAndMeal: DatesAndMeals,
     bedId: number,
     customer: Customer
-  ): void => {
+  ): Promise<void> => {
     const reservation = createIReservationWithBedIds(customer, datesAndMeal, bedId)
 
     setIsLoading(true)
     if (reservationId !== undefined) {
       // FIXME: unsafe
-      dispatch(updateReservation({ ...reservation, id: Number(reservationId) })).then(() =>
-        setIsLoading(false)
-      )
+      await dispatch(updateReservation({ ...reservation, id: Number(reservationId) }))
+      setIsLoading(false)
     } else {
       if (O.isSome(customerId)) {
-        dispatch(createEntity({ entity: reservation, sendMail: false })).then(() =>
-          setIsLoading(false)
-        )
+        await dispatch(createEntity({ entity: reservation, sendMail: false }))
+        setIsLoading(false)
       } else {
-        dispatch(createReservationAndUpdateUser({ entity: reservation, sendMail: false, userId }))
-          .then(() => {
-            dispatch(getSession())
-            setIsLoading(false)
-          })
+        await dispatch(
+          createReservationAndUpdateUser({ entity: reservation, sendMail: false, userId })
+        )
+
+        dispatch(getSession())
+        setIsLoading(false)
       }
     }
   }
