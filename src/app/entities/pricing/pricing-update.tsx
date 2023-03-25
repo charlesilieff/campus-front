@@ -11,6 +11,7 @@ import {
   // Tooltip,
   VStack
 } from '@chakra-ui/react'
+import type * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getTypeReservations } from 'app/entities/type-reservation/type-reservation.reducer'
 import { getEntities as getUserCategories } from 'app/entities/user-category/user-category.reducer'
@@ -27,6 +28,7 @@ interface PricingForm {
   price: number
   comment: string
   userCategoryId: string
+  // userCategoryId: string
   typeReservationId: string
 }
 
@@ -37,10 +39,14 @@ export const PricingUpdate = () => {
 
   const isNew = id === undefined
   const pricingEntity = useAppSelector(state => state.pricing.entity)
+  const userCategories = useAppSelector(state => state.userCategory.entities)
+  const typeReservations = useAppSelector(state => state.typeReservation.entities)
+
   const defaultValues = () =>
     isNew ? {} : {
-      ...pricingEntity
-      //  @ts-expect-error TODO: fix this
+      ...pricingEntity,
+      userCategoryId: pricingEntity?.userCategory?.id,
+      typeReservationId: pricingEntity?.typeReservation?.id
       // userCategoryId: pricingEntity?.userCategory?.id === '' ?
       //   undefined :
       //   pricingEntity?.userCategory?.id
@@ -55,9 +61,6 @@ export const PricingUpdate = () => {
     reset: resetForm,
     formState: { errors }
   } = useForm<PricingForm>()
-
-  const userCategories = useAppSelector(state => state.userCategory.entities)
-  const typeReservations = useAppSelector(state => state.typeReservation.entities)
 
   const loading = useAppSelector(state => state.pricing.loading)
   const updating = useAppSelector(state => state.pricing.updating)
@@ -122,36 +125,6 @@ export const PricingUpdate = () => {
       {loading ? <p>Chargement...</p> : (
         <form onSubmit={handleSubmit(saveEntity)}>
           <VStack minW={'300px'}>
-            <FormControl isRequired isInvalid={errors.price !== undefined}>
-              <FormLabel htmlFor="price" fontWeight={'bold'}>
-                {'Prix'}
-              </FormLabel>
-              <Input
-                id="price"
-                type="number"
-                placeholder="Prix"
-                {...register('price', {
-                  required: 'Le prix est obligatoire',
-                  min: { value: 0, message: 'This field should be at least 0.' }
-                })}
-              />
-
-              <FormErrorMessage>
-                {errors.price && errors.price.message}
-              </FormErrorMessage>
-            </FormControl>
-
-            <FormControl isInvalid={errors.comment !== undefined}>
-              <FormLabel htmlFor="comment" fontWeight={'bold'}>
-                {'Commentaire'}
-              </FormLabel>
-              <Textarea
-                id="comment"
-                placeholder="Commentaire"
-                {...register('comment', {})}
-              />
-            </FormControl>
-
             <FormControl>
               <FormLabel htmlFor="userCategory" fontWeight={'bold'}>
                 {"Categorie d'utilisateur"}
@@ -189,6 +162,36 @@ export const PricingUpdate = () => {
                   )) :
                   null}
               </Select>
+            </FormControl>
+
+            <FormControl isRequired isInvalid={errors.price !== undefined}>
+              <FormLabel htmlFor="price" fontWeight={'bold'}>
+                {'Prix'}
+              </FormLabel>
+              <Input
+                id="price"
+                type="number"
+                placeholder="Prix"
+                {...register('price', {
+                  required: 'Le prix est obligatoire',
+                  min: { value: 0, message: 'This field should be at least 0.' }
+                })}
+              />
+
+              <FormErrorMessage>
+                {errors.price && errors.price.message}
+              </FormErrorMessage>
+            </FormControl>
+
+            <FormControl isInvalid={errors.comment !== undefined}>
+              <FormLabel htmlFor="comment" fontWeight={'bold'}>
+                {'Commentaire'}
+              </FormLabel>
+              <Textarea
+                id="comment"
+                placeholder="Commentaire"
+                {...register('comment', {})}
+              />
             </FormControl>
 
             <HStack>

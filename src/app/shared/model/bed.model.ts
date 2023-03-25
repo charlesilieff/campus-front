@@ -8,6 +8,7 @@ export interface IBed {
   numberOfPlaces?: number
   room?: IRoom | null
   reservations?: IReservation[] | null
+  archive?: boolean
 }
 
 export const defaultValue: Readonly<IBed> = {}

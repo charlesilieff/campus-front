@@ -12,7 +12,6 @@ export const Pricing = () => {
 
   const pricingList = useAppSelector(state => state.pricing.entities)
   const loading = useAppSelector(state => state.pricing.loading)
-
   useEffect(() => {
     dispatch(getEntities())
   }, [])
@@ -21,7 +20,18 @@ export const Pricing = () => {
     dispatch(getEntities())
   }
 
-  // const userCategories = useAppSelector(state => state.userCategory.entities)
+  const myData = pricingList.flatMap(pricing => ({
+    ...pricing
+  }))
+
+  const mySort2 = myData.sort((a, b) =>
+    a.userCategory.name !== b.userCategory.name ?
+      a.userCategory.name.localeCompare(b.userCategory.name) :
+      a.typeReservation.name !== b.typeReservation.name ?
+      a.typeReservation.name.localeCompare(b.typeReservation.name) :
+      a.price - b.price
+  )
+  console.log('mon tri ', mySort2)
 
   return (
     <VStack>
@@ -47,46 +57,21 @@ export const Pricing = () => {
         </Button>
       </HStack>
       {/* {console.log('toto' && pricingList)} */}
-      {pricingList && pricingList.length > 0 ?
+      {mySort2 && pricingList.length > 0 ?
         (
           <Table>
             <Thead>
               <Tr>
+                <Th>Categorie utilisateur</Th>
+                <Th>Type de réservation</Th>
                 <Th>Prix</Th>
                 <Th>Commentaire</Th>
-                <Th>Type de réservation</Th>
-                <Th>Categorie utilisateur</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {pricingList.map((pricing, i) => (
+              {/* {myData.map((pricing, i) => ( */}
+              {myData.map((pricing, i) => (
                 <Tr key={`entity-${i}`}>
-                  {
-                    // data-cy="entityTable"
-                    /* <Td>
-                    <Button as={Link} to={`${pricing.id}`} variant="see" size="sm">
-                      {pricing.wording}
-                    </Button>
-                  </Td> */
-                  }
-
-                  <Td>{pricing.price}</Td>
-                  <Td>{pricing.comment}</Td>
-                  {
-                    /* <Td>{pricing.typeReservation.id}</Td>
-                  <Td>{pricing.userCategory.id}</Td> */
-                  }
-                  <Td>
-                    {/* {pricing.typeReservation.name} */}
-                    {pricing.typeReservation ?
-                      (console.log('toto' && pricing.typeReservation),
-                        (
-                          <Link to={`/type-reservation/${pricing.typeReservation.id}`}>
-                            {pricing.typeReservation.name}
-                          </Link>
-                        )) :
-                      'xxx'}
-                  </Td>
                   <Td>
                     {pricing.userCategory ?
                       (
@@ -96,6 +81,18 @@ export const Pricing = () => {
                       ) :
                       'yyy'}
                   </Td>
+                  <Td>
+                    {pricing.typeReservation ?
+                      (
+                        <Link to={`/type-reservation/${pricing.typeReservation.id}`}>
+                          {pricing.typeReservation.name}
+                        </Link>
+                      ) :
+                      'xxx'}
+                  </Td>
+
+                  <Td>{pricing.price}</Td>
+                  <Td>{pricing.comment}</Td>
                   {
                     /* <Td>
                     {pricing.typeReservation ?

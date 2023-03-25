@@ -7,8 +7,8 @@ export interface IPricing {
   price?: number
   comment?: string | null
   // reservation?: IReservation[] | null
-  typeReservation?: ITypeReservation | null
-  userCategory?: IUserCategory | null
+  typeReservation?: ITypeReservation // | null
+  userCategory?: IUserCategory // | null
 }
 
 export const defaultValue: Readonly<IPricing> = {}
