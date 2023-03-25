@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { FaArrowLeft, FaPencilAlt } from 'react-icons/fa'
 import { Link, useParams } from 'react-router-dom'
 
-import { getEntity } from './place.reducer'
+import { findOnePlaceById } from './place.reducer'
 import { byteSize, openFile } from './utils'
 
 export const PlaceDetail = () => {
@@ -12,7 +12,7 @@ export const PlaceDetail = () => {
   const { id } = useParams<{ id: string }>()
 
   useEffect(() => {
-    dispatch(getEntity(id))
+    dispatch(findOnePlaceById(id))
   }, [])
 
   const placeEntity = useAppSelector(state => state.place.entity)

@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { FaEye, FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
-import { getEntities } from './place.reducer'
+import { findAllPlaces } from './place.reducer'
 import { PlaceDeleteDialog } from './placedelete-dialog'
 import { byteSize, openFile } from './utils'
 
@@ -15,11 +15,11 @@ export const Place = () => {
   const loading = useAppSelector(state => state.place.loading)
 
   useEffect(() => {
-    dispatch(getEntities())
+    dispatch(findAllPlaces())
   }, [])
 
   const handleSyncList = () => {
-    dispatch(getEntities())
+    dispatch(findAllPlaces())
   }
 
   return (

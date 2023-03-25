@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getBedroomKinds } from 'app/entities/bedroom-kind/bedroom-kind.reducer'
-import { getEntities as getPlaces } from 'app/entities/place/place.reducer'
+import { findAllPlaces } from 'app/entities/place/place.reducer'
 import type { IRoom } from 'app/shared/model/room.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -69,7 +69,7 @@ export const RoomUpdate = () => {
       dispatch(getEntity(id))
     }
 
-    dispatch(getPlaces())
+    dispatch(findAllPlaces())
     dispatch(getBedroomKinds())
   }, [])
 

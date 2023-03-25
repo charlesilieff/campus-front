@@ -24,15 +24,15 @@ const apiUrl = 'api/places'
 
 // Actions
 
-export const getEntities = createAsyncThunk(
+export const findAllPlaces = createAsyncThunk(
   'place/fetch_entity_list',
   async () => {
-    const requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`
+    const requestUrl = `${apiUrl}`
     return axios.get<IPlace[]>(requestUrl)
   }
 )
 
-export const getEntity = createAsyncThunk(
+export const findOnePlaceById = createAsyncThunk(
   'place/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`
@@ -41,11 +41,11 @@ export const getEntity = createAsyncThunk(
   { serializeError: serializeAxiosError }
 )
 
-export const createEntity = createAsyncThunk(
+export const savePlace = createAsyncThunk(
   'place/create_entity',
   async (entity: IPlace, thunkAPI) => {
     const result = await axios.post<IPlace>(apiUrl, cleanEntity(entity))
-    thunkAPI.dispatch(getEntities())
+    thunkAPI.dispatch(findAllPlaces())
     return result
   },
   { serializeError: serializeAxiosError }
@@ -55,7 +55,7 @@ export const updateEntity = createAsyncThunk(
   'place/update_entity',
   async (entity: IPlace, thunkAPI) => {
     const result = await axios.put<IPlace>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
-    thunkAPI.dispatch(getEntities())
+    thunkAPI.dispatch(findAllPlaces())
     return result
   },
   { serializeError: serializeAxiosError }
@@ -65,7 +65,7 @@ export const partialUpdateEntity = createAsyncThunk(
   'place/partial_update_entity',
   async (entity: IPlace, thunkAPI) => {
     const result = await axios.patch<IPlace>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
-    thunkAPI.dispatch(getEntities())
+    thunkAPI.dispatch(findAllPlaces())
     return result
   },
   { serializeError: serializeAxiosError }
@@ -76,7 +76,7 @@ export const deleteEntity = createAsyncThunk(
   async (id: string | number, thunkAPI) => {
     const requestUrl = `${apiUrl}/${id}`
     const result = await axios.delete<IPlace>(requestUrl)
-    thunkAPI.dispatch(getEntities())
+    thunkAPI.dispatch(findAllPlaces())
     return result
   },
   { serializeError: serializeAxiosError }
@@ -89,7 +89,7 @@ export const PlaceSlice = createEntitySlice({
   initialState,
   extraReducers(builder) {
     builder
-      .addCase(getEntity.fulfilled, (state, action) => {
+      .addCase(findOnePlaceById.fulfilled, (state, action) => {
         state.loading = false
         state.entity = action.payload.data
       })
@@ -98,24 +98,24 @@ export const PlaceSlice = createEntitySlice({
         state.updateSuccess = true
         state.entity = {}
       })
-      .addMatcher(isFulfilled(getEntities), (state, action) => ({
+      .addMatcher(isFulfilled(findAllPlaces), (state, action) => ({
         ...state,
         loading: false,
         entities: action.payload.data
       }))
-      .addMatcher(isFulfilled(createEntity, updateEntity, partialUpdateEntity), (state, action) => {
+      .addMatcher(isFulfilled(savePlace, updateEntity, partialUpdateEntity), (state, action) => {
         state.updating = false
         state.loading = false
         state.updateSuccess = true
         state.entity = action.payload.data
       })
-      .addMatcher(isPending(getEntities, getEntity), state => {
+      .addMatcher(isPending(findAllPlaces, findOnePlaceById), state => {
         state.errorMessage = null
         state.updateSuccess = false
         state.loading = true
       })
       .addMatcher(
-        isPending(createEntity, updateEntity, partialUpdateEntity, deleteEntity),
+        isPending(savePlace, updateEntity, partialUpdateEntity, deleteEntity),
         state => {
           state.errorMessage = null
           state.updateSuccess = false

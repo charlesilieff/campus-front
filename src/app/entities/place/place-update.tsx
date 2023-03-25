@@ -18,7 +18,7 @@ import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
-import { createEntity, getEntity, reset, updateEntity } from './place.reducer'
+import { findOnePlaceById, reset, savePlace, updateEntity } from './place.reducer'
 import { openFile, setFileData } from './utils'
 
 interface PlaceForm {
@@ -70,7 +70,7 @@ export const PlaceUpdate = () => {
     if (isNew) {
       dispatch(reset())
     } else {
-      dispatch(getEntity(id))
+      dispatch(findOnePlaceById(id))
     }
   }, [])
 
@@ -89,7 +89,7 @@ export const PlaceUpdate = () => {
     }
 
     if (isNew) {
-      dispatch(createEntity(entity))
+      dispatch(savePlace(entity))
     } else {
       dispatch(updateEntity(entity))
     }
