@@ -13,6 +13,8 @@ import { PricingRoutes } from './pricing'
 // import { ReservationRoutes } from './reservation'
 import { ReservationsToBeProcessed } from './reservation/reservations_to-be-processed'
 import { RoomRoutes } from './room'
+import { TypeReservationRoutes } from './type-reservation'
+import { UserCategoryRoutes } from './user-category'
 
 export const EntitiesRoutes = () => (
   <div>
@@ -39,6 +41,8 @@ export const EntitiesRoutes = () => (
       <Route path={`bedroom-kind/*`} element={<BedroomKindRoutes />} />
       <Route path={`planning/*`} element={<IndexPlanning />} />
       <Route path={`place/*`} element={<PlaceRoutes />} />
+      <Route path={`type-reservation/*`} element={<TypeReservationRoutes />} />
+      <Route path={`user-category/*`} element={<UserCategoryRoutes />} />
     </ErrorBoundaryRoutes>
   </div>
 )

@@ -2,17 +2,19 @@ import { ErrorBoundaryRoutes } from 'app/shared/error/error-boundary-routes'
 import React from 'react'
 import { Route } from 'react-router-dom'
 
-import { Room } from './room'
-import { RoomDetail } from './room-detail'
-import { RoomUpdate } from './room-update'
+// import { TypeReservation } from './type-reservation'
+import { TypeReservationDetail } from './type-reservation-detail'
+import { TypeReservationUpdate } from './type-reservation-update'
 
-export const RoomRoutes = () => (
+export const TypeReservationRoutes = () => (
   <ErrorBoundaryRoutes>
-    <Route path={`new`} element={<RoomUpdate />} />
-    <Route index element={<Room />} />
+    {
+      /* <Route path={`new`} element={<RoomUpdate />} />
+    <Route index element={<Room />} /> */
+    }
     <Route path=":id">
-      <Route path={`edit`} element={<RoomUpdate />} />
-      <Route index element={<RoomDetail />} />
+      <Route path={`edit`} element={<TypeReservationUpdate />} />
+      <Route index element={<TypeReservationDetail />} />
     </Route>
   </ErrorBoundaryRoutes>
 )

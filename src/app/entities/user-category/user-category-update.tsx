@@ -10,48 +10,47 @@ import {
   VStack
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import type { ITypeReservation } from 'app/shared/model/typeReservation.model'
+import type { IUserCategory } from 'app/shared/model/userCategory.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
-import { createEntity, getEntity, reset, updateEntity } from './type-reservation.reducer'
+import { createEntity, getEntity, reset, updateEntity } from './user-category.reducer'
 
-interface TypeReservationForm {
+interface UserCategoryForm {
   name?: string
   comment?: string
 }
 
-export const TypeReservationUpdate = () => {
+export const UserCategoryUpdate = () => {
   const dispatch = useAppDispatch()
   const { id } = useParams<'id'>()
   const navigate = useNavigate()
   const isNew = id === undefined
-  const typeReservationEntity = useAppSelector(state => state.typeReservation.entity)
+  const userCategoryEntity = useAppSelector(state => state.userCategory.entity)
 
-  const defaultValues = (): TypeReservationForm =>
+  const defaultValues = (): UserCategoryForm =>
     isNew ? {} : {
-      ...typeReservationEntity
+      ...userCategoryEntity
     }
   const {
     handleSubmit,
     register,
     formState: { errors },
     reset: resetForm
-  } = useForm<TypeReservationForm>({})
+  } = useForm<UserCategoryForm>({})
 
   useEffect(() => {
     resetForm(defaultValues())
-  }, [typeReservationEntity.id])
+  }, [userCategoryEntity.id])
 
-  const loading = useAppSelector(state => state.typeReservation.loading)
-  const updating = useAppSelector(state => state.typeReservation.updating)
-  const updateSuccess = useAppSelector(state => state.typeReservation.updateSuccess)
+  const loading = useAppSelector(state => state.userCategory.loading)
+  const updating = useAppSelector(state => state.userCategory.updating)
+  const updateSuccess = useAppSelector(state => state.userCategory.updateSuccess)
 
   const handleClose = () => {
     navigate('/pricing')
-    // navigate('/type-reservation')
   }
 
   useEffect(() => {
@@ -68,9 +67,9 @@ export const TypeReservationUpdate = () => {
     }
   }, [updateSuccess])
 
-  const saveEntity = (values: TypeReservationForm) => {
-    const entity: ITypeReservation = {
-      ...typeReservationEntity,
+  const saveEntity = (values: UserCategoryForm) => {
+    const entity: IUserCategory = {
+      ...userCategoryEntity,
       ...values
     }
 
@@ -84,7 +83,7 @@ export const TypeReservationUpdate = () => {
   return (
     <VStack spacing={8}>
       <Heading>
-        {isNew ? 'Créer' : 'Éditer'} un type de réservation
+        {isNew ? 'Créer' : 'Éditer'} une catégorie d&apos;utilisateur
       </Heading>
 
       {loading ? <p>Chargement...</p> : (
@@ -133,7 +132,6 @@ export const TypeReservationUpdate = () => {
               <Button
                 as={Link}
                 variant="back"
-                // to="/type-reservation"
                 to="/pricing"
                 leftIcon={<FaArrowLeft />}
               >
