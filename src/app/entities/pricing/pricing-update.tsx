@@ -11,7 +11,6 @@ import {
   // Tooltip,
   VStack
 } from '@chakra-ui/react'
-import type * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getTypeReservations } from 'app/entities/type-reservation/type-reservation.reducer'
 import { getEntities as getUserCategories } from 'app/entities/user-category/user-category.reducer'
