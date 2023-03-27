@@ -1,9 +1,6 @@
-import { Box, Button, Container, Heading, HStack, SimpleGrid, StackDivider, Table, TableContainer,
-  Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as A from '@effect/data/ReadonlyArray'
+import { Box, Button, Heading, HStack, SimpleGrid, StackDivider, Table, Tbody, Td, Th, Thead, Tr,
+  VStack } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import { initialState } from 'app/shared/reducers/authentication'
 import React, { useEffect } from 'react'
 import { FaEye, FaPencilAlt, FaPlus, FaSort, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
@@ -29,15 +26,13 @@ export const Pricing = () => {
     ...pricing
   }))
 
-  const mySort2 = pipe(
-    pricingList,
-    A.sort((a, b) =>
-      a.userCategory.name !== b.userCategory.name ?
-        a.userCategory.name.localeCompare(b.userCategory.name) :
-        a.typeReservation.name !== b.typeReservation.name ?
-        a.typeReservation.name.localeCompare(b.typeReservation.name) :
-        a.price - b.price
-    )
+  // const mySort2 = pipe(pricingList, A.sort((a, b) =>
+  const mySort2 = myData.sort((a, b) =>
+    a.userCategory.name !== b.userCategory.name ?
+      a.userCategory.name.localeCompare(b.userCategory.name) :
+      a.typeReservation.name !== b.typeReservation.name ?
+      a.typeReservation.name.localeCompare(b.typeReservation.name) :
+      a.price - b.price
   )
   console.log('mon tri ', mySort2)
 
