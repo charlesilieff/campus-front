@@ -49,11 +49,11 @@ export const EntitiesMenu = (props: EntitiesMenuProps) => (
           </MenuItem>
         </>
       )}
-      {
+      {(props.isResp || props.isUser) && (
         <MenuItem icon={<FaUtensils />} to="/kitchen/planning">
           Repas
         </MenuItem>
-      }
+      )}
       {(props.isResp || props.isUser) && (
         <MenuItem icon={<FaCalendar />} to="/planning">
           Planning

@@ -7,14 +7,15 @@ import type { IUserCategory } from 'app/shared/model/userCategory.model'
 import axios from 'axios'
 
 const apiUrlAllPlaces = 'api/planning/places'
-const apiUrlPlacesWithoutImage = 'api/places/noimage'
+
 export const getOnePlace = async (id: string): Promise<IPlace> => {
   const requestUrl = `${apiUrlAllPlaces}/${id}?cacheBuster=${new Date().getTime()}`
   const { data } = await axios.get<IPlace>(requestUrl)
   return data
 }
 
-export const getPlaces = async (): Promise<ReadonlyArray<IPlace>> => {
+export const getPlacesWithoutImage = async (): Promise<ReadonlyArray<IPlace>> => {
+  const apiUrlPlacesWithoutImage = 'api/places/noimage'
   const requestUrl = `${apiUrlPlacesWithoutImage}?cacheBuster=${new Date().getTime()}`
   const { data } = await axios.get<IPlace[]>(requestUrl)
 

@@ -29,7 +29,7 @@ import { PlaceModal } from '../place/placeModal'
 import { Beds } from './beds'
 import { backToOne, createEntity, updateEntity } from './booking-beds.reducer'
 import { TextFormat } from './text-format'
-import { getOnePlace, getPlaces } from './utils'
+import { getOnePlace, getPlacesWithoutImage } from './utils'
 
 export const ReservationBedsUpdate = (): JSX.Element => {
   const [bedsToBook, setBedsToBook] = useState([] as number[])
@@ -74,7 +74,7 @@ export const ReservationBedsUpdate = (): JSX.Element => {
 
   useEffect(() => {
     const setPlacesAsync = async () => {
-      const data = await getPlaces()
+      const data = await getPlacesWithoutImage()
       setPlaces([...data])
     }
     setPlacesAsync()
