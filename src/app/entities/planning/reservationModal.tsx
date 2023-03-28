@@ -50,7 +50,7 @@ export const ReservationModal = ({ reservation, isRespHebergement }: IProps) => 
         maxW={'100%'}
         backgroundColor={'transparent'}
         onClick={onOpen}
-        leftIcon={<EditIcon />}
+        leftIcon={<EditIcon boxSize={3} />}
         _hover={{ textDecoration: 'none', color: 'black' }}
         _active={{ textDecoration: 'none', color: 'black' }}
         rightIcon={isRespHebergement ? statusIcon(status) : null}
