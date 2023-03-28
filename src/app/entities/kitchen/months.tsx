@@ -9,9 +9,9 @@ interface IProps {
 }
 
 export const Months: FunctionComponent<IProps> = ({ month, date, totalDays }) => {
-  const offSet = 8
+  const offSet = 8 * 2
 
-  const endTable = 39
+  const endTable = 39 * 2
   // Le jour de la date passé en paramétre.
   const today = date.date()
 
