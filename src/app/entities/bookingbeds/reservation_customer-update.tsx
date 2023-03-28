@@ -22,7 +22,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import type { IBookingBeds } from '../../shared/model/bookingBeds.model'
 import { getReservationsWithBedEntity, reset, setData } from './booking-beds.reducer'
-import { isArrivalDateIsBeforeDepartureDate, isDateBeforeNow } from './utils'
+import { isArrivalDateIsBeforeDepartureDate } from './utils'
 
 export const ReservationCustomerUpdate = () => {
   const reservationEntity = useAppSelector(state => state.bookingBeds.entity)
