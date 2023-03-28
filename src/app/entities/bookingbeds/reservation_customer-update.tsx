@@ -315,6 +315,9 @@ export const ReservationCustomerUpdate = () => {
                     if (v > personNumber.current) {
                       return 'Le nombre de régimes spéciaux ne peut pas être supérieur au nombre de personnes'
                     }
+                    if (v < 0) {
+                      return 'Le nombre de régimes spéciaux ne peut pas être négatif'
+                    }
                   }
                 })}
               />
@@ -356,11 +359,6 @@ export const ReservationCustomerUpdate = () => {
                       )
                     ) {
                       return "La date d'arrivée doit être avant la date de départ"
-                    }
-                    if (isDateBeforeNow(v.toString())) {
-                      return "La date d'arrivée doit être après aujourd’hui"
-                    } else {
-                      return true
                     }
                   }
                 })}

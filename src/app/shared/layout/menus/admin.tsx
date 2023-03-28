@@ -28,7 +28,7 @@ export const AdminMenu = ({ showOpenAPI }) => (
       leftIcon={<FaUsersCog />}
       rightIcon={<GoTriangleDown />}
     >
-      Compte
+      Administration
     </MenuButton>
     <MenuList>{adminMenuItems} {showOpenAPI && openAPIItem}</MenuList>
   </Menu>

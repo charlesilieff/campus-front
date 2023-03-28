@@ -112,7 +112,7 @@ export const ReservationsToBeProcessed = () => {
                     {reservation.beds ?
                       reservation.beds.map((val, j) => (
                         <span key={j}>
-                          <Link to={`bed/${val.id}`}>{val.number}</Link>
+                          <Link to={`/bed/${val.id}`}>{val.number}</Link>
                           {j === reservation.beds.length - 1 ? '' : ', '}
                         </span>
                       )) :
@@ -121,7 +121,7 @@ export const ReservationsToBeProcessed = () => {
                   <Td px={2} py={1}>
                     {reservation.customer ?
                       (
-                        <Link to={`customer/${reservation.customer.id}`}>
+                        <Link to={`/customer/${reservation.customer.id}`}>
                           {reservation.customer.email}
                         </Link>
                       ) :

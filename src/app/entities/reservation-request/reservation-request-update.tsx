@@ -170,6 +170,9 @@ export const ReservationUpdate = () => {
                       if (v > personNumber.current) {
                         return 'Le nombre de régimes spéciaux ne peut pas être supérieur au nombre de personnes'
                       }
+                      if (v < 0) {
+                        return 'Le nombre de régimes spéciaux ne peut pas être négatif'
+                      }
                     }
                   })}
                 />

@@ -33,6 +33,17 @@ export const Bed = () => {
     dispatch(getEntities())
   }
 
+  const myData = bedList.flatMap(bed => ({
+    ...bed
+  }))
+
+  const mySort2 = myData.sort((a, b) =>
+    // a.room.name !== b.room.name ?
+    //   a.room.name.localeCompare(b.room.name) :
+    a.number.localeCompare(b.number)
+  )
+  console.log('liste : ', mySort2)
+
   return (
     <VStack>
       <Heading>Liste des lits</Heading>
@@ -60,7 +71,7 @@ export const Bed = () => {
         </HStack>
       </HStack>
 
-      {bedList && bedList.length > 0 ?
+      {mySort2 && bedList.length > 0 ?
         (
           <Table>
             <Thead>
@@ -72,7 +83,7 @@ export const Bed = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {bedList.map((bed, i) => (
+              {mySort2.map((bed, i) => (
                 <Tr key={`entity-${i}`}>
                   <Td>{bed.kind}</Td>
                   <Td>
