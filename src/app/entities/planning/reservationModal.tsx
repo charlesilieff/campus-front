@@ -54,7 +54,7 @@ export const ReservationModal = ({ reservation, isRespHebergement }: IProps) => 
         _hover={{ textDecoration: 'none', color: 'black' }}
         _active={{ textDecoration: 'none', color: 'black' }}
         rightIcon={isRespHebergement ? statusIcon(status) : null}
-        px={1}
+        px={2}
         py={4}
       >
         <Stack minW={'80%'}>
