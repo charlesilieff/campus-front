@@ -83,7 +83,9 @@ export const Reservation: FunctionComponent<IProps> = (
   return (
     <>
       {reservationBedIds.map((bedId: number, indexBed: number) => {
+        // HEAD
         const endTable = 39 * 2 + 2
+        // 91c1176 (planning improvment)
         const arrivalDate = dayjs(reservation.arrivalDate)
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
