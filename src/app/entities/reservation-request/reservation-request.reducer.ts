@@ -13,18 +13,17 @@ const initialState: EntityState<IReservationRequest> = {
   entities: [],
   entity: defaultValue,
   updating: false,
-  updateSuccess: false,
-  stepOne: false
+  updateSuccess: false
 }
 
 const apiUrl = 'api/reservationrequest'
 
 // Actions
 
-export const getEntity = createAsyncThunk(
+export const getReservationRequest = createAsyncThunk(
   'reservationRequest/fetch_entity',
-  async (id: string | number) => {
-    const requestUrl = `${apiUrl}/${id}`
+  async (uuid: string | number) => {
+    const requestUrl = `${apiUrl}/${uuid}`
     return axios.get<IReservationRequest>(requestUrl)
   },
   { serializeError: serializeAxiosError }
@@ -80,18 +79,11 @@ export const ReservationRequestSlice = createEntitySlice({
   reducers: {
     setData(state, action: PayloadAction<IReservationRequest>) {
       state.entity.customer = action.payload.customer
-
-      state.stepOne = true
-    },
-    backToOne(state, action: PayloadAction<IReservationRequest>) {
-      state.stepOne = false
-
-      state.entity.reservation = action.payload
     }
   },
   extraReducers(builder) {
     builder
-      .addCase(getEntity.fulfilled, (state, action) => {
+      .addCase(getReservationRequest.fulfilled, (state, action) => {
         state.loading = false
         state.entity = action.payload.data
       })
@@ -106,7 +98,7 @@ export const ReservationRequestSlice = createEntitySlice({
         state.updateSuccess = true
         state.entity.reservation = action.payload.data.reservation
       })
-      .addMatcher(isPending(getEntity), state => {
+      .addMatcher(isPending(getReservationRequest), state => {
         state.errorMessage = null
         state.updateSuccess = false
         state.loading = true
@@ -122,7 +114,7 @@ export const ReservationRequestSlice = createEntitySlice({
   }
 })
 
-export const { reset, setData, backToOne } = ReservationRequestSlice.actions
+export const { reset, setData } = ReservationRequestSlice.actions
 
 // Reducer
 // eslint-disable-next-line import/no-default-export

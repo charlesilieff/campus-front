@@ -14,7 +14,7 @@ import { useForm } from 'react-hook-form'
 import { FaSave } from 'react-icons/fa'
 import { useParams } from 'react-router-dom'
 
-import { getEntity, reset, setData } from './reservation-request.reducer'
+import { getReservationRequest, reset, setData } from './reservation-request.reducer'
 
 export const CustomerUpdate = () => {
   const customerEntity = useAppSelector(state => state.requestReservation.entity.customer)
@@ -39,7 +39,7 @@ export const CustomerUpdate = () => {
     if (isNew) {
       dispatch(reset())
     } else {
-      dispatch(getEntity(uuid))
+      dispatch(getReservationRequest(uuid))
     }
   }, [])
 

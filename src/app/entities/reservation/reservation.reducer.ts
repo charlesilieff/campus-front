@@ -49,7 +49,7 @@ export const getIntermittentReservations = createAsyncThunk(
   }
 )
 
-export const getEntity = createAsyncThunk(
+export const getReservation = createAsyncThunk(
   'reservation/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`
@@ -106,7 +106,7 @@ export const ReservationSlice = createEntitySlice({
   initialState,
   extraReducers(builder) {
     builder
-      .addCase(getEntity.fulfilled, (state, action) => {
+      .addCase(getReservation.fulfilled, (state, action) => {
         state.loading = false
         state.entity = action.payload.data
       })
@@ -126,7 +126,7 @@ export const ReservationSlice = createEntitySlice({
         state.updateSuccess = true
         state.entity = action.payload.data
       })
-      .addMatcher(isPending(getEntities, getEntity), state => {
+      .addMatcher(isPending(getEntities, getReservation), state => {
         state.errorMessage = null
         state.updateSuccess = false
         state.loading = true

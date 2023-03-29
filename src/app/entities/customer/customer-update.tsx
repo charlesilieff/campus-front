@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
-import { createEntity, getEntity, reset, updateEntity } from './customer.reducer'
+import { createEntity, getCustomer, reset, updateEntity } from './customer.reducer'
 
 interface CustomerForm {
   firstname: string
@@ -59,7 +59,7 @@ export const CustomerUpdate = (): JSX.Element => {
     if (isNew) {
       dispatch(reset())
     } else {
-      dispatch(getEntity(id))
+      dispatch(getCustomer(id))
     }
   }, [])
 

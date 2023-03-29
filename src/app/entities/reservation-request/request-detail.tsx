@@ -7,14 +7,14 @@ import { Link, useParams } from 'react-router-dom'
 
 import { TextFormat } from '../bookingbeds/text-format'
 import { ReservationRequestDeleteDialog } from './request-delete-dialog'
-import { getEntity } from './reservation-request.reducer'
+import { getReservationRequest } from './reservation-request.reducer'
 
 export const ReservationRequestDetail = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const { uuid } = useParams<'uuid'>()
 
   useEffect(() => {
-    dispatch(getEntity(uuid))
+    dispatch(getReservationRequest(uuid))
   }, [])
 
   const customerEntity = useAppSelector(state => state.requestReservation.entity.customer)

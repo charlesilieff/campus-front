@@ -4,14 +4,14 @@ import React, { useEffect } from 'react'
 import { FaArrowLeft, FaPencilAlt } from 'react-icons/fa'
 import { Link, useParams } from 'react-router-dom'
 
-import { getEntity } from './customer.reducer'
+import { getCustomer } from './customer.reducer'
 
 export const CustomerDetail = () => {
   const dispatch = useAppDispatch()
   const { id } = useParams<{ id: string }>()
 
   useEffect(() => {
-    dispatch(getEntity(id))
+    dispatch(getCustomer(id))
   }, [])
 
   const customerEntity = useAppSelector(state => state.customer.entity)

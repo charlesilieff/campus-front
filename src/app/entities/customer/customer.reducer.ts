@@ -32,7 +32,7 @@ export const getEntities = createAsyncThunk(
   }
 )
 
-export const getEntity = createAsyncThunk(
+export const getCustomer = createAsyncThunk(
   'customer/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`
@@ -89,7 +89,7 @@ export const CustomerSlice = createEntitySlice({
   initialState,
   extraReducers(builder) {
     builder
-      .addCase(getEntity.fulfilled, (state, action) => {
+      .addCase(getCustomer.fulfilled, (state, action) => {
         state.loading = false
         state.entity = action.payload.data
       })
@@ -109,7 +109,7 @@ export const CustomerSlice = createEntitySlice({
         state.updateSuccess = true
         state.entity = action.payload.data
       })
-      .addMatcher(isPending(getEntities, getEntity), state => {
+      .addMatcher(isPending(getEntities, getCustomer), state => {
         state.errorMessage = null
         state.updateSuccess = false
         state.loading = true

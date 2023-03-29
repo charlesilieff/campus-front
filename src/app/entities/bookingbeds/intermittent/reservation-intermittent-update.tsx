@@ -10,9 +10,9 @@ import React, { useEffect, useState } from 'react'
 import { BsTrash } from 'react-icons/bs'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
-import { getEntity as getCustomer } from '../../customer/customer.reducer'
+import { getCustomer } from '../../customer/customer.reducer'
 import {
-  getEntity as getReservationEntity
+  getReservation
 } from '../../reservation/reservation.reducer'
 import {
   createEntity,
@@ -146,7 +146,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
     pipe(
       reservationId,
       O.fromNullable,
-      O.map(id => dispatch(getReservationEntity(id)))
+      O.map(id => dispatch(getReservation(id)))
     )
 
     if (backendReservation.arrivalDate !== undefined) {

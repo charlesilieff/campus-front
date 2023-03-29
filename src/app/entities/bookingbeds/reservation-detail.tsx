@@ -6,7 +6,7 @@ import React, { useEffect } from 'react'
 import { FaCalendar, FaPencilAlt } from 'react-icons/fa'
 import { Link, useParams } from 'react-router-dom'
 
-import { getEntity } from '../reservation/reservation.reducer'
+import { getReservation } from '../reservation/reservation.reducer'
 import { ReservationDeleteDialog } from './reservation-delete-dialog'
 import { TextFormat } from './text-format'
 
@@ -18,7 +18,7 @@ export const ReservationDetail = () => {
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.ADMIN])
   )
   useEffect(() => {
-    dispatch(getEntity(id))
+    dispatch(getReservation(id))
   }, [])
 
   const reservationEntity = useAppSelector(state => state.reservation.entity)
