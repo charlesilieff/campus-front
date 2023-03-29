@@ -160,8 +160,6 @@ export const Reservation: FunctionComponent<IProps> = (
           }
         }
 
-        console.log('gridColumnEnd', style)
-        console.log('gridColumnStart', gridColumnStart)
         return (
           <ReservationBed
             isRespHebergement={isRespHebergement}
