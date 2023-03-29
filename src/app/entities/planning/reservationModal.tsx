@@ -2,13 +2,13 @@ import { CheckCircleIcon, EditIcon, WarningIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
-  HStack,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Stack,
   Text,
   useDisclosure
 } from '@chakra-ui/react'
@@ -44,21 +44,23 @@ export const ReservationModal = ({ reservation, isRespHebergement }: IProps) => 
   }
 
   return (
-    <Box>
+    <Box p={1}>
       <Button
+        iconSpacing={1}
+        maxW={'100%'}
         backgroundColor={'transparent'}
         onClick={onOpen}
         leftIcon={<EditIcon />}
         _hover={{ textDecoration: 'none', color: 'black' }}
         _active={{ textDecoration: 'none', color: 'black' }}
         rightIcon={isRespHebergement ? statusIcon(status) : null}
-        px={2}
+        px={0}
         py={4}
       >
-        <HStack>
-          <Text fontSize={14}>{reservation?.customer.firstname}</Text>
-          <Text fontSize={14}>{reservation?.customer.lastname}</Text>
-        </HStack>
+        <Stack minW={'80%'}>
+          <Text fontSize={14} isTruncated>{reservation?.customer.firstname}</Text>
+          <Text fontSize={14} isTruncated>{reservation?.customer.lastname}</Text>
+        </Stack>
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

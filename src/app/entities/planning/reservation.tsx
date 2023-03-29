@@ -63,6 +63,8 @@ export const Reservation: FunctionComponent<IProps> = (
   }
 
   let style = {
+    marginLeft: 0,
+    marginRight: 0,
     borderWidth: '1px',
     backgroundColor: backgroundColorCalculation(reservation.status, isRespHebergement),
     color: textColorCalculation(reservation.status, isRespHebergement)
@@ -81,13 +83,13 @@ export const Reservation: FunctionComponent<IProps> = (
   return (
     <>
       {reservationBedIds.map((bedId: number, indexBed: number) => {
-        const endTable = 39
+        const endTable = 39 * 2 + 2
         const arrivalDate = dayjs(reservation.arrivalDate)
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         let gridColumnStart: number = positionX[getDateKey(arrivalDate)] === undefined ?
-          8 :
-          positionX[getDateKey(arrivalDate)]
+          16 : // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+          positionX[getDateKey(arrivalDate)] + 1
         const difference = dayjs(reservation?.departureDate).diff(
           dayjs(reservation?.arrivalDate),
           'day'
@@ -97,20 +99,21 @@ export const Reservation: FunctionComponent<IProps> = (
           'day'
         )
 
-        let gridColumnEnd = gridColumnStart + difference >= endTable ?
+        let gridColumnEnd = gridColumnStart + difference * 2 >= endTable ?
           endTable :
-          gridColumnStart + difference + 1
+          gridColumnStart + difference * 2
 
         if (arrivalDate.isBefore(date, 'day')) {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           gridColumnStart = positionX[getDateKey(date)]
 
           const difference3 = dayjs(reservation?.departureDate).diff(date, 'day')
-          gridColumnEnd = gridColumnStart + difference3 >= endTable ?
+          gridColumnEnd = gridColumnStart + difference3 * 2 >= endTable ?
             endTable :
-            gridColumnStart === 8 ?
-            difference2 + 8 + 1 :
-            gridColumnStart + difference + 1
+            gridColumnStart === 16 ?
+            difference2 * 2 + 16 + 1 :
+            gridColumnStart + difference * 2
+
           style = Object.assign(
             {
               borderBottomLeftRadius: '0em',
@@ -123,7 +126,7 @@ export const Reservation: FunctionComponent<IProps> = (
         }
 
         if (
-          gridColumnEnd === endTable
+          gridColumnEnd + 1 === endTable
           && date.add(30, 'days').format('YYYY-MM-DD')
             !== dayjs(reservation?.departureDate).format('YYYY-MM-DD')
         ) {

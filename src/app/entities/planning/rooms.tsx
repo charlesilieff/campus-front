@@ -17,14 +17,14 @@ export const Room: FunctionComponent<IProps> = ({ gridRowEnd, room }) => {
 
   return (
     <>
-      <Box className="rooms" style={style} borderColor={'#D9D9D9'}>
+      <Box className="rooms" style={style} borderColor={'#D9D9D9'} textAlign={'center'} px={1}>
         {room.name}
       </Box>
       <div
         style={{
           ...style,
-          gridColumnStart: 8,
-          gridColumnEnd: 40,
+          gridColumnStart: 16,
+          gridColumnEnd: 80,
           borderTop: '0.15em solid #D9D9D9'
         }}
       >

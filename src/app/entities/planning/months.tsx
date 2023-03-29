@@ -10,20 +10,20 @@ interface IProps {
 }
 
 export const Months: FunctionComponent<IProps> = ({ month, date, totalDays }) => {
-  const offSet = 8
+  const offSet = 16
 
-  const endTable = 39
-  // Le jour de la date passé en paramétre.
+  const endTable = 39 * 2 + 2
+  // Le jour de la date passé en paramètre.
   const today = date.date()
 
   // Remaining days of the month
   const remainingDays = totalDays - today + 1
 
   // Position de début vertical des cases. Si c'est le deuxième mois (month = 1), on ajoute les jours du mois précédent.
-  const gridColumnStart = offSet + month * remainingDays
+  const gridColumnStart = offSet + (month * remainingDays * 2)
 
   // Position de fin vertical des cases. Si c'est le deuxième mois (month = 1), la postion est absolu à la fin (endTable)
-  const gridColumnEnd = month === 0 ? offSet + remainingDays : endTable
+  const gridColumnEnd = month === 0 ? offSet + remainingDays * 2 : endTable
 
   return (
     <Text

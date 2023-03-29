@@ -22,15 +22,14 @@ export const Bed: FunctionComponent<IProps> = ({ rowPosition, index, bed }) => {
   }
   return (
     <>
-      <Box className="beds" style={style} borderColor={'#D9D9D9'}>
+      <Box className="beds" style={style} borderColor={'#D9D9D9'} px={4}>
         {bed.number}
       </Box>
       <div
         style={{
           ...style,
-          gridColumnStart: 8,
-          gridColumnEnd: 40,
-          // borderolor: '#D9D9D9',
+          gridColumnStart: 16,
+          gridColumnEnd: 80,
           borderBottom: index === 0 ? '' : '0.02em dashed',
           marginBottom: '-0.1em'
         }}

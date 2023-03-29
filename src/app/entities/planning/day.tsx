@@ -10,12 +10,13 @@ interface IProps {
 export const Day = ({ positionX, date }: IProps) => {
   const dayWeek = date.day()
   const dayMonth = date.date()
+  console.log(date.format('DD'), positionX)
   const style = {
     gridColumnStart: positionX,
-    gridColumnEnd: positionX + 1,
+    gridColumnEnd: positionX + 2,
     borderLeftWidth: '0.01em'
   } as React.CSSProperties
-  if (positionX === 8 || date.date() === 1 || date.day() === 1) {
+  if (positionX === 16 || date.date() === 1 || date.day() === 1) {
     style.borderLeftWidth = '0.2em'
   }
 
@@ -30,9 +31,9 @@ export const Day = ({ positionX, date }: IProps) => {
         style={{
           borderLeftColor: dayMonth === 1 ? '#D9D9D9' : dayWeek === 1 ? '#D9D9D9' : '#D9D9D9',
           gridColumnStart: positionX,
-          gridColumnEnd: positionX + 1,
+          gridColumnEnd: positionX + 2,
           gridRowStart: 4,
-          gridRowEnd: 50,
+          gridRowEnd: 100,
           borderLeftWidth: dayMonth === 1 ? '0.15em' : dayWeek === 1 ? '0.1em' : '0.05em',
           borderLeftStyle: dayMonth === 1 ? 'solid' : dayWeek === 1 ? 'solid' : 'solid'
         } as React.CSSProperties}
