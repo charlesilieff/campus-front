@@ -338,35 +338,12 @@ Planning page
   border-color: #D9D9D9;
 }
 
-.roomNames {
-  grid-row-start: 2;
-  grid-row-end: 4;
-  grid-column-start: 1;
-  grid-column-end: 4;
-  text-align: center;
-  overflow-wrap: break-word;
-  border-top-style: solid;
-  border-right-style: solid;
-  border-width: 0.15em;
-  border-color: #D9D9D9;
-}
 
-.bedNames {
-  grid-row-start: 2;
-  grid-row-end: 4;
-  grid-column-start: 4;
-  grid-column-end: 8;
-  border-top-style: solid;
-  border-width: 0.15em;
 
-  border-bottom-style: solid;
-  border-color: #D9D9D9;
-  margin-bottom: -0.15em;
-}
 
 .beds {
-  grid-column-start: 4;
-  grid-column-end: 8;
+  grid-column-start: 8;
+  grid-column-end: 16;
   border-right-style: solid;
   border-bottom-width: 0.05em;
   border-bottom-style: solid;
@@ -378,7 +355,7 @@ Planning page
 
 .rooms {
   grid-column-start: 1;
-  grid-column-end: 4;
+  grid-column-end: 8;
   border-right-style: solid;
   border-right-width: 0.15em;
   border-top-width: 0.15em;
@@ -391,7 +368,7 @@ Planning page
   font-weight: bold;
   grid-row-start: 2;
   grid-row-end: 4;
-  grid-column-start: 10;
+  grid-column-start: 20;
   text-align: center;
   border-left-style: solid;
   border-left-width: 0.01em;
@@ -409,7 +386,6 @@ Planning page
   border-style: solid;
   border-width: 0.2em;
   border-radius: 1.5em;
-
   border-color: #114b5f;
   overflow-wrap: break-word;
 }
