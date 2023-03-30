@@ -83,12 +83,13 @@ export const Pricing = () => {
             <Table
               id="tableTarif"
               variant="striped"
-              colorScheme="orange"
+              // colorScheme="orange"
+              // colorScheme="gray.200"
               // overflow={'scroll'}
               display={'block'}
               // bgSize={'sm' || 'md' || 'lg'}
             >
-              <Thead bgColor="gray.200">
+              <Thead bgColor="white">
                 <Tr>
                   <Th
                     // justifyContent={'flex-end'}

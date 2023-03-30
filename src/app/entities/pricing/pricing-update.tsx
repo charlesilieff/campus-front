@@ -191,6 +191,9 @@ export const PricingUpdate = () => {
                 placeholder="Commentaire"
                 {...register('comment', {})}
               />
+              <FormErrorMessage>
+                {errors.comment && errors.comment.message}
+              </FormErrorMessage>
             </FormControl>
 
             <HStack>
