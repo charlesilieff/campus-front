@@ -17,7 +17,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
   const dayMonth = date.date()
 
   const defaultValue: IMealsNumber = {
-    breakfast: { specialDiet: 0, classicDiet: 0 },
+    breakfast: 0,
     lunchtime: { specialDiet: 0, classicDiet: 0 },
     dinner: { specialDiet: 0, classicDiet: 0 },
     comment: ''

@@ -52,10 +52,10 @@ export const Routes = () => (
               AUTHORITIES.ADMIN,
               AUTHORITIES.USER,
               AUTHORITIES.RESPHEBERGEMENT,
-              // AUTHORITIES.COOKER,
-              AUTHORITIES.INTERMITTENT,
-              AUTHORITIES.HABITANT,
-              AUTHORITIES.VOLONTAIRE
+              AUTHORITIES.COOKER,
+              AUTHORITIES.INTERMITTENT
+              // AUTHORITIES.HABITANT
+              // AUTHORITIES.VOLONTAIRE
             ]}
           >
             <AccountRoutes />
