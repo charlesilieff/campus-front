@@ -6,6 +6,7 @@ export interface IMeal {
   regularLunch?: number | null
   regularDinner?: number | null
   comment?: string | null
+  breakfast?: number | null
 }
 
 export const defaultValue: Readonly<IMeal> = {}

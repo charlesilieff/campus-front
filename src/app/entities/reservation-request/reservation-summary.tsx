@@ -37,13 +37,21 @@ export const DatesAndMealsSummary = (
     isReservationSaved
   }: ReservationSummaryProps
 ): JSX.Element => {
-  const mealSelected = (isDinner: boolean, isLunch: boolean): string => {
-    if (isDinner && isLunch) {
+  const mealSelected = (isBreakfast: boolean, isDinner: boolean, isLunch: boolean): string => {
+    if (isBreakfast && isDinner && isLunch) {
+      return 'petit déjeuner, déjeuner et dîner'
+    } else if (isBreakfast && isLunch) {
+      return 'petit déjeuner et déjeuner'
+    } else if (isLunch && isDinner) {
       return 'déjeuner et dîner'
-    } else if (isDinner) {
-      return 'dîner'
+    } else if (isBreakfast && isDinner) {
+      return 'petit déjeuner et dîner'
+    } else if (isBreakfast) {
+      return 'petit déjeuner'
     } else if (isLunch) {
       return 'déjeuner'
+    } else if (isDinner) {
+      return 'dîner'
     } else {
       return 'aucun'
     }

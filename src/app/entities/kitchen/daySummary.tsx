@@ -26,6 +26,7 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
   }
 
   const mealsNumberReferential: IMealsNumber = {
+    breakfast: mealsContext[index].breakfast,
     lunchtime: {
       classicDiet: mealsContext[index].regularLunch,
       specialDiet: mealsContext[index].specialLunch
