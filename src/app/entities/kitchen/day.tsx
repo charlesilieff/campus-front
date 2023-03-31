@@ -37,6 +37,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
 
   useEffect(() => {
     const mealsToCookFromDb: IMealsNumber = {
+      breakfast: mealsContext[index]?.breakfast,
       lunchtime: {
         specialDiet: mealsContext[index]?.specialLunch,
         classicDiet: mealsContext[index]?.regularLunch
@@ -49,6 +50,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
     }
 
     const mealsReferentialFromDb: IMealsNumber = {
+      breakfast: mealsContext[index]?.breakfast,
       lunchtime: {
         specialDiet: mealsContext[index]?.specialLunch,
         classicDiet: mealsContext[index]?.regularLunch
@@ -62,6 +64,9 @@ export const Day = ({ positionX, date, index }: IProps) => {
     setMealsNumberReferential(mealsReferentialFromDb)
 
     const theNewMealsNumber = {
+      breakfast: mealsToCookFromDb.breakfast - mealsReferentialFromDb.breakfast === 0 ?
+        mealsReferentialFromDb.breakfast :
+        mealsToCookFromDb.breakfast,
       lunchtime: {
         specialDiet:
           mealsToCookFromDb.lunchtime.specialDiet - mealsReferentialFromDb.lunchtime.specialDiet
