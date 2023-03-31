@@ -52,8 +52,10 @@ export const Routes = () => (
               AUTHORITIES.ADMIN,
               AUTHORITIES.USER,
               AUTHORITIES.RESPHEBERGEMENT,
-              AUTHORITIES.COOKER,
-              AUTHORITIES.INTERMITTENT
+              // AUTHORITIES.COOKER,
+              AUTHORITIES.INTERMITTENT,
+              AUTHORITIES.HABITANT,
+              AUTHORITIES.VOLONTAIRE
             ]}
           >
             <AccountRoutes />
@@ -87,6 +89,7 @@ export const Routes = () => (
         </PrivateRoute>
       }
     />
+    {/* //, AUTHORITIES.COOKER ?? */}
 
     <Route
       path="*"

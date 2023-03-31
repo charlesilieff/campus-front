@@ -27,19 +27,29 @@ export const DatesAndMealsSummary = (
       isArrivalLunch,
       isDepartureDinner,
       isDepartureLunch,
-      specialDiet
+      specialDiet,
+      isArrivalBreakfast,
+      isDepartureBreakfast
     },
     setUpdate,
     setBedId
   }: DatesAndMealsSummaryProps
 ): JSX.Element => {
-  const mealSelected = (isDinner: boolean, isLunch: boolean): string => {
-    if (isDinner && isLunch) {
+  const mealSelected = (isBreakfast: boolean, isDinner: boolean, isLunch: boolean): string => {
+    if (isBreakfast && isDinner && isLunch) {
+      return 'petit déjeuner, déjeuner et dîner'
+    } else if (isBreakfast && isLunch) {
+      return 'petit déjeuner et déjeuner'
+    } else if (isLunch && isDinner) {
       return 'déjeuner et dîner'
-    } else if (isDinner) {
-      return 'dîner'
+    } else if (isBreakfast && isDinner) {
+      return 'petit déjeuner et dîner'
+    } else if (isBreakfast) {
+      return 'petit déjeuner'
     } else if (isLunch) {
       return 'déjeuner'
+    } else if (isDinner) {
+      return 'dîner'
     } else {
       return 'aucun'
     }
@@ -68,12 +78,12 @@ export const DatesAndMealsSummary = (
         <Text fontWeight={'bold'}>Repas sélectionnés :</Text>
         <HStack>
           <Text fontWeight={'bold'}>{"Jour d'arrivée :"}</Text>
-          <Text>{mealSelected(isArrivalDinner, isArrivalLunch)}</Text>
+          <Text>{mealSelected(isArrivalBreakfast, isArrivalDinner, isArrivalLunch)}</Text>
         </HStack>
         <HStack>
           <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>
           <Text>
-            {mealSelected(isDepartureDinner, isDepartureLunch)}
+            {mealSelected(isDepartureBreakfast, isDepartureDinner, isDepartureLunch)}
           </Text>
         </HStack>
       </VStack>

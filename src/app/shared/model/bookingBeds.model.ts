@@ -26,6 +26,8 @@ export interface IBookingBeds {
   paymentMode?: string
   bedIds: number[]
   comment?: string
+  isArrivalBreakfast?: boolean
+  isDepartureBreakfast?: boolean
 }
 
 export const defaultValue: Readonly<IBookingBeds> = {

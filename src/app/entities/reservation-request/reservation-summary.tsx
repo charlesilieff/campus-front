@@ -29,7 +29,9 @@ export const DatesAndMealsSummary = (
       isDepartureDinner,
       isDepartureLunch,
       specialDietNumber,
-      personNumber
+      personNumber,
+      isArrivalBreakfast,
+      isDepartureBreakfast
     },
     setUpdate,
     isReservationSaved
@@ -75,12 +77,12 @@ export const DatesAndMealsSummary = (
         <Text fontWeight={'bold'}>Repas sélectionnés :</Text>
         <HStack>
           <Text fontWeight={'bold'}>{"Jour d'arrivée :"}</Text>
-          <Text>{mealSelected(isArrivalDinner, isArrivalLunch)}</Text>
+          <Text>{mealSelected(isArrivalBreakfast, isArrivalDinner, isArrivalLunch)}</Text>
         </HStack>
         <HStack>
           <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>
           <Text>
-            {mealSelected(isDepartureDinner, isDepartureLunch)}
+            {mealSelected(isDepartureBreakfast, isDepartureDinner, isDepartureLunch)}
           </Text>
         </HStack>
       </VStack>

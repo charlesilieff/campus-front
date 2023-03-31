@@ -2,6 +2,8 @@ import type { IBed } from 'app/shared/model/bed.model'
 import type { ICustomer } from 'app/shared/model/customer.model'
 import type { IPricing } from 'app/shared/model/pricing.model'
 
+import type { IUserCategory } from './userCategory.model'
+
 export interface IReservation {
   id?: number
   personNumber?: number
@@ -21,6 +23,9 @@ export interface IReservation {
   beds?: IBed[] | null
   customer?: ICustomer | null
   rooms?: string[]
+  userCategory?: IUserCategory | null
+  isArrivalBreakfast?: boolean
+  isDepartureBreakfast?: boolean
 }
 
 export const defaultValue: Readonly<IReservation> = {

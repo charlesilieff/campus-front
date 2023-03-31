@@ -117,7 +117,9 @@ export const ReservationCustomerUpdate = () => {
       personNumber: values.personNumber,
       specialDietNumber: values.specialDietNumber,
 
-      customer
+      customer,
+      isArrivalBreakfast: values.isArrivalBreakfast,
+      isDepartureBreakfast: values.isDepartureBreakfast
     }
 
     dispatch(setData(reservation))
@@ -332,11 +334,13 @@ export const ReservationCustomerUpdate = () => {
               </FormLabel>
               <HStack>
                 <Text fontWeight={'bold'}>{"Jour d'arrivée :"}</Text>
+                <Checkbox {...register('isArrivalBreakfast')}>déjeuner</Checkbox>
                 <Checkbox {...register('isArrivalLunch')}>déjeuner</Checkbox>
                 <Checkbox {...register('isArrivalDiner')}>dîner</Checkbox>
               </HStack>
               <HStack>
                 <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>
+                <Checkbox {...register('isDepartureBreakfast')}>déjeuner</Checkbox>
                 <Checkbox {...register('isDepartureLunch')}>déjeuner</Checkbox>
                 <Checkbox {...register('isDepartureDiner')}>dîner</Checkbox>
               </HStack>

@@ -34,6 +34,8 @@ export interface Reservation {
   isDepartureLunch: boolean
   isDepartureDinner: boolean
   comment: string
+  isArrivalBreakfast: boolean
+  isDepartureBreakfast: boolean
 }
 
 export interface Customer {
@@ -69,7 +71,9 @@ const createReservationRequest = (
       isPaid: false,
       paymentMode: '',
       personNumber: reservation.personNumber,
-      reservationNumber: UUID
+      reservationNumber: UUID,
+      isArrivalBreakfast: reservation.isArrivalBreakfast,
+      isDepartureBreakfast: reservation.isDepartureBreakfast
     },
     customer: {
       id: O.getOrUndefined(customer.id),
@@ -138,7 +142,9 @@ export const ReservationRequestUpdate = (): JSX.Element => {
         isArrivalDinner: reservationRequest.reservation.isArrivalDiner,
         isDepartureDinner: reservationRequest.reservation.isDepartureDiner,
         isDepartureLunch: reservationRequest.reservation.isDepartureLunch,
-        comment: reservationRequest.reservation.comment
+        comment: reservationRequest.reservation.comment,
+        isArrivalBreakfast: reservationRequest.reservation.isArrivalBreakfast,
+        isDepartureBreakfast: reservationRequest.reservation.isDepartureBreakfast
       }))
     }
     if (reservationRequest.customer !== undefined) {
