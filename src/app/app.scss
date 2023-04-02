@@ -411,6 +411,12 @@ kitchen page
   width: 100%;
 }
 
+.breakfast {
+  grid-row-start: 8;
+  grid-row-end: 9;
+  padding: 8px;
+}
+
 .lunch {
   grid-row-start: 4;
   grid-row-end: 6;

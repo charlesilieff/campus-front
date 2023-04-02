@@ -1,4 +1,7 @@
 import { Box, Button, HStack, Input } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
+import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
 import type { Dayjs } from 'dayjs'
@@ -8,15 +11,25 @@ import { FaCalendar } from 'react-icons/fa'
 
 import type { IMealsNumber } from './IMealsNumber'
 import { MealsContext } from './mealsContext'
-import { MealsPlanning } from './mealsPlanning'
+import { MealsPlanning } from './mealsUserPlanning'
 
-const apiUrlMealsDateFor31Days = 'api/meals/date'
+const apiUrlMealsDateFor31DaysByUser = 'api/meals/user-id/date'
 interface IShowSavingProps {
   isShow: boolean
   message: string
 }
 
-export const Index = () => {
+export const Index2 = () => {
+  const dispatch = useAppDispatch()
+
+  const account = useAppSelector(state => state.authentication.account)
+  const customerId2 = pipe(
+    account.customerId,
+    O.fromNullable,
+    O.map(Number)
+  )
+  const customerId = account.customerId
+
   const [date, setDate] = useState(dayjs())
 
   const [mealsData, setMealsData] = useState([] as IMeal[])
@@ -25,9 +38,17 @@ export const Index = () => {
   const [showSavingPopup, setShowSavingPopup] = useState(defaultSavingPopupProps)
   const [numberOfDays, setNumberOfDays] = useState(31 as number)
 
+  // useEffect(() => {
+  //   if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
+  // }, [])
+
+  // const handleSyncList = () => {
+  //   if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
+  // }
+
   useEffect(() => {
-    getMealsDateFor31Days(date)
-  }, [date])
+    getMealsDateFor31DaysByUser(date, customerId)
+  }, [date, customerId])
 
   useEffect(() => {
     if (showSavingPopup) {
@@ -49,12 +70,16 @@ export const Index = () => {
   // On calcule le nombre de jours du mois de la date passée par l'utilisateur.
   // Si c'est égal à 31 on ne veut pas afficher le deuxiéme mois.
   const totalDays = date.daysInMonth()
-
-  const getMealsDateFor31Days = async (startDate: Dayjs) => {
-    const requestUrl = `${apiUrlMealsDateFor31Days}/${startDate.format('YYYY-MM-DD')}?cacheBuster=${
-      new Date().getTime()
-    }`
+  // async () => {
+  //   const requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`
+  //   return axios.get<ICustomer[]>(requestUrl)
+  // }
+  const getMealsDateFor31DaysByUser = async (startDate: Dayjs, customerId: number) => {
+    const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/${customerId}/${
+      startDate.format('YYYY-MM-DD')
+    }?cacheBuster=${new Date().getTime()}`
     const { data } = await axios.get<IMeal[]>(requestUrl)
+    console.log('data', data)
     setMealsData(data)
   }
 
@@ -184,7 +209,7 @@ function displayTotalMeals(resultTotalMeals: number[]) {
     <div className="row">
       <div className="col-5">
         <div id="total" className="col">
-          {`Total des petits-déjeuner: ${resultTotalMeals[7]}`}
+          {`Total de mes petits-déjeuner: ${resultTotalMeals[7]}`}
         </div>
         <div id="total" className="col">
           {`Total repas classiques de midi: ${resultTotalMeals[0]}`}

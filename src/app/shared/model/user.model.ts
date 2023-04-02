@@ -12,7 +12,7 @@ export interface IUser {
   lastModifiedBy?: string
   lastModifiedDate?: Date | null
   password?: string
-  customerId?: string
+  customerId?: number
   receiveMailReservation?: boolean
 }
 

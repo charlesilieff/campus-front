@@ -64,6 +64,11 @@ export const EntitiesMenu = (props: EntitiesMenuProps) => (
           Mes réservations
         </MenuItem>
       )}
+      {(props.isResp || props.isUser) && (
+        <MenuItem icon={<FaUtensils />} to="/meals/planning">
+          Mes repas
+        </MenuItem>
+      )}
     </MenuList>
   </Menu>
 )

@@ -2,7 +2,7 @@ import { Box, Button, Heading, HStack, SimpleGrid, StackDivider, Table, Tbody, T
   VStack } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
-import { FaEye, FaPencilAlt, FaPlus, FaSort, FaSync } from 'react-icons/fa'
+import { FaEye, FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
 // import { ColumnSorter } from '../../components/table/ColumnSorter'
@@ -101,21 +101,11 @@ export const Pricing = () => {
                       color={'white'}
                       backgroundColor={'#e95420'}
                       _hover={{ textDecoration: 'none', color: 'orange' }}
-                      to={`new`}
+                      to={`/user-category/new`}
                       size={'xs'}
                       leftIcon={<FaPlus />}
                     >
                       {/* Créez une nouvelle catégorie utilisateur */}
-                    </Button>
-                    <Button
-                      as={Link}
-                      color={'white'}
-                      backgroundColor={'#e95420'}
-                      _hover={{ textDecoration: 'none', color: 'orange' }}
-                      size={'xs'}
-                      leftIcon={<FaSort />}
-                      to={`new`}
-                    >
                     </Button>
                   </Th>
                   <Th fontSize={{ base: '8px', sm: '10px', md: '12px' }}>

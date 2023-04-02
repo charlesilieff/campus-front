@@ -2,12 +2,13 @@ import { getDateKey } from 'app/shared/util/date-utils'
 import type { Dayjs } from 'dayjs'
 import React from 'react'
 
-import { DaySummary } from './daySummary'
+import { Day } from './day'
 import { Months } from './months'
 
 interface IProps {
   date: Dayjs
   totalDays: number
+
   numberOfDays: number
 }
 
@@ -19,7 +20,7 @@ interface IProps {
  *        - régime classique
  *  - Repas du soir.
  */
-export const KitchenSummary = ({ date, totalDays, numberOfDays }: IProps) => {
+export const MealsPlanning = ({ date, totalDays, numberOfDays }: IProps) => {
   // On souhaite afficher 31 jours => Tableau de 31 élements.
   const monthDays = Array.from({ length: numberOfDays })
 
@@ -28,26 +29,26 @@ export const KitchenSummary = ({ date, totalDays, numberOfDays }: IProps) => {
 
   return (
     <div className="grid-container" style={gridFormatStyle(numberOfDays)}>
+      <div className="time breakfast">Amtin</div>
       <div className="time lunch">Midi</div>
       <div className="time dinner">Soir</div>
-
       <div className="diet specialdietlunch">Sans lactose ni gluten</div>
       <div className="diet classicdietlunch">Classique</div>
       <div className="diet specialdietdinner">Sans lactose ni gluten</div>
       <div className="diet classicdietdinner">Classique</div>
-      <div className="time breakfast">Matin</div>
       <Months date={date} month={0} totalDays={totalDays}></Months>
 
       {date.date() + numberOfDays - 1 > totalDays && (
         <Months date={date} month={1} totalDays={totalDays}></Months>
       )}
+
       {monthDays.map((_, index) => {
         const gridColumnStart = 8 + index
         // On construit l'objet qui va permettre de récuperer la bonne position en X pour afficher les réservations.
         const dateDay = date.add(index, 'day')
         const dateKey = getDateKey(dateDay)
         positionX[dateKey] = gridColumnStart
-        return <DaySummary positionX={gridColumnStart} key={dateKey} date={dateDay} index={index} />
+        return <Day positionX={gridColumnStart} key={dateKey} date={dateDay} index={index}></Day>
       })}
     </div>
   )
