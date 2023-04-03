@@ -1,3 +1,6 @@
+import {
+  Checkbox
+} from '@chakra-ui/react'
 import type { IMeal } from 'app/shared/model/meal.model'
 import type { Dayjs } from 'dayjs'
 import type dayjs from 'dayjs'
@@ -153,6 +156,12 @@ export const Day = ({ positionX, date, index }: IProps) => {
         {date.format('ddd DD ')}
       </div>
 
+      {
+        /* <div>
+{mealsNumber?.comment === 'test list 31 days' ? '' : mealsNumber?.lunchtime.classicDiet}
+
+      </div> */
+      }
       <div
         style={{
           display: 'flex',
@@ -173,7 +182,22 @@ export const Day = ({ positionX, date, index }: IProps) => {
             color: colorNumber('lunchtime', 'classicDiet')
           } as React.CSSProperties}
         >
-          {mealsNumber?.lunchtime.classicDiet}
+          {mealsNumber?.lunchtime.classicDiet === 1}
+          {mealsNumber?.lunchtime.classicDiet === 1
+              && mealsNumber?.comment !== 'test list 31 days' ?
+            <Checkbox defaultChecked></Checkbox> :
+            mealsNumber?.lunchtime.classicDiet === 0 ?
+            <Checkbox></Checkbox> :
+            ''}
+          {
+            /* {mealsNumber?.comment !== 'test list 31 days'
+              && mealsNumber?.lunchtime.classicDiet === 1 ?
+            <Checkbox defaultChecked></Checkbox> :
+            mealsNumber?.comment !== 'test list 31 days'
+              && mealsNumber?.lunchtime.classicDiet === 0 ?
+            <Checkbox></Checkbox> :
+            ''}*/
+          }
         </div>
       </div>
 
@@ -198,7 +222,17 @@ export const Day = ({ positionX, date, index }: IProps) => {
             color: colorNumber('lunchtime', 'specialDiet')
           } as React.CSSProperties}
         >
-          {mealsNumber?.lunchtime.specialDiet}
+          {
+            /* {mealsNumber?.lunchtime.specialDiet} */
+          }
+          {mealsNumber?.lunchtime.specialDiet === 1}
+          {mealsNumber?.comment !== 'test list 31 days'
+              && mealsNumber?.lunchtime.specialDiet === 1 ?
+            <Checkbox defaultChecked></Checkbox> :
+            mealsNumber?.comment !== 'test list 31 days'
+              && mealsNumber?.lunchtime.specialDiet === 0 ?
+            <Checkbox></Checkbox> :
+            ''}
         </div>
       </div>
 
@@ -222,7 +256,13 @@ export const Day = ({ positionX, date, index }: IProps) => {
             color: colorNumber('dinner', 'classicDiet')
           } as React.CSSProperties}
         >
-          {mealsNumber?.dinner.classicDiet}
+          {/* {mealsNumber?.comment === 'test list 31 days' ? '' : mealsNumber?.lunchtime.classicDiet} */}
+          {mealsNumber?.dinner.classicDiet === 1}
+          {mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.dinner.classicDiet === 1 ?
+            <Checkbox defaultChecked></Checkbox> :
+            mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.dinner.classicDiet === 0 ?
+            <Checkbox></Checkbox> :
+            ''}
         </div>
       </div>
 
@@ -244,7 +284,13 @@ export const Day = ({ positionX, date, index }: IProps) => {
             color: colorNumber('dinner', 'specialDiet')
           } as React.CSSProperties}
         >
-          {mealsNumber?.dinner.specialDiet}
+          {mealsNumber?.dinner.specialDiet === 1}
+          {mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.dinner.specialDiet === 1 ?
+            <Checkbox defaultChecked></Checkbox> :
+            mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.dinner.specialDiet === 0 ?
+            <Checkbox></Checkbox> :
+            ''}
+          {/* {mealsNumber?.dinner.specialDiet} */}
         </div>
       </div>
       <div
@@ -265,7 +311,20 @@ export const Day = ({ positionX, date, index }: IProps) => {
             color: colorNumber('dinner', 'specialDiet')
           } as React.CSSProperties}
         >
-          <button>{mealsNumber?.breakfast}</button>
+          {mealsNumber?.breakfast === 1}
+          {mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.breakfast === 1 ?
+            <Checkbox defaultChecked></Checkbox> :
+            mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.breakfast === 0 ?
+            <Checkbox></Checkbox> :
+            ''}
+          {
+            /* {mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.breakfast === 0 ?
+            <Checkbox></Checkbox> :
+            ''} */
+          }
+          {/* {mealsNumber?.comment === 'test list 31 days' ? '' : ''} */}
+
+          {/* <button>{mealsNumber?.breakfast}</button> */}
         </div>
       </div>
     </>

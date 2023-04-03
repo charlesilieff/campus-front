@@ -95,7 +95,13 @@ export const Routes = () => (
     <Route
       path="meals/planning"
       element={
-        <PrivateRoute hasAnyAuthorities={[AUTHORITIES.RESPHEBERGEMENT, AUTHORITIES.ADMIN]}>
+        <PrivateRoute
+          hasAnyAuthorities={[
+            AUTHORITIES.RESPHEBERGEMENT,
+            AUTHORITIES.ADMIN,
+            AUTHORITIES.INTERMITTENT
+          ]}
+        >
           <Index2 />
         </PrivateRoute>
       }

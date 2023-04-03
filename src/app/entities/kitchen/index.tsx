@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Input } from '@chakra-ui/react'
+import { Box, Button, Heading, HStack, Input } from '@chakra-ui/react'
 import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
 import type { Dayjs } from 'dayjs'
@@ -125,6 +125,7 @@ export const Index = () => {
     <MealsContext.Provider value={[mealsData, changeMeal]}>
       <Box m={4}>
         <HStack m={4} spacing={8}>
+          <Heading alignSelf={'flex-start'}>Cuisine - Total des repas réservés</Heading>
           <Box>
             <Input
               type="date"

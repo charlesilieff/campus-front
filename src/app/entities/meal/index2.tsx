@@ -1,17 +1,20 @@
-import { Box, Button, HStack, Input } from '@chakra-ui/react'
-import { useAppSelector } from 'app/config/store'
+import { Box, Button, Heading, HStack, Input } from '@chakra-ui/react'
+import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { IMeal } from 'app/shared/model/meal.model'
+import type { IUpdateMeal } from 'app/shared/model/updateMeal.model'
 import axios from 'axios'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { FaCalendar } from 'react-icons/fa'
+import { FaSave } from 'react-icons/fa'
 
 import type { IMealsNumber } from './IMealsNumber'
 import { MealsContext } from './mealsContext'
 import { MealsPlanning } from './mealsUserPlanning'
 
 const apiUrlMealsDateFor31DaysByUser = 'api/meals/customer-id/'
+const apiUrlUpdateMeal = 'api/meals/update'
 interface IShowSavingProps {
   isShow: boolean
   message: string
@@ -75,6 +78,13 @@ export const Index2 = () => {
     setMealsData(data)
   }
 
+  // const transformResultDayNull = (result: IMeal[]) => {
+  //   For (let i = 0; i < 31; i++) {
+
+  // const resultDayNull = result.map((value, index) => {
+  //   if (value === 0) {
+  //     return 1
+
   /**
    * Définition du comportement d'affectation de données dans le contexte.
    * @param mealNumber : state
@@ -94,6 +104,7 @@ export const Index2 = () => {
       breakfast: mealsNumber.breakfast
     }
     // Mise à jour du contexte : du nombre de repas à réaliser.
+    console.log('setMealsData', newDefaultValue)
     setMealsData([...newDefaultValue])
   }
 
@@ -138,10 +149,39 @@ export const Index2 = () => {
     }
   }
 
+  // const updating = useAppSelector(state => state.meal.updating)
+  // const updateSuccess = useAppSelector(state => state.meal.updateSuccess)
+
+  // const navigate = useNavigate()
+  // const handleClose = () => {
+  //   navigate('/meals-planning')
+  // }
+  // useEffect(() => {
+  //   if (updateSuccess) {
+  //     handleClose()
+  //   }
+  // }, [updateSuccess])
+
+  // const dispatch = useAppDispatch()
+  // const updateMeals = (values: IMeal) => {
+  //   const entity: IMeal = {
+  //     ...values
+  //   }
+  //   dispatch(updateEntity(entity))
+  // }
+
+  const updateMeals = (entity: IMeal[]) => {
+    // const result = axios.put<IMeal>(`${apiUrl}/${entity.id}`, cleanEntity({ ...entity }))
+    console.log('entity', entity)
+    const result = axios.put<IUpdateMeal>(`${apiUrlUpdateMeal}/${entity.flatMap(x => x.id)}`)
+    return result
+  }
+
   return (
     <MealsContext.Provider value={[mealsData, changeMeal]}>
       <Box m={4}>
         <HStack m={4} spacing={8}>
+          <Heading alignSelf={'flex-start'}>Mes repas réservés</Heading>
           <Box>
             <Input
               type="date"
@@ -162,6 +202,15 @@ export const Index2 = () => {
         </HStack>
 
         <MealsPlanning date={date} totalDays={totalDays} numberOfDays={numberOfDays} />
+        <Button
+          type="submit"
+          onClick={() => updateMeals(mealsData)}
+          // isLoading={updating}
+          leftIcon={<FaSave />}
+          variant={'update'}
+        >
+          Modifier
+        </Button>
       </Box>
       {displayTotalMeals(resultTotalMeals)}
     </MealsContext.Provider>
