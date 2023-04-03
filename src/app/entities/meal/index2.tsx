@@ -1,7 +1,5 @@
 import { Box, Button, HStack, Input } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
-import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { useAppSelector } from 'app/config/store'
 import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
 import type { Dayjs } from 'dayjs'
@@ -13,21 +11,15 @@ import type { IMealsNumber } from './IMealsNumber'
 import { MealsContext } from './mealsContext'
 import { MealsPlanning } from './mealsUserPlanning'
 
-const apiUrlMealsDateFor31DaysByUser = 'api/meals/user-id/date'
+const apiUrlMealsDateFor31DaysByUser = 'api/meals/customer-id/'
 interface IShowSavingProps {
   isShow: boolean
   message: string
 }
 
 export const Index2 = () => {
-  const dispatch = useAppDispatch()
-
   const account = useAppSelector(state => state.authentication.account)
-  const customerId2 = pipe(
-    account.customerId,
-    O.fromNullable,
-    O.map(Number)
-  )
+
   const customerId = account.customerId
 
   const [date, setDate] = useState(dayjs())
@@ -75,7 +67,7 @@ export const Index2 = () => {
   //   return axios.get<ICustomer[]>(requestUrl)
   // }
   const getMealsDateFor31DaysByUser = async (startDate: Dayjs, customerId: number) => {
-    const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/${customerId}/${
+    const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/${customerId}/date/${
       startDate.format('YYYY-MM-DD')
     }?cacheBuster=${new Date().getTime()}`
     const { data } = await axios.get<IMeal[]>(requestUrl)
