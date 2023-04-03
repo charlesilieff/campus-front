@@ -16,6 +16,46 @@ interface IProps {
 }
 
 export const Day = ({ positionX, date, index }: IProps) => {
+  const handleChangeRegularLunch = () => {
+    console.log('The checkbox was toggled ', date.format('YYYY-MM-DD'), positionX, index)
+    console.log('The checkbox was toggled ', mealsContext[index].regularLunch)
+    if (mealsContext[index].regularLunch === 0) {
+      mealsContext[index].regularLunch = 1
+    } else {
+      mealsContext[index].regularLunch = 0
+    }
+  }
+  const handleChangeSpecialLunch = () => {
+    if (mealsContext[index].specialLunch === 0) {
+      mealsContext[index].specialLunch = 1
+    } else {
+      mealsContext[index].specialLunch = 0
+    }
+  }
+  const handleChangeRegularDiner = () => {
+    console.log('The checkbox was toggled ', date.format('YYYY-MM-DD'), positionX, index)
+    console.log('The checkbox was toggled ', mealsContext[index].regularDinner)
+    if (mealsContext[index].regularDinner === 0) {
+      mealsContext[index].regularDinner = 1
+    } else {
+      mealsContext[index].regularDinner = 0
+    }
+  }
+  const handleChangeSpecialDiner = () => {
+    if (mealsContext[index].specialDinner === 0) {
+      mealsContext[index].specialDinner = 1
+    } else {
+      mealsContext[index].specialDinner = 0
+    }
+  }
+  const handleChangeBreakfast = () => {
+    if (mealsContext[index].breakfast === 0) {
+      mealsContext[index].breakfast = 1
+    } else {
+      mealsContext[index].breakfast = 0
+    }
+  }
+
   const dayWeek = date.day()
   const dayMonth = date.date()
 
@@ -185,9 +225,9 @@ export const Day = ({ positionX, date, index }: IProps) => {
           {mealsNumber?.lunchtime.classicDiet === 1}
           {mealsNumber?.lunchtime.classicDiet === 1
               && mealsNumber?.comment !== 'test list 31 days' ?
-            <Checkbox defaultChecked></Checkbox> :
+            <Checkbox onChange={handleChangeRegularLunch} defaultChecked></Checkbox> :
             mealsNumber?.lunchtime.classicDiet === 0 ?
-            <Checkbox></Checkbox> :
+            <Checkbox onChange={handleChangeRegularLunch}></Checkbox> :
             ''}
           {
             /* {mealsNumber?.comment !== 'test list 31 days'
@@ -228,10 +268,10 @@ export const Day = ({ positionX, date, index }: IProps) => {
           {mealsNumber?.lunchtime.specialDiet === 1}
           {mealsNumber?.comment !== 'test list 31 days'
               && mealsNumber?.lunchtime.specialDiet === 1 ?
-            <Checkbox defaultChecked></Checkbox> :
+            <Checkbox onChange={handleChangeSpecialLunch} defaultChecked></Checkbox> :
             mealsNumber?.comment !== 'test list 31 days'
               && mealsNumber?.lunchtime.specialDiet === 0 ?
-            <Checkbox></Checkbox> :
+            <Checkbox onChange={handleChangeSpecialLunch}></Checkbox> :
             ''}
         </div>
       </div>
@@ -259,9 +299,9 @@ export const Day = ({ positionX, date, index }: IProps) => {
           {/* {mealsNumber?.comment === 'test list 31 days' ? '' : mealsNumber?.lunchtime.classicDiet} */}
           {mealsNumber?.dinner.classicDiet === 1}
           {mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.dinner.classicDiet === 1 ?
-            <Checkbox defaultChecked></Checkbox> :
+            <Checkbox onChange={handleChangeRegularDiner} defaultChecked></Checkbox> :
             mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.dinner.classicDiet === 0 ?
-            <Checkbox></Checkbox> :
+            <Checkbox onChange={handleChangeRegularDiner}></Checkbox> :
             ''}
         </div>
       </div>
@@ -286,9 +326,9 @@ export const Day = ({ positionX, date, index }: IProps) => {
         >
           {mealsNumber?.dinner.specialDiet === 1}
           {mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.dinner.specialDiet === 1 ?
-            <Checkbox defaultChecked></Checkbox> :
+            <Checkbox onChange={handleChangeSpecialDiner} defaultChecked></Checkbox> :
             mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.dinner.specialDiet === 0 ?
-            <Checkbox></Checkbox> :
+            <Checkbox onChange={handleChangeSpecialDiner}></Checkbox> :
             ''}
           {/* {mealsNumber?.dinner.specialDiet} */}
         </div>
@@ -313,9 +353,9 @@ export const Day = ({ positionX, date, index }: IProps) => {
         >
           {mealsNumber?.breakfast === 1}
           {mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.breakfast === 1 ?
-            <Checkbox defaultChecked></Checkbox> :
+            <Checkbox onChange={handleChangeBreakfast} defaultChecked></Checkbox> :
             mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.breakfast === 0 ?
-            <Checkbox></Checkbox> :
+            <Checkbox onChange={handleChangeBreakfast}></Checkbox> :
             ''}
           {
             /* {mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.breakfast === 0 ?

@@ -173,7 +173,13 @@ export const Index2 = () => {
   const updateMeals = (entity: IMeal[]) => {
     // const result = axios.put<IMeal>(`${apiUrl}/${entity.id}`, cleanEntity({ ...entity }))
     console.log('entity', entity)
-    const result = axios.put<IUpdateMeal>(`${apiUrlUpdateMeal}/${entity.flatMap(x => x.id)}`)
+    console.log('entity2', entity.filter(value => value.id !== 0))
+    console.log('entity3', entity.filter(value => value.id !== 0).flatMap(x => x))
+    const result = axios.post<IMeal>(apiUrlUpdateMeal, entity.filter(value => value.id !== 0))
+    // const result = axios.put<IUpdateMeal>(
+    //   `${apiUrlUpdateMeal}/${entity.filter(value => value.id !== 0).flatMap(x => x)}`
+    // )
+
     return result
   }
 
