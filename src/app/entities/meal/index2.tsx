@@ -1,7 +1,6 @@
 import { Box, Button, Heading, HStack, Input } from '@chakra-ui/react'
-import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { useAppSelector } from 'app/config/store'
 import type { IMeal } from 'app/shared/model/meal.model'
-import type { IUpdateMeal } from 'app/shared/model/updateMeal.model'
 import axios from 'axios'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
@@ -13,7 +12,7 @@ import type { IMealsNumber } from './IMealsNumber'
 import { MealsContext } from './mealsContext'
 import { MealsPlanning } from './mealsUserPlanning'
 
-const apiUrlMealsDateFor31DaysByUser = 'api/meals/customer-id/'
+const apiUrlMealsDateFor31DaysByUser = 'api/meals/customer-id'
 const apiUrlUpdateMeal = 'api/meals/update'
 interface IShowSavingProps {
   isShow: boolean
@@ -58,8 +57,30 @@ export const Index2 = () => {
     }
   }, [showSavingPopup])
 
+  // interface IProps {
+  //   date: Dayjs
+  //   totalDays: number
+
+  //   numberOfDays: number
+  // }
+
   const newDatePlanning = (dateStart: React.ChangeEvent<HTMLInputElement>) => {
+    // console.log('date newDatePlanning', date)
     setDate(dayjs(dateStart.target.value))
+    console.log('date update string', dateStart.target.value)
+    console.log('date update newDatePlanning', dateStart.target.value)
+    // console.log('date ', date)
+
+    // const [date, setDate] = useState(dayjs())
+
+    const date = dayjs(dateStart.target.value)
+    // console.log('date myNewDate', myNewDate)
+    console.log('date planning', date)
+    // getMealsDateFor31DaysByUser(dayjs(dateStart.target.value), customerId)
+    // MealsPlanning({ date, totalDays, numberOfDays })
+
+    MealsPlanning({ date, totalDays, numberOfDays })
+    console.log('date meals planning', date, totalDays, numberOfDays)
   }
 
   // On calcule le nombre de jours du mois de la date passée par l'utilisateur.
@@ -74,16 +95,9 @@ export const Index2 = () => {
       startDate.format('YYYY-MM-DD')
     }?cacheBuster=${new Date().getTime()}`
     const { data } = await axios.get<IMeal[]>(requestUrl)
-    console.log('data', data)
+    console.log('data axios', data)
     setMealsData(data)
   }
-
-  // const transformResultDayNull = (result: IMeal[]) => {
-  //   For (let i = 0; i < 31; i++) {
-
-  // const resultDayNull = result.map((value, index) => {
-  //   if (value === 0) {
-  //     return 1
 
   /**
    * Définition du comportement d'affectation de données dans le contexte.
@@ -148,39 +162,50 @@ export const Index2 = () => {
       setNumberOfDays(31)
     }
   }
-
-  // const updating = useAppSelector(state => state.meal.updating)
-  // const updateSuccess = useAppSelector(state => state.meal.updateSuccess)
-
-  // const navigate = useNavigate()
-  // const handleClose = () => {
-  //   navigate('/meals-planning')
-  // }
-  // useEffect(() => {
-  //   if (updateSuccess) {
-  //     handleClose()
-  //   }
-  // }, [updateSuccess])
-
-  // const dispatch = useAppDispatch()
-  // const updateMeals = (values: IMeal) => {
-  //   const entity: IMeal = {
-  //     ...values
-  //   }
-  //   dispatch(updateEntity(entity))
-  // }
-
+  /**
+   * update meals with checkbox
+   */
   const updateMeals = (entity: IMeal[]) => {
-    // const result = axios.put<IMeal>(`${apiUrl}/${entity.id}`, cleanEntity({ ...entity }))
     console.log('entity', entity)
     console.log('entity2', entity.filter(value => value.id !== 0))
-    console.log('entity3', entity.filter(value => value.id !== 0).flatMap(x => x))
-    const result = axios.post<IMeal>(apiUrlUpdateMeal, entity.filter(value => value.id !== 0))
-    // const result = axios.put<IUpdateMeal>(
-    //   `${apiUrlUpdateMeal}/${entity.filter(value => value.id !== 0).flatMap(x => x)}`
-    // )
 
+    const result = axios.put<IMeal>(apiUrlUpdateMeal, entity.filter(value => value.id !== 0))
+    const test = countRegular(entity)
+    console.log('test', test)
     return result
+  }
+  // mealsData , date, numberOfDays
+  // const changeMealsOnPeriode = (entity: IMeal[], mealsNumber: IMealsNumber, index: number) => {
+  const changeMealsOnPeriode = (entity: IMeal[], date: Dayjs, numberOfDays: number) => {
+    // Modification de la méthode : copie par valeur (spread)
+    console.log('entity', entity)
+    console.log('date', date)
+    console.log('numberOfDays', numberOfDays)
+
+    // const entity1 = entity.filter(value => value.date === date.format('YYYY-MM-DD'))
+
+    entity.forEach((value, index) => {
+      // console.log('value', value)
+      console.log('index', index)
+      // console.log('date', date)
+      // console.log('numberOfDays', numberOfDays)
+      if (index < numberOfDays && value.id !== 0) {
+        value = {
+          ...value,
+          specialLunch: 0,
+          specialDinner: 0,
+          regularLunch: 0,
+          regularDinner: 0,
+          comment: mealsData[index].comment,
+          breakfast: 0
+        }
+        console.log('value', value)
+      }
+      // entity.map(x => x.id === value.id ? value : x)
+      // return value
+    })
+
+    console.log('entity2', entity)
   }
 
   return (
@@ -191,7 +216,7 @@ export const Index2 = () => {
           <Box>
             <Input
               type="date"
-              onChange={newDatePlanning}
+              onChange={newDatePlanning} // todo getMealsDateFor31DaysByUser
             >
             </Input>
           </Box>
@@ -208,6 +233,15 @@ export const Index2 = () => {
         </HStack>
 
         <MealsPlanning date={date} totalDays={totalDays} numberOfDays={numberOfDays} />
+        <Button
+          type="submit"
+          onClick={() => changeMealsOnPeriode(mealsData, date, numberOfDays)}
+          // isLoading={updating}
+          leftIcon={<FaSave />}
+          variant={'update'}
+        >
+          Tout selectionner/déselectionner
+        </Button>
         <Button
           type="submit"
           onClick={() => updateMeals(mealsData)}
@@ -348,4 +382,10 @@ function totalMealsCalculation(mealsData: IMeal[], totalMeals: (table: number[])
   ]
 
   return result
+}
+
+function countRegular(mealsData: IMeal[]) {
+  const regular = mealsData.map(meals => meals.regularDinner + meals.regularLunch)
+  const sumRegular = regular.reduce((a, b) => a + b, 0)
+  return sumRegular
 }

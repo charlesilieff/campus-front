@@ -1,7 +1,14 @@
+import {
+  Button
+} from '@chakra-ui/react'
+import { useAppDispatch } from 'app/config/store'
 import type { IMeal } from 'app/shared/model/meal.model'
+import type { IMealWithCustomer } from 'app/shared/model/mealWithCustomer.model'
+import axios from 'axios'
 import type { Dayjs } from 'dayjs'
 import type dayjs from 'dayjs'
 import React, { useContext, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import type { IMealsNumber } from './IMealsNumber'
 import { MealsContext } from './mealsContext'
@@ -11,8 +18,10 @@ interface IProps {
   date: Dayjs
   index: number
 }
+const apiUrlMealForOneDay = 'api/meals/forOneDay'
 
 export const Day = ({ positionX, date, index }: IProps) => {
+  const [mealsWithCustomerData, setMealsWithCustomerData] = useState([] as IMealWithCustomer[])
   const dayWeek = date.day()
   const dayMonth = date.date()
 
@@ -147,12 +156,40 @@ export const Day = ({ positionX, date, index }: IProps) => {
     setModal(!modal)
   }
 
+  // const dispatch = useAppDispatch()
+  // const handleSyncList = (date: string) => {
+  // }
+  const getMeals = async (date: Dayjs) => {
+    console.log('date', Date)
+    // const requestUrl = `axios.get<IMeal[]>${apiUrlMealForOneDay}?cacheBuster=${date}`
+    // console.log('requestUrl', requestUrl)
+    // return requestUrl
+    // const requestUrl = `${apiUrlMealForOneDay}?cacheBuster=${date.format('YYYY-MM-DD')}`
+    const requestUrl = `${apiUrlMealForOneDay}/${date.format('YYYY-MM-DD')}?cacheBuster=${
+      new Date().getTime()
+    }`
+    // const requestUrl1 = `${apiUrlMealForOneDay}/${date.format('YYYY-MM-DD')}}`
+    // return axios.get<IMeal[]>(requestUrl)
+    const { data } = await axios.get<IMealWithCustomer[]>(requestUrl)
+
+    console.log('mealsOfDay', data)
+    console.log('mealsWithCustomerData', mealsWithCustomerData)
+    setMealsWithCustomerData(data)
+  }
+
   return (
     <>
-      <div className="day popup-comment" style={style} onClick={() => toggle()}>
-        {date.format('ddd DD ')}
+      {/* <div className="day popup-comment" style={style} onClick={() => toggle()}> */}
+      <div className="day popup-comment" style={style}>
+        <Button
+          // variant={'see'}
+          onClick={() => getMeals(date)}
+          // isLoading={loading}
+          // leftIcon={<FaSync />}
+        >
+          {date.format('ddd DD ')}
+        </Button>
       </div>
-
       <div
         style={{
           display: 'flex',
@@ -161,6 +198,34 @@ export const Day = ({ positionX, date, index }: IProps) => {
           gridColumnEnd: positionX + 1,
           gridRowStart: 4,
           gridRowEnd: 5,
+          borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
+          borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
+          borderTopStyle: 'solid'
+        } as React.CSSProperties}
+      >
+        <div
+          style={{
+            color: colorNumber('dinner', 'specialDiet')
+          } as React.CSSProperties}
+        >
+          <Button
+            // variant={'see'}
+            // onClick={toto(date.format('YYYY-MM-DD'))}
+            // isLoading={loading}
+            // leftIcon={<FaSync />}
+          >
+            {mealsNumber?.breakfast}
+          </Button>
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gridColumnStart: positionX,
+          gridColumnEnd: positionX + 1,
+          gridRowStart: 5,
+          gridRowEnd: 6,
           borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
           borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
           borderTopStyle: 'solid',
@@ -183,8 +248,8 @@ export const Day = ({ positionX, date, index }: IProps) => {
           flexDirection: 'column',
           gridColumnStart: positionX,
           gridColumnEnd: positionX + 1,
-          gridRowStart: 5,
-          gridRowEnd: 6,
+          gridRowStart: 6,
+          gridRowEnd: 7,
           borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
           borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
           borderTopStyle: 'solid',
@@ -208,8 +273,8 @@ export const Day = ({ positionX, date, index }: IProps) => {
           flexDirection: 'column',
           gridColumnStart: positionX,
           gridColumnEnd: positionX + 1,
-          gridRowStart: 6,
-          gridRowEnd: 7,
+          gridRowStart: 7,
+          gridRowEnd: 8,
           borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
           borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
           borderTopStyle: 'solid',
@@ -232,27 +297,6 @@ export const Day = ({ positionX, date, index }: IProps) => {
           flexDirection: 'column',
           gridColumnStart: positionX,
           gridColumnEnd: positionX + 1,
-          gridRowStart: 7,
-          gridRowEnd: 8,
-          borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
-          borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
-          borderTopStyle: 'solid'
-        } as React.CSSProperties}
-      >
-        <div
-          style={{
-            color: colorNumber('dinner', 'specialDiet')
-          } as React.CSSProperties}
-        >
-          {mealsNumber?.dinner.specialDiet}
-        </div>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gridColumnStart: positionX,
-          gridColumnEnd: positionX + 1,
           gridRowStart: 8,
           gridRowEnd: 9,
           borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
@@ -265,7 +309,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
             color: colorNumber('dinner', 'specialDiet')
           } as React.CSSProperties}
         >
-          <button>{mealsNumber?.breakfast}</button>
+          {mealsNumber?.dinner.specialDiet}
         </div>
       </div>
     </>

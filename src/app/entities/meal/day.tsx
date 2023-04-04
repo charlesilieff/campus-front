@@ -190,6 +190,9 @@ export const Day = ({ positionX, date, index }: IProps) => {
     setModal(!modal)
   }
 
+  const testRegular = countRegular(mealsContext)
+  const testSpecial = countSpecial(mealsContext)
+
   return (
     <>
       <div className="day popup-comment" style={style} onClick={() => toggle()}>
@@ -219,28 +222,19 @@ export const Day = ({ positionX, date, index }: IProps) => {
       >
         <div
           style={{
-            color: colorNumber('lunchtime', 'classicDiet')
+            color: colorNumber('dinner', 'specialDiet')
           } as React.CSSProperties}
         >
-          {mealsNumber?.lunchtime.classicDiet === 1}
-          {mealsNumber?.lunchtime.classicDiet === 1
-              && mealsNumber?.comment !== 'test list 31 days' ?
-            <Checkbox onChange={handleChangeRegularLunch} defaultChecked></Checkbox> :
-            mealsNumber?.lunchtime.classicDiet === 0 ?
-            <Checkbox onChange={handleChangeRegularLunch}></Checkbox> :
+          {/* {mealsNumber?.breakfast === 1} */}
+          {mealsNumber?.breakfast === 1 ?
+            <Checkbox onChange={handleChangeBreakfast} defaultChecked></Checkbox> :
+            mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.breakfast === 0 ?
+            <Checkbox onChange={handleChangeBreakfast}></Checkbox> :
             ''}
-          {
-            /* {mealsNumber?.comment !== 'test list 31 days'
-              && mealsNumber?.lunchtime.classicDiet === 1 ?
-            <Checkbox defaultChecked></Checkbox> :
-            mealsNumber?.comment !== 'test list 31 days'
-              && mealsNumber?.lunchtime.classicDiet === 0 ?
-            <Checkbox></Checkbox> :
-            ''}*/
-          }
+
+          {/* <button>{mealsNumber?.breakfast}</button>  */}
         </div>
       </div>
-
       <div
         style={{
           display: 'flex',
@@ -252,26 +246,21 @@ export const Day = ({ positionX, date, index }: IProps) => {
           borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
           borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
           borderTopStyle: 'solid',
-          borderBottomWidth: '0.1em',
-          borderBottomStyle: 'solid',
-          borderBottomColor: 'black'
+          borderBottomWidth: '0.01em',
+          borderBottomStyle: 'solid'
         } as React.CSSProperties}
       >
         <div
           style={{
-            color: colorNumber('lunchtime', 'specialDiet')
+            color: colorNumber('lunchtime', 'classicDiet')
           } as React.CSSProperties}
         >
-          {
-            /* {mealsNumber?.lunchtime.specialDiet} */
-          }
-          {mealsNumber?.lunchtime.specialDiet === 1}
-          {mealsNumber?.comment !== 'test list 31 days'
-              && mealsNumber?.lunchtime.specialDiet === 1 ?
-            <Checkbox onChange={handleChangeSpecialLunch} defaultChecked></Checkbox> :
-            mealsNumber?.comment !== 'test list 31 days'
-              && mealsNumber?.lunchtime.specialDiet === 0 ?
-            <Checkbox onChange={handleChangeSpecialLunch}></Checkbox> :
+          {/* {mealsNumber?.lunchtime.classicDiet === 1} */}
+          {mealsNumber?.lunchtime.classicDiet === 1 ?
+            <Checkbox onChange={handleChangeRegularLunch} defaultChecked></Checkbox> :
+            mealsNumber?.lunchtime.classicDiet === 0 && mealsNumber?.comment !== 'test list 31 days'
+              && testRegular !== 0 ?
+            <Checkbox onChange={handleChangeRegularLunch}></Checkbox> :
             ''}
         </div>
       </div>
@@ -287,21 +276,21 @@ export const Day = ({ positionX, date, index }: IProps) => {
           borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
           borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
           borderTopStyle: 'solid',
-          borderBottomWidth: '0.01em',
-          borderBottomStyle: 'solid'
+          borderBottomWidth: '0.1em',
+          borderBottomStyle: 'solid',
+          borderBottomColor: 'black'
         } as React.CSSProperties}
       >
         <div
           style={{
-            color: colorNumber('dinner', 'classicDiet')
+            color: colorNumber('lunchtime', 'specialDiet')
           } as React.CSSProperties}
         >
-          {/* {mealsNumber?.comment === 'test list 31 days' ? '' : mealsNumber?.lunchtime.classicDiet} */}
-          {mealsNumber?.dinner.classicDiet === 1}
-          {mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.dinner.classicDiet === 1 ?
-            <Checkbox onChange={handleChangeRegularDiner} defaultChecked></Checkbox> :
-            mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.dinner.classicDiet === 0 ?
-            <Checkbox onChange={handleChangeRegularDiner}></Checkbox> :
+          {mealsNumber?.lunchtime.specialDiet === 1 ?
+            <Checkbox onChange={handleChangeSpecialLunch} defaultChecked></Checkbox> :
+            mealsNumber?.lunchtime.specialDiet === 0 && mealsNumber?.comment !== 'test list 31 days'
+              && testSpecial !== 0 ?
+            <Checkbox onChange={handleChangeSpecialLunch}></Checkbox> :
             ''}
         </div>
       </div>
@@ -316,23 +305,26 @@ export const Day = ({ positionX, date, index }: IProps) => {
           gridRowEnd: 8,
           borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
           borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
-          borderTopStyle: 'solid'
+          borderTopStyle: 'solid',
+          borderBottomWidth: '0.01em',
+          borderBottomStyle: 'solid'
         } as React.CSSProperties}
       >
         <div
           style={{
-            color: colorNumber('dinner', 'specialDiet')
+            color: colorNumber('dinner', 'classicDiet')
           } as React.CSSProperties}
         >
-          {mealsNumber?.dinner.specialDiet === 1}
-          {mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.dinner.specialDiet === 1 ?
-            <Checkbox onChange={handleChangeSpecialDiner} defaultChecked></Checkbox> :
-            mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.dinner.specialDiet === 0 ?
-            <Checkbox onChange={handleChangeSpecialDiner}></Checkbox> :
+          {mealsNumber?.dinner.classicDiet === 1 ?
+            <Checkbox onChange={handleChangeRegularDiner} defaultChecked></Checkbox> :
+            mealsNumber?.dinner.classicDiet === 0
+              && mealsNumber?.comment !== 'test list 31 days'
+              && testRegular !== 0 ?
+            <Checkbox onChange={handleChangeRegularDiner}></Checkbox> :
             ''}
-          {/* {mealsNumber?.dinner.specialDiet} */}
         </div>
       </div>
+
       <div
         style={{
           display: 'flex',
@@ -351,20 +343,13 @@ export const Day = ({ positionX, date, index }: IProps) => {
             color: colorNumber('dinner', 'specialDiet')
           } as React.CSSProperties}
         >
-          {mealsNumber?.breakfast === 1}
-          {mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.breakfast === 1 ?
-            <Checkbox onChange={handleChangeBreakfast} defaultChecked></Checkbox> :
-            mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.breakfast === 0 ?
-            <Checkbox onChange={handleChangeBreakfast}></Checkbox> :
+          {mealsNumber?.dinner.specialDiet === 1 ?
+            <Checkbox onChange={handleChangeSpecialDiner} defaultChecked></Checkbox> :
+            mealsNumber?.dinner.specialDiet === 0 && mealsNumber?.comment !== 'test list 31 days'
+              && testSpecial !== 0 ?
+            <Checkbox onChange={handleChangeSpecialDiner}></Checkbox> :
             ''}
-          {
-            /* {mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.breakfast === 0 ?
-            <Checkbox></Checkbox> :
-            ''} */
-          }
-          {/* {mealsNumber?.comment === 'test list 31 days' ? '' : ''} */}
-
-          {/* <button>{mealsNumber?.breakfast}</button> */}
+          {/* {mealsNumber?.dinner.specialDiet} */}
         </div>
       </div>
     </>
@@ -389,8 +374,21 @@ function commentStyle(positionX: number, date: dayjs.Dayjs, mealsContext: IMeal[
   if (positionX === 8 || date.date() === 1 || date.day() === 1) {
     style.borderLeftWidth = '0.2em'
   }
-  if (mealsContext[index]?.comment?.length > 0) {
+  if (mealsContext[index]?.id !== 0) {
+    // if (mealsContext[index]?.comment?.length > 0) {
     style.backgroundColor = '#B8D8BA'
-  }
+  } else style.backgroundColor = '#C4C0BF'
   return style
+}
+
+function countRegular(mealsData: IMeal[]) {
+  const regular = mealsData.map(meals => meals.regularDinner + meals.regularLunch)
+  const sumRegular = regular.reduce((a, b) => a + b, 0)
+  return sumRegular
+}
+
+function countSpecial(mealsData: IMeal[]) {
+  const special = mealsData.map(meals => meals.specialLunch + meals.specialDinner)
+  const sumSpecial = special.reduce((a, b) => a + b, 0)
+  return sumSpecial
 }

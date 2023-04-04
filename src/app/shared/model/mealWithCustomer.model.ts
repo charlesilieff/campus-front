@@ -1,5 +1,5 @@
-export interface IMeal {
-  id?: number | null
+export interface IMealWithCustomer {
+  // id?: number | null
   date?: string
   specialLunch?: number | null
   specialDinner?: number | null
@@ -9,4 +9,4 @@ export interface IMeal {
   breakfast?: number | null
 }
 
-export const defaultValue: Readonly<IMeal> = {}
+export const defaultValue: Readonly<IMealWithCustomer> = {}

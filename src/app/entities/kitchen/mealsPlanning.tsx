@@ -29,14 +29,16 @@ export const MealsPlanning = ({ date, totalDays, numberOfDays }: IProps) => {
 
   return (
     <div className="grid-container" style={gridFormatStyle(numberOfDays)}>
+      <div className="time breakfast">Matin</div>
       <div className="time lunch">Midi</div>
       <div className="time dinner">Soir</div>
 
+      <div className="diet dietbreakfast">Total</div>
       <div className="diet specialdietlunch">Sans lactose ni gluten</div>
       <div className="diet classicdietlunch">Classique</div>
       <div className="diet specialdietdinner">Sans lactose ni gluten</div>
       <div className="diet classicdietdinner">Classique</div>
-      <div className="time breakfast">Matin</div>
+
       <Months date={date} month={0} totalDays={totalDays}></Months>
 
       {date.date() + numberOfDays - 1 > totalDays && (

@@ -412,20 +412,20 @@ kitchen page
 }
 
 .breakfast {
-  grid-row-start: 8;
-  grid-row-end: 9;
+  grid-row-start: 4;
+  grid-row-end: 5;
   padding: 8px;
 }
 
 .lunch {
-  grid-row-start: 4;
-  grid-row-end: 6;
+  grid-row-start: 5;
+  grid-row-end: 7;
   padding: 8px;
 }
 
 .dinner {
-  grid-row-start: 6;
-  grid-row-end: 8;
+  grid-row-start: 7;
+  grid-row-end: 9;
   padding: 8px;
 }
 
@@ -442,25 +442,28 @@ kitchen page
 
   border-right-style: solid;
 }
-
-.classicdietlunch {
+.dietbreakfast {
   grid-row-start: 4;
   grid-row-end: 5;
 }
-
-.specialdietlunch {
+.classicdietlunch {
   grid-row-start: 5;
   grid-row-end: 6;
 }
 
-.classicdietdinner {
+.specialdietlunch {
   grid-row-start: 6;
   grid-row-end: 7;
 }
 
-.specialdietdinner {
+.classicdietdinner {
   grid-row-start: 7;
   grid-row-end: 8;
+}
+
+.specialdietdinner {
+  grid-row-start: 8;
+  grid-row-end: 9;
 }
 
 .popup-comment {
