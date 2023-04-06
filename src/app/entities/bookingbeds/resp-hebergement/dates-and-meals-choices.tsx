@@ -20,7 +20,7 @@ import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import { isArrivalDateIsBeforeDepartureDate, isDateBeforeNow } from '../utils'
+import { isArrivalDateIsBeforeDepartureDate } from '../utils'
 import type { DatesAndMeals } from './reservation-update'
 
 interface DatesAndMealsChoicesProps {
@@ -93,11 +93,6 @@ export const DatesAndMealsChoices = (
                           !isArrivalDateIsBeforeDepartureDate(v, departureDate.current.toString())
                         ) {
                           return "La date d'arrivée doit être avant la date de départ"
-                        }
-                        if (isDateBeforeNow(v)) {
-                          return "La date d'arrivée doit être après aujourd’hui"
-                        } else {
-                          return true
                         }
                       }
                     })}

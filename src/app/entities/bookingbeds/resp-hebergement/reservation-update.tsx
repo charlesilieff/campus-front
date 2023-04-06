@@ -1,5 +1,18 @@
-import { CheckIcon } from '@chakra-ui/icons'
-import { Button, Heading, HStack, Stack, useToast } from '@chakra-ui/react'
+import { ArrowLeftIcon, CheckIcon } from '@chakra-ui/icons'
+import {
+  Button,
+  Heading,
+  HStack,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Stack,
+  useDisclosure,
+  useToast
+} from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import * as A from '@effect/data/ReadonlyArray'
@@ -7,6 +20,7 @@ import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
 import React, { useEffect, useState } from 'react'
 import { BsTrash } from 'react-icons/bs'
+import { FaSave } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import {
@@ -20,8 +34,8 @@ import {
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
 import { CustomerUpdate } from './customer-update'
-import { DatesAndMealsChoices } from './dates-and-meals-choices-intermittent'
-import { DatesAndMealsSummary } from './dates-and-meals-summary-intermittent'
+import { DatesAndMealsChoices } from './dates-and-meals-choices'
+import { DatesAndMealsSummary } from './dates-and-meals-summary'
 
 export interface DatesAndMeals {
   arrivalDate: string
@@ -50,7 +64,8 @@ export type BedIds = ReadonlyArray<{ id: number }>
 const createIReservationWithBedIds = (
   customer: Customer,
   datesAndMeals: DatesAndMeals,
-  bedId: number
+  bedId: number,
+  isConfirmed?: boolean
 ): IBookingBeds => ({
   // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
   arrivalDate: datesAndMeals.arrivalDate,
@@ -63,7 +78,7 @@ const createIReservationWithBedIds = (
   isDepartureDiner: datesAndMeals.isDepartureDinner,
   comment: datesAndMeals.comment,
   bedIds: [bedId],
-  isConfirmed: true,
+  isConfirmed: isConfirmed ?? true,
   isPaid: false,
   paymentMode: '',
   personNumber: 1,
@@ -94,9 +109,10 @@ export const BookingBedsUpdate = (): JSX.Element => {
   const handleSubmitReservation = async (
     datesAndMeal: DatesAndMeals,
     bedId: number,
-    customer: Customer
+    customer: Customer,
+    isConfirmed: boolean
   ): Promise<void> => {
-    const reservation = createIReservationWithBedIds(customer, datesAndMeal, bedId)
+    const reservation = createIReservationWithBedIds(customer, datesAndMeal, bedId, isConfirmed)
 
     setIsLoading(true)
     if (reservationId !== undefined) {
@@ -112,7 +128,6 @@ export const BookingBedsUpdate = (): JSX.Element => {
   const backendReservation = useAppSelector(state => state.reservation.entity)
 
   useEffect(() => {
-    console.log('backendReservation', backendReservation)
     if (backendReservation.arrivalDate !== undefined) {
       setCustomer(O.some({
         id: backendReservation.customer.id,
@@ -175,7 +190,7 @@ export const BookingBedsUpdate = (): JSX.Element => {
       navigate('/planning')
     }
   }, [updateSuccess])
-
+  const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <Stack>
       <Heading size={'lg'} m={4}>
@@ -250,15 +265,61 @@ export const BookingBedsUpdate = (): JSX.Element => {
         (
           <HStack justifyContent={'end'}>
             <Button as={Link} to={''} colorScheme={'red'} rightIcon={<BsTrash />}>Annuler</Button>
+
             <Button
               isLoading={isLoading}
               colorScheme={'blue'}
-              rightIcon={<CheckIcon />}
+              rightIcon={<FaSave />}
               onClick={() =>
-                handleSubmitReservation(datesAndMeal.value, bedId.value, customer.value)}
+                handleSubmitReservation(
+                  datesAndMeal.value,
+                  bedId.value,
+                  customer.value,
+                  false
+                )}
             >
-              Finaliser la réservation
+              Enregistrer le brouillon
             </Button>
+            <>
+              <Button
+                isLoading={isLoading}
+                variant={'save'}
+                rightIcon={<CheckIcon />}
+                onClick={onOpen}
+              >
+                Finaliser la réservation
+              </Button>
+              <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>
+                    Confirmer la réservation
+                  </ModalHeader>
+                  <ModalBody>
+                    Le client recevra un mail de confirmation de réservation. Et les repas seront
+                    comptés dans le nombre de repas prévus.
+                  </ModalBody>
+                  <ModalFooter justifyContent={'space-between'}>
+                    <Button onClick={onClose} leftIcon={<ArrowLeftIcon />} variant="back">
+                      Retour
+                    </Button>
+                    <Button
+                      onClick={() =>
+                        handleSubmitReservation(
+                          datesAndMeal.value,
+                          bedId.value,
+                          customer.value,
+                          true
+                        )}
+                      leftIcon={<FaSave />}
+                      variant="save"
+                    >
+                      Enregistrer
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+            </>
           </HStack>
         ) :
         null}

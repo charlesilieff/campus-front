@@ -9,7 +9,7 @@ import * as O from '@effect/data/Option'
 import React from 'react'
 import { BsPencil } from 'react-icons/bs'
 
-import type { DatesAndMeals } from './reservation-intermittent-update'
+import type { DatesAndMeals } from './reservation-update'
 
 interface DatesAndMealsSummaryProps {
   datesAndMeals: DatesAndMeals
