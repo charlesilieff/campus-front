@@ -41,7 +41,7 @@ export const CustomerSummary = (
     >
       <HStack>
         <Heading size={'lg'} marginBottom={4}>
-          Informations personnelles <CheckCircleIcon color={'green'}></CheckCircleIcon>
+          Informations du client <CheckCircleIcon color={'green'}></CheckCircleIcon>
         </Heading>
       </HStack>
 

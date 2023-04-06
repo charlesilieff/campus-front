@@ -78,7 +78,7 @@ export const CustomerUpdate = (
       >
         <HStack>
           <Heading size={'md'}>
-            Informations personnelles
+            Informations du client
           </Heading>
           <BsPencil size={'30px'} color={'black'}></BsPencil>
         </HStack>
