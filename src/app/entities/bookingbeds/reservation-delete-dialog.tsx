@@ -35,7 +35,7 @@ export const ReservationDeleteDialog: FunctionComponent<{ reservationId: number 
     // Version effectify with Z.gen (équivalent defer dans scala ZIO) :
     await pipe(
       Z.gen(function* (_) {
-        const response = yield* _(Z.attemptPromise(() =>
+        const response = yield* _(Z.promise(() =>
           dispatch(
             deleteEntity({ id: reservationId, sendMail: true })
           )
