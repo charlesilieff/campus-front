@@ -40,7 +40,6 @@ import { DatesAndMealsSummary } from './dates-and-meals-summary'
 export interface DatesAndMeals {
   arrivalDate: string
   departureDate: string
-  specialDiet: 'false' | 'true'
   isArrivalLunch: boolean
   isArrivalDinner: boolean
   isDepartureLunch: boolean
@@ -57,6 +56,8 @@ export interface Customer {
   email: string
   phoneNumber: O.Option<string>
   age: O.Option<number>
+  personNumber: number
+  specialDietNumber: number
 }
 
 export type BedIds = ReadonlyArray<{ id: number }>
@@ -65,23 +66,23 @@ const createIReservationWithBedIds = (
   customer: Customer,
   datesAndMeals: DatesAndMeals,
   bedId: number,
-  isConfirmed?: boolean
+  isConfirmed: boolean
 ): IBookingBeds => ({
   // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
   arrivalDate: datesAndMeals.arrivalDate,
   // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
   departureDate: datesAndMeals.departureDate,
-  specialDietNumber: datesAndMeals.specialDiet === 'true' ? 1 : 0,
+  specialDietNumber: customer.specialDietNumber,
   isArrivalLunch: datesAndMeals.isArrivalLunch,
   isArrivalDiner: datesAndMeals.isArrivalDinner,
   isDepartureLunch: datesAndMeals.isDepartureLunch,
   isDepartureDiner: datesAndMeals.isDepartureDinner,
   comment: datesAndMeals.comment,
   bedIds: [bedId],
-  isConfirmed: isConfirmed ?? true,
+  isConfirmed,
   isPaid: false,
   paymentMode: '',
-  personNumber: 1,
+  personNumber: customer.personNumber,
   customer: {
     id: customer.id,
     firstname: customer.firstname,
@@ -100,7 +101,7 @@ export const BookingBedsUpdate = (): JSX.Element => {
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
-  const { reservationId } = useParams<{ reservationId: string }>()
+  const { reservationId } = useParams<{ reservationId: string | undefined }>()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const toast = useToast()
@@ -135,12 +136,14 @@ export const BookingBedsUpdate = (): JSX.Element => {
         lastname: backendReservation.customer.lastname,
         email: backendReservation.customer.email,
         phoneNumber: O.fromNullable(backendReservation.customer.phoneNumber),
-        age: O.fromNullable(backendReservation.customer.age)
+        age: O.fromNullable(backendReservation.customer.age),
+        personNumber: backendReservation.personNumber,
+        specialDietNumber: backendReservation.specialDietNumber
       }))
       setDatesAndMeal(O.some({
         arrivalDate: backendReservation.arrivalDate.toString(),
         departureDate: backendReservation.departureDate.toString(),
-        specialDiet: backendReservation.specialDietNumber === 1 ? 'true' : 'false',
+        specialDiet: backendReservation.specialDietNumber,
         isArrivalLunch: backendReservation.isArrivalLunch,
         isArrivalDinner: backendReservation.isArrivalDiner,
         isDepartureLunch: backendReservation.isDepartureLunch,
@@ -194,7 +197,7 @@ export const BookingBedsUpdate = (): JSX.Element => {
   return (
     <Stack>
       <Heading size={'lg'} m={4}>
-        Votre réservation
+        {reservationId === undefined ? 'Nouvelle' : 'Modifiez la'} réservation
       </Heading>
       {O.isNone(customer) || updateCustomer ?
         (

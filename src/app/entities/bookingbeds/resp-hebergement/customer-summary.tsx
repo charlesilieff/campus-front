@@ -24,7 +24,9 @@ export const CustomerSummary = (
       email,
       firstname,
       lastname,
-      phoneNumber
+      phoneNumber,
+      personNumber,
+      specialDietNumber
     },
     setUpdateCustomer
   }: CustomerSummaryProps
@@ -41,7 +43,8 @@ export const CustomerSummary = (
     >
       <HStack>
         <Heading size={'lg'} marginBottom={4}>
-          Informations du client <CheckCircleIcon color={'green'}></CheckCircleIcon>
+          Informations du responsable de la réservation{' '}
+          <CheckCircleIcon color={'green'}></CheckCircleIcon>
         </Heading>
       </HStack>
 
@@ -74,7 +77,12 @@ export const CustomerSummary = (
         <Text pl={12} fontWeight={'bold'}>{'Téléphone :'}</Text>
         <Text>{phoneNumberString}</Text>
       </HStack>
-
+      <HStack py={2}>
+        <Text fontWeight={'bold'}>{'Nombre de personnes :'}</Text>
+        <Text>{personNumber}</Text>
+        <Text pl={12} fontWeight={'bold'}>{'Nombre de régimes sans lactose/gluten :'}</Text>
+        <Text>{specialDietNumber}</Text>
+      </HStack>
       <Button
         colorScheme="blue"
         rightIcon={<BsPencil />}

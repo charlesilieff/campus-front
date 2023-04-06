@@ -1,3 +1,4 @@
+import { CheckCircleIcon } from '@chakra-ui/icons'
 import {
   Button,
   Heading,
@@ -27,7 +28,6 @@ export const DatesAndMealsSummary = (
       isArrivalLunch,
       isDepartureDinner,
       isDepartureLunch,
-      specialDiet,
       isArrivalBreakfast,
       isDepartureBreakfast
     },
@@ -65,7 +65,7 @@ export const DatesAndMealsSummary = (
       borderColor={'#D9D9D9'}
     >
       <Heading size={'lg'} marginBottom={8}>
-        Dates et repas
+        Dates et repas <CheckCircleIcon color={'green'}></CheckCircleIcon>
       </Heading>
 
       <HStack py={2}>
@@ -87,10 +87,6 @@ export const DatesAndMealsSummary = (
           </Text>
         </HStack>
       </VStack>
-      <HStack py={2}>
-        <Text fontWeight={'bold'}>Régime sans lactose/gluten ?</Text>
-        <Text>{specialDiet === 'true' ? 'Oui' : 'Non'}</Text>
-      </HStack>
       <VStack alignItems={'flex-start'} py={2}>
         <Text fontWeight={'bold'}>Commentaire :</Text>
         <Text>{comment}</Text>

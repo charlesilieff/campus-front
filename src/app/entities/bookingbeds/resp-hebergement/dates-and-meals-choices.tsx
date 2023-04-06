@@ -9,8 +9,6 @@ import {
   Heading,
   HStack,
   Input,
-  Radio,
-  RadioGroup,
   Text,
   Textarea,
   VStack
@@ -138,22 +136,7 @@ export const DatesAndMealsChoices = (
                   <Checkbox {...register('isDepartureDinner')}>dîner</Checkbox>
                 </HStack>
               </FormControl>
-              <FormControl isRequired isInvalid={errors.specialDiet !== undefined}>
-                <FormLabel htmlFor="selectionRepas" fontWeight={'bold'}>
-                  {'Régime sans lactose OU sans gluten ?'}
-                </FormLabel>
 
-                <RadioGroup
-                  defaultValue={O.isSome(props.datesAndMeals) ?
-                    props.datesAndMeals.value.specialDiet :
-                    undefined}
-                >
-                  <HStack spacing="24px">
-                    <Radio {...register('specialDiet')} value={'true'} mb={0}>Oui</Radio>
-                    <Radio {...register('specialDiet')} value={'false'}>Non</Radio>
-                  </HStack>
-                </RadioGroup>
-              </FormControl>
               <FormControl isInvalid={errors.comment !== undefined}>
                 <FormLabel htmlFor="comment" fontWeight={'bold'}>
                   {'Commentaire :'}

@@ -11,7 +11,7 @@ import {
   VStack
 } from '@chakra-ui/react'
 import * as O from '@effect/data/Option'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
@@ -30,6 +30,8 @@ export interface FormCustomer {
   email: string
   phoneNumber?: string
   age?: number
+  personNumber: number
+  specialDietNumber: number
 }
 
 export const CustomerUpdate = (
@@ -39,8 +41,11 @@ export const CustomerUpdate = (
     handleSubmit,
     register,
     formState: { errors },
-    reset: resetForm
+    reset: resetForm,
+    watch
   } = useForm<FormCustomer>()
+  const personNumber = useRef({})
+  personNumber.current = watch('personNumber', 0)
   useEffect(() => {
     resetForm(
       O.isSome(props.customer) ?
@@ -78,7 +83,7 @@ export const CustomerUpdate = (
       >
         <HStack>
           <Heading size={'md'}>
-            Informations du client
+            Informations du responsable de la réservation
           </Heading>
           <BsPencil size={'30px'} color={'black'}></BsPencil>
         </HStack>
@@ -172,7 +177,45 @@ export const CustomerUpdate = (
                   </FormErrorMessage>
                 </FormControl>
               </HStack>
+              <HStack spacing={12} minW={800} my={4}>
+                <FormControl isRequired>
+                  <FormLabel htmlFor="age" fontWeight={'bold'}>
+                    {'Nombre de personnes'}
+                  </FormLabel>
+                  <Input
+                    type="number"
+                    placeholder="Nombre de personnes"
+                    {...register('personNumber')}
+                  />
 
+                  <FormErrorMessage>
+                    {errors.personNumber && errors.personNumber.message}
+                  </FormErrorMessage>
+                </FormControl>
+                <FormControl isRequired isInvalid={errors.specialDietNumber !== undefined}>
+                  <FormLabel htmlFor="specialDietNumber" fontWeight={'bold'}>
+                    {'Nombre de régimes sans gluten OU lactose'}
+                  </FormLabel>
+                  <Input
+                    type="number"
+                    {...register('specialDietNumber', {
+                      required: 'Le nombre de régimes spéciaux est obligatoire',
+                      validate(v) {
+                        if (v > personNumber.current) {
+                          return 'Le nombre de régimes spéciaux ne peut pas être supérieur au nombre de personnes'
+                        }
+                        if (v < 0) {
+                          return 'Le nombre de régimes spéciaux ne peut pas être négatif'
+                        }
+                      }
+                    })}
+                  />
+
+                  <FormErrorMessage>
+                    {errors.specialDietNumber && errors.specialDietNumber.message}
+                  </FormErrorMessage>
+                </FormControl>
+              </HStack>
               <Button
                 rightIcon={<CheckIcon />}
                 colorScheme={'green'}
