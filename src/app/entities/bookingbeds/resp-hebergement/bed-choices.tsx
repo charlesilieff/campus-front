@@ -9,9 +9,9 @@ import type { FunctionComponent } from 'react'
 import React, { useEffect, useState } from 'react'
 
 import type { IRoomWithBeds } from '../utils'
-import { getIntermittentPlaceWithFreeAndBookedBeds } from '../utils'
+import { getPlaceWithFreeBedsAndBookedBeds } from '../utils'
 import { IntermittentBeds } from './beds-intermittent'
-import type { DatesAndMeals } from './reservation-intermittent-update'
+import type { DatesAndMeals } from './reservation-update'
 
 interface DatesAndMealsChoicesProps {
   setSelectedBedId: (bedId: O.Option<number>) => void
@@ -27,12 +27,12 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
   const [loading, setLoading] = useState(false)
   useEffect(() => {
     setLoading(true)
-    const getIntermittentPlaceWithFreeAndBookedBedsAsync = async (
+    const getPlaceWithFreeAndBookedBedsAsync = async (
       arrivalDate: string,
       departureDate: string,
       reservationId: O.Option<string>
     ) => {
-      const data = await getIntermittentPlaceWithFreeAndBookedBeds(
+      const data = await getPlaceWithFreeBedsAndBookedBeds(false)(
         arrivalDate,
         departureDate,
         reservationId
@@ -45,7 +45,7 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
     }
 
     if (O.isSome(props.datesAndMeals)) {
-      getIntermittentPlaceWithFreeAndBookedBedsAsync(
+      getPlaceWithFreeAndBookedBedsAsync(
         props.datesAndMeals.value.arrivalDate,
         props.datesAndMeals.value.departureDate,
         props.reservationId

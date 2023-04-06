@@ -12,7 +12,7 @@ import { Link, useParams } from 'react-router-dom'
 
 import { CustomerSummary } from './customer-summary'
 import { CustomerUpdate } from './customer-update'
-import { ReservationChoices } from './reservation-choices-intermittent'
+import { ReservationChoices } from './reservation-choices'
 
 import {
   createEntity,
