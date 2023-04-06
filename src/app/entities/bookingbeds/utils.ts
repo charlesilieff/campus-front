@@ -8,7 +8,7 @@ import axios from 'axios'
 
 const apiUrlAllPlaces = 'api/planning/places'
 
-export const getOnePlace = async (id: string): Promise<IPlace> => {
+export const getOnePlace = async (id: number | string): Promise<IPlace> => {
   const requestUrl = `${apiUrlAllPlaces}/${id}?cacheBuster=${new Date().getTime()}`
   const { data } = await axios.get<IPlace>(requestUrl)
   return data

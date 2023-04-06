@@ -1,14 +1,18 @@
 import {
   Heading,
+  Select,
   Spinner,
   VStack
 } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
+import { PlaceModal } from 'app/entities/place/placeModal'
+import type { IBedroomKind } from 'app/shared/model/bedroom-kind.model'
 import type { FunctionComponent } from 'react'
 import React, { useEffect, useState } from 'react'
 
-import type { IRoomWithBeds } from '../utils'
+import type { IPlace, IRoomWithBeds } from '../utils'
+import { getOnePlace } from '../utils'
 import { getPlaceWithFreeBedsAndBookedBeds } from '../utils'
 import { IntermittentBeds } from './beds-intermittent'
 import type { DatesAndMeals } from './reservation-update'
@@ -24,7 +28,10 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
   props
 ): JSX.Element => {
   const [rooms, setRooms] = useState<ReadonlyArray<IRoomWithBeds>>([])
+  const [places, setPlaces] = useState([] as readonly IPlace[])
+  const [roomKinds, setRoomKinds] = useState([] as IBedroomKind[])
   const [loading, setLoading] = useState(false)
+  const [placeImage, setPlace] = useState(O.none<IPlace>())
   useEffect(() => {
     setLoading(true)
     const getPlaceWithFreeAndBookedBedsAsync = async (
@@ -38,10 +45,17 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
         reservationId
       )
       const roomsData = data?.flatMap(place => place.rooms)
-
-      setLoading(false)
-
+      setPlaces(data)
       setRooms(roomsData)
+
+      setRoomKinds(
+        roomsData
+          .map(room => room?.bedroomKind)
+          // Permet de n'afficher que les bedroomKind non null et unique
+          .filter((bedroomKind, index, arr) =>
+            arr?.findIndex(e => bedroomKind?.name === e?.name) === index
+          )
+      )
     }
 
     if (O.isSome(props.datesAndMeals)) {
@@ -51,7 +65,36 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
         props.reservationId
       )
     }
+    setLoading(false)
   }, [])
+
+  const filterBedPlace = (idPlace: O.Option<number>): void => {
+    if (O.isNone(idPlace)) {
+      setRooms(
+        places?.flatMap(place => place.rooms)
+      )
+    } else {
+      setRooms(
+        places
+          ?.filter(place => place.id === idPlace.value)
+          ?.flatMap(place => place.rooms)
+      )
+    }
+  }
+
+  const filterBedRoomKind = (idRoomKind: O.Option<number>): void => {
+    if (O.isNone(idRoomKind)) {
+      setRooms(
+        places?.flatMap(place => place.rooms)
+      )
+    } else {
+      setRooms(
+        places
+          ?.flatMap(place => place.rooms)
+          .filter(room => room.bedroomKind?.id === idRoomKind.value)
+      )
+    }
+  }
 
   return (
     <VStack alignItems={'flex-start'} my={4}>
@@ -70,7 +113,44 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
               <Heading fontWeight={'bold'} fontSize={'30'}>
                 {'Choisissez votre lit :'}
               </Heading>
+              <Heading size={'md'}>Filtrer par lieu</Heading>
+              <Select
+                style={{ padding: '0.4rem', borderRadius: '0.3rem' }}
+                onChange={e => {
+                  console.log('placeId', e.target.value)
+                  const placeId = pipe(Number(e.target.value), d => isNaN(d) ? O.none() : O.some(d))
+                  filterBedPlace(placeId)
+                  pipe(
+                    placeId,
+                    O.map(getOnePlace),
+                    O.map(p => p.then(res => setPlace(O.some(res))))
+                  )
+                }}
+              >
+                <option value={'undefined'}>Aucun</option>
 
+                {places?.map(p => (
+                  <option value={p.id} key={p.id}>
+                    {p.name}
+                  </option>
+                ))}
+              </Select>
+              {O.isSome(placeImage) ? <PlaceModal {...placeImage.value} /> : null}
+
+              <Heading size={'md'}>Filtre par type de chambre</Heading>
+              <Select
+                style={{ padding: '0.4rem', borderRadius: '0.3rem' }}
+                onChange={e =>
+                  pipe(e.target.value, O.fromNullable, O.map(Number), filterBedRoomKind)}
+              >
+                <option value={null}>Aucune</option>
+
+                {roomKinds.map((p, index) => (
+                  <option value={p?.id} key={index}>
+                    {p?.name}
+                  </option>
+                ))}
+              </Select>
               <IntermittentBeds
                 bedId={pipe(props.bedId, O.map(bedId => bedId.toString()))}
                 rooms={rooms.filter(room => room.beds.length > 0)}

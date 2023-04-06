@@ -73,7 +73,7 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
 
               <IntermittentBeds
                 bedId={pipe(props.bedId, O.map(bedId => bedId.toString()))}
-                rooms={rooms.filter(room => room.beds.length > 0)}
+                rooms={rooms}
                 selectedBedId={props.setSelectedBedId}
               />
             </VStack>
