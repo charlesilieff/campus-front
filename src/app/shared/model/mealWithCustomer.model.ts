@@ -1,6 +1,6 @@
 export interface IMealWithCustomer {
   breakfast?: number
-  date?: string | null
+  // date?: string | null
 
   regularLunch?: number
   regularDinner?: number

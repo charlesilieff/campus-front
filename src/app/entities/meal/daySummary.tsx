@@ -1,8 +1,5 @@
 import type { Dayjs } from 'dayjs'
-import React, { useContext } from 'react'
-
-import type { IMealsNumber } from './IMealsNumber'
-import { MealsContext } from './mealsContext'
+import React from 'react'
 
 interface IProps {
   positionX: number
@@ -14,7 +11,7 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
   const dayWeek = date.day()
   const dayMonth = date.date()
 
-  const mealsContext = useContext(MealsContext)[0]
+  // const mealsContext = useContext(MealsContext)[0]
 
   const style = {
     gridColumnStart: positionX,
@@ -25,31 +22,31 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
     style.borderLeftWidth = '0.2em'
   }
 
-  const mealsNumberReferential: IMealsNumber = {
-    breakfast: mealsContext[index].breakfast,
-    lunchtime: {
-      classicDiet: mealsContext[index].regularLunch,
-      specialDiet: mealsContext[index].specialLunch
-    },
-    dinner: {
-      classicDiet: mealsContext[index].regularDinner,
-      specialDiet: mealsContext[index].specialDinner
-    },
-    comment: mealsContext[index].comment
-  }
+  // const mealsNumberReferential: IMealsNumber = {
+  //   breakfast: mealsContext[index].breakfast,
+  //   lunchtime: {
+  //     classicDiet: mealsContext[index].regularLunch,
+  //     specialDiet: mealsContext[index].specialLunch
+  //   },
+  //   dinner: {
+  //     classicDiet: mealsContext[index].regularDinner,
+  //     specialDiet: mealsContext[index].specialDinner
+  //   },
+  //   comment: mealsContext[index].comment
+  // }
 
-  const colorNumber = (differential: number) => {
-    let color: string
+  // const colorNumber = (differential: number) => {
+  //   let color: string
 
-    if (differential === 0) {
-      color = 'black'
-    } else if (differential < 0) {
-      color = 'red'
-    } else {
-      color = 'green'
-    }
-    return color
-  }
+  //   if (differential === 0) {
+  //     color = 'black'
+  //   } else if (differential < 0) {
+  //     color = 'red'
+  //   } else {
+  //     color = 'green'
+  //   }
+  //   return color
+  // }
 
   return (
     <>
@@ -69,7 +66,8 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
           borderTopStyle: 'solid'
         } as React.CSSProperties}
       >
-        <div>
+        {
+          /* <div>
           {mealsNumberReferential?.breakfast}
           <div
             style={{
@@ -78,7 +76,8 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
           >
             wtf
           </div>
-        </div>
+        </div> */
+        }
       </div>
       <div
         style={{
@@ -93,7 +92,8 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
           borderTopStyle: 'solid'
         } as React.CSSProperties}
       >
-        <div>
+        {
+          /* <div>
           {mealsNumberReferential?.lunchtime.classicDiet}
           <div
             style={{
@@ -102,7 +102,8 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
           >
             wtf
           </div>
-        </div>
+        </div> */
+        }
       </div>
       <div
         style={{
@@ -117,7 +118,8 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
           borderTopStyle: 'solid'
         } as React.CSSProperties}
       >
-        <div>
+        {
+          /* <div>
           {mealsNumberReferential?.lunchtime.specialDiet}
           <div
             style={{
@@ -126,7 +128,8 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
           >
             wtf
           </div>
-        </div>
+        </div> */
+        }
       </div>
 
       <div
@@ -142,7 +145,8 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
           borderTopStyle: 'solid'
         } as React.CSSProperties}
       >
-        <div>
+        {
+          /* <div>
           {mealsNumberReferential?.dinner.classicDiet}
           <div
             style={{
@@ -151,7 +155,8 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
           >
             wtf
           </div>
-        </div>
+        </div> */
+        }
       </div>
 
       <div
@@ -167,7 +172,8 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
           borderTopStyle: 'solid'
         } as React.CSSProperties}
       >
-        <div>
+        {
+          /* <div>
           {mealsNumberReferential?.dinner.specialDiet}
           <div
             style={{
@@ -176,7 +182,8 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
           >
             wtf
           </div>
-        </div>
+        </div> */
+        }
       </div>
     </>
   )
