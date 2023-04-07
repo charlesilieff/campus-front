@@ -33,7 +33,7 @@ interface IProps {
 const apiUrlMealForOneDay = 'api/meals/forOneDay'
 
 export const Day = ({ positionX, date, index }: IProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  // const { isOpen, onOpen, onClose } = useDisclosure()
   const { isOpen: isOpenLunch, onOpen: onOpenLunch, onClose: onCloseLunch } = useDisclosure()
   const { isOpen: isOpenDiner, onOpen: onOpenDiner, onClose: onCloseDiner } = useDisclosure()
   const [mealsWithCustomerData, setMealsWithCustomerData] = useState([] as IMealWithCustomer[])
