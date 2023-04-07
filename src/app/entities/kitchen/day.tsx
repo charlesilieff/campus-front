@@ -34,7 +34,8 @@ const apiUrlMealForOneDay = 'api/meals/forOneDay'
 
 export const Day = ({ positionX, date, index }: IProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-
+  const { isOpen: isOpenLunch, onOpen: onOpenLunch, onClose: onCloseLunch } = useDisclosure()
+  const { isOpen: isOpenDiner, onOpen: onOpenDiner, onClose: onCloseDiner } = useDisclosure()
   const [mealsWithCustomerData, setMealsWithCustomerData] = useState([] as IMealWithCustomer[])
 
   // const defaultValueWithCustomer: IMealWithCustomer = {
@@ -212,102 +213,18 @@ export const Day = ({ positionX, date, index }: IProps) => {
   return (
     <>
       <div className="day popup-comment" style={style} onClick={() => toggle()}>
-        <Button
-          // variant={'see'}
+        {
+          /* <Button
           onClick={() => {
             getMeals(date)
             onOpen()
           }}
           size={'sm'}
-          // isLoading={loading}
-          // leftIcon={<FaSync />}
         >
-          {date.format('ddd DD ')}
-        </Button>
-        {
-          /* <button
-          onClick={() => {
-            getMeals(date)
-            onOpen
-          }}
-        >
-          I m a button
-        </button> */
-        }
-        <Box p={1}>
-          <Modal
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            size={'xxl'}
-            scrollBehavior={'inside'}
-            isOpen={isOpen}
-            onClose={onClose}
-            isCentered
-          >
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader borderBottom={'solid'}>
-                {/* <div>Détail du midi :</div> {date} */}
-                {/* {<Text>Détail du midi :</Text>} {date} */}
-                {/* <Text>Détail du midi : {date}</Text> */}
-              </ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                {
-                  <Table>
-                    {/* <Caption>Détail du midi : {date}</Caption> */}
-                    <Tr borderBottom={'solid'}>
-                      <Th>Prénom</Th>
-                      <Th>Nom</Th>
-                      <Th>Petit-déjeuner</Th>
-                      <Th>Repas normaux midi</Th>
-                      <Th>Repas speciaux midi</Th>
-                      <Th>Repas normaux soir</Th>
-                      <Th>Repas speciaux soir</Th>
-                      <Th>Comentaire</Th>
-                    </Tr>
 
-                    {mealsWithCustomerData.map((meals, index) => (
-                      <Tr key={index}>
-                        <Td>
-                          {meals.firstname ?
-                            meals.firstname :
-                            'Repas annonyme, ancienne réservation'}
-                        </Td>
-                        <Td>
-                          {meals.lastname ? meals.lastname : 'Réservation annonyme'}
-                        </Td>
-                        <Td>
-                          {meals.breakfast}
-                        </Td>
-                        <Td>
-                          {meals.regularLunch}
-                        </Td>
-                        <Td>
-                          {meals.specialLunch}
-                        </Td>
-                        <Td>
-                          {meals.regularDinner}
-                        </Td>
-                        <Td>
-                          {meals.specialDinner}
-                        </Td>
-                        <Td>
-                          {meals.comment?.length > 0 ? meals.comment : ''}
-                        </Td>
-                      </Tr>
-                    ))}
-                  </Table>
-                }
-              </ModalBody>
-              <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={onClose}>
-                  Close
-                </Button>
-                <Button variant="ghost" onClick={print}>Imprimer</Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
-        </Box>
+        </Button> */
+        }
+        {date.format('ddd DD ')}
       </div>
       <div
         style={{
@@ -327,19 +244,23 @@ export const Day = ({ positionX, date, index }: IProps) => {
             color: colorNumber('dinner', 'specialDiet')
           } as React.CSSProperties}
         >
-          <Button
+          {
+            /* <Button
             // variant={'see'}
             // onClick={toto(date.format('YYYY-MM-DD'))}
             onClick={() => {
               getMeals(date)
               onOpen()
             }}
+            size={'sm'}
             // onClick={() => getMeals(date)}
             // isLoading={loading}
             // leftIcon={<FaSync />}
           >
             {mealsNumber?.breakfast}
-          </Button>
+          </Button> */
+          }
+          {mealsNumber?.breakfast}
         </div>
       </div>
       <div
@@ -362,60 +283,78 @@ export const Day = ({ positionX, date, index }: IProps) => {
             color: colorNumber('lunchtime', 'classicDiet')
           } as React.CSSProperties}
         >
-          {mealsNumber?.lunchtime.classicDiet}
-          {
-            /* <Box p={1}>
-            <Button
-              onClick={onOpen}
-            >
-              {mealsNumber?.lunchtime.classicDiet}
-            </Button>
+          {/* {mealsNumber?.lunchtime.classicDiet} */}
+          <Button
+            onClick={() => {
+              getMeals(date)
+              onOpenLunch()
+            }}
+            size={'sm'}
+          >
+            {mealsNumber?.lunchtime.classicDiet}
+          </Button>
+          <Box p={1}>
             <Modal
               // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               size={'xxl'}
               scrollBehavior={'inside'}
-              isOpen={isOpen}
-              onClose={onClose}
+              isOpen={isOpenLunch}
+              onClose={onCloseLunch}
+              isCentered
             >
               <ModalOverlay />
               <ModalContent>
                 <ModalHeader borderBottom={'solid'}>
-                  // Détail du midi : {date}
+                  {/* <div>Détail du midi :</div> {date} */}
+                  {/* {<Text>Détail du midi :</Text>} {date} */}
+                  {/* <Text>Détail du midi : {date}</Text> */}
                 </ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   {
                     <Table>
-
-                      <Tr>
+                      {/* <Caption>Détail du midi : {date}</Caption> */}
+                      <Tr borderBottom={'solid'}>
                         <Th>Prénom</Th>
                         <Th>Nom</Th>
                         <Th>Repas normaux midi</Th>
                         <Th>Repas speciaux midi</Th>
+                        <Th>Comentaire</Th>
                       </Tr>
-                      <Tr>
-                        {mealsWithCustomerData.map((meals, index) => (
-                          <Td key={index}>
-                            {meals.firstname}
-                            {meals.lastname}
+
+                      {mealsWithCustomerData.map((meals, index) => (
+                        <Tr key={index}>
+                          <Td>
+                            {meals.firstname ?
+                              meals.firstname :
+                              'Repas annonyme, ancienne réservation'}
+                          </Td>
+                          <Td>
+                            {meals.lastname ? meals.lastname : 'Réservation annonyme'}
+                          </Td>
+                          <Td>
                             {meals.regularLunch}
+                          </Td>
+                          <Td>
                             {meals.specialLunch}
                           </Td>
-                        ))}
-                      </Tr>
+                          <Td>
+                            {meals.comment?.length > 0 ? meals.comment : ''}
+                          </Td>
+                        </Tr>
+                      ))}
                     </Table>
                   }
                 </ModalBody>
                 <ModalFooter>
-                  <Button colorScheme="blue" mr={3} onClick={onClose}>
+                  <Button colorScheme="blue" mr={3} onClick={onCloseLunch}>
                     Close
                   </Button>
-                  <Button variant="ghost" onClick={print}>Secondary Action</Button>
+                  <Button variant="ghost" onClick={print}>Imprimer</Button>
                 </ModalFooter>
               </ModalContent>
             </Modal>
-          </Box> */
-          }
+          </Box>
         </div>
       </div>
 
@@ -440,7 +379,15 @@ export const Day = ({ positionX, date, index }: IProps) => {
             color: colorNumber('lunchtime', 'specialDiet')
           } as React.CSSProperties}
         >
-          {mealsNumber?.lunchtime.specialDiet}
+          <Button
+            onClick={() => {
+              getMeals(date)
+              onOpenLunch()
+            }}
+            size={'sm'}
+          >
+            {mealsNumber?.lunchtime.specialDiet}
+          </Button>
         </div>
       </div>
 
@@ -464,7 +411,15 @@ export const Day = ({ positionX, date, index }: IProps) => {
             color: colorNumber('dinner', 'classicDiet')
           } as React.CSSProperties}
         >
-          {mealsNumber?.dinner.classicDiet}
+          <Button
+            onClick={() => {
+              getMeals(date)
+              onOpenDiner()
+            }}
+            size={'sm'}
+          >
+            {mealsNumber?.dinner.classicDiet}
+          </Button>
         </div>
       </div>
 
@@ -486,7 +441,15 @@ export const Day = ({ positionX, date, index }: IProps) => {
             color: colorNumber('dinner', 'specialDiet')
           } as React.CSSProperties}
         >
-          {mealsNumber?.dinner.specialDiet}
+          <Button
+            onClick={() => {
+              getMeals(date)
+              onOpenDiner()
+            }}
+            size={'sm'}
+          >
+            {mealsNumber?.dinner.specialDiet}
+          </Button>
           {
             /* <Button
             onClick={onOpen}
@@ -524,6 +487,67 @@ export const Day = ({ positionX, date, index }: IProps) => {
               </ModalFooter>
             </ModalContent>
           </Modal> */
+
+
+              <Box p={1}>
+                <Modal
+                  size={'xxl'}
+                  scrollBehavior={'inside'}
+                  isOpen={isOpenDiner}
+                  onClose={onCloseDiner}
+                  isCentered
+                >
+                  <ModalOverlay />
+                  <ModalContent>
+                    <ModalHeader borderBottom={'solid'}>
+                    </ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                      {
+                        <Table>
+                          {/* <Caption>Détail du midi : {date}</Caption> */}
+                          <Tr borderBottom={'solid'}>
+                            <Th>Prénom</Th>
+                            <Th>Nom</Th>
+                            <Th>Repas normaux soir</Th>
+                            <Th>Repas speciaux soir</Th>
+                            <Th>Comentaire</Th>
+                          </Tr>
+
+                          {mealsWithCustomerData.map((meals, index) => (
+                            <Tr key={index}>
+                              <Td>
+                                {meals.firstname ?
+                                  meals.firstname :
+                                  'Repas annonyme, ancienne réservation'}
+                              </Td>
+                              <Td>
+                                {meals.lastname ? meals.lastname : 'Réservation annonyme'}
+                              </Td>
+                              <Td>
+                                {meals.regularDinner}
+                              </Td>
+                              <Td>
+                                {meals.specialDinner}
+                              </Td>
+                              <Td>
+                                {meals.comment?.length > 0 ? meals.comment : ''}
+                              </Td>
+                            </Tr>
+                          ))}
+                        </Table>
+                      }
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button colorScheme="blue" mr={3} onClick={onCloseDiner}>
+                        Close
+                      </Button>
+                      <Button variant="ghost" onClick={print}>Imprimer</Button>
+                    </ModalFooter>
+                  </ModalContent>
+                </Modal>
+              </Box>
+
           }
         </div>
       </div>
