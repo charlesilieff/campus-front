@@ -7,7 +7,7 @@ interface IProps {
   index: number
 }
 
-export const DaySummary = ({ positionX, date, index }: IProps) => {
+export const DaySummary = ({ positionX, date }: IProps) => {
   const dayWeek = date.day()
   const dayMonth = date.date()
 
