@@ -8,8 +8,6 @@ import React, { useEffect, useState } from 'react'
 import { FaCalendar } from 'react-icons/fa'
 import { FaSave } from 'react-icons/fa'
 
-import type { IMealsNumber } from './IMealsNumber'
-import { MealsContext } from './mealsContext'
 import { MealsPlanning } from './mealsUserPlanning'
 
 const apiUrlMealsDateFor31DaysByUser = 'api/meals/customer-id'
@@ -79,8 +77,11 @@ export const Index2 = () => {
     // getMealsDateFor31DaysByUser(dayjs(dateStart.target.value), customerId)
     // MealsPlanning({ date, totalDays, numberOfDays })
 
-    MealsPlanning({ date, totalDays, numberOfDays })
-    console.log('date meals planning', date, totalDays, numberOfDays)
+    MealsPlanning({ date, totalDays, numberOfDays, mealsContext: mealsData })
+    console.log(
+      'date meals planning',
+      MealsPlanning({ date, totalDays, numberOfDays, mealsContext: mealsData })
+    )
   }
 
   // On calcule le nombre de jours du mois de la date passée par l'utilisateur.
@@ -97,29 +98,6 @@ export const Index2 = () => {
     const { data } = await axios.get<IMeal[]>(requestUrl)
     console.log('data axios', data)
     setMealsData(data)
-  }
-
-  /**
-   * Définition du comportement d'affectation de données dans le contexte.
-   * @param mealNumber : state
-   * @param index : index de tableau (tableau de données de l'api)
-   */
-  const changeMeal = (mealsNumber: IMealsNumber, index: number) => {
-    // Modification de la méthode : copie par valeur (spread)
-    const newDefaultValue = [...mealsData]
-    newDefaultValue[index] = {
-      ...newDefaultValue[index],
-
-      specialLunch: mealsNumber.lunchtime.specialDiet,
-      specialDinner: mealsNumber.dinner.specialDiet,
-      regularLunch: mealsNumber.lunchtime.classicDiet,
-      regularDinner: mealsNumber.dinner.classicDiet,
-      comment: mealsNumber.comment,
-      breakfast: mealsNumber.breakfast
-    }
-    // Mise à jour du contexte : du nombre de repas à réaliser.
-    console.log('setMealsData', newDefaultValue)
-    setMealsData([...newDefaultValue])
   }
 
   /**
@@ -167,16 +145,21 @@ export const Index2 = () => {
    */
   const updateMeals = (entity: IMeal[]) => {
     console.log('entity', entity)
-    console.log('entity2', entity.filter(value => value.id !== 0))
+    console.log('entity2', entity.filter(value => value.id !== undefined))
 
-    const result = axios.put<IMeal>(apiUrlUpdateMeal, entity.filter(value => value.id !== 0))
+    const result = axios.put<IMeal>(
+      apiUrlUpdateMeal,
+      entity.filter(value => value.id !== undefined)
+    )
     const test = countRegular(entity)
     console.log('test', test)
     return result
   }
-  // mealsData , date, numberOfDays
-  // const changeMealsOnPeriode = (entity: IMeal[], mealsNumber: IMealsNumber, index: number) => {
-  const changeMealsOnPeriode = (entity: IMeal[], date: Dayjs, numberOfDays: number) => {
+
+  /**
+   * select meals of planning
+   */
+  const selectMealsOnPeriode = (entity: IMeal[], date: Dayjs, numberOfDays: number) => {
     // Modification de la méthode : copie par valeur (spread)
     console.log('entity', entity)
     console.log('date', date)
@@ -189,7 +172,7 @@ export const Index2 = () => {
       console.log('index', index)
       // console.log('date', date)
       // console.log('numberOfDays', numberOfDays)
-      if (index < numberOfDays && value.id !== 0) {
+      if (index < numberOfDays && value.id !== undefined) {
         value = {
           ...value,
           specialLunch: 0,
@@ -200,6 +183,7 @@ export const Index2 = () => {
           breakfast: 0
         }
         console.log('value', value)
+        console.log('entity', entity)
       }
       // entity.map(x => x.id === value.id ? value : x)
       // return value
@@ -209,7 +193,7 @@ export const Index2 = () => {
   }
 
   return (
-    <MealsContext.Provider value={[mealsData, changeMeal]}>
+    <>
       <Box m={4}>
         <HStack m={4} spacing={8}>
           <Heading alignSelf={'flex-start'}>Mes repas réservés</Heading>
@@ -232,10 +216,16 @@ export const Index2 = () => {
           </Button>
         </HStack>
 
-        <MealsPlanning date={date} totalDays={totalDays} numberOfDays={numberOfDays} />
+        <MealsPlanning
+          date={date}
+          totalDays={totalDays}
+          numberOfDays={numberOfDays}
+          mealsContext={mealsData}
+        />
+
         <Button
           type="submit"
-          onClick={() => changeMealsOnPeriode(mealsData, date, numberOfDays)}
+          onClick={() => selectMealsOnPeriode(mealsData, date, numberOfDays)}
           // isLoading={updating}
           leftIcon={<FaSave />}
           variant={'update'}
@@ -253,7 +243,7 @@ export const Index2 = () => {
         </Button>
       </Box>
       {displayTotalMeals(resultTotalMeals)}
-    </MealsContext.Provider>
+    </>
   )
 }
 

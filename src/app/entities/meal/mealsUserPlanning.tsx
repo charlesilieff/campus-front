@@ -1,3 +1,4 @@
+import type { IMeal } from 'app/shared/model/meal.model'
 import { getDateKey } from 'app/shared/util/date-utils'
 import type { Dayjs } from 'dayjs'
 import React from 'react'
@@ -8,8 +9,8 @@ import { Months } from './months'
 interface IProps {
   date: Dayjs
   totalDays: number
-
   numberOfDays: number
+  mealsContext: IMeal[]
 }
 
 /**
@@ -20,7 +21,7 @@ interface IProps {
  *        - régime classique
  *  - Repas du soir.
  */
-export const MealsPlanning = ({ date, totalDays, numberOfDays }: IProps) => {
+export const MealsPlanning = ({ date, totalDays, numberOfDays, mealsContext }: IProps) => {
   // On souhaite afficher 31 jours => Tableau de 31 élements.
   const monthDays = Array.from({ length: numberOfDays })
 
@@ -52,7 +53,15 @@ export const MealsPlanning = ({ date, totalDays, numberOfDays }: IProps) => {
         const dateDay = date.add(index, 'day')
         const dateKey = getDateKey(dateDay)
         positionX[dateKey] = gridColumnStart
-        return <Day positionX={gridColumnStart} key={dateKey} date={dateDay} index={index}></Day>
+        return (
+          <Day
+            positionX={gridColumnStart}
+            key={dateKey}
+            date={dateDay}
+            index={index}
+            mealsContext={mealsContext}
+          />
+        )
       })}
     </div>
   )

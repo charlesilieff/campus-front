@@ -4,18 +4,18 @@ import {
 import type { IMeal } from 'app/shared/model/meal.model'
 import type { Dayjs } from 'dayjs'
 import type dayjs from 'dayjs'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import type { IMealsNumber } from './IMealsNumber'
-import { MealsContext } from './mealsContext'
 
 interface IProps {
   positionX: number
   date: Dayjs
   index: number
+  mealsContext: IMeal[]
 }
 
-export const Day = ({ positionX, date, index }: IProps) => {
+export const Day = ({ positionX, date, index, mealsContext }: IProps) => {
   const handleChangeRegularLunch = () => {
     console.log('The checkbox was toggled ', date.format('YYYY-MM-DD'), positionX, index)
     console.log('The checkbox was toggled ', mealsContext[index].regularLunch)
@@ -60,13 +60,12 @@ export const Day = ({ positionX, date, index }: IProps) => {
   const dayMonth = date.date()
 
   const defaultValue: IMealsNumber = {
+    id: mealsContext[index]?.id,
     breakfast: 0,
     lunchtime: { specialDiet: 0, classicDiet: 0 },
     dinner: { specialDiet: 0, classicDiet: 0 },
     comment: ''
   }
-
-  const [mealsContext] = useContext(MealsContext)
 
   const [mealsNumber, setMealsNumber] = useState(defaultValue)
 
@@ -80,6 +79,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
 
   useEffect(() => {
     const mealsToCookFromDb: IMealsNumber = {
+      id: mealsContext[index]?.id,
       breakfast: mealsContext[index]?.breakfast,
       lunchtime: {
         specialDiet: mealsContext[index]?.specialLunch,
@@ -93,6 +93,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
     }
 
     const mealsReferentialFromDb: IMealsNumber = {
+      id: mealsContext[index]?.id,
       breakfast: mealsContext[index]?.breakfast,
       lunchtime: {
         specialDiet: mealsContext[index]?.specialLunch,
@@ -107,6 +108,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
     setMealsNumberReferential(mealsReferentialFromDb)
 
     const theNewMealsNumber = {
+      id: mealsToCookFromDb.id,
       breakfast: mealsToCookFromDb.breakfast - mealsReferentialFromDb.breakfast === 0 ?
         mealsReferentialFromDb.breakfast :
         mealsToCookFromDb.breakfast,
@@ -139,7 +141,6 @@ export const Day = ({ positionX, date, index }: IProps) => {
 
     setMealsNumber(theNewMealsNumber)
   }, [mealsContext])
-
   const colorNumber = (
     time: 'lunchtime' | 'dinner' | 'breakfast',
     diet: 'specialDiet' | 'classicDiet'
@@ -201,7 +202,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
 
       {
         /* <div>
-{mealsNumber?.comment === 'test list 31 days' ? '' : mealsNumber?.lunchtime.classicDiet}
+        {mealsNumber?.comment === 'test list 31 days' ? '' : mealsNumber?.lunchtime.classicDiet}
 
       </div> */
       }
@@ -222,13 +223,13 @@ export const Day = ({ positionX, date, index }: IProps) => {
       >
         <div
           style={{
-            color: colorNumber('dinner', 'specialDiet')
+            color: colorNumber('breakfast', 'classicDiet')
           } as React.CSSProperties}
         >
           {/* {mealsNumber?.breakfast === 1} */}
           {mealsNumber?.breakfast === 1 ?
             <Checkbox onChange={handleChangeBreakfast} defaultChecked></Checkbox> :
-            mealsNumber?.comment !== 'test list 31 days' && mealsNumber?.breakfast === 0 ?
+            mealsNumber?.id !== undefined && mealsNumber?.breakfast === 0 ?
             <Checkbox onChange={handleChangeBreakfast}></Checkbox> :
             ''}
 
@@ -258,7 +259,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
           {/* {mealsNumber?.lunchtime.classicDiet === 1} */}
           {mealsNumber?.lunchtime.classicDiet === 1 ?
             <Checkbox onChange={handleChangeRegularLunch} defaultChecked></Checkbox> :
-            mealsNumber?.lunchtime.classicDiet === 0 && mealsNumber?.comment !== 'test list 31 days'
+            mealsNumber?.lunchtime.classicDiet === 0 && mealsNumber?.id !== undefined
               && testRegular !== 0 ?
             <Checkbox onChange={handleChangeRegularLunch}></Checkbox> :
             ''}
@@ -288,10 +289,10 @@ export const Day = ({ positionX, date, index }: IProps) => {
         >
           {mealsNumber?.lunchtime.specialDiet === 1 ?
             <Checkbox onChange={handleChangeSpecialLunch} defaultChecked></Checkbox> :
-            mealsNumber?.lunchtime.specialDiet === 0 && mealsNumber?.comment !== 'test list 31 days'
+            mealsNumber?.lunchtime.specialDiet === 0 && mealsNumber?.id !== undefined
               && testSpecial !== 0 ?
             <Checkbox onChange={handleChangeSpecialLunch}></Checkbox> :
-            ''}
+            null}
         </div>
       </div>
 
@@ -318,7 +319,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
           {mealsNumber?.dinner.classicDiet === 1 ?
             <Checkbox onChange={handleChangeRegularDiner} defaultChecked></Checkbox> :
             mealsNumber?.dinner.classicDiet === 0
-              && mealsNumber?.comment !== 'test list 31 days'
+              && mealsNumber?.id !== undefined
               && testRegular !== 0 ?
             <Checkbox onChange={handleChangeRegularDiner}></Checkbox> :
             ''}
@@ -345,7 +346,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
         >
           {mealsNumber?.dinner.specialDiet === 1 ?
             <Checkbox onChange={handleChangeSpecialDiner} defaultChecked></Checkbox> :
-            mealsNumber?.dinner.specialDiet === 0 && mealsNumber?.comment !== 'test list 31 days'
+            mealsNumber?.dinner.specialDiet === 0 && mealsNumber?.id !== undefined
               && testSpecial !== 0 ?
             <Checkbox onChange={handleChangeSpecialDiner}></Checkbox> :
             ''}

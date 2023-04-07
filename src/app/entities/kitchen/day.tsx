@@ -1,14 +1,27 @@
 import {
-  Button
+  Box,
+  Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Table,
+  Td,
+  Text,
+  Th,
+  Tr,
+  useDisclosure
 } from '@chakra-ui/react'
-import { useAppDispatch } from 'app/config/store'
+import { pipe } from '@effect/data/Function'
 import type { IMeal } from 'app/shared/model/meal.model'
 import type { IMealWithCustomer } from 'app/shared/model/mealWithCustomer.model'
 import axios from 'axios'
 import type { Dayjs } from 'dayjs'
 import type dayjs from 'dayjs'
 import React, { useContext, useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
 
 import type { IMealsNumber } from './IMealsNumber'
 import { MealsContext } from './mealsContext'
@@ -21,7 +34,22 @@ interface IProps {
 const apiUrlMealForOneDay = 'api/meals/forOneDay'
 
 export const Day = ({ positionX, date, index }: IProps) => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
   const [mealsWithCustomerData, setMealsWithCustomerData] = useState([] as IMealWithCustomer[])
+
+  // const defaultValueWithCustomer: IMealWithCustomer = {
+  //   specialLunch: 0,
+  //   specialDinner: 0,
+  //   regularLunch: 0,
+  //   regularDinner: 0,
+  //   comment: '',
+  //   breakfast: 0,
+  //   firstname: '',
+  //   lastname: ''
+  // }
+  // const [mealsWithCustomerData, setMealsWithCustomerData] = useState(defaultValueWithCustomer)
+
   const dayWeek = date.day()
   const dayMonth = date.date()
 
@@ -173,22 +201,115 @@ export const Day = ({ positionX, date, index }: IProps) => {
     const { data } = await axios.get<IMealWithCustomer[]>(requestUrl)
 
     console.log('mealsOfDay', data)
+
     console.log('mealsWithCustomerData', mealsWithCustomerData)
+
     setMealsWithCustomerData(data)
+    // data.map(x => setMealsWithCustomerData(x))
+    console.log('mealsWithCustomerData', mealsWithCustomerData)
+    // {`/meal/${date.format('YYYY-MM-DD')}`}
+    pipe(
+      data,
+      setMealsWithCustomerData
+    )
+    console.log('mealsWithCustomerData', mealsWithCustomerData)
   }
 
   return (
     <>
-      {/* <div className="day popup-comment" style={style} onClick={() => toggle()}> */}
-      <div className="day popup-comment" style={style}>
+      <div className="day popup-comment" style={style} onClick={() => toggle()}>
         <Button
           // variant={'see'}
-          onClick={() => getMeals(date)}
+          onClick={() => {
+            getMeals(date)
+            onOpen()
+          }}
+          size={'sm'}
           // isLoading={loading}
           // leftIcon={<FaSync />}
         >
           {date.format('ddd DD ')}
         </Button>
+        {
+          /* <button
+          onClick={() => {
+            getMeals(date)
+            onOpen
+          }}
+        >
+          I m a button
+        </button> */
+        }
+        <Box p={1}>
+          <Modal
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            size={'xxl'}
+            scrollBehavior={'inside'}
+            isOpen={isOpen}
+            onClose={onClose}
+            isCentered
+          >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader borderBottom={'solid'}>
+                {/* <div>Détail du midi :</div> {date} */}
+                {/* {<Text>Détail du midi :</Text>} {date} */}
+                {/* <Text>Détail du midi : {date}</Text> */}
+              </ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                {
+                  <Table>
+                    {/* <Caption>Détail du midi : {date}</Caption> */}
+                    <Tr borderBottom={'solid'}>
+                      <Th>Prénom</Th>
+                      <Th>Nom</Th>
+                      <Th>Petit-déjeuner</Th>
+                      <Th>Repas normaux midi</Th>
+                      <Th>Repas speciaux midi</Th>
+                      <Th>Repas normaux soir</Th>
+                      <Th>Repas speciaux soir</Th>
+                    </Tr>
+
+                    {mealsWithCustomerData.map((meals, index) => (
+                      <Tr key={index}>
+                        <Td>
+                          {meals.firstname ?
+                            meals.firstname :
+                            'Repas annonyme, ancienne réservation'}
+                        </Td>
+                        <Td>
+                          {meals.lastname ? meals.lastname : 'Réservation annonyme'}
+                        </Td>
+                        <Td>
+                          {meals.breakfast}
+                        </Td>
+                        <Td>
+                          {meals.regularLunch}
+                        </Td>
+                        <Td>
+                          {meals.specialLunch}
+                        </Td>
+                        <Td>
+                          {meals.regularDinner}
+                        </Td>
+                        <Td>
+                          {meals.specialDinner}
+                        </Td>
+                      </Tr>
+                    ))}
+                  </Table>
+                }
+              </ModalBody>
+              <ModalFooter>
+                <Button colorScheme="blue" mr={3} onClick={onClose}>
+                  Close
+                </Button>
+                <Button variant="ghost" onClick={print}>Imprimer</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        </Box>
       </div>
       <div
         style={{
@@ -211,6 +332,11 @@ export const Day = ({ positionX, date, index }: IProps) => {
           <Button
             // variant={'see'}
             // onClick={toto(date.format('YYYY-MM-DD'))}
+            onClick={() => {
+              getMeals(date)
+              onOpen()
+            }}
+            // onClick={() => getMeals(date)}
             // isLoading={loading}
             // leftIcon={<FaSync />}
           >
@@ -239,6 +365,59 @@ export const Day = ({ positionX, date, index }: IProps) => {
           } as React.CSSProperties}
         >
           {mealsNumber?.lunchtime.classicDiet}
+          {
+            /* <Box p={1}>
+            <Button
+              onClick={onOpen}
+            >
+              {mealsNumber?.lunchtime.classicDiet}
+            </Button>
+            <Modal
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              size={'xxl'}
+              scrollBehavior={'inside'}
+              isOpen={isOpen}
+              onClose={onClose}
+            >
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader borderBottom={'solid'}>
+                  // Détail du midi : {date}
+                </ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  {
+                    <Table>
+
+                      <Tr>
+                        <Th>Prénom</Th>
+                        <Th>Nom</Th>
+                        <Th>Repas normaux midi</Th>
+                        <Th>Repas speciaux midi</Th>
+                      </Tr>
+                      <Tr>
+                        {mealsWithCustomerData.map((meals, index) => (
+                          <Td key={index}>
+                            {meals.firstname}
+                            {meals.lastname}
+                            {meals.regularLunch}
+                            {meals.specialLunch}
+                          </Td>
+                        ))}
+                      </Tr>
+                    </Table>
+                  }
+                </ModalBody>
+                <ModalFooter>
+                  <Button colorScheme="blue" mr={3} onClick={onClose}>
+                    Close
+                  </Button>
+                  <Button variant="ghost" onClick={print}>Secondary Action</Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
+          </Box> */
+          }
         </div>
       </div>
 
@@ -310,6 +489,44 @@ export const Day = ({ positionX, date, index }: IProps) => {
           } as React.CSSProperties}
         >
           {mealsNumber?.dinner.specialDiet}
+          {
+            /* <Button
+            onClick={onOpen}
+          >
+            {mealsNumber?.dinner.specialDiet}
+          </Button>
+          <Modal
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            size={'xxl'}
+            scrollBehavior={'inside'}
+            isOpen={isOpen}
+            onClose={onClose}
+          >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader borderBottom={'solid'}>
+                // Détail du midi : {date}
+              </ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                {mealsWithCustomerData.map((meals, index) => (
+                  <li key={index}>
+                    Prénom : {meals.firstname} Nom :{' '}
+                    {meals.lastname ? meals.lastname : 'Réservation annonyme'} Repas normaux soir :
+                    {' '}
+                    {meals.regularDinner} Repas spéciaux soir : {meals.specialDinner}
+                  </li>
+                ))}
+              </ModalBody>
+              <ModalFooter>
+                <Button colorScheme="blue" mr={3} onClick={onClose}>
+                  Close
+                </Button>
+                <Button variant="ghost" onClick={print}>Secondary Action</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal> */
+          }
         </div>
       </div>
     </>
