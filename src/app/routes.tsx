@@ -53,7 +53,6 @@ export const Routes = () => (
               AUTHORITIES.ADMIN,
               AUTHORITIES.USER,
               AUTHORITIES.RESPHEBERGEMENT,
-              AUTHORITIES.COOKER,
               AUTHORITIES.INTERMITTENT
               // AUTHORITIES.HABITANT
               // AUTHORITIES.VOLONTAIRE
@@ -85,13 +84,11 @@ export const Routes = () => (
     <Route
       path="kitchen/planning"
       element={
-        <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.COOKER]}>
+        <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER]}>
           <Index />
         </PrivateRoute>
       }
     />
-    {/* //, AUTHORITIES.COOKER ?? */}
-    {/* todo gurun role */}
     <Route
       path="meals/planning"
       element={
