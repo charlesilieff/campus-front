@@ -10,7 +10,6 @@ import {
   ModalOverlay,
   Table,
   Td,
-  Text,
   Th,
   Tr,
   useDisclosure
@@ -189,21 +188,16 @@ export const Day = ({ positionX, date, index }: IProps) => {
   // }
   const getMeals = async (date: Dayjs) => {
     console.log('date', Date)
-    // const requestUrl = `axios.get<IMeal[]>${apiUrlMealForOneDay}?cacheBuster=${date}`
-    // console.log('requestUrl', requestUrl)
-    // return requestUrl
-    // const requestUrl = `${apiUrlMealForOneDay}?cacheBuster=${date.format('YYYY-MM-DD')}`
+
     const requestUrl = `${apiUrlMealForOneDay}/${date.format('YYYY-MM-DD')}?cacheBuster=${
       new Date().getTime()
     }`
-    // const requestUrl1 = `${apiUrlMealForOneDay}/${date.format('YYYY-MM-DD')}}`
-    // return axios.get<IMeal[]>(requestUrl)
+
     const { data } = await axios.get<IMealWithCustomer[]>(requestUrl)
 
     console.log('mealsOfDay', data)
 
-    console.log('mealsWithCustomerData', mealsWithCustomerData)
-
+    // todo : gurun : why mealsWithCustomerData is empty????
     setMealsWithCustomerData(data)
     // data.map(x => setMealsWithCustomerData(x))
     console.log('mealsWithCustomerData', mealsWithCustomerData)

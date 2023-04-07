@@ -1,8 +1,5 @@
 import {
-  Box,
-  Checkbox,
-  Grid,
-  Text
+  Checkbox
 } from '@chakra-ui/react'
 import type { IMeal } from 'app/shared/model/meal.model'
 import type { Dayjs } from 'dayjs'
