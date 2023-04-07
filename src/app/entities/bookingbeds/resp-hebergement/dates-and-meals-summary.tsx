@@ -6,7 +6,6 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
-import * as O from '@effect/data/Option'
 import React from 'react'
 import { BsPencil } from 'react-icons/bs'
 
@@ -15,7 +14,7 @@ import type { DatesAndMeals } from './reservation-update'
 interface DatesAndMealsSummaryProps {
   datesAndMeals: DatesAndMeals
   setUpdate: (update: boolean) => void
-  setBedId: (bedId: O.Option<number>) => void
+  setSelectedBeds: (bedId: readonly number[]) => void
 }
 
 export const DatesAndMealsSummary = (
@@ -32,7 +31,7 @@ export const DatesAndMealsSummary = (
       isDepartureBreakfast
     },
     setUpdate,
-    setBedId
+    setSelectedBeds
   }: DatesAndMealsSummaryProps
 ): JSX.Element => {
   const mealSelected = (isBreakfast: boolean, isDinner: boolean, isLunch: boolean): string => {
@@ -95,7 +94,7 @@ export const DatesAndMealsSummary = (
         colorScheme="blue"
         rightIcon={<BsPencil />}
         onClick={() => {
-          setBedId(O.none())
+          setSelectedBeds([])
           setUpdate(true)
         }}
       >

@@ -12,13 +12,13 @@ import { TextFormat } from './text-format'
 
 export const ReservationDetail = () => {
   const dispatch = useAppDispatch()
-  const { id } = useParams<{ id: string }>()
+  const { reservationId } = useParams<{ reservationId: string }>()
 
   const isAdmin = useAppSelector(state =>
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.ADMIN])
   )
   useEffect(() => {
-    dispatch(getReservation(id))
+    dispatch(getReservation(reservationId))
   }, [])
 
   const reservationEntity = useAppSelector(state => state.reservation.entity)

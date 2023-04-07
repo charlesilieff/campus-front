@@ -65,7 +65,7 @@ export type BedIds = ReadonlyArray<{ id: number }>
 const createIReservationWithBedIds = (
   customer: Customer,
   datesAndMeals: DatesAndMeals,
-  bedId: number,
+  selectedBeds: readonly number[],
   isConfirmed: boolean
 ): IBookingBeds => ({
   // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
@@ -78,7 +78,7 @@ const createIReservationWithBedIds = (
   isDepartureLunch: datesAndMeals.isDepartureLunch,
   isDepartureDiner: datesAndMeals.isDepartureDinner,
   comment: datesAndMeals.comment,
-  bedIds: [bedId],
+  bedIds: [...selectedBeds],
   isConfirmed,
   isPaid: false,
   paymentMode: '',
@@ -101,23 +101,27 @@ export const BookingBedsUpdate = (): JSX.Element => {
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
+
   const { reservationId } = useParams<{ reservationId: string | undefined }>()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const toast = useToast()
   const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
-  console.log('reservationId', reservationId)
   const handleSubmitReservation = async (
     datesAndMeal: DatesAndMeals,
-    bedId: number,
+    selectedBeds: readonly number[],
     customer: Customer,
     isConfirmed: boolean
   ): Promise<void> => {
-    const reservation = createIReservationWithBedIds(customer, datesAndMeal, bedId, isConfirmed)
+    const reservation = createIReservationWithBedIds(
+      customer,
+      datesAndMeal,
+      selectedBeds,
+      isConfirmed
+    )
 
     setIsLoading(true)
     if (reservationId !== undefined) {
-      // FIXME: unsafe
       await dispatch(updateReservation({ ...reservation, id: Number(reservationId) }))
       setIsLoading(false)
     } else {
@@ -126,47 +130,48 @@ export const BookingBedsUpdate = (): JSX.Element => {
     }
   }
 
-  const backendReservation = useAppSelector(state => state.reservation.entity)
+  const backendReservation = O.fromNullable(useAppSelector(state => state.reservation.entity))
 
   useEffect(() => {
-    if (backendReservation.arrivalDate !== undefined) {
+    if (O.isSome(backendReservation) && backendReservation.value.arrivalDate !== undefined) {
       setCustomer(O.some({
-        id: backendReservation.customer.id,
-        firstname: backendReservation.customer.firstname,
-        lastname: backendReservation.customer.lastname,
-        email: backendReservation.customer.email,
-        phoneNumber: O.fromNullable(backendReservation.customer.phoneNumber),
-        age: O.fromNullable(backendReservation.customer.age),
-        personNumber: backendReservation.personNumber,
-        specialDietNumber: backendReservation.specialDietNumber
+        id: backendReservation.value.customer.id,
+        firstname: backendReservation.value.customer.firstname,
+        lastname: backendReservation.value.customer.lastname,
+        email: backendReservation.value.customer.email,
+        phoneNumber: O.fromNullable(backendReservation.value.customer.phoneNumber),
+        age: O.fromNullable(backendReservation.value.customer.age),
+        personNumber: backendReservation.value.personNumber,
+        specialDietNumber: backendReservation.value.specialDietNumber
       }))
       setDatesAndMeal(O.some({
-        arrivalDate: backendReservation.arrivalDate.toString(),
-        departureDate: backendReservation.departureDate.toString(),
-        specialDiet: backendReservation.specialDietNumber,
-        isArrivalLunch: backendReservation.isArrivalLunch,
-        isArrivalDinner: backendReservation.isArrivalDiner,
-        isDepartureLunch: backendReservation.isDepartureLunch,
-        isDepartureDinner: backendReservation.isDepartureDiner,
-        comment: backendReservation.comment,
-        isArrivalBreakfast: backendReservation.isArrivalBreakfast,
-        isDepartureBreakfast: backendReservation.isDepartureBreakfast
+        arrivalDate: backendReservation.value.arrivalDate.toString(),
+        departureDate: backendReservation.value.departureDate.toString(),
+        specialDiet: backendReservation.value.specialDietNumber,
+        isArrivalLunch: backendReservation.value.isArrivalLunch,
+        isArrivalDinner: backendReservation.value.isArrivalDiner,
+        isDepartureLunch: backendReservation.value.isDepartureLunch,
+        isDepartureDinner: backendReservation.value.isDepartureDiner,
+        comment: backendReservation.value.comment,
+        isArrivalBreakfast: backendReservation.value.isArrivalBreakfast,
+        isDepartureBreakfast: backendReservation.value.isDepartureBreakfast
       }))
-      setBedId(pipe(backendReservation.beds, A.head, O.map(bed => bed.id)))
+      setSelectedBeds(pipe(backendReservation.value.beds, A.map(bed => bed.id)))
     }
-  }, [backendReservation.id])
+  }, [pipe(backendReservation, O.map(reservation => reservation.arrivalDate), O.getOrUndefined)])
   useEffect(() => {
     pipe(
       reservationId,
       O.fromNullable,
       O.match(() => {
         dispatch(resetReservations())
-        setDatesAndMeal(O.none)
+        setDatesAndMeal(O.none())
+        setCustomer(O.none())
         setUpdateDatesAndMeals(false)
       }, id => dispatch(getReservation(id)))
     )
   }, [])
-  const [bedId, setBedId] = useState<O.Option<number>>(O.none)
+  const [selectedBeds, setSelectedBeds] = useState<readonly number[]>([])
 
   useEffect(() => {
     if (updateSuccess) {
@@ -194,6 +199,7 @@ export const BookingBedsUpdate = (): JSX.Element => {
     }
   }, [updateSuccess])
   const { isOpen, onOpen, onClose } = useDisclosure()
+
   return (
     <Stack>
       <Heading size={'lg'} m={4}>
@@ -239,16 +245,26 @@ export const BookingBedsUpdate = (): JSX.Element => {
           <DatesAndMealsSummary
             datesAndMeals={datesAndMeal.value}
             setUpdate={setUpdateDatesAndMeals}
-            setBedId={setBedId}
+            setSelectedBeds={setSelectedBeds}
           />
         )}
       {O.isSome(datesAndMeal) && !updateDatesAndMeals ?
         (
           <BedsChoices
             datesAndMeals={datesAndMeal}
-            bedId={bedId}
-            setSelectedBedId={setBedId}
+            selectedBeds={selectedBeds}
+            selectBed={bedId => {
+              !selectedBeds.includes(bedId) ?
+                pipe(selectedBeds, A.append(bedId), d => setSelectedBeds(d)) :
+                pipe(selectedBeds, A.filter(id => id !== bedId), setSelectedBeds)
+            }}
             reservationId={O.fromNullable(reservationId)}
+            personNumber={pipe(customer, O.map(c => +c.personNumber), O.getOrElse(() => 0))}
+            reservationBeds={pipe(
+              backendReservation,
+              O.flatMap(r => pipe(O.fromNullable(r.beds), O.map(b => b.map(x => x.id)))),
+              O.getOrElse(() => [])
+            )}
           />
         ) :
         (
@@ -264,10 +280,18 @@ export const BookingBedsUpdate = (): JSX.Element => {
             {'Choix des lits'}
           </Heading>
         )}
-      {O.isSome(customer) && O.isSome(datesAndMeal) && O.isSome(bedId) ?
+      {O.isSome(customer) && O.isSome(datesAndMeal) ?
         (
           <HStack justifyContent={'end'}>
-            <Button as={Link} to={''} colorScheme={'red'} rightIcon={<BsTrash />}>Annuler</Button>
+            <Button
+              isLoading={isLoading}
+              as={Link}
+              to={''}
+              colorScheme={'red'}
+              rightIcon={<BsTrash />}
+            >
+              Annuler
+            </Button>
 
             <Button
               isLoading={isLoading}
@@ -276,7 +300,7 @@ export const BookingBedsUpdate = (): JSX.Element => {
               onClick={() =>
                 handleSubmitReservation(
                   datesAndMeal.value,
-                  bedId.value,
+                  selectedBeds,
                   customer.value,
                   false
                 )}
@@ -299,18 +323,24 @@ export const BookingBedsUpdate = (): JSX.Element => {
                     Confirmer la réservation
                   </ModalHeader>
                   <ModalBody>
-                    Le client recevra un mail de confirmation de réservation. Et les repas seront
-                    comptés dans le nombre de repas prévus.
+                    La première fois le client recevra un mail de confirmation de réservation. Et
+                    les repas seront comptés dans le nombre de repas prévus.
                   </ModalBody>
                   <ModalFooter justifyContent={'space-between'}>
-                    <Button onClick={onClose} leftIcon={<ArrowLeftIcon />} variant="back">
+                    <Button
+                      onClick={onClose}
+                      leftIcon={<ArrowLeftIcon />}
+                      variant="back"
+                      isLoading={isLoading}
+                    >
                       Retour
                     </Button>
                     <Button
+                      isLoading={isLoading}
                       onClick={() =>
                         handleSubmitReservation(
                           datesAndMeal.value,
-                          bedId.value,
+                          selectedBeds,
                           customer.value,
                           true
                         )}

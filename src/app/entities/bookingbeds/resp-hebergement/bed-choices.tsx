@@ -3,6 +3,7 @@ import {
   HStack,
   Select,
   Spinner,
+  Text,
   VStack
 } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
@@ -19,14 +20,16 @@ import { IntermittentBeds } from './beds-checkbox'
 import type { DatesAndMeals } from './reservation-update'
 
 interface DatesAndMealsChoicesProps {
-  setSelectedBedId: (bedId: O.Option<number>) => void
-  bedId: O.Option<number>
+  selectBed: (bedId: number) => void
+  selectedBeds: ReadonlyArray<number>
   datesAndMeals: O.Option<DatesAndMeals>
   reservationId: O.Option<string>
+  personNumber: number
+  reservationBeds: ReadonlyArray<number>
 }
 
 export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
-  props
+  { datesAndMeals, reservationId, selectBed, selectedBeds, personNumber, reservationBeds }
 ): JSX.Element => {
   const [rooms, setRooms] = useState<ReadonlyArray<IRoomWithBeds>>([])
   const [places, setPlaces] = useState([] as readonly IPlace[])
@@ -59,11 +62,11 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
       )
     }
 
-    if (O.isSome(props.datesAndMeals)) {
+    if (O.isSome(datesAndMeals)) {
       getPlaceWithFreeAndBookedBedsAsync(
-        props.datesAndMeals.value.arrivalDate,
-        props.datesAndMeals.value.departureDate,
-        props.reservationId
+        datesAndMeals.value.arrivalDate,
+        datesAndMeals.value.departureDate,
+        reservationId
       )
     }
     setLoading(false)
@@ -96,7 +99,12 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
       )
     }
   }
-
+  const placesBooked = places?.reduce((accP, place) => (accP
+    + place.rooms?.reduce((accR, room) => (accR
+      + room.beds?.reduce(
+        (acc, bed) => acc + (selectedBeds?.includes(bed.id) ? bed.numberOfPlaces : 0),
+        0
+      )), 0)), 0)
   return (
     <VStack alignItems={'flex-start'} my={4}>
       <VStack
@@ -105,7 +113,7 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
         border={'solid'}
         p={4}
         borderRadius={8}
-        borderColor={'#D9D9D9'}
+        borderColor={personNumber !== placesBooked ? 'red' : 'green'}
       >
         {loading ?
           <Spinner alignSelf={'center'} /> :
@@ -162,10 +170,29 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
                 </HStack>
               </HStack>
               <IntermittentBeds
-                bedId={pipe(props.bedId, O.map(bedId => bedId.toString()))}
+                selectedBeds={selectedBeds}
                 rooms={rooms.filter(room => room.beds.length > 0)}
-                selectedBedId={props.setSelectedBedId}
+                selectBed={selectBed}
+                reservationBeds={reservationBeds}
               />
+              <VStack alignItems={'left'}>
+                <Text fontWeight={'bold'}>
+                  {`Numéros des lit réservés : 
+                  ${
+                    places
+                      ?.flatMap(place =>
+                        place.rooms?.flatMap(room =>
+                          room.beds.filter(bed => selectedBeds.includes(bed.id))
+                            .map(b => b.number)
+                        )
+                      ).join(', ')
+                  }`}
+                </Text>
+
+                <Text style={{ color: personNumber !== placesBooked ? 'red' : 'green' }}>
+                  {`Nombre de personnes hébergées : ${placesBooked} / ${personNumber}`}
+                </Text>
+              </VStack>
             </VStack>
           )}
       </VStack>

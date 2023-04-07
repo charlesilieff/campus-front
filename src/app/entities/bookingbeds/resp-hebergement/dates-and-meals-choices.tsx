@@ -126,12 +126,14 @@ export const DatesAndMealsChoices = (
                 <HStack>
                   <Text fontWeight={'bold'}>{"Jour d'arrivée :"}</Text>
                   <Checkbox {...register('isArrivalBreakfast')}>petit déjeuner</Checkbox>
-                  <Checkbox {...register('isArrivalLunch')}>déjeuner</Checkbox>
-                  <Checkbox {...register('isArrivalDinner')}>dîner</Checkbox>
+                  <Checkbox {...register('isArrivalLunch')} defaultChecked>déjeuner</Checkbox>
+                  <Checkbox {...register('isArrivalDinner')} defaultChecked>dîner</Checkbox>
                 </HStack>
                 <HStack>
                   <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>
-                  <Checkbox {...register('isDepartureBreakfast')}>petit déjeuner</Checkbox>
+                  <Checkbox {...register('isDepartureBreakfast')} defaultChecked>
+                    petit déjeuner
+                  </Checkbox>
                   <Checkbox {...register('isDepartureLunch')}>déjeuner</Checkbox>
                   <Checkbox {...register('isDepartureDinner')}>dîner</Checkbox>
                 </HStack>
