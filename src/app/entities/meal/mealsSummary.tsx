@@ -2,6 +2,7 @@ import { getDateKey } from 'app/shared/util/date-utils'
 import type { Dayjs } from 'dayjs'
 import React from 'react'
 
+import { DaySummary } from './daySummary'
 import { Months } from './months'
 
 interface IProps {
