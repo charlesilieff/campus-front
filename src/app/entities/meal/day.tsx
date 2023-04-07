@@ -1,5 +1,8 @@
 import {
-  Checkbox
+  Box,
+  Checkbox,
+  Grid,
+  Text
 } from '@chakra-ui/react'
 import type { IMeal } from 'app/shared/model/meal.model'
 import type { Dayjs } from 'dayjs'
@@ -69,7 +72,7 @@ export const Day = ({ positionX, date, index, mealsContext }: IProps) => {
 
   const [mealsNumber, setMealsNumber] = useState(defaultValue)
 
-  const [mealsNumberReferential, setMealsNumberReferential] = useState(defaultValue)
+  // const [mealsNumberReferential, setMealsNumberReferential] = useState(defaultValue)
 
   let style: React.CSSProperties
   style = commentStyle(positionX, date, mealsContext, index)
@@ -92,110 +95,28 @@ export const Day = ({ positionX, date, index, mealsContext }: IProps) => {
       comment: mealsContext[index]?.comment
     }
 
-    const mealsReferentialFromDb: IMealsNumber = {
-      id: mealsContext[index]?.id,
-      breakfast: mealsContext[index]?.breakfast,
-      lunchtime: {
-        specialDiet: mealsContext[index]?.specialLunch,
-        classicDiet: mealsContext[index]?.regularLunch
-      },
-      dinner: {
-        specialDiet: mealsContext[index]?.specialDinner,
-        classicDiet: mealsContext[index]?.regularDinner
-      },
-      comment: mealsContext[index]?.comment
-    }
-    setMealsNumberReferential(mealsReferentialFromDb)
-
-    const theNewMealsNumber = {
-      id: mealsToCookFromDb.id,
-      breakfast: mealsToCookFromDb.breakfast - mealsReferentialFromDb.breakfast === 0 ?
-        mealsReferentialFromDb.breakfast :
-        mealsToCookFromDb.breakfast,
-      lunchtime: {
-        specialDiet:
-          mealsToCookFromDb.lunchtime.specialDiet - mealsReferentialFromDb.lunchtime.specialDiet
-              === 0 ?
-            mealsReferentialFromDb.lunchtime.specialDiet :
-            mealsToCookFromDb.lunchtime.specialDiet,
-
-        classicDiet:
-          mealsToCookFromDb.lunchtime.classicDiet - mealsReferentialFromDb.lunchtime.classicDiet
-              === 0 ?
-            mealsReferentialFromDb.lunchtime.classicDiet :
-            mealsToCookFromDb.lunchtime.classicDiet
-      },
-      dinner: {
-        specialDiet:
-          mealsToCookFromDb.dinner.specialDiet - mealsReferentialFromDb.dinner.specialDiet === 0 ?
-            mealsReferentialFromDb.dinner.specialDiet :
-            mealsToCookFromDb.dinner.specialDiet,
-
-        classicDiet:
-          mealsToCookFromDb.dinner.classicDiet - mealsReferentialFromDb.dinner.classicDiet === 0 ?
-            mealsReferentialFromDb.dinner.classicDiet :
-            mealsToCookFromDb.dinner.classicDiet
-      },
-      comment: mealsContext[index]?.comment
-    }
-
-    setMealsNumber(theNewMealsNumber)
+    setMealsNumber(mealsToCookFromDb)
   }, [mealsContext])
-  const colorNumber = (
-    time: 'lunchtime' | 'dinner' | 'breakfast',
-    diet: 'specialDiet' | 'classicDiet'
-  ) => {
-    let color: string
-    let referentialColor: number
-    let numberToColor: number
-
-    if (time === 'lunchtime') {
-      if (diet === 'specialDiet') {
-        referentialColor = mealsNumberReferential?.lunchtime.specialDiet
-        numberToColor = mealsNumber?.lunchtime.specialDiet
-      }
-      if (diet === 'classicDiet') {
-        referentialColor = mealsNumberReferential?.lunchtime.classicDiet
-        numberToColor = mealsNumber?.lunchtime.classicDiet
-      }
-    }
-    if (time === 'dinner') {
-      if (diet === 'specialDiet') {
-        referentialColor = mealsNumberReferential?.dinner.specialDiet
-        numberToColor = mealsNumber?.dinner.specialDiet
-      }
-      if (diet === 'classicDiet') {
-        referentialColor = mealsNumberReferential?.dinner.classicDiet
-        numberToColor = mealsNumber?.dinner.classicDiet
-      }
-    }
-    if (time === 'breakfast') {
-      referentialColor = mealsNumberReferential?.breakfast
-      numberToColor = mealsNumber?.breakfast
-    }
-
-    if (numberToColor > referentialColor) {
-      color = 'green'
-    }
-    if (numberToColor < referentialColor) {
-      color = 'red'
-    }
-    if (numberToColor === referentialColor) {
-      color = 'black'
-    }
-    return color
-  }
 
   const [modal, setModal] = useState(false)
   const toggle = () => {
     setModal(!modal)
   }
 
-  const testRegular = countRegular(mealsContext)
-  const testSpecial = countSpecial(mealsContext)
+  // const testRegular = countRegular(mealsContext)
+  // const testSpecial = countSpecial(mealsContext)
 
   return (
     <>
+      {
+        /* <Box>
+      <Grid
+        className="grid-container"
+        borderColor={'#D9D9D9'}
+        overflowX={'scroll'}
+        overflowY={'hidden'}
+      > */
+      }
       <div className="day popup-comment" style={style} onClick={() => toggle()}>
         {date.format('ddd DD ')}
       </div>
@@ -223,17 +144,18 @@ export const Day = ({ positionX, date, index, mealsContext }: IProps) => {
       >
         <div
           style={{
-            color: colorNumber('breakfast', 'classicDiet')
+            color: 'orange' // colorNumber('breakfast', 'classicDiet')
           } as React.CSSProperties}
         >
           {/* {mealsNumber?.breakfast === 1} */}
-          {mealsNumber?.breakfast === 1 ?
-            <Checkbox onChange={handleChangeBreakfast} defaultChecked></Checkbox> :
-            mealsNumber?.id !== undefined && mealsNumber?.breakfast === 0 ?
-            <Checkbox onChange={handleChangeBreakfast}></Checkbox> :
-            ''}
-
-          {/* <button>{mealsNumber?.breakfast}</button>  */}
+          {mealsNumber?.id !== undefined && mealsNumber?.breakfast === 1 ?
+            (
+              <Checkbox
+                onChange={handleChangeBreakfast}
+                isChecked={mealsNumber?.breakfast === 1}
+              />
+            ) :
+            null}
         </div>
       </div>
       <div
@@ -253,16 +175,18 @@ export const Day = ({ positionX, date, index, mealsContext }: IProps) => {
       >
         <div
           style={{
-            color: colorNumber('lunchtime', 'classicDiet')
+            color: 'orange'
           } as React.CSSProperties}
         >
           {/* {mealsNumber?.lunchtime.classicDiet === 1} */}
-          {mealsNumber?.lunchtime.classicDiet === 1 ?
-            <Checkbox onChange={handleChangeRegularLunch} defaultChecked></Checkbox> :
-            mealsNumber?.lunchtime.classicDiet === 0 && mealsNumber?.id !== undefined
-              && testRegular !== 0 ?
-            <Checkbox onChange={handleChangeRegularLunch}></Checkbox> :
-            ''}
+          {mealsNumber?.id !== undefined ?
+            (
+              <Checkbox
+                onChange={handleChangeRegularLunch}
+                isChecked={mealsNumber?.lunchtime.classicDiet === 1}
+              />
+            ) :
+            null}
         </div>
       </div>
 
@@ -284,14 +208,16 @@ export const Day = ({ positionX, date, index, mealsContext }: IProps) => {
       >
         <div
           style={{
-            color: colorNumber('lunchtime', 'specialDiet')
+            color: 'orange'
           } as React.CSSProperties}
         >
-          {mealsNumber?.lunchtime.specialDiet === 1 ?
-            <Checkbox onChange={handleChangeSpecialLunch} defaultChecked></Checkbox> :
-            mealsNumber?.lunchtime.specialDiet === 0 && mealsNumber?.id !== undefined
-              && testSpecial !== 0 ?
-            <Checkbox onChange={handleChangeSpecialLunch}></Checkbox> :
+          {mealsNumber?.id !== undefined && mealsNumber?.lunchtime.specialDiet === 1 ?
+            (
+              <Checkbox
+                onChange={handleChangeSpecialLunch}
+                isChecked={mealsNumber?.lunchtime.specialDiet === 1}
+              />
+            ) :
             null}
         </div>
       </div>
@@ -313,16 +239,17 @@ export const Day = ({ positionX, date, index, mealsContext }: IProps) => {
       >
         <div
           style={{
-            color: colorNumber('dinner', 'classicDiet')
+            color: 'orange'
           } as React.CSSProperties}
         >
-          {mealsNumber?.dinner.classicDiet === 1 ?
-            <Checkbox onChange={handleChangeRegularDiner} defaultChecked></Checkbox> :
-            mealsNumber?.dinner.classicDiet === 0
-              && mealsNumber?.id !== undefined
-              && testRegular !== 0 ?
-            <Checkbox onChange={handleChangeRegularDiner}></Checkbox> :
-            ''}
+          {mealsNumber?.id !== undefined && mealsNumber?.dinner.classicDiet === 1 ?
+            (
+              <Checkbox
+                onChange={handleChangeRegularDiner}
+                isChecked={mealsNumber?.dinner.classicDiet === 1}
+              />
+            ) :
+            null}
         </div>
       </div>
 
@@ -341,18 +268,24 @@ export const Day = ({ positionX, date, index, mealsContext }: IProps) => {
       >
         <div
           style={{
-            color: colorNumber('dinner', 'specialDiet')
+            color: 'orange'
           } as React.CSSProperties}
         >
-          {mealsNumber?.dinner.specialDiet === 1 ?
-            <Checkbox onChange={handleChangeSpecialDiner} defaultChecked></Checkbox> :
-            mealsNumber?.dinner.specialDiet === 0 && mealsNumber?.id !== undefined
-              && testSpecial !== 0 ?
-            <Checkbox onChange={handleChangeSpecialDiner}></Checkbox> :
-            ''}
+          {mealsNumber?.id !== undefined && mealsNumber?.dinner.specialDiet === 1 ?
+            (
+              <Checkbox
+                onChange={handleChangeSpecialDiner}
+                isChecked={mealsNumber?.dinner.specialDiet === 1}
+              />
+            ) :
+            null}
           {/* {mealsNumber?.dinner.specialDiet} */}
         </div>
       </div>
+      {
+        /* </Grid>
+    </Box> */
+      }
     </>
   )
 }
@@ -375,21 +308,21 @@ function commentStyle(positionX: number, date: dayjs.Dayjs, mealsContext: IMeal[
   if (positionX === 8 || date.date() === 1 || date.day() === 1) {
     style.borderLeftWidth = '0.2em'
   }
-  if (mealsContext[index]?.id !== 0) {
+  if (mealsContext[index]?.id !== undefined) {
     // if (mealsContext[index]?.comment?.length > 0) {
     style.backgroundColor = '#B8D8BA'
   } else style.backgroundColor = '#C4C0BF'
   return style
 }
 
-function countRegular(mealsData: IMeal[]) {
-  const regular = mealsData.map(meals => meals.regularDinner + meals.regularLunch)
-  const sumRegular = regular.reduce((a, b) => a + b, 0)
-  return sumRegular
-}
+// function countRegular(mealsData: IMeal[]) {
+//   const regular = mealsData.map(meals => meals.regularDinner + meals.regularLunch)
+//   const sumRegular = regular.reduce((a, b) => a + b, 0)
+//   return sumRegular
+// }
 
-function countSpecial(mealsData: IMeal[]) {
-  const special = mealsData.map(meals => meals.specialLunch + meals.specialDinner)
-  const sumSpecial = special.reduce((a, b) => a + b, 0)
-  return sumSpecial
-}
+// function countSpecial(mealsData: IMeal[]) {
+//   const special = mealsData.map(meals => meals.specialLunch + meals.specialDinner)
+//   const sumSpecial = special.reduce((a, b) => a + b, 0)
+//   return sumSpecial
+// }

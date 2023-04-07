@@ -94,7 +94,7 @@ export const Index2 = () => {
   const getMealsDateFor31DaysByUser = async (startDate: Dayjs, customerId: number) => {
     const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/${customerId}/date/${
       startDate.format('YYYY-MM-DD')
-    }?cacheBuster=${new Date().getTime()}`
+    }`
     const { data } = await axios.get<IMeal[]>(requestUrl)
     console.log('data axios', data)
     setMealsData(data)

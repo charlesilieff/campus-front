@@ -269,6 +269,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
                       <Th>Repas speciaux midi</Th>
                       <Th>Repas normaux soir</Th>
                       <Th>Repas speciaux soir</Th>
+                      <Th>Comentaire</Th>
                     </Tr>
 
                     {mealsWithCustomerData.map((meals, index) => (
@@ -295,6 +296,9 @@ export const Day = ({ positionX, date, index }: IProps) => {
                         </Td>
                         <Td>
                           {meals.specialDinner}
+                        </Td>
+                        <Td>
+                          {meals.comment?.length > 0 ? meals.comment : ''}
                         </Td>
                       </Tr>
                     ))}
