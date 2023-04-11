@@ -1,10 +1,10 @@
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
-import { LocalDate } from '@js-joda/core'
 import type { IBedroomKind } from 'app/shared/model/bedroom-kind.model'
 import type { ITypeReservation } from 'app/shared/model/typeReservation.model'
 import type { IUserCategory } from 'app/shared/model/userCategory.model'
 import axios from 'axios'
+import dayjs from 'dayjs'
 
 const apiUrlAllPlaces = 'api/planning/places'
 
@@ -65,16 +65,6 @@ export interface IRoomWithBeds {
   place?: IPlace | null
 }
 
-// export interface IUserCategory {
-//   id?: number
-//   name?: string
-//   pricings?: IPricing[] | null
-// }
-// export interface ITypeReservation {
-//   id?: number
-//   name?: string
-//   pricings?: IPricing[] | null
-// }
 export interface IPricing { // WithReservation
   id?: number
   comment?: string | null
@@ -111,11 +101,11 @@ export const getIntermittentPlaceWithFreeAndBookedBeds = getPlaceWithFreeBedsAnd
 export const isArrivalDateIsBeforeDepartureDate = (d1: string, d2: string): boolean => {
   const arrivalDate = pipe(
     d1 === '' ? O.none() : O.some(d1),
-    O.map(d => LocalDate.parse(d))
+    O.map(d => dayjs(d))
   )
   const departureDate = pipe(
     d2 === '' ? O.none() : O.some(d2),
-    O.map(d => LocalDate.parse(d))
+    O.map(d => dayjs(d))
   )
   return pipe(
     O.struct({ arrivalDate, departureDate }),
@@ -127,11 +117,11 @@ export const isArrivalDateIsBeforeDepartureDate = (d1: string, d2: string): bool
 export const isDateBeforeNow = (date: string): boolean => {
   const dateToCheck = pipe(
     date === '' ? O.none() : O.some(date),
-    O.map(d => LocalDate.parse(d))
+    O.map(d => dayjs(d))
   )
   return pipe(
     dateToCheck,
-    O.map(d => d.isBefore(LocalDate.now())),
+    O.map(d => d.isBefore(dayjs())),
     O.exists(x => x)
   )
 }
