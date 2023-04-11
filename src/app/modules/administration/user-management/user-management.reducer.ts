@@ -52,6 +52,9 @@ export const getUser = createAsyncThunk(
 export const createUser = createAsyncThunk(
   'userManagement/create_user',
   async (user: IUser, thunkAPI) => {
+    // user.password = 'password'
+    // user.activated = true
+    user.langKey = 'fr'
     const result = await axios.post<IUser>(adminUrl, user)
     thunkAPI.dispatch(getUsersAsAdmin())
     return result

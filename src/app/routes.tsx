@@ -53,8 +53,8 @@ export const Routes = () => (
               AUTHORITIES.ADMIN,
               AUTHORITIES.USER,
               AUTHORITIES.RESPHEBERGEMENT,
-              AUTHORITIES.INTERMITTENT
-              // AUTHORITIES.HABITANT
+              AUTHORITIES.INTERMITTENT,
+              AUTHORITIES.HABITANT
               // AUTHORITIES.VOLONTAIRE
             ]}
           >
@@ -96,7 +96,7 @@ export const Routes = () => (
           hasAnyAuthorities={[
             AUTHORITIES.RESPHEBERGEMENT,
             AUTHORITIES.ADMIN,
-            AUTHORITIES.INTERMITTENT
+            AUTHORITIES.HABITANT
           ]}
         >
           <Index2 />

@@ -40,6 +40,9 @@ export const App = () => {
   const isResp = useAppSelector(state =>
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.RESPHEBERGEMENT])
   )
+  const isHabitant = useAppSelector(state =>
+    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.HABITANT])
+  )
   const ribbonEnv = useAppSelector(state => state.applicationProfile.ribbonEnv)
   const isInProduction = useAppSelector(state => state.applicationProfile.inProduction)
 
@@ -60,6 +63,7 @@ export const App = () => {
           isIntermittent={isIntermittent}
           isUser={isUser}
           isResp={isResp}
+          isHabitant={isHabitant}
           main={
             <Box>
               <Card variant="outline" m={4} p={4}>

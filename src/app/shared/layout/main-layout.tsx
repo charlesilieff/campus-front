@@ -16,6 +16,7 @@ export interface IHeaderProps {
   isOpenAPIEnabled: boolean
   isUser: boolean
   main: ReactNode
+  isHabitant: boolean
 }
 
 export const MainLayout = (props: IHeaderProps) => (
@@ -33,6 +34,7 @@ export const MainLayout = (props: IHeaderProps) => (
               isResp={props.isResp}
               isIntermittent={props.isIntermittent}
               isUser={props.isUser}
+              isHabitant={props.isHabitant}
             />
           )}
           {props.isAuthenticated && props.isAdmin && (
