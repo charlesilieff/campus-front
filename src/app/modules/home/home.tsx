@@ -19,6 +19,9 @@ export const Home = (): JSX.Element => {
   const isIntermittent = useAppSelector(state =>
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.INTERMITTENT])
   )
+  const isHabitant = useAppSelector(state =>
+    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.HABITANT])
+  )
 
   const isRespHebergement = useAppSelector(state =>
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.RESPHEBERGEMENT])
@@ -26,6 +29,7 @@ export const Home = (): JSX.Element => {
   const account = useAppSelector(state => state.authentication.account)
 
   const reservationCreationIntermittentUrl = `bookingbeds/new/intermittent`
+  const reservationCreationHabitantUrl = `bookingbeds/new/habitant`
 
   const reservationRequestUrl = 'reservation-request/new'
 
@@ -100,6 +104,39 @@ export const Home = (): JSX.Element => {
                 <Button
                   as={Link}
                   to={reservationCreationIntermittentUrl}
+                  colorScheme={'green'}
+                  _hover={{
+                    textDecoration: 'none',
+                    color: 'white',
+                    backgroundColor: '#38A169'
+                  }}
+                >
+                  Créer une réservation
+                </Button>
+              </HStack>
+            </Box>
+          ) :
+          ''}
+        {isHabitant || isAdmin ?
+          (
+            <Box
+              py={'10px'}
+              px={'25px'}
+              backgroundColor={'#C6F6D5'}
+              borderLeft={'4px'}
+              borderColor={'#38A169'}
+              minW={'650px'}
+            >
+              <HStack justifyContent={'space-between'}>
+                <VStack alignItems={'flex-start'}>
+                  <HStack>
+                    <BsPlusCircleFill color="#38A169" size={'24px'} />
+                    <Text fontWeight={'bold'}>Nouvelle réservation pour un habitant</Text>
+                  </HStack>
+                </VStack>
+                <Button
+                  as={Link}
+                  to={reservationCreationHabitantUrl}
                   colorScheme={'green'}
                   _hover={{
                     textDecoration: 'none',

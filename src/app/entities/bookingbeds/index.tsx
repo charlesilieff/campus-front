@@ -5,6 +5,8 @@ import { Route } from 'react-router-dom'
 import { ReservationIntermittentUpdate } from './intermittent/reservation-intermittent-update'
 import { ReservationDetail } from './reservation-detail'
 import { BookingBedsUpdate } from './resp-hebergement/reservation-update'
+// import { ReservationUserUpdate } from './resp-hebergement-for-user/reservation-update'
+import { ReservationUserUpdate } from './resp-hebergement-for-user/reservation-update'
 
 export const BookingBedsRoutes = (): JSX.Element => (
   <ErrorBoundaryRoutes>
@@ -12,6 +14,10 @@ export const BookingBedsRoutes = (): JSX.Element => (
     <Route
       path={`new/intermittent`}
       element={<ReservationIntermittentUpdate />}
+    />
+    <Route
+      path={`new/habitant`}
+      element={<ReservationUserUpdate />}
     />
     <Route
       path={`intermittent/:reservationId`}
