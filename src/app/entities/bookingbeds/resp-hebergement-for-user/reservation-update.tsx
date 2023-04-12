@@ -27,6 +27,7 @@ import { CustomerUpdate } from './customer-update'
 import { DatesAndMealsChoices } from './dates-and-meals-choices-intermittent'
 import { DatesAndMealsSummary } from './dates-and-meals-summary-intermittent'
 import { UserSelect } from './user-select'
+import { UserSummary } from './user-summary'
 
 export interface DatesAndMeals {
   arrivalDate: string
@@ -108,6 +109,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
     useAppSelector(state => state.authentication.account.customerId)
   )
 
+  const [updateUser, setUpdateUser] = useState<boolean>(false)
   const [user, setUser] = useState<O.Option<User>>(O.none)
   const userId: number = useAppSelector(state => state.authentication.account.id)
   // const userId: number = useAppSelector(state => state.authentication.account.id)
@@ -225,16 +227,21 @@ export const ReservationUserUpdate = (): JSX.Element => {
         Votre réservation
       </Heading>
 
-      {O.isNone(user) ?
+      {O.isNone(user) || updateUser ?
         (
           <UserSelect
+            user={user}
+            setUser={setUser}
+            setUpdateUser={setUpdateUser}
             // email={ user.email}
             // firstname={ user.firstname}
             // lastname={ user.lastname}
           />
         ) :
         (
-          <UserSelect
+          <UserSummary
+            setUpdateUser={setUpdateUser}
+            user={user.value}
             // email={ user.email.getOrElse('')}
             // firstname={ user.firstname}
             // lastname={ user.lastname}

@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom'
 import { AUTHORITIES } from './config/constants'
 import { EntitiesRoutes } from './entities'
 import { Index } from './entities/kitchen'
-import { Index2 } from './entities/meal/index2'
+import { Index as IndexMealUser } from './entities/meal/index'
 import { ReservationRequestDetail } from './entities/reservation-request/request-detail'
 import { ReservationRequestUpdate } from './entities/reservation-request/reservation-update'
 import { AccountRoutes } from './modules/account'
@@ -99,7 +99,7 @@ export const Routes = () => (
             AUTHORITIES.HABITANT
           ]}
         >
-          <Index2 />
+          <IndexMealUser />
         </PrivateRoute>
       }
     />

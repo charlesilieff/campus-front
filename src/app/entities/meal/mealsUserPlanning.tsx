@@ -1,3 +1,4 @@
+import { Checkbox } from '@chakra-ui/react'
 import type { IMeal } from 'app/shared/model/meal.model'
 import { getDateKey } from 'app/shared/util/date-utils'
 import type { Dayjs } from 'dayjs'
@@ -10,7 +11,7 @@ interface IProps {
   date: Dayjs
   totalDays: number
   numberOfDays: number
-  mealsContext: IMeal[]
+  mealsData: IMeal[]
 }
 
 /**
@@ -21,9 +22,15 @@ interface IProps {
  *        - régime classique
  *  - Repas du soir.
  */
-export const MealsPlanning = ({ date, totalDays, numberOfDays, mealsContext }: IProps) => {
+export const MealsUserPlanning = (
+  { date, totalDays, numberOfDays, mealsData }: IProps
+) => {
   // On souhaite afficher 31 jours => Tableau de 31 élements.
   const monthDays = Array.from({ length: numberOfDays })
+
+  const handleChangeBreakfast: React.ChangeEventHandler<HTMLInputElement> = event => {
+    console.log('handleChangeBreakfast', event.target.checked)
+  }
 
   // Objets contenant la position en x dans la grille des jours.
   const positionX = {}
@@ -34,12 +41,24 @@ export const MealsPlanning = ({ date, totalDays, numberOfDays, mealsContext }: I
       <div className="time lunch">Midi</div>
       <div className="time dinner">Soir</div>
 
-      {
-        /* <div className="diet specialdietlunch">Sans lactose ni gluten</div>
-      <div className="diet classicdietlunch">Classique</div>
-      <div className="diet specialdietdinner">Sans lactose ni gluten</div>
-      <div className="diet classicdietdinner">Classique</div> */
-      }
+      <div className="diet breakfast">
+        <Checkbox
+          onChange={handleChangeBreakfast}
+          isChecked={true}
+        />
+      </div>
+      <div className="diet lunch">
+        <Checkbox
+          onChange={handleChangeBreakfast}
+          isChecked={true}
+        />
+      </div>
+      <div className="diet dinner">
+        <Checkbox
+          onChange={handleChangeBreakfast}
+          isChecked={true}
+        />
+      </div>
 
       <Months date={date} month={0} totalDays={totalDays}></Months>
 
@@ -59,7 +78,7 @@ export const MealsPlanning = ({ date, totalDays, numberOfDays, mealsContext }: I
             key={dateKey}
             date={dateDay}
             index={index}
-            mealsContext={mealsContext}
+            mealsData={mealsData}
           />
         )
       })}

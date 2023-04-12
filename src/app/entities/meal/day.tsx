@@ -1,4 +1,5 @@
 import {
+  Box,
   Checkbox
 } from '@chakra-ui/react'
 import type { IMeal } from 'app/shared/model/meal.model'
@@ -12,118 +13,78 @@ interface IProps {
   positionX: number
   date: Dayjs
   index: number
-  mealsContext: IMeal[]
+  mealsData: IMeal[]
 }
 
-export const Day = ({ positionX, date, index, mealsContext }: IProps) => {
-  const handleChangeRegularLunch = () => {
-    console.log('The checkbox was toggled ', date.format('YYYY-MM-DD'), positionX, index)
-    console.log('The checkbox was toggled ', mealsContext[index].regularLunch)
-    if (mealsContext[index].regularLunch === 0) {
-      mealsContext[index].regularLunch = 1
+type MealType = 'specialLunch' | 'regularDinner' | 'specialDinner' | 'breakfast' | 'regularLunch'
+
+export const Day = ({ positionX, date, index, mealsData }: IProps) => {
+  const handleChangeMeal = (mealType: MealType) => {
+    if (mealsData[index][mealType] === 0) {
+      mealsData[index][mealType] = 1
     } else {
-      mealsContext[index].regularLunch = 0
+      mealsData[index][mealType] = 0
     }
-  }
-  const handleChangeSpecialLunch = () => {
-    if (mealsContext[index].specialLunch === 0) {
-      mealsContext[index].specialLunch = 1
-    } else {
-      mealsContext[index].specialLunch = 0
+    const mealsToCookFromDb: IMealsNumber = {
+      id: mealsData[index]?.id,
+      breakfast: mealsData[index].breakfast,
+      lunchtime: {
+        specialDiet: mealsData[index]?.specialLunch,
+        regularDiet: mealsData[index]?.regularLunch
+      },
+      dinner: {
+        specialDiet: mealsData[index]?.specialDinner,
+        regularDiet: mealsData[index]?.regularDinner
+      },
+      comment: mealsData[index]?.comment
     }
-  }
-  const handleChangeRegularDiner = () => {
-    console.log('The checkbox was toggled ', date.format('YYYY-MM-DD'), positionX, index)
-    console.log('The checkbox was toggled ', mealsContext[index].regularDinner)
-    if (mealsContext[index].regularDinner === 0) {
-      mealsContext[index].regularDinner = 1
-    } else {
-      mealsContext[index].regularDinner = 0
-    }
-  }
-  const handleChangeSpecialDiner = () => {
-    if (mealsContext[index].specialDinner === 0) {
-      mealsContext[index].specialDinner = 1
-    } else {
-      mealsContext[index].specialDinner = 0
-    }
-  }
-  const handleChangeBreakfast = () => {
-    if (mealsContext[index].breakfast === 0) {
-      mealsContext[index].breakfast = 1
-    } else {
-      mealsContext[index].breakfast = 0
-    }
+    setMealsNumber(mealsToCookFromDb)
   }
 
   const dayWeek = date.day()
   const dayMonth = date.date()
 
   const defaultValue: IMealsNumber = {
-    id: mealsContext[index]?.id,
+    id: mealsData[index]?.id,
     breakfast: 0,
-    lunchtime: { specialDiet: 0, classicDiet: 0 },
-    dinner: { specialDiet: 0, classicDiet: 0 },
+    lunchtime: { specialDiet: 0, regularDiet: 0 },
+    dinner: { specialDiet: 0, regularDiet: 0 },
     comment: ''
   }
-
   const [mealsNumber, setMealsNumber] = useState(defaultValue)
 
-  // const [mealsNumberReferential, setMealsNumberReferential] = useState(defaultValue)
-
   let style: React.CSSProperties
-  style = commentStyle(positionX, date, mealsContext, index)
+  style = commentStyle(positionX, date, mealsData, index)
   useEffect(() => {
-    style = commentStyle(positionX, date, mealsContext, index)
-  }, [mealsContext])
+    style = commentStyle(positionX, date, mealsData, index)
+  }, [mealsData])
 
   useEffect(() => {
     const mealsToCookFromDb: IMealsNumber = {
-      id: mealsContext[index]?.id,
-      breakfast: mealsContext[index]?.breakfast,
+      id: mealsData[index]?.id,
+      breakfast: mealsData[index]?.breakfast,
       lunchtime: {
-        specialDiet: mealsContext[index]?.specialLunch,
-        classicDiet: mealsContext[index]?.regularLunch
+        specialDiet: mealsData[index]?.specialLunch,
+        regularDiet: mealsData[index]?.regularLunch
       },
       dinner: {
-        specialDiet: mealsContext[index]?.specialDinner,
-        classicDiet: mealsContext[index]?.regularDinner
+        specialDiet: mealsData[index]?.specialDinner,
+        regularDiet: mealsData[index]?.regularDinner
       },
-      comment: mealsContext[index]?.comment
+      comment: mealsData[index]?.comment
     }
 
     setMealsNumber(mealsToCookFromDb)
-  }, [mealsContext])
+  }, [mealsData])
 
-  const [modal, setModal] = useState(false)
-  const toggle = () => {
-    setModal(!modal)
-  }
-
-  // const testRegular = countRegular(mealsContext)
-  // const testSpecial = countSpecial(mealsContext)
+  const testRegular = countRegular(mealsData)
+  const testSpecial = countSpecial(mealsData)
 
   return (
     <>
-      {
-        /* <Box>
-      <Grid
-        className="grid-container"
-        borderColor={'#D9D9D9'}
-        overflowX={'scroll'}
-        overflowY={'hidden'}
-      > */
-      }
-      <div className="day popup-comment" style={style} onClick={() => toggle()}>
+      <Box className="day popup-comment" style={style}>
         {date.format('ddd DD ')}
-      </div>
-
-      {
-        /* <div>
-        {mealsNumber?.comment === 'test list 31 days' ? '' : mealsNumber?.lunchtime.classicDiet}
-
-      </div> */
-      }
+      </Box>
       <div
         style={{
           display: 'flex',
@@ -144,11 +105,10 @@ export const Day = ({ positionX, date, index, mealsContext }: IProps) => {
             color: 'orange' // colorNumber('breakfast', 'classicDiet')
           } as React.CSSProperties}
         >
-          {/* {mealsNumber?.breakfast === 1} */}
-          {mealsNumber?.id !== undefined && mealsNumber?.breakfast === 1 ?
+          {mealsNumber?.id !== undefined ?
             (
               <Checkbox
-                onChange={handleChangeBreakfast}
+                onChange={_ => handleChangeMeal('breakfast')}
                 isChecked={mealsNumber?.breakfast === 1}
               />
             ) :
@@ -175,12 +135,11 @@ export const Day = ({ positionX, date, index, mealsContext }: IProps) => {
             color: 'orange'
           } as React.CSSProperties}
         >
-          {/* {mealsNumber?.lunchtime.classicDiet === 1} */}
-          {mealsNumber?.id !== undefined ?
+          {mealsNumber?.id !== undefined && testRegular > 1 ?
             (
               <Checkbox
-                onChange={handleChangeRegularLunch}
-                isChecked={mealsNumber?.lunchtime.classicDiet === 1}
+                onChange={_ => handleChangeMeal('regularLunch')}
+                isChecked={mealsNumber?.lunchtime.regularDiet === 1}
               />
             ) :
             null}
@@ -208,10 +167,10 @@ export const Day = ({ positionX, date, index, mealsContext }: IProps) => {
             color: 'orange'
           } as React.CSSProperties}
         >
-          {mealsNumber?.id !== undefined && mealsNumber?.lunchtime.specialDiet === 1 ?
+          {mealsNumber?.id !== undefined && testSpecial > 1 ?
             (
               <Checkbox
-                onChange={handleChangeSpecialLunch}
+                onChange={_ => handleChangeMeal('specialLunch')}
                 isChecked={mealsNumber?.lunchtime.specialDiet === 1}
               />
             ) :
@@ -239,11 +198,11 @@ export const Day = ({ positionX, date, index, mealsContext }: IProps) => {
             color: 'orange'
           } as React.CSSProperties}
         >
-          {mealsNumber?.id !== undefined && mealsNumber?.dinner.classicDiet === 1 ?
+          {mealsNumber?.id !== undefined && testRegular > 1 ?
             (
               <Checkbox
-                onChange={handleChangeRegularDiner}
-                isChecked={mealsNumber?.dinner.classicDiet === 1}
+                onChange={_ => handleChangeMeal('regularDinner')}
+                isChecked={mealsNumber?.dinner.regularDiet === 1}
               />
             ) :
             null}
@@ -268,21 +227,16 @@ export const Day = ({ positionX, date, index, mealsContext }: IProps) => {
             color: 'orange'
           } as React.CSSProperties}
         >
-          {mealsNumber?.id !== undefined && mealsNumber?.dinner.specialDiet === 1 ?
+          {mealsNumber?.id !== undefined && testSpecial > 1 ?
             (
               <Checkbox
-                onChange={handleChangeSpecialDiner}
+                onChange={_ => handleChangeMeal('specialDinner')}
                 isChecked={mealsNumber?.dinner.specialDiet === 1}
               />
             ) :
             null}
-          {/* {mealsNumber?.dinner.specialDiet} */}
         </div>
       </div>
-      {
-        /* </Grid>
-    </Box> */
-      }
     </>
   )
 }
@@ -312,14 +266,14 @@ function commentStyle(positionX: number, date: dayjs.Dayjs, mealsContext: IMeal[
   return style
 }
 
-// function countRegular(mealsData: IMeal[]) {
-//   const regular = mealsData.map(meals => meals.regularDinner + meals.regularLunch)
-//   const sumRegular = regular.reduce((a, b) => a + b, 0)
-//   return sumRegular
-// }
+function countRegular(mealsData: IMeal[]) {
+  const regular = mealsData.map(meals => meals.regularDinner + meals.regularLunch)
+  const sumRegular = regular.reduce((a, b) => a + b, 0)
+  return sumRegular
+}
 
-// function countSpecial(mealsData: IMeal[]) {
-//   const special = mealsData.map(meals => meals.specialLunch + meals.specialDinner)
-//   const sumSpecial = special.reduce((a, b) => a + b, 0)
-//   return sumSpecial
-// }
+function countSpecial(mealsData: IMeal[]) {
+  const special = mealsData.map(meals => meals.specialLunch + meals.specialDinner)
+  const sumSpecial = special.reduce((a, b) => a + b, 0)
+  return sumSpecial
+}
