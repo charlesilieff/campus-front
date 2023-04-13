@@ -99,6 +99,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
   const [updateEmail, setUpdateEmail] = useState<boolean>(false)
+  const [isExistCustomer, setExistCustomer] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
   const { reservationId } = useParams<{ reservationId: string }>()
   const navigate = useNavigate()
@@ -120,23 +121,45 @@ export const ReservationUserUpdate = (): JSX.Element => {
     // user: User
   ): Promise<void> => {
     const reservation = createIReservationWithBedIds(customer, datesAndMeal, bedId)
-
-    setIsLoading(true)
-    if (reservationId !== undefined) {
-      // FIXME: unsafe
-      await dispatch(updateReservation({ ...reservation, id: Number(reservationId) }))
-      setIsLoading(false)
-    } else {
-      if (O.isSome(customerId)) {
-        await dispatch(createEntity({ entity: reservation, sendMail: false }))
+    if (isExistCustomer === false) {
+      setIsLoading(true)
+      if (reservationId !== undefined) {
+        // FIXME: unsafe
+        await dispatch(updateReservation({ ...reservation, id: Number(reservationId) }))
         setIsLoading(false)
       } else {
-        await dispatch(
-          createReservationAndUpdateUser({ entity: reservation, sendMail: false, userId })
-        )
+        if (O.isSome(customerId)) {
+          await dispatch(createEntity({ entity: reservation, sendMail: false }))
+          setIsLoading(false)
+        } else {
+          await dispatch(
+            createReservationAndUpdateUser({ entity: reservation, sendMail: false, userId })
+          )
 
-        dispatch(getSession())
+          dispatch(getSession())
+          setIsLoading(false)
+        }
+      }
+    }
+
+    if (isExistCustomer === true) {
+      setIsLoading(true)
+      if (reservationId !== undefined) {
+        // FIXME: unsafe
+        await dispatch(updateReservation({ ...reservation, id: Number(reservationId) }))
         setIsLoading(false)
+      } else {
+        if (O.isSome(customerId)) {
+          await dispatch(createEntity({ entity: reservation, sendMail: false }))
+          setIsLoading(false)
+        } else {
+          await dispatch(
+            createReservationAndUpdateUser({ entity: reservation, sendMail: false, userId })
+          )
+
+          dispatch(getSession())
+          setIsLoading(false)
+        }
       }
     }
   }
