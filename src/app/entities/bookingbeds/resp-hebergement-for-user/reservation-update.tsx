@@ -98,69 +98,44 @@ export const ReservationUserUpdate = (): JSX.Element => {
   const [customer, setCustomer] = useState<O.Option<Customer>>(O.none)
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
-  const [updateEmail, setUpdateEmail] = useState<boolean>(false)
-  const [isExistCustomer, setExistCustomer] = useState<boolean>(false)
+  const [selectUser, setSelectUser] = useState<boolean>(false)
+  // const [isExistCustomer, setExistCustomer] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
   const { reservationId } = useParams<{ reservationId: string }>()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const toast = useToast()
   const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
-  const customerId = O.fromNullable(
-    useAppSelector(state => state.authentication.account.customerId)
-  )
+  // const customerId = O.fromNullable(
+  //   useAppSelector(state => state.authentication.account.customerId)
+  // )
 
-  const userId: number = useAppSelector(state => state.authentication.account.id)
+  const [userId, setUserId] = useState<number>(null)
+
+  // const userId: number = useAppSelector(state => state.authentication.account.id)
   // const userId: number = useAppSelector(state => state.authentication.account.id)
   // const userId: number = useAppSelector(state => state.administration.userManagement.user.id)
 
   const handleSubmitReservation = async (
     datesAndMeal: DatesAndMeals,
     bedId: number,
-    customer: Customer
-    // user: User
+    customer: Customer,
+    userId: number
   ): Promise<void> => {
     const reservation = createIReservationWithBedIds(customer, datesAndMeal, bedId)
-    if (isExistCustomer === false) {
-      setIsLoading(true)
-      if (reservationId !== undefined) {
-        // FIXME: unsafe
-        await dispatch(updateReservation({ ...reservation, id: Number(reservationId) }))
-        setIsLoading(false)
-      } else {
-        if (O.isSome(customerId)) {
-          await dispatch(createEntity({ entity: reservation, sendMail: false }))
-          setIsLoading(false)
-        } else {
-          await dispatch(
-            createReservationAndUpdateUser({ entity: reservation, sendMail: false, userId })
-          )
 
-          dispatch(getSession())
-          setIsLoading(false)
-        }
-      }
-    }
+    setIsLoading(true)
+    if (reservationId !== undefined) {
+      // FIXME: unsafe
+      await dispatch(updateReservation({ ...reservation, id: Number(reservationId) }))
+      setIsLoading(false)
+    } else {
+      await dispatch(
+        createReservationAndUpdateUser({ entity: reservation, sendMail: false, userId })
+      )
 
-    if (isExistCustomer === true) {
-      setIsLoading(true)
-      if (reservationId !== undefined) {
-        // FIXME: unsafe
-        await dispatch(updateReservation({ ...reservation, id: Number(reservationId) }))
-        setIsLoading(false)
-      } else {
-        if (O.isSome(customerId)) {
-          await dispatch(createEntity({ entity: reservation, sendMail: false }))
-          setIsLoading(false)
-        } else {
-          await dispatch(
-            createReservationAndUpdateUser({ entity: reservation, sendMail: false, userId })
-          )
-
-          dispatch(getSession())
-          setIsLoading(false)
-        }
-      }
+      dispatch(getSession())
+      setIsLoading(false)
     }
   }
 
@@ -241,17 +216,19 @@ export const ReservationUserUpdate = (): JSX.Element => {
     }
   }, [updateSuccess])
   console.log('updateCustomer', updateCustomer)
-  console.log('customer', O.isNone(customer))
+  console.log('customer c', O.isNone(customer))
+  console.log('updateEmail ', selectUser)
   return (
     <Stack>
       <Heading size={'lg'} m={4}>
         Votre réservation
       </Heading>
 
-      {O.isNone(customer) || updateEmail ? // {O.isNone(customer) || updateEmail  ?
+      {O.isNone(customer) || selectUser ? // {O.isNone(customer) || updateEmail  ?
         (<UserSelect
+          setUserId={setUserId}
           setCustomer={setCustomer}
-          setUpdateUser={setUpdateEmail}
+          setUpdateUser={setSelectUser}
           // email={ user.email}
           // firstname={ user.firstname}
           // lastname={ user.lastname}
@@ -266,12 +243,15 @@ export const ReservationUserUpdate = (): JSX.Element => {
           //   // lastname={ user.lastname}
           // />
         )}
-      {O.isNone(customer) || updateCustomer ?
+      {(O.isNone(customer) || !customer.value.lastname || !customer.value.firstname)
+          || updateCustomer ?
         (
           <CustomerUpdate
             customer={customer}
             setUpdateCustomer={setUpdateCustomer}
             setCustomer={setCustomer}
+            // setUpdateUser={setSelectUser}
+
             // customer={customer}
             // setUpdateCustomer={setUpdateCustomer}
             // setCustomer={setCustomer}
@@ -283,7 +263,8 @@ export const ReservationUserUpdate = (): JSX.Element => {
             customer={customer.value}
           />
         )}
-      {O.isNone(customer) || (updateCustomer && O.isNone(datesAndMeal)) ?
+      {(O.isNone(customer) || !customer.value.lastname || !customer.value.firstname)
+          || (updateCustomer && O.isNone(datesAndMeal)) ?
         (
           <Heading
             p={4}
@@ -297,7 +278,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
             {'Date et repas'}
           </Heading>
         ) :
-        O.isNone(datesAndMeal) || updateDatesAndMeals ?
+        (O.isNone(datesAndMeal)) || (updateDatesAndMeals) ?
         (
           <DatesAndMealsChoices
             datesAndMeals={datesAndMeal}
@@ -334,7 +315,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
             {'Choix des lits'}
           </Heading>
         )}
-      {O.isSome(customer) && O.isSome(datesAndMeal) && O.isSome(bedId) ?
+      {O.isSome(customer) && O.isSome(datesAndMeal) && O.isSome(bedId) && userId ?
         (
           <HStack justifyContent={'end'}>
             <Button as={Link} to={''} colorScheme={'red'} rightIcon={<BsTrash />}>Annuler</Button>
@@ -346,7 +327,8 @@ export const ReservationUserUpdate = (): JSX.Element => {
                 handleSubmitReservation(
                   datesAndMeal.value,
                   bedId.value,
-                  customer.value
+                  customer.value,
+                  userId
                 )}
             >
               Finaliser la réservation

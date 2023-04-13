@@ -33,7 +33,7 @@ import type { Customer } from './reservation-update'
 
 interface UserUpdateProps {
   setCustomer: (user: O.Option<Customer>) => void
-  // setUser: (user: User) => void
+  setUserId: (userId: number) => void
   setUpdateUser: (updateUser: boolean) => void
 }
 // interface FormUserToChoice {
@@ -112,6 +112,9 @@ export const UserSelect = (
     console.log('formUser email', formUser)
     console.log('list users', users)
     console.log('id to find', Number(formUser.id))
+    props.setUserId(Number(formUser.id))
+    // props.setUserEmail(formUser.email)
+
     pipe(
       users,
       A.findFirst(user => user.id === Number(formUser.id)),

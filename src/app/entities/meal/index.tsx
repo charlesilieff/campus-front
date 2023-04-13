@@ -140,19 +140,32 @@ export const Index = () => {
     console.log('entity', entity)
     console.log('date', date)
     console.log('numberOfDays', numberOfDays)
+    console.log('numberOfDays', numberOfDays)
 
     entity = entity.map((value, index) => {
       console.log('value', value)
-      value = {
-        ...value,
-        specialLunch: 0,
-        specialDinner: 0,
-        regularLunch: 0,
-        regularDinner: 0,
-        comment: mealsData[index].comment,
-        breakfast: 0
+      // value = {
+      //   ...value,
+      //   specialLunch: 0,
+      //   specialDinner: 0,
+      //   regularLunch: 0,
+      //   regularDinner: 0,
+      //   comment: mealsData[index].comment,
+      //   breakfast: 0
+      // }
+      // console.log('value', value)
+      if (index < numberOfDays) {
+        value = {
+          ...value,
+          specialLunch: 0,
+          specialDinner: 0,
+          regularLunch: 0,
+          regularDinner: 0,
+          comment: mealsData[index].comment,
+          breakfast: 0
+        }
       }
-      console.log('value', value)
+
       return value
     })
 
