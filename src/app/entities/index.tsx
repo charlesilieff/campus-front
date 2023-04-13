@@ -33,7 +33,6 @@ export const EntitiesRoutes = () => (
       />
 
       <Route path={`bookingbeds/*`} element={<BookingBedsRoutes />} />
-      {/* <Route path={`reservation/*`} element={<ReservationRoutes />} /> */}
       <Route path={`customer/*`} element={<CustomerRoutes />} />
       <Route path={`pricing/*`} element={<PricingRoutes />} />
       <Route path={`bed/*`} element={<BedRoutes />} />
