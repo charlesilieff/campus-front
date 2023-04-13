@@ -15,7 +15,6 @@ import {
   getReservation
 } from '../../reservation/reservation.reducer'
 import {
-  createEntity,
   createReservationAndUpdateUser,
   reset as resetReservations,
   updateEntity as updateReservation
@@ -112,17 +111,12 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
       await dispatch(updateReservation({ ...reservation, id: Number(reservationId) }))
       setIsLoading(false)
     } else {
-      if (O.isSome(customerId)) {
-        await dispatch(createEntity({ entity: reservation, sendMail: false }))
-        setIsLoading(false)
-      } else {
-        await dispatch(
-          createReservationAndUpdateUser({ entity: reservation, sendMail: false, userId })
-        )
+      await dispatch(
+        createReservationAndUpdateUser({ entity: reservation, sendMail: false, userId })
+      )
 
-        dispatch(getSession())
-        setIsLoading(false)
-      }
+      dispatch(getSession())
+      setIsLoading(false)
     }
   }
 
