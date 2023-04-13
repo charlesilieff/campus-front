@@ -17,7 +17,7 @@ import { FaBan, FaSave, FaTrash } from 'react-icons/fa'
 
 const apiUrlMealsDateFor31DaysByUser = 'api/meals/customer-id'
 
-export const ConfirmationUpdateMealsModalByPeriode: FunctionComponent<
+export const ConfirmationUpdateMealsByPeriodeModal: FunctionComponent<
   { startDate: Dayjs; endDate: Dayjs; customerId: number; setDate: (date: Dayjs) => void }
 > = (
   { startDate, endDate, customerId, setDate }

@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Heading, HStack, Input, Text } from '@chakra-ui/react'
+import { Box, Button, Heading, HStack, Input, Text, VStack } from '@chakra-ui/react'
 import { useAppSelector } from 'app/config/store'
 import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
@@ -8,8 +8,10 @@ import React, { useEffect, useState } from 'react'
 import { FaCalendar } from 'react-icons/fa'
 import { FaSave } from 'react-icons/fa'
 
+import { ConfirmationAddMealsScreenModal } from './confirmationAddMealsScreenModal'
+import { ConfirmationRemoveMealsScreenModal } from './confirmationRemoveMealsScreenModal'
+import { ConfirmationUpdateMealsByPeriodeModal } from './confirmationUpdateMealsByPeriodeModal'
 import { ConfirmationUpdateMealsModal } from './confirmationUpdateMealsModal'
-import { ConfirmationUpdateMealsModalByPeriode } from './confirmationUpdateMealsModalByPeriode'
 import { DisplayTotalMeals } from './displayTotalMeals'
 import { MealsUserPlanning } from './mealsUserPlanning'
 
@@ -126,52 +128,46 @@ export const Index = () => {
 
   //   return result
   // }
-  const updateMeals = async (entity: IMeal[]) =>
-    await axios.put<IMeal>(
-      apiUrlUpdateMeal,
-      entity.filter(value => value.id !== undefined)
-    )
+  // const updateMeals = async (entity: IMeal[]) =>
+  //   await axios.put<IMeal>(
+  //     apiUrlUpdateMeal,
+  //     entity.filter(value => value.id !== undefined)
+  //   )
 
   /**
    * select meals of planning
    */
-  const selectMealsOnPeriode = (entity: IMeal[], date: Dayjs, numberOfDays: number) => {
-    // Modification de la méthode : copie par valeur (spread)
-    console.log('entity', entity)
-    console.log('date', date)
-    console.log('numberOfDays', numberOfDays)
-    console.log('numberOfDays', numberOfDays)
+  // const selectMealsOnPeriode = async (entity: IMeal[], date: Dayjs, numberOfDays: number) => {
+  //   console.log('entity', entity)
+  //   console.log('date', date)
+  //   console.log('numberOfDays', numberOfDays)
 
-    entity = entity.map((value, index) => {
-      console.log('value', value)
-      // value = {
-      //   ...value,
-      //   specialLunch: 0,
-      //   specialDinner: 0,
-      //   regularLunch: 0,
-      //   regularDinner: 0,
-      //   comment: mealsData[index].comment,
-      //   breakfast: 0
-      // }
-      // console.log('value', value)
-      if (index < numberOfDays) {
-        value = {
-          ...value,
-          specialLunch: 0,
-          specialDinner: 0,
-          regularLunch: 0,
-          regularDinner: 0,
-          comment: mealsData[index].comment,
-          breakfast: 0
-        }
-      }
+  //   entity = entity.filter((value, index) => {
+  //     if (index < (numberOfDays)) {
+  //       return value
+  //     }
+  //   }).map((value, index) => {
+  //     // console.log('value', value)
+  //     if (index < numberOfDays) {
+  //       value = {
+  //         ...value,
+  //         specialLunch: 0,
+  //         specialDinner: 0,
+  //         regularLunch: 0,
+  //         regularDinner: 0,
+  //         comment: mealsData[index].comment,
+  //         breakfast: 0
+  //       }
+  //     }
+  //     return value
+  //   })
+  //   console.log('entity', entity)
 
-      return value
-    })
-
-    console.log('entity', entity)
-    updateMeals(entity)
-  }
+  //   await axios.put<IMeal>(
+  //     apiUrlUpdateMeal,
+  //     entity
+  //   )
+  // }
 
   return (
     <>
@@ -211,7 +207,7 @@ export const Index = () => {
             </Checkbox>
           </Box> */
           }
-          <ConfirmationUpdateMealsModalByPeriode
+          <ConfirmationUpdateMealsByPeriodeModal
             startDate={startDate}
             endDate={endDate}
             customerId={customerId}
@@ -260,22 +256,23 @@ export const Index = () => {
           numberOfDays={numberOfDays}
           mealsData={mealsData}
         />
-        <HStack m={4} spacing={8}>
-          <Button
-            // type="submit"
-            onClick={() => selectMealsOnPeriode(mealsData, date, numberOfDays)}
-            leftIcon={<FaSave />}
-            colorScheme={'green'}
-            _hover={{
-              textDecoration: 'none',
-              color: 'green.200',
-              backgroundColor: '#38A169'
-            }}
-          >
-            Se désinscrire sur la période affichée
-          </Button>
+        <VStack m={4} spacing={8}>
           <ConfirmationUpdateMealsModal mealsData={mealsData} />
-        </HStack>
+          <HStack>
+            <ConfirmationRemoveMealsScreenModal
+              mealsData={mealsData}
+              date={date}
+              numberOfDays={numberOfDays}
+              setDate={setDate}
+            />
+            <ConfirmationAddMealsScreenModal
+              mealsData={mealsData}
+              date={date}
+              numberOfDays={numberOfDays}
+              setDate={setDate}
+            />
+          </HStack>
+        </VStack>
       </Box>
       <DisplayTotalMeals resultTotalMeals={resultTotalMeals} />
     </>
