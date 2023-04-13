@@ -3,25 +3,28 @@ import {
   Box,
   Button,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Heading,
   HStack,
   Select,
+  Text,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
+import * as A from '@effect/data/ReadonlyArray'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import { Customer } from 'app/entities/customer/customer'
 // import type { Customer } from './reservation-update'
-import { getEntities as getCustomers } from 'app/entities/customer/customer.reducer'
-import { customer as getCustomer } from 'app/entities/customer/customer.reducer'
 import { getUsersAsAdmin } from 'app/modules/administration/user-management/user-management.reducer'
-import type { IUser } from 'app/shared/model/user.model'
+import { IUser } from 'app/shared/model/user.model'
+import axios from 'axios'
 import React, { useEffect } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import type { User } from './reservation-update'
+import type { Customer } from './reservation-update'
 // interface CustomerUpdateProps {
 //   setCustomer: (customer: O.Option<Customer>) => void
 //   setUpdateCustomer: (updateCustomer: boolean) => void
@@ -29,24 +32,22 @@ import type { User } from './reservation-update'
 // }
 
 interface UserUpdateProps {
-  setUser: (user: O.Option<User>) => void
+  setCustomer: (user: O.Option<Customer>) => void
+  // setUser: (user: User) => void
   setUpdateUser: (updateUser: boolean) => void
-  user: O.Option<User>
 }
-interface FormUserToChoice {
-  userId: string
-  userFirstName: string
-  userLastName: string
-  userEmail: string
-}
+// interface FormUserToChoice {
+//   userId: string
+//   userFirstName: string
+//   userLastName: string
+//   userEmail: string
+// }
 
 export interface FormUser {
   id: number
-  login: string
-  firstname?: string
-  lastname?: string
-  email: string
 }
+
+// const url = 'api/admin/users' // .in("api" / "admin" / "users" / path[String]("login"))
 
 export const UserSelect = (
   // UserSelected: {
@@ -67,44 +68,18 @@ export const UserSelect = (
       getUsersAsAdmin()
     )
   }
+  // const [user, setUser] = useState<O.Option<User>>(O.none)
+  const [userSelect, setUserSelect] = useState('default' as string)
 
   const users = useAppSelector(state => state.userManagement.users)
+
   const {
     handleSubmit,
-    register,
-    formState: { errors }
-    // reset: resetForm
-    // watch
-  } = useForm<FormUserToChoice>()
+    register
+    // formState: { errors }
+  } = useForm<FormUser>()
 
-  // const personNumber = useRef({})
-  // personNumber.current = watch('personNumber', 0)
-
-  // useEffect(() => {
-  //   resetForm() // O.isSome(props.customer) ?
-  //   //   {
-  //   //     ...props.customer.value,
-  //   //     age: O.getOrUndefined(props.customer.value.age),
-  //   //     phoneNumber: O.getOrUndefined(props.customer.value.phoneNumber)
-  //   //   } :
-  //   //   {}
-  // }, [props.userFirstName, props.userLastName, props.userId])
-
-  // const saveEntity = (values: FormCustomer) => {
-  //   const entity: ICustomer = {
-  //     ...customerEntity,
-  //     ...values,
-  //     // @ts-expect-error : age is a number
-  //     age: values.age === '' ? 0 : values.age
-  //   }
-
-  //   if (isNew) {
-  //     dispatch(createEntity(entity))
-  //   } else {
-  //     dispatch(updateEntity(entity))
-  //   }
-  // }
-
+  //   props.setUpdateUser(false)
   // export const UserUpdate = (
   //   props: UserUpdateProps
   // ): JSX.Element => {
@@ -119,40 +94,55 @@ export const UserSelect = (
   //       O.isSome(props.user) ?
   //         {
   //           ...props.user.value,
-  //           // age: O.getOrUndefined(props.user.value.age),
-  //           // phoneNumber: O.getOrUndefined(props.user.value.phoneNumber)
+  //           lastname: O.getOrUndefined(props.user.value.lastname),
+  //           firstname: O.getOrUndefined(props.user.value.firstname)
   //         } :
   //         {}
   //     )
   //   }, [props.user])
 
-  // const handleValidUserSubmit = (
-  //   user: FormUser
-  // ): void => {
-  //   // @ts-expect-error react hook form ne gère pas bien le type de age
-  //   // const age = user.age === undefined || user.age === '' ? O.none() : O.some(user.age)
-  //   // const phoneNumber = user.phoneNumber === undefined || user.phoneNumber === '' ?
-  //   //   O.none() :
-  //   //   O.some(user.phoneNumber)
-  //   // props.setUser(O.some({ ...user, age, phoneNumber }))
+  const handleValidUserSubmit = (
+    // user: User
+    formUser: FormUser
+  ) => {
+    // const requestUrl = `${url}/${user.login}`
+    // // await axios.get<IMeal[]>(requestUrl)
+    // const { data } = await axios.get<IUser>(requestUrl)
+    console.log('userSelect', userSelect)
+    console.log('formUser email', formUser)
+    console.log('list users', users)
+    console.log('id to find', Number(formUser.id))
+    pipe(
+      users,
+      A.findFirst(user => user.id === Number(formUser.id)),
+      O.map(x => ({
+        firstname: x.firstName,
+        lastname: x.lastName,
+        email: x.email,
+        id: x.id,
+        phoneNumber: O.none(),
+        customerId: O.some(x.customerId),
+        age: O.none()
+      } as Customer)),
+      props.setCustomer
+    )
 
-  //   props.setUpdateUser(false)
-  // }
-
-  const handleValidCustomerSubmit = (
-    user: User
-  ): void => {
-    // const lastname = user.lastname === undefined || user.lastname === '' ?
+    // const lastname = formUser.lastname === undefined || formUser.lastname === '' ?
     //   O.none() :
-    //   O.some(user.lastname)
-    // const firstname = user.firstname === undefined || user.firstname === '' ?
+    //   O.some(formUser.lastname)
+    // const firstname = formUser.firstname === undefined || formUser.firstname === '' ?
     //   O.none() :
-    //   O.some(user.firstname)
-    // props.setUser(O.some({ ...user, lastname, firstname }))
+    //   O.some(formUser.firstname)
+    // const phoneNumber = formUser.phoneNumber === undefined || formUser.phoneNumber === '' ?
+    //   O.none() :
+    //   O.some(formUser.phoneNumber)
+    // const customerId = formUser.customerId === undefined ? O.none() : O.some(formUser.customerId)
+    // props.setUser(O.some({ ...formUser }))
 
-    props.setUser(O.some(user))
+    console.log('user mail', formUser)
+    // props.setUser(formUser)
 
-    props.setUpdateUser(false)
+    props.setUpdateUser(true) // todo false if we want to update the user
   }
 
   return (
@@ -173,7 +163,7 @@ export const UserSelect = (
         </HStack>
         <Box minW={'500px'}>
           <form
-            onSubmit={handleSubmit(handleValidCustomerSubmit)}
+            onSubmit={handleSubmit(handleValidUserSubmit)}
           >
             <VStack spacing={10} alignItems={'left'}>
               <HStack spacing={12} minW={800} my={4}>
@@ -183,8 +173,10 @@ export const UserSelect = (
                   </FormLabel>
 
                   <Select
+                    onChange={e => setUserSelect(e.target.value)}
+                    // onChange={e => setUser(e.target.value)}
                     id="user"
-                    {...register('userId', {})}
+                    {...register('id', {})}
                   >
                     <option value="" key="0" />
                     {users ?
@@ -196,23 +188,24 @@ export const UserSelect = (
                       null}
                   </Select>
                 </FormControl>
-                {
-                  //   <FormControl isInvalid={users.id !== undefined}>
-                  //   <FormLabel htmlFor="firstname" fontWeight={'bold'}>
-                  //     {'Prénom'}
-                  //   </FormLabel>
-                  //   <Text
-                  //     id="firstname"
-                  //     placeholder="Prénom"
-                  //     {...register('userFirstName', {
-                  //       required: 'Le prénom est obligatoire'
-                  //     })}
-                  //   />
 
-                  //   <FormErrorMessage>
-                  //     {errors.userFirstName && errors.userFirstName.message}
-                  //   </FormErrorMessage>
-                  // </FormControl>
+                {
+                  /* <FormControl isInvalid={errors.id !== undefined}>
+                  <FormLabel htmlFor="firstname" fontWeight={'bold'}>
+                    {'Prénom'}
+                  </FormLabel>
+                  <Text
+                    id="firstname"
+                    placeholder="Prénom"
+                    // {...register('firstname', {
+                    //   required: 'Le prénom est obligatoire'
+                    // })}
+                  />
+
+                  <FormErrorMessage>
+                    {errors.firstname && errors.firstname.message}
+                  </FormErrorMessage>
+                </FormControl> */
                 }
               </HStack>
 

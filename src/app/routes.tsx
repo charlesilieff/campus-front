@@ -3,6 +3,8 @@ import { Route } from 'react-router-dom'
 
 import { AUTHORITIES } from './config/constants'
 import { EntitiesRoutes } from './entities'
+// import { UserReservationRequestUpdate } from './entities/reservation-request-for-user/reservation-update'
+// import { UserReservationRequestUpdate } from './entities/bookingbeds/resp-hebergement-for-user/reservation-update'
 import { Index } from './entities/kitchen'
 import { Index as IndexMealUser } from './entities/meal/index'
 import { ReservationRequestDetail } from './entities/reservation-request/request-detail'
@@ -103,6 +105,18 @@ export const Routes = () => (
         </PrivateRoute>
       }
     />
+    {
+      /* <Route
+      path="bookingbeds/new/habitant"
+      element={
+        <PrivateRoute
+          hasAnyAuthorities={[AUTHORITIES.HABITANT, AUTHORITIES.RESPHEBERGEMENT, AUTHORITIES.ADMIN]}
+        >
+          <UserReservationRequestUpdate />
+        </PrivateRoute>
+      }
+    /> */
+    }
 
     <Route
       path="*"

@@ -24,9 +24,7 @@ export const Index = () => {
   const [date, setDate] = useState(dayjs())
   const [startDate, setStartDate] = useState(dayjs())
   const [endDate, setEndDate] = useState(dayjs())
-  const [unsubscribeDate, setUnsubscribeDate] = useState(true)
   const [mealsData, setMealsData] = useState([] as IMeal[])
-  const [mealsDataBetweenDate, setMealsDataBetweenDate] = useState([] as IMeal[])
   const [numberOfDays, setNumberOfDays] = useState(31)
 
   useEffect(() => {

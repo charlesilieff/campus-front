@@ -23,13 +23,13 @@ export const ConfirmationUpdateMealsModalByPeriode: FunctionComponent<
   { startDate, endDate, customerId, setDate }
 ): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false)
-  const [mealsDataBetweenDate, setMealsDataBetweenDate] = useState([] as IMeal[])
   const apiUrlUpdateMeal = 'api/meals/update'
 
   /**
    * update meals betwwen 2 date
    */
-  const getMealsBetweenTwoDateByUser = async (
+  /* todo change : create a updateMealsBetweenTwoDateByUser */
+  const updateMealsFromDate = async (
     startDate: Dayjs,
     endDate: Dayjs,
     customerId: number
@@ -40,22 +40,7 @@ export const ConfirmationUpdateMealsModalByPeriode: FunctionComponent<
     // await axios.get<IMeal[]>(requestUrl)
     const { data } = await axios.get<IMeal[]>(requestUrl)
     console.log('data axios', data)
-    setMealsDataBetweenDate(data)
-    setMealsDataBetweenDate(data)
-    setMealsDataBetweenDate(data)
-    console.log('data 2 date', mealsDataBetweenDate)
     updateMealsFromDate2(data)
-  }
-  // getMealsBetweenTwoDateByUser(startDate, endDate, customerId)
-  // const dataDb = getMealsBetweenTwoDateByUser(startDate, endDate, customerId)
-
-  // const mealsBetweenTwoDate = getMealsBetweenTwoDateByUser(startDate, endDate, customerId)
-  const updateMealsFromDate = (
-    startDate: Dayjs,
-    endDate: Dayjs,
-    customerId: number
-  ) => {
-    getMealsBetweenTwoDateByUser(startDate, endDate, customerId)
   }
 
   const updateMealsFromDate2 = async (

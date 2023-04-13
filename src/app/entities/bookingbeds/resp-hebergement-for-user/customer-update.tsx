@@ -132,6 +132,7 @@ export const CustomerUpdate = (
                     id="email"
                     type="email"
                     placeholder="Email"
+                    readOnly={true}
                     {...register('email', {
                       required: "L'email est obligatoire"
                     })}

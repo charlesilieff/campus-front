@@ -28,12 +28,12 @@ export const KitchenSummary = ({ date, totalDays, numberOfDays }: IProps) => {
 
   return (
     <div className="grid-container" style={gridFormatStyle(numberOfDays)}>
-      {
-        /* <div className="time breakfast">Matin</div>
+      <div className="time breakfast">Matin</div>
       <div className="time lunch">Midi</div>
       <div className="time dinner">Soir</div>
 
-      <div className="diet specialdietlunch">Sans lactose ni gluten</div>
+      {
+        /* <div className="diet specialdietlunch">Sans lactose ni gluten</div>
       <div className="diet classicdietlunch">Classique</div>
       <div className="diet specialdietdinner">Sans lactose ni gluten</div>
       <div className="diet classicdietdinner">Classique</div> */

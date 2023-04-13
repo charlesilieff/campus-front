@@ -4,14 +4,12 @@ import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import * as A from '@effect/data/ReadonlyArray'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import { UserManagementState } from 'app/modules/administration/user-management/user-management.reducer'
 import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
 import { getSession } from 'app/shared/reducers/authentication'
 import React, { useEffect, useState } from 'react'
 import { BsTrash } from 'react-icons/bs'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
-import { getCustomer } from '../../customer/customer.reducer'
 import {
   getReservation
 } from '../../reservation/reservation.reducer'
@@ -44,10 +42,12 @@ export interface DatesAndMeals {
 
 export interface User {
   id: number
-  firstname: string
-  lastname: string
+  firstname: O.Option<string>
+  lastname: O.Option<string>
   email: string
   phoneNumber: O.Option<string>
+  // login: string
+  customerId: O.Option<number>
 }
 
 export interface Customer {
@@ -64,8 +64,7 @@ export type BedIds = ReadonlyArray<{ id: number }>
 const createIReservationWithBedIds = (
   customer: Customer,
   datesAndMeals: DatesAndMeals,
-  bedId: number,
-  user: User
+  bedId: number
 ): IBookingBeds => ({
   // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
   arrivalDate: datesAndMeals.arrivalDate,
@@ -99,6 +98,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
   const [customer, setCustomer] = useState<O.Option<Customer>>(O.none)
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
+  const [updateEmail, setUpdateEmail] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
   const { reservationId } = useParams<{ reservationId: string }>()
   const navigate = useNavigate()
@@ -109,8 +109,6 @@ export const ReservationUserUpdate = (): JSX.Element => {
     useAppSelector(state => state.authentication.account.customerId)
   )
 
-  const [updateUser, setUpdateUser] = useState<boolean>(false)
-  const [user, setUser] = useState<O.Option<User>>(O.none)
   const userId: number = useAppSelector(state => state.authentication.account.id)
   // const userId: number = useAppSelector(state => state.authentication.account.id)
   // const userId: number = useAppSelector(state => state.administration.userManagement.user.id)
@@ -118,10 +116,10 @@ export const ReservationUserUpdate = (): JSX.Element => {
   const handleSubmitReservation = async (
     datesAndMeal: DatesAndMeals,
     bedId: number,
-    customer: Customer,
-    user: User
+    customer: Customer
+    // user: User
   ): Promise<void> => {
-    const reservation = createIReservationWithBedIds(customer, datesAndMeal, bedId, user)
+    const reservation = createIReservationWithBedIds(customer, datesAndMeal, bedId)
 
     setIsLoading(true)
     if (reservationId !== undefined) {
@@ -144,24 +142,23 @@ export const ReservationUserUpdate = (): JSX.Element => {
   }
 
   const backendReservation = useAppSelector(state => state.reservation.entity)
-  const backendCustomer = useAppSelector(state => state.customer.entity)
 
-  useEffect(() => {
-    if (backendCustomer.id === undefined) {
-      pipe(customerId, O.map(id => dispatch(getCustomer(id))))
-    }
+  // useEffect(() => {
+  //   if (backendCustomer.id === undefined) {
+  //     pipe(customerId, O.map(id => dispatch(getCustomer(id))))
+  //   }
 
-    if (backendCustomer.id !== undefined) {
-      setCustomer(O.some({
-        id: backendCustomer?.id,
-        firstname: backendCustomer?.firstname,
-        lastname: backendCustomer?.lastname,
-        email: backendCustomer?.email,
-        phoneNumber: O.some(backendCustomer?.phoneNumber),
-        age: O.some(backendCustomer?.age)
-      }))
-    }
-  }, [backendCustomer.id])
+  //   if (backendCustomer.id !== undefined) {
+  //     setCustomer(O.some({
+  //       id: backendCustomer?.id,
+  //       firstname: backendCustomer?.firstname,
+  //       lastname: backendCustomer?.lastname,
+  //       email: backendCustomer?.email,
+  //       phoneNumber: O.some(backendCustomer?.phoneNumber),
+  //       age: O.some(backendCustomer?.age)
+  //     }))
+  //   }
+  // }, [backendCustomer.id])
 
   useEffect(() => {
     pipe(
@@ -220,32 +217,31 @@ export const ReservationUserUpdate = (): JSX.Element => {
       navigate('/planning')
     }
   }, [updateSuccess])
-
+  console.log('updateCustomer', updateCustomer)
+  console.log('customer', O.isNone(customer))
   return (
     <Stack>
       <Heading size={'lg'} m={4}>
         Votre réservation
       </Heading>
 
-      {O.isNone(user) || updateUser ?
+      {O.isNone(customer) || updateEmail ? // {O.isNone(customer) || updateEmail  ?
+        (<UserSelect
+          setCustomer={setCustomer}
+          setUpdateUser={setUpdateEmail}
+          // email={ user.email}
+          // firstname={ user.firstname}
+          // lastname={ user.lastname}
+        />) :
         (
-          <UserSelect
-            user={user}
-            setUser={setUser}
-            setUpdateUser={setUpdateUser}
-            // email={ user.email}
-            // firstname={ user.firstname}
-            // lastname={ user.lastname}
-          />
-        ) :
-        (
-          <UserSummary
-            setUpdateUser={setUpdateUser}
-            user={user.value}
-            // email={ user.email.getOrElse('')}
-            // firstname={ user.firstname}
-            // lastname={ user.lastname}
-          />
+          customer.value.email
+          // <UserSummary
+          //   setUpdateUser={setUpdateUser}
+          //   // user={customer.value}
+          //   // email={ user.email.getOrElse('')}
+          //   // firstname={ user.firstname}
+          //   // lastname={ user.lastname}
+          // />
         )}
       {O.isNone(customer) || updateCustomer ?
         (
@@ -327,8 +323,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
                 handleSubmitReservation(
                   datesAndMeal.value,
                   bedId.value,
-                  customer.value,
-                  user.value
+                  customer.value
                 )}
             >
               Finaliser la réservation

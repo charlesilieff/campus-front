@@ -46,9 +46,17 @@ export const UserSummary = (
 
       <HStack py={2}>
         <Text fontWeight={'bold'}>{'Nom :'}</Text>
-        <Text>{firstname}</Text>
+        <Text fontWeight={'bold'}>{'Age :'}</Text>
+        {firstname ?
+          (
+            <>
+              <Text>{email}</Text>
+              <Text>{' '}ans</Text>
+            </>
+          ) :
+          <Text>Non renseigné</Text>}
         <Text pl={12} fontWeight={'bold'}>{'Prénom :'}</Text>
-        <Text>{lastname}</Text>
+        <Text>{email}</Text>
       </HStack>
       <VStack alignItems={'flex-start'} py={2}>
         {
