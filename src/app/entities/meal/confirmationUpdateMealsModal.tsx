@@ -41,7 +41,13 @@ export const ConfirmationUpdateMealsModal: FunctionComponent<{ mealsData: IMeal[
         onClick={onOpen}
         isLoading={isLoading}
         leftIcon={<FaSave />}
-        variant={'update'}
+        colorScheme={'green'}
+        _hover={{
+          textDecoration: 'none',
+          color: 'green.200',
+          backgroundColor: '#38A169'
+        }}
+        // variant={'update'}
       >
         Modifier
       </Button>

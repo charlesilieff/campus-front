@@ -28,20 +28,21 @@ export const MealsUserPlanning = (
   // On souhaite afficher 31 jours => Tableau de 31 élements.
   const monthDays = Array.from({ length: numberOfDays })
 
-  const handleChangeBreakfast: React.ChangeEventHandler<HTMLInputElement> = event => {
-    console.log('handleChangeBreakfast', event.target.checked)
-  }
+  // const handleChangeBreakfast: React.ChangeEventHandler<HTMLInputElement> = event => {
+  //   console.log('handleChangeBreakfast', event.target.checked)
+  // }
 
   // Objets contenant la position en x dans la grille des jours.
   const positionX = {}
 
   return (
     <div className="grid-container" style={gridFormatStyle(numberOfDays)}>
-      <div className="time breakfast">Matin</div>
-      <div className="time lunch">Midi</div>
-      <div className="time dinner">Soir</div>
+      <div className="timeMyMeals breakfast">Matin</div>
+      <div className="timeMyMeals lunch">Midi</div>
+      <div className="timeMyMeals dinner">Soir</div>
 
-      <div className="diet breakfast">
+      {
+        /* <div className="diet breakfast">
         <Checkbox
           onChange={handleChangeBreakfast}
           isChecked={true}
@@ -58,7 +59,8 @@ export const MealsUserPlanning = (
           onChange={handleChangeBreakfast}
           isChecked={true}
         />
-      </div>
+      </div> */
+      }
 
       <Months date={date} month={0} totalDays={totalDays}></Months>
 

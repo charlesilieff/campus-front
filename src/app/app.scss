@@ -471,3 +471,19 @@ kitchen page
   padding-left: 0;
   padding-right: 0;
 }
+
+
+/* ==========================================================================
+My meals page
+========================================================================== */
+.timeMyMeals {
+  grid-column-start: 1;
+  grid-column-end: 8;
+  text-align: center;
+  border-top-style: solid;
+  border-right-style: solid;
+  border-width: 0.15em;
+  border-color: #000;
+  height: 100%;
+  width: 100%;
+}

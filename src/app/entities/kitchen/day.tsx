@@ -34,8 +34,14 @@ const apiUrlMealForOneDay = 'api/meals/forOneDay'
 
 export const Day = ({ positionX, date, index }: IProps) => {
   // const { isOpen, onOpen, onClose } = useDisclosure()
-  const { isOpen: isOpenLunch, onOpen: onOpenLunch, onClose: onCloseLunch } = useDisclosure()
-  const { isOpen: isOpenDiner, onOpen: onOpenDiner, onClose: onCloseDiner } = useDisclosure()
+  const { isOpen: isOpenSpecialLunch, onOpen: onOpenSpecialLunch, onClose: onCloseSpecialLunch } =
+    useDisclosure()
+  const { isOpen: isOpenRegularLunch, onOpen: onOpenRegularLunch, onClose: onCloseRegularLunch } =
+    useDisclosure()
+  const { isOpen: isOpenRegularDiner, onOpen: onOpenRegularDiner, onClose: onCloseRegularDiner } =
+    useDisclosure()
+  const { isOpen: isOpenSpecialDiner, onOpen: onOpenSpecialDiner, onClose: onCloseSpecialDiner } =
+    useDisclosure()
   const [mealsWithCustomerData, setMealsWithCustomerData] = useState([] as IMealWithCustomer[])
 
   // const defaultValueWithCustomer: IMealWithCustomer = {
@@ -165,6 +171,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
     if (time === 'breakfast') {
       referentialColor = mealsNumberReferential?.breakfast
       numberToColor = mealsNumber?.breakfast
+      color = 'green'
     }
 
     if (numberToColor > referentialColor) {
@@ -287,7 +294,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
           <Button
             onClick={() => {
               getMeals(date)
-              onOpenLunch()
+              onOpenRegularLunch()
             }}
             size={'sm'}
           >
@@ -298,8 +305,8 @@ export const Day = ({ positionX, date, index }: IProps) => {
               // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               size={'xxl'}
               scrollBehavior={'inside'}
-              isOpen={isOpenLunch}
-              onClose={onCloseLunch}
+              isOpen={isOpenRegularLunch}
+              onClose={onCloseRegularLunch}
               isCentered
             >
               <ModalOverlay />
@@ -318,28 +325,24 @@ export const Day = ({ positionX, date, index }: IProps) => {
                         <Th>Prénom</Th>
                         <Th>Nom</Th>
                         <Th>Repas normaux midi</Th>
-                        <Th>Repas speciaux midi</Th>
+
                         <Th>Comentaire</Th>
                       </Tr>
 
                       {mealsWithCustomerData.map((meals, index) => (
                         <Tr key={index}>
                           <Td>
-                            {meals.firstname ?
-                              meals.firstname :
-                              'Repas annonyme, ancienne réservation'}
+                            {meals.firstname && meals.regularLunch ? meals.firstname : null}
                           </Td>
                           <Td>
-                            {meals.lastname ? meals.lastname : 'Réservation annonyme'}
+                            {meals.lastname && meals.regularLunch ? meals.lastname : null}
                           </Td>
                           <Td>
-                            {meals.regularLunch}
+                            {meals.regularLunch ? meals.regularLunch : null}
                           </Td>
+
                           <Td>
-                            {meals.specialLunch}
-                          </Td>
-                          <Td>
-                            {meals.comment?.length > 0 ? meals.comment : ''}
+                            {meals.comment?.length > 0 && meals.regularLunch ? meals.comment : null}
                           </Td>
                         </Tr>
                       ))}
@@ -347,7 +350,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
                   }
                 </ModalBody>
                 <ModalFooter>
-                  <Button colorScheme="blue" mr={3} onClick={onCloseLunch}>
+                  <Button colorScheme="blue" mr={3} onClick={onCloseRegularLunch}>
                     Close
                   </Button>
                   <Button variant="ghost" onClick={print}>Imprimer</Button>
@@ -382,12 +385,69 @@ export const Day = ({ positionX, date, index }: IProps) => {
           <Button
             onClick={() => {
               getMeals(date)
-              onOpenLunch()
+              onOpenSpecialLunch()
             }}
             size={'sm'}
           >
             {mealsNumber?.lunchtime.specialDiet}
           </Button>
+          <Box p={1}>
+            <Modal
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              size={'xxl'}
+              scrollBehavior={'inside'}
+              isOpen={isOpenSpecialLunch}
+              onClose={onCloseSpecialLunch}
+              isCentered
+            >
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader borderBottom={'solid'}>
+                  {/* <div>Détail du midi :</div> {date} */}
+                  {/* {<Text>Détail du midi :</Text>} {date} */}
+                  {/* <Text>Détail du midi : {date}</Text> */}
+                </ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  {
+                    <Table>
+                      {/* <Caption>Détail du midi : {date}</Caption> */}
+                      <Tr borderBottom={'solid'}>
+                        <Th>Prénom</Th>
+                        <Th>Nom</Th>
+
+                        <Th>Repas speciaux midi</Th>
+                        <Th>Comentaire</Th>
+                      </Tr>
+
+                      {mealsWithCustomerData.map((meals, index) => (
+                        <Tr key={index}>
+                          <Td>
+                            {meals.firstname && meals.specialLunch ? meals.firstname : null}
+                          </Td>
+                          <Td>
+                            {meals.lastname && meals.specialLunch ? meals.lastname : null}
+                          </Td>
+                          <Td>
+                            {meals.specialLunch ? meals.specialLunch : null}
+                          </Td>
+                          <Td>
+                            {meals.comment?.length > 0 && meals.specialLunch ? meals.comment : null}
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Table>
+                  }
+                </ModalBody>
+                <ModalFooter>
+                  <Button colorScheme="blue" mr={3} onClick={onCloseSpecialLunch}>
+                    Close
+                  </Button>
+                  <Button variant="ghost" onClick={print}>Imprimer</Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
+          </Box>
         </div>
       </div>
 
@@ -414,12 +474,68 @@ export const Day = ({ positionX, date, index }: IProps) => {
           <Button
             onClick={() => {
               getMeals(date)
-              onOpenDiner()
+              onOpenRegularDiner()
             }}
             size={'sm'}
           >
             {mealsNumber?.dinner.classicDiet}
           </Button>
+          <Box p={1}>
+            <Modal
+              size={'xxl'}
+              scrollBehavior={'inside'}
+              isOpen={isOpenRegularDiner}
+              onClose={onCloseRegularDiner}
+              isCentered
+            >
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader borderBottom={'solid'}>
+                </ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  {
+                    <Table>
+                      {/* <Caption>Détail du midi : {date}</Caption> */}
+                      <Tr borderBottom={'solid'}>
+                        <Th>Prénom</Th>
+                        <Th>Nom</Th>
+                        <Th>Repas normaux soir</Th>
+
+                        <Th>Comentaire</Th>
+                      </Tr>
+
+                      {mealsWithCustomerData.map((meals, index) => (
+                        <Tr key={index}>
+                          <Td>
+                            {meals.firstname && meals.regularDinner ? meals.firstname : null}
+                          </Td>
+                          <Td>
+                            {meals.lastname && meals.regularDinner ? meals.lastname : null}
+                          </Td>
+                          <Td>
+                            {meals.regularDinner ? meals.regularDinner : null}
+                          </Td>
+
+                          <Td>
+                            {meals.comment?.length > 0 && meals.regularDinner ?
+                              meals.comment :
+                              null}
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Table>
+                  }
+                </ModalBody>
+                <ModalFooter>
+                  <Button colorScheme="blue" mr={3} onClick={onCloseRegularDiner}>
+                    Close
+                  </Button>
+                  <Button variant="ghost" onClick={print}>Imprimer</Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
+          </Box>
         </div>
       </div>
 
@@ -444,7 +560,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
           <Button
             onClick={() => {
               getMeals(date)
-              onOpenDiner()
+              onOpenSpecialDiner()
             }}
             size={'sm'}
           >
@@ -493,8 +609,8 @@ export const Day = ({ positionX, date, index }: IProps) => {
                 <Modal
                   size={'xxl'}
                   scrollBehavior={'inside'}
-                  isOpen={isOpenDiner}
-                  onClose={onCloseDiner}
+                  isOpen={isOpenSpecialDiner}
+                  onClose={onCloseSpecialDiner}
                   isCentered
                 >
                   <ModalOverlay />
@@ -509,7 +625,6 @@ export const Day = ({ positionX, date, index }: IProps) => {
                           <Tr borderBottom={'solid'}>
                             <Th>Prénom</Th>
                             <Th>Nom</Th>
-                            <Th>Repas normaux soir</Th>
                             <Th>Repas speciaux soir</Th>
                             <Th>Comentaire</Th>
                           </Tr>
@@ -517,21 +632,18 @@ export const Day = ({ positionX, date, index }: IProps) => {
                           {mealsWithCustomerData.map((meals, index) => (
                             <Tr key={index}>
                               <Td>
-                                {meals.firstname ?
-                                  meals.firstname :
-                                  'Repas annonyme, ancienne réservation'}
+                                {meals.firstname && meals.specialDinner ? meals.firstname : null}
                               </Td>
                               <Td>
-                                {meals.lastname ? meals.lastname : 'Réservation annonyme'}
+                                {meals.lastname && meals.specialDinner ? meals.lastname : null}
                               </Td>
                               <Td>
-                                {meals.regularDinner}
+                                {meals.specialDinner ? meals.specialDinner : null}
                               </Td>
                               <Td>
-                                {meals.specialDinner}
-                              </Td>
-                              <Td>
-                                {meals.comment?.length > 0 ? meals.comment : ''}
+                                {meals.comment?.length > 0 && meals.specialDinner ?
+                                  meals.comment :
+                                  null}
                               </Td>
                             </Tr>
                           ))}
@@ -539,7 +651,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
                       }
                     </ModalBody>
                     <ModalFooter>
-                      <Button colorScheme="blue" mr={3} onClick={onCloseDiner}>
+                      <Button colorScheme="blue" mr={3} onClick={onCloseSpecialDiner}>
                         Close
                       </Button>
                       <Button variant="ghost" onClick={print}>Imprimer</Button>

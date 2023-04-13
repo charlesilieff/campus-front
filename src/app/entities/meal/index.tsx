@@ -9,6 +9,7 @@ import { FaCalendar } from 'react-icons/fa'
 import { FaSave } from 'react-icons/fa'
 
 import { ConfirmationUpdateMealsModal } from './confirmationUpdateMealsModal'
+import { ConfirmationUpdateMealsModalByPeriode } from './confirmationUpdateMealsModalByPeriode'
 import { DisplayTotalMeals } from './displayTotalMeals'
 import { MealsUserPlanning } from './mealsUserPlanning'
 
@@ -39,10 +40,6 @@ export const Index = () => {
     }
     getMealsDateFor31DaysByUser(date, customerId)
   }, [date])
-
-  const newunsubscribeDate = () => { // todo
-    setUnsubscribeDate(false)
-  }
 
   /**
    * Calculation of total.
@@ -88,49 +85,49 @@ export const Index = () => {
   /**
    * update meals with start date and end date
    */
-  const getMealsBetweenTwoDateByUser = async (
-    startDate: Dayjs,
-    endDate: Dayjs,
-    customerId: number
-  ) => {
-    const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/${customerId}/date1/${
-      startDate.format('YYYY-MM-DD')
-    }/date2/${endDate.format('YYYY-MM-DD')}`
-    const { data } = await axios.get<IMeal[]>(requestUrl)
-    console.log('data axios', data)
-    setMealsDataBetweenDate(data)
-    console.log('data 2 date', data)
-  }
-  // const updateMealsFromDate = (entity: IMeal[]) => {
-  const updateMealsFromDate = () => {
-    console.log('startDate', startDate.format('YYYY-MM-DD'))
-    console.log('endDate', endDate.format('YYYY-MM-DD'))
-    console.log('checkbox unsubscribe', unsubscribeDate)
+  // const getMealsBetweenTwoDateByUser = async (
+  //   startDate: Dayjs,
+  //   endDate: Dayjs,
+  //   customerId: number
+  // ) => {
+  //   const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/${customerId}/date1/${
+  //     startDate.format('YYYY-MM-DD')
+  //   }/date2/${endDate.format('YYYY-MM-DD')}`
+  //   const { data } = await axios.get<IMeal[]>(requestUrl)
+  //   console.log('data axios', data)
+  //   setMealsDataBetweenDate(data)
+  //   console.log('data 2 date', data)
+  // }
 
-    getMealsBetweenTwoDateByUser(startDate, endDate, customerId)
+  // const updateMealsFromDate = () => {
+  //   console.log('startDate', startDate.format('YYYY-MM-DD'))
+  //   console.log('endDate', endDate.format('YYYY-MM-DD'))
+  //   console.log('checkbox unsubscribe', unsubscribeDate)
 
-    const mealsDataBetweenDateUpdate = mealsDataBetweenDate.map((value, index) => {
-      value = {
-        ...value,
-        specialLunch: 0,
-        specialDinner: 0,
-        regularLunch: 0,
-        regularDinner: 0,
-        comment: mealsData[index].comment,
-        breakfast: 0
-      }
-      return value
-    })
+  //   getMealsBetweenTwoDateByUser(startDate, endDate, customerId)
 
-    console.log('mealsDataBetweenDateUpdate', mealsDataBetweenDateUpdate)
+  //   const mealsDataBetweenDateUpdate = mealsDataBetweenDate.map((value, index) => {
+  //     value = {
+  //       ...value,
+  //       specialLunch: 0,
+  //       specialDinner: 0,
+  //       regularLunch: 0,
+  //       regularDinner: 0,
+  //       comment: mealsData[index].comment,
+  //       breakfast: 0
+  //     }
+  //     return value
+  //   })
 
-    const result = axios.put<IMeal>(
-      apiUrlUpdateMeal,
-      mealsDataBetweenDateUpdate
-    )
+  //   console.log('mealsDataBetweenDateUpdate', mealsDataBetweenDateUpdate)
 
-    return result
-  }
+  //   const result = axios.put<IMeal>(
+  //     apiUrlUpdateMeal,
+  //     mealsDataBetweenDateUpdate
+  //   )
+
+  //   return result
+  // }
   const updateMeals = async (entity: IMeal[]) =>
     await axios.put<IMeal>(
       apiUrlUpdateMeal,
@@ -145,8 +142,6 @@ export const Index = () => {
     console.log('entity', entity)
     console.log('date', date)
     console.log('numberOfDays', numberOfDays)
-
-    // const entity1 = entity.filter(value => value.date === date.format('YYYY-MM-DD'))
 
     entity = entity.map((value, index) => {
       console.log('value', value)
@@ -170,8 +165,10 @@ export const Index = () => {
   return (
     <>
       <Box m={4}>
-        <HStack m={4} spacing={8}>
+        <HStack m={4} spacing={8} margin={4} marginBlockEnd={12} alignItems={'flex-start'}>
           <Heading alignSelf={'flex-start'}>Changer mes repas par période</Heading>
+        </HStack>
+        <HStack m={4} spacing={8} margin={4} marginBlockEnd={12} alignItems={'flex-start'}>
           <Box>
             <Text>Du</Text>
 
@@ -182,7 +179,7 @@ export const Index = () => {
             >
             </Input>
           </Box>
-          <Box alignSelf={'flex-start'}>
+          <Box>
             <Text>Au</Text>
             <Input
               id="endDate"
@@ -192,7 +189,8 @@ export const Index = () => {
             >
             </Input>
           </Box>
-          <Box>
+          {
+            /* Todo later <Box>
             <Text>Se désinscrire</Text>
             <Checkbox
               id="unsubscribeDate"
@@ -200,20 +198,28 @@ export const Index = () => {
               onChange={newunsubscribeDate} // todo getMealsDateFor31DaysByUser
             >
             </Checkbox>
-          </Box>
-
-          <Button
+          </Box> */
+          }
+          <ConfirmationUpdateMealsModalByPeriode
+            startDate={startDate}
+            endDate={endDate}
+            customerId={customerId}
+            setDate={setDate}
+          />
+          {
+            /* <Button
             onClick={() => updateMealsFromDate()} // , startDate, endDate, checkboxTwoDate
             leftIcon={<FaSave />}
             colorScheme={'green'}
             _hover={{
               textDecoration: 'none',
-              color: '#17a2b8',
+              color: 'green.200',
               backgroundColor: '#38A169'
             }}
           >
-            Enregistrer
-          </Button>
+            Se désinscrire sur la période sélectionnée
+          </Button> */
+          }
         </HStack>
 
         <HStack m={4} spacing={8}>
@@ -243,17 +249,22 @@ export const Index = () => {
           numberOfDays={numberOfDays}
           mealsData={mealsData}
         />
-
-        <Button
-          type="submit"
-          onClick={() => selectMealsOnPeriode(mealsData, date, numberOfDays)}
-          // isLoading={updating}
-          leftIcon={<FaSave />}
-          variant={'update'}
-        >
-          Tout selectionner/déselectionner
-        </Button>
-        <ConfirmationUpdateMealsModal mealsData={mealsData} />
+        <HStack m={4} spacing={8}>
+          <Button
+            // type="submit"
+            onClick={() => selectMealsOnPeriode(mealsData, date, numberOfDays)}
+            leftIcon={<FaSave />}
+            colorScheme={'green'}
+            _hover={{
+              textDecoration: 'none',
+              color: 'green.200',
+              backgroundColor: '#38A169'
+            }}
+          >
+            Se désinscrire sur la période affichée
+          </Button>
+          <ConfirmationUpdateMealsModal mealsData={mealsData} />
+        </HStack>
       </Box>
       <DisplayTotalMeals resultTotalMeals={resultTotalMeals} />
     </>
