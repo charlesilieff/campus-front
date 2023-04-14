@@ -26,7 +26,6 @@ export const ReservationBed = (
   }: IProps
 ) => (
   <HStack
-    maxW={'220px'}
     className="reservation"
     gridRowStart={gridRowStart}
     gridRowEnd={gridRowEnd}

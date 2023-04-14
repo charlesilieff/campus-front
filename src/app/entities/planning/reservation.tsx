@@ -127,7 +127,7 @@ export const Reservation: FunctionComponent<IProps> = (
         }
 
         if (
-          gridColumnEnd + 1 === endTable
+          gridColumnEnd === endTable
           && date.add(30, 'days').format('YYYY-MM-DD')
             !== dayjs(reservation?.departureDate).format('YYYY-MM-DD')
         ) {

@@ -10,7 +10,7 @@ interface IProps {
 export const Day = ({ positionX, date }: IProps) => {
   const dayWeek = date.day()
   const dayMonth = date.date()
-  console.log(date.format('DD'), positionX)
+
   const style = {
     gridColumnStart: positionX,
     gridColumnEnd: positionX + 2,
