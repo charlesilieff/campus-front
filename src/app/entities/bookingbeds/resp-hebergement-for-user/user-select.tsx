@@ -71,7 +71,12 @@ export const UserSelect = (
   // const [user, setUser] = useState<O.Option<User>>(O.none)
   const [userSelect, setUserSelect] = useState('default' as string)
 
-  const users = useAppSelector(state => state.userManagement.users)
+  const users1 = useAppSelector(state => state.userManagement.users)
+
+  const myData = users1.flatMap(user => ({
+    ...user
+  }))
+  const users = myData.sort((a, b) => a.email.localeCompare(b.email))
 
   const {
     handleSubmit,

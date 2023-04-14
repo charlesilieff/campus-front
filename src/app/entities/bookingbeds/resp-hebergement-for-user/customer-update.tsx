@@ -8,6 +8,7 @@ import {
   Heading,
   HStack,
   Input,
+  Text,
   VStack
 } from '@chakra-ui/react'
 import * as O from '@effect/data/Option'
@@ -137,6 +138,15 @@ export const CustomerUpdate = (
                       required: "L'email est obligatoire"
                     })}
                   />
+                  <Text
+                    color={'red.500'}
+                    fontSize={'sm'}
+                    fontWeight={'bold'}
+                  >
+                    {'email'}
+                    {/* {props.customer.value.email} */}
+                    {errors.email !== undefined ? errors.email.message : ''}
+                  </Text>
 
                   <FormErrorMessage>
                     {errors.email && errors.email.message}

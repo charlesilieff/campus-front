@@ -6,7 +6,6 @@ import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { FaCalendar } from 'react-icons/fa'
-import { FaSave } from 'react-icons/fa'
 
 import { ConfirmationAddMealsScreenModal } from './confirmationAddMealsScreenModal'
 import { ConfirmationRemoveMealsScreenModal } from './confirmationRemoveMealsScreenModal'
@@ -16,7 +15,7 @@ import { DisplayTotalMeals } from './displayTotalMeals'
 import { MealsUserPlanning } from './mealsUserPlanning'
 
 const apiUrlMealsDateFor31DaysByUser = 'api/meals/customer-id'
-const apiUrlUpdateMeal = 'api/meals/update'
+// const apiUrlUpdateMeal = 'api/meals/update'
 
 export const Index = () => {
   const account = useAppSelector(state => state.authentication.account)
@@ -36,6 +35,7 @@ export const Index = () => {
       }`
       const { data } = await axios.get<IMeal[]>(requestUrl)
       console.log('data axios', data)
+      // const dataSorted = data.sort((a, b) => (a > b.date ? 1 : -1))
       setMealsData(data)
     }
     getMealsDateFor31DaysByUser(date, customerId)

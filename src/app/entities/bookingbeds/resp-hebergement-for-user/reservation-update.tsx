@@ -243,7 +243,8 @@ export const ReservationUserUpdate = (): JSX.Element => {
           //   // lastname={ user.lastname}
           // />
         )}
-      {(O.isNone(customer) || !customer.value.lastname || !customer.value.firstname)
+      {(O.isNone(customer) || !customer.value.email || !customer.value.lastname
+          || !customer.value.firstname)
           || updateCustomer ?
         (
           <CustomerUpdate
