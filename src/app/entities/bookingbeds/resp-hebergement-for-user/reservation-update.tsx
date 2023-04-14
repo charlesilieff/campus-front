@@ -11,21 +11,22 @@ import { BsTrash } from 'react-icons/bs'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import {
+  // getIntermittentReservations,
   getReservation
 } from '../../reservation/reservation.reducer'
 import {
-  createEntity,
+  // createEntity,
   createReservationAndUpdateUser,
   reset as resetReservations,
   updateEntity as updateReservation
 } from '../booking-beds.reducer'
+// import { UserSummary } from './user-summary'
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
 import { CustomerUpdate } from './customer-update'
 import { DatesAndMealsChoices } from './dates-and-meals-choices-intermittent'
 import { DatesAndMealsSummary } from './dates-and-meals-summary-intermittent'
 import { UserSelect } from './user-select'
-import { UserSummary } from './user-summary'
 
 export interface DatesAndMeals {
   arrivalDate: string
@@ -122,9 +123,30 @@ export const ReservationUserUpdate = (): JSX.Element => {
     customer: Customer,
     userId: number
   ): Promise<void> => {
+    setIsLoading(true)
     const reservation = createIReservationWithBedIds(customer, datesAndMeal, bedId)
 
-    setIsLoading(true)
+    // const findReservationByThisUser = getIntermittentReservations(userId)
+    // const findReservationByThisUser2 = dispatch(getIntermittentReservations(userId))
+
+    // const reservationList = useAppSelector(state => state.reservation.entities)
+    // useEffect(() => {
+    //   dispatch(getIntermittentReservations(userId))
+    // }, [])
+    // console.log('reservationList', reservationList)
+
+    // reservationList.forEach(reservation => {
+    //   if (reservation.customer.id === customer.id) {
+    //     toast({
+    //       title: 'Une réservation existe déjà pour ce client',
+    //       description: "Veuillez contacter l'administration",
+    //       status: 'error',
+    //       duration: 9000,
+    //       isClosable: true
+    //     })
+    //   }
+    // })
+
     if (reservationId !== undefined) {
       // FIXME: unsafe
       await dispatch(updateReservation({ ...reservation, id: Number(reservationId) }))
@@ -218,6 +240,8 @@ export const ReservationUserUpdate = (): JSX.Element => {
   console.log('updateCustomer', updateCustomer)
   console.log('customer c', O.isNone(customer))
   console.log('updateEmail ', selectUser)
+  // const [selectedBeds, setSelectedBeds] = useState<readonly number[]>([])
+
   return (
     <Stack>
       <Heading size={'lg'} m={4}>
@@ -301,6 +325,14 @@ export const ReservationUserUpdate = (): JSX.Element => {
             bedId={bedId}
             setSelectedBedId={setBedId}
             reservationId={O.fromNullable(reservationId)}
+            // bedId={bedId}
+            // selectedBeds={selectedBeds}
+            // reservationId={O.fromNullable(reservationId)}
+            // selectedBed={bedId => {
+            //   !selectedBeds.includes(bedId) ?
+            //     pipe(selectedBeds, A.append(bedId), d => setSelectedBeds(d)) :
+            //     pipe(selectedBeds, A.filter(id => id !== bedId), setSelectedBeds)
+            // }}
           />
         ) :
         (

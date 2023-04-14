@@ -9,7 +9,7 @@ import type { FunctionComponent } from 'react'
 import React, { useEffect, useState } from 'react'
 
 import type { IRoomWithBeds } from '../utils'
-import { getIntermittentPlaceWithFreeAndBookedBeds } from '../utils'
+import { getPlaceWithFreeBedsAndBookedBeds } from '../utils'
 import { IntermittentBeds } from './beds-intermittent'
 import type { DatesAndMeals } from './reservation-update'
 
@@ -32,12 +32,14 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
       departureDate: string,
       reservationId: O.Option<string>
     ) => {
-      const data = await getIntermittentPlaceWithFreeAndBookedBeds(
+      const data = await getPlaceWithFreeBedsAndBookedBeds(false)(
         arrivalDate,
         departureDate,
         reservationId
       )
-      const roomsData = data?.flatMap(place => place.rooms)
+      const roomsData = data?.flatMap(place => place.rooms).sort((a, b) =>
+        a?.name.localeCompare(b?.name) || 0
+      )
 
       setLoading(false)
 

@@ -1,5 +1,5 @@
 import type { ICustomer } from './customer.model'
-import type { IPricing } from './pricing.model'
+import type { IUserCategory } from './userCategory.model'
 
 export interface IBookingBeds {
   id?: number
@@ -20,7 +20,9 @@ export interface IBookingBeds {
   personNumber?: number
   specialDietNumber?: number
   customer?: ICustomer
-  pricing?: IPricing
+  // pricing?: IPricing
+  // userCategoryId?: number
+  userCategory?: IUserCategory
   isPaid?: boolean
   isConfirmed?: boolean
   paymentMode?: string

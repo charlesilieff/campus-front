@@ -117,7 +117,7 @@ export const Home = (): JSX.Element => {
             </Box>
           ) :
           ''}
-        {isHabitant || isAdmin ?
+        {isAdmin ?
           (
             <Box
               py={'10px'}

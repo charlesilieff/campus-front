@@ -4,6 +4,7 @@ import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import * as A from '@effect/data/ReadonlyArray'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { getEntities as getUserCategories } from 'app/entities/user-category/user-category.reducer'
 import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
 import { getSession } from 'app/shared/reducers/authentication'
 import React, { useEffect, useState } from 'react'
@@ -49,6 +50,17 @@ export interface Customer {
 
 export type BedIds = ReadonlyArray<{ id: number }>
 
+// useEffect(() => {
+//   dispatch(getEntity(1))
+// }, [])
+// const user_categories = getEntities()
+// const user_category = getEntity(1)
+
+// const userCategories = useAppSelector(state => state.userCategory.entities)
+// const userCategory = userCategories.find(userCategory => userCategory.name === 'Intermittent')
+
+// const entity = userCategories.findIndex(userCategory => userCategory.id === 1)
+
 const createIReservationWithBedIds = (
   customer: Customer,
   datesAndMeals: DatesAndMeals,
@@ -79,6 +91,11 @@ const createIReservationWithBedIds = (
   },
   isArrivalBreakfast: datesAndMeals.isArrivalBreakfast,
   isDepartureBreakfast: datesAndMeals.isDepartureBreakfast
+  // userCategory: {
+  //   id: userCategory.id,
+  //   name: userCategory.name,
+  //   comment: userCategory.comment
+  // }
 })
 
 export const ReservationIntermittentUpdate = (): JSX.Element => {
@@ -95,6 +112,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
   const customerId = O.fromNullable(
     useAppSelector(state => state.authentication.account.customerId)
   )
+  // const getEntity = useAppSelector(state => state.user-category.)
 
   const userId: number = useAppSelector(state => state.authentication.account.id)
 
@@ -111,6 +129,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
       await dispatch(updateReservation({ ...reservation, id: Number(reservationId) }))
       setIsLoading(false)
     } else {
+      console.log('test reservation', reservation)
       await dispatch(
         createReservationAndUpdateUser({ entity: reservation, sendMail: false, userId })
       )
@@ -197,6 +216,10 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
       navigate('/planning')
     }
   }, [updateSuccess])
+
+  useEffect(() => {
+    dispatch(getUserCategories())
+  }, [])
 
   return (
     <Stack>
