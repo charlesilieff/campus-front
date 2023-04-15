@@ -8,8 +8,9 @@ export const Footer = () => (
   <VStack alignItems={'flex-start'} px={4}>
     <HStack>
       <Text>
-        Développé par <a href="https://herve-caujolle.fr">Hervé Caujolle</a> et{' '}
-        <a href="https://charles.ilieff.fr">Charles Ilieff</a>.
+        Développé par <a href="https://herve-caujolle.fr">Hervé Caujolle</a> ,{' '}
+        <a href="https://charles.ilieff.fr">Charles Ilieff</a> et{' '}
+        <a href="https://www.gurunweb.fr">Gurun Le Grand</a>.
       </Text>{' '}
       <Text>Version {process.env.npm_package_version}</Text>
     </HStack>

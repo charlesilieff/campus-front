@@ -20,13 +20,13 @@ import {
   reset as resetReservations,
   updateEntity as updateReservation
 } from '../booking-beds.reducer'
-// import { UserSummary } from './user-summary'
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
 import { CustomerUpdate } from './customer-update'
 import { DatesAndMealsChoices } from './dates-and-meals-choices-intermittent'
 import { DatesAndMealsSummary } from './dates-and-meals-summary-intermittent'
 import { UserSelect } from './user-select'
+// import { UserSummary } from './user-summary'
 
 export interface DatesAndMeals {
   arrivalDate: string
@@ -46,7 +46,7 @@ export interface User {
   firstname: O.Option<string>
   lastname: O.Option<string>
   email: string
-  phoneNumber: O.Option<string>
+  // phoneNumber: O.Option<string>
   // login: string
   customerId: O.Option<number>
 }
@@ -113,9 +113,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
 
   const [userId, setUserId] = useState<number>(null)
 
-  // const userId: number = useAppSelector(state => state.authentication.account.id)
-  // const userId: number = useAppSelector(state => state.authentication.account.id)
-  // const userId: number = useAppSelector(state => state.administration.userManagement.user.id)
+  // const [user, setUser] = useState<O.Option<User>>(O.none)
 
   const handleSubmitReservation = async (
     datesAndMeal: DatesAndMeals,
@@ -239,6 +237,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
   }, [updateSuccess])
   console.log('updateCustomer', updateCustomer)
   console.log('customer c', O.isNone(customer))
+  console.log('userId ', userId)
   console.log('updateEmail ', selectUser)
   // const [selectedBeds, setSelectedBeds] = useState<readonly number[]>([])
 
@@ -248,27 +247,78 @@ export const ReservationUserUpdate = (): JSX.Element => {
         Votre réservation
       </Heading>
 
-      {O.isNone(customer) || selectUser ? // {O.isNone(customer) || updateEmail  ?
+      <UserSelect
+        setUserId={setUserId}
+        setCustomer={setCustomer}
+        setUpdateUser={setSelectUser}
+        // setUser={setUser}
+        // user={user}
+      />
+
+      {
+        /* {O.isNone(customer) && O.isNone(user) ? // {O.isNone(customer) || updateEmail  ?
         (<UserSelect
           setUserId={setUserId}
           setCustomer={setCustomer}
           setUpdateUser={setSelectUser}
-          // email={ user.email}
-          // firstname={ user.firstname}
-          // lastname={ user.lastname}
+
+          setUser={setUser}
+          // user={user}
         />) :
         (
-          customer.value.email
-          // <UserSummary
-          //   setUpdateUser={setUpdateUser}
-          //   // user={customer.value}
-          //   // email={ user.email.getOrElse('')}
-          //   // firstname={ user.firstname}
-          //   // lastname={ user.lastname}
-          // />
-        )}
-      {(O.isNone(customer) || !customer.value.email || !customer.value.lastname
+          // customer.value.email
+          <UserSummary
+            setUpdateUser={setSelectUser}
+            user={O.getOrNull(user)}
+
+          />
+        )} */
+      }
+
+      {
+        /* {(O.isNone(customer) || !customer.value.email || !customer.value.lastname
           || !customer.value.firstname)
+          || updateCustomer ? */
+      }
+      {/* {(O.isNone(customer)) || userId ? */}
+      {
+        /* {(O.isNone(customer)) || userId ?
+        (
+          <CustomerUpdate
+            customer={customer}
+            setUpdateCustomer={setUpdateCustomer}
+            setCustomer={setCustomer}
+            // setUpdateUser={setSelectUser}
+
+            // customer={customer}
+            // setUpdateCustomer={setUpdateCustomer}
+            // setCustomer={setCustomer}
+          />
+        ) :
+        (
+          <CustomerSummary
+            setUpdateCustomer={setUpdateCustomer}
+            customer={customer.value}
+          />
+        )} */
+      }
+
+      {!userId ?
+        (
+          <Heading
+            p={4}
+            borderRadius={8}
+            borderColor={'#D9D9D9'}
+            border={'solid'}
+            fontWeight={'bold'}
+            fontSize={'25'}
+            color={'#C4C4C4'}
+          >
+            {'Informations personnelles'}
+          </Heading>
+        ) :
+        (O.isNone(customer) || !customer.value.email || !customer.value.lastname
+            || !customer.value.firstname)
           || updateCustomer ?
         (
           <CustomerUpdate
@@ -288,6 +338,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
             customer={customer.value}
           />
         )}
+
       {(O.isNone(customer) || !customer.value.lastname || !customer.value.firstname)
           || (updateCustomer && O.isNone(datesAndMeal)) ?
         (
@@ -318,6 +369,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
             setBedId={setBedId}
           />
         )}
+
       {O.isSome(datesAndMeal) && !updateDatesAndMeals ?
         (
           <BedsChoices

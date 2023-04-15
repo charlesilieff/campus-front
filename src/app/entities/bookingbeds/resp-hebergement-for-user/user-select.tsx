@@ -3,12 +3,12 @@ import {
   Box,
   Button,
   FormControl,
-  FormErrorMessage,
+  // FormErrorMessage,
   FormLabel,
   Heading,
   HStack,
   Select,
-  Text,
+  // Text,
   VStack
 } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
@@ -17,31 +17,24 @@ import * as A from '@effect/data/ReadonlyArray'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 // import type { Customer } from './reservation-update'
 import { getUsersAsAdmin } from 'app/modules/administration/user-management/user-management.reducer'
-import { IUser } from 'app/shared/model/user.model'
-import axios from 'axios'
+// import { IUser } from 'app/shared/model/user.model'
+// import axios from 'axios'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
 import type { Customer } from './reservation-update'
-// interface CustomerUpdateProps {
-//   setCustomer: (customer: O.Option<Customer>) => void
-//   setUpdateCustomer: (updateCustomer: boolean) => void
-//   customer: O.Option<Customer>
-// }
+// import type { User } from './reservation-update'
 
 interface UserUpdateProps {
   setCustomer: (user: O.Option<Customer>) => void
   setUserId: (userId: number) => void
   setUpdateUser: (updateUser: boolean) => void
+
+  // setUser: (user: O.Option<User>) => void
+  // user: O.Option<User>
 }
-// interface FormUserToChoice {
-//   userId: string
-//   userFirstName: string
-//   userLastName: string
-//   userEmail: string
-// }
 
 export interface FormUser {
   id: number
@@ -50,13 +43,6 @@ export interface FormUser {
 // const url = 'api/admin/users' // .in("api" / "admin" / "users" / path[String]("login"))
 
 export const UserSelect = (
-  // UserSelected: {
-  //   email,
-  //   firstname,
-  //   lastname,
-  // }
-  // lastname: string,
-  // firstname: string
   props: UserUpdateProps
 ): JSX.Element => {
   const dispatch = useAppDispatch()
@@ -107,7 +93,7 @@ export const UserSelect = (
   //   }, [props.user])
 
   const handleValidUserSubmit = (
-    // user: User
+    // user: User,
     formUser: FormUser
   ) => {
     // const requestUrl = `${url}/${user.login}`
@@ -119,6 +105,20 @@ export const UserSelect = (
     console.log('id to find', Number(formUser.id))
     props.setUserId(Number(formUser.id))
     // props.setUserEmail(formUser.email)
+
+    // todo  search and test customer , if customer exist then map customer with this, if customer don't existe  then map customer with user
+    // pipe(
+    //   users,
+    //   A.findFirst(user => user.id === Number(formUser.id)),
+    //   O.map(x => ({
+    //     firstname: O.some(x.firstName),
+    //     lastname: O.some(x.lastName),
+    //     email: x.email,
+    //     id: x.id,
+    //     customerId: O.some(x.customerId)
+    //   } as User)),
+    //   props.setUser
+    // )
 
     pipe(
       users,
@@ -135,6 +135,12 @@ export const UserSelect = (
       props.setCustomer
     )
 
+    // const user = users.filter(user => user.id === Number(formUser.id))
+
+    // const customerFind = user.map(u => u.customerId)
+
+    // props.setUser(user)
+
     // const lastname = formUser.lastname === undefined || formUser.lastname === '' ?
     //   O.none() :
     //   O.some(formUser.lastname)
@@ -147,10 +153,14 @@ export const UserSelect = (
     // const customerId = formUser.customerId === undefined ? O.none() : O.some(formUser.customerId)
     // props.setUser(O.some({ ...formUser }))
 
+    // props.setUser(O.some({ ...user }))
     console.log('user mail', formUser)
     // props.setUser(formUser)
+    console.log('userId ', formUser.id)
 
-    props.setUpdateUser(true) // todo false if we want to update the user
+    // console.log('user ', props.user)
+
+    props.setUpdateUser(false) // todo false if we want to update the user
   }
 
   return (
