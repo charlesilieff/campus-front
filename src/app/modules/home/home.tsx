@@ -83,6 +83,7 @@ export const Home = (): JSX.Element => {
               colorScheme={'blue'}
               onClick={copyLink}
               leftIcon={<CopyIcon />}
+              minWidth={'340px'}
             >
               Copier le lien de demande de réservation
             </Button>
