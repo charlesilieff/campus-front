@@ -65,7 +65,8 @@ export const DatesAndMealsSummary = (
       border={'solid'}
       p={4}
       borderRadius={8}
-      borderColor={'#D9D9D9'}
+      // borderColor={'#D9D9D9'}
+      borderColor={'green'}
     >
       <Heading size={'lg'} marginBottom={8}>
         Dates et repas
