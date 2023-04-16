@@ -3,6 +3,7 @@ import {
   Button,
   Heading,
   HStack,
+  Stack,
   Text,
   VStack
 } from '@chakra-ui/react'
@@ -36,44 +37,48 @@ export const CustomerSummary = (
       border={'solid'}
       p={4}
       borderRadius={8}
-      borderColor={'#D9D9D9'}
+      // borderColor={'#D9D9D9'}
       my={4}
+      // borderColor={(firstname && lastname && email) ? 'green' : 'green'}
+      borderColor={'green'}
     >
       <HStack>
-        <Heading size={'lg'} marginBottom={4}>
+        <Heading size={'lg'} marginBottom={4} my={4}>
           Informations personnelles <CheckCircleIcon color={'green'}></CheckCircleIcon>
         </Heading>
       </HStack>
 
-      <HStack py={2}>
+      <Stack direction={['column', 'row']} alignItems={'flex-start'} my={4}>
         <Text fontWeight={'bold'}>{'Nom :'}</Text>
         <Text>{firstname}</Text>
-        <Text pl={12} fontWeight={'bold'}>{'Prénom :'}</Text>
+        <Text pl={screen.availWidth > 400 ? 20 : 0} fontWeight={'bold'}>{'Prénom :'}</Text>
         <Text>{lastname}</Text>
-      </HStack>
-      <VStack alignItems={'flex-start'} py={2}>
-        {O.isSome(age) ?
-          (
-            <HStack py={2}>
-              <Text fontWeight={'bold'}>{'Age :'}</Text>
-              {age.value ?
-                (
-                  <>
-                    <Text>{age.value}</Text>
-                    <Text>{' '}ans</Text>
-                  </>
-                ) :
-                <Text>Non renseigné</Text>}
-            </HStack>
-          ) :
-          null}
+      </Stack>
+      <VStack alignItems={'flex-start'} my={4}>
+        <Stack direction={['column', 'row']} alignItems={'flex-start'}>
+          <Text fontWeight={'bold'}>{'Age :'}</Text>
+          {O.isSome(age) ?
+            (age.value ?
+              (
+                <>
+                  <Text>{age.value}</Text>
+                  <Text>{' '}ans</Text>
+                </>
+              ) :
+              <Text>Non renseigné</Text>) :
+            <Text>Non renseigné</Text>}
+        </Stack>
       </VStack>
-      <HStack py={2}>
+      <Stack direction={['column', 'row']} alignItems={'flex-start'} my={4}>
         <Text fontWeight={'bold'}>{'Email :'}</Text>
         <Text>{email}</Text>
-        <Text pl={12} fontWeight={'bold'}>{'Téléphone :'}</Text>
+        <Text pl={screen.availWidth > 400 ? 20 : 0} fontWeight={'bold'}>{'Téléphone :'}</Text>
         <Text>{phoneNumberString}</Text>
-      </HStack>
+        {
+          /* <Text pl={12} fontWeight={'bold'}>{'Age :'}</Text>
+        <Text>{age}</Text> */
+        }
+      </Stack>
 
       <Button
         colorScheme="blue"

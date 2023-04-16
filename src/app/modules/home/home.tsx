@@ -1,12 +1,13 @@
 import './home.scss'
 
 import { CopyIcon } from '@chakra-ui/icons'
-import { Box, Button, HStack, Image, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, HStack, Image, Stack, Text, VStack } from '@chakra-ui/react'
 import { AUTHORITIES } from 'app/config/constants'
 import { useAppSelector } from 'app/config/store'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
 import React from 'react'
 import { BsPlusCircleFill } from 'react-icons/bs'
+import { GoScreenFull } from 'react-icons/go'
 import { Link } from 'react-router-dom'
 
 import { ReservationsToBeProcessed } from '../reservation-to-be-processed/reservationtobeprocessed'
@@ -56,11 +57,20 @@ export const Home = (): JSX.Element => {
         />
       </Box>
       <VStack alignItems={'flex-start'}>
-        <Text>
+        <Text
+          // width={screen.availWidth > 300 ? 'auto' : '400px'}
+          width={'auto'}
+        >
           Bienvenue dans l&apos;outil de gestion d&apos;hebergement du Campus de la Transition.
         </Text>
-        <Box backgroundColor={'blue.100'} p={5}>
-          <VStack alignItems={'flex-start'}>
+        <Box backgroundColor={'blue.100'} p={5} width={'auto'}>
+          <Stack
+            direction={['column', 'row']}
+            alignItems={'flex-start'}
+            minW={'300px'}
+            maxW={'600px'}
+            width={screen.availWidth > 300 ? 'auto' : '400px'}
+          >
             <Box>
               Vous vous voulez voir la page de demande de réservation publique ?{' '}
               <Link target="_blank" data-cy="reservation-request" to={reservationRequestUrl}>
@@ -76,7 +86,7 @@ export const Home = (): JSX.Element => {
             >
               Copier le lien de demande de réservation
             </Button>
-          </VStack>
+          </Stack>
         </Box>
 
         {account && account.login ?
@@ -193,9 +203,13 @@ export const Home = (): JSX.Element => {
               backgroundColor={'#C6F6D5'}
               borderLeft={'4px'}
               borderColor={'#38A169'}
-              minW={'650px'}
             >
-              <HStack justifyContent={'space-between'}>
+              <Stack
+                justifyContent={'space-between'}
+                direction={['column', 'row']}
+                // minW={screen.availWidth > 300 ? '500px' : '300px'}
+                width={screen.availWidth > 300 ? 'auto' : '400px'}
+              >
                 <VStack alignItems={'flex-start'}>
                   <HStack>
                     <BsPlusCircleFill color="#38A169" size={'24px'} />
@@ -204,6 +218,8 @@ export const Home = (): JSX.Element => {
                 </VStack>
                 <Button
                   as={Link}
+                  // width={'auto'}
+                  width={screen.availWidth > 300 ? 'auto' : '100%'}
                   to={reservationCreationInviteUrl}
                   colorScheme={'green'}
                   _hover={{
@@ -214,7 +230,7 @@ export const Home = (): JSX.Element => {
                 >
                   Créer une réservation
                 </Button>
-              </HStack>
+              </Stack>
             </Box>
           ) :
           ''}

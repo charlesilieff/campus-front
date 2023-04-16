@@ -8,6 +8,7 @@ import {
   Heading,
   HStack,
   Input,
+  Stack,
   VStack
 } from '@chakra-ui/react'
 import * as O from '@effect/data/Option'
@@ -82,17 +83,18 @@ export const CustomerUpdate = (
           </Heading>
           <BsPencil size={'30px'} color={'black'}></BsPencil>
         </HStack>
-        <Box minW={'500px'}>
+        <Box minW={'400px'}>
           <form
             onSubmit={handleSubmit(handleValidCustomerSubmit)}
           >
-            <VStack spacing={10} alignItems={'left'}>
-              <HStack spacing={12} minW={600} my={4}>
+            <VStack alignItems={'flex-start'}>
+              <Stack minW={600} my={4} direction={['column', 'row']}>
                 <FormControl isRequired isInvalid={errors.firstname !== undefined}>
                   <FormLabel htmlFor="firstname" fontWeight={'bold'}>
                     {'Prénom'}
                   </FormLabel>
                   <Input
+                    width="auto"
                     id="firstname"
                     type="text"
                     placeholder="Prénom"
@@ -100,16 +102,20 @@ export const CustomerUpdate = (
                       required: 'Le prénom est obligatoire'
                     })}
                   />
-
                   <FormErrorMessage>
                     {errors.firstname && errors.firstname.message}
                   </FormErrorMessage>
                 </FormControl>
-                <FormControl isRequired isInvalid={errors.lastname !== undefined}>
+                <FormControl
+                  isRequired
+                  isInvalid={errors.lastname !== undefined}
+                  // pl={screen.availWidth > 400 ? 20 : 0}
+                >
                   <FormLabel htmlFor="lastname" fontWeight={'bold'}>
                     {'Nom'}
                   </FormLabel>
                   <Input
+                    width="auto"
                     id="lastname"
                     type="text"
                     placeholder="Nom"
@@ -122,13 +128,18 @@ export const CustomerUpdate = (
                     {errors.lastname && errors.lastname.message}
                   </FormErrorMessage>
                 </FormControl>
-              </HStack>
-              <HStack spacing={12} minW={800} my={4}>
-                <FormControl isRequired isInvalid={errors.firstname !== undefined}>
+              </Stack>
+              <Stack minW={600} my={4} direction={['column', 'row']}>
+                <FormControl
+                  isRequired
+                  isInvalid={errors.firstname !== undefined}
+                  pr={20}
+                >
                   <FormLabel htmlFor="email" fontWeight={'bold'}>
                     {'Email'}
                   </FormLabel>
                   <Input
+                    width="auto"
                     id="email"
                     type="email"
                     placeholder="Email"
@@ -141,11 +152,12 @@ export const CustomerUpdate = (
                     {errors.email && errors.email.message}
                   </FormErrorMessage>
                 </FormControl>
-                <FormControl>
+                <FormControl pr={20}>
                   <FormLabel htmlFor="phoneNumber" fontWeight={'bold'}>
                     {'Téléphone'}
                   </FormLabel>
                   <Input
+                    width="auto"
                     id="phoneNumber"
                     type="string"
                     placeholder="Téléphone"
@@ -161,6 +173,7 @@ export const CustomerUpdate = (
                     {'Age'}
                   </FormLabel>
                   <Input
+                    width="auto"
                     id="age"
                     type="number"
                     placeholder="Age"
@@ -171,7 +184,7 @@ export const CustomerUpdate = (
                     {errors.age && errors.age.message}
                   </FormErrorMessage>
                 </FormControl>
-              </HStack>
+              </Stack>
 
               <Button
                 rightIcon={<CheckIcon />}

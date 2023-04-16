@@ -10,6 +10,7 @@ import {
   HStack,
   Input,
   Radio,
+  Stack,
   Text,
   Textarea,
   VStack
@@ -63,142 +64,169 @@ export const DatesAndMealsChoices = (
   }
 
   return (
-    <VStack alignItems={'flex-start'}>
-      <VStack
-        minW={'100%'}
+    <VStack
+      alignItems={'flex-start'}
+      border={'solid'}
+      p={4}
+      borderRadius={8}
+      borderColor={'#D9D9D9'}
+      my={4}
+    >
+      {
+        /* <VStack
         alignItems={'flex-start'}
         border={'solid'}
         p={4}
         borderRadius={8}
         borderColor={'#D9D9D9'}
-      >
-        <HStack>
-          <Heading size={'md'}>
-            Invités : nombre, date et repas
-          </Heading>
-          <BsPencil size={'30px'} color={'black'}></BsPencil>
-        </HStack>
-        <Box minW={'500px'}>
-          <form
-            onSubmit={handleSubmit(handleValidDateAndMealSubmit)}
-          >
-            <VStack spacing={10}>
-              <HStack spacing={12} minW={800} my={4}>
-                <FormControl isRequired isInvalid={errors.personNumber !== undefined}>
-                  <FormLabel htmlFor="personnes" fontWeight={'bold'}>
-                    {'Nombre de personnes'}
-                  </FormLabel>
-                  <Input
-                    type="number"
-                    placeholder="Nombre de personnes"
-                    {...register('personNumber', {
-                      required: 'Le nombre de régimes spéciaux est obligatoire',
-                      validate(v) {
-                        if (v < 0) {
-                          return 'Le nombre de régimes spéciaux ne peut pas être négatif'
-                        }
-                      }
-                    })}
-                  />
-
-                  <FormErrorMessage>
-                    {errors.personNumber && errors.personNumber.message}
-                  </FormErrorMessage>
-                </FormControl>
-                <FormControl isRequired isInvalid={errors.specialDietNumber !== undefined}>
-                  <FormLabel htmlFor="specialDietNumber" fontWeight={'bold'}>
-                    {'Nombre de régimes sans gluten OU lactose'}
-                  </FormLabel>
-                  <Input
-                    type="number"
-                    {...register('specialDietNumber', {
-                      required: 'Le nombre de régimes spéciaux est obligatoire',
-                      validate(v) {
-                        console.log(personNumber.current)
-                        console.log(v)
-                        if (v > +personNumber.current) {
-                          return 'Le nombre de régimes spéciaux ne peut pas être supérieur au nombre de personnes'
-                        }
-                        if (v < 0) {
-                          return 'Le nombre de régimes spéciaux ne peut pas être négatif'
-                        }
-                      }
-                    })}
-                  />
-
-                  <FormErrorMessage>
-                    {errors.specialDietNumber && errors.specialDietNumber.message}
-                  </FormErrorMessage>
-                </FormControl>
-              </HStack>
-              <HStack spacing={12} minW={600} my={4}>
-                <FormControl isRequired isInvalid={errors.arrivalDate !== undefined}>
-                  <FormLabel htmlFor="arrivalDate" fontWeight={'bold'}>
-                    {"Date d'arrivée"}
-                  </FormLabel>
-                  <Input
-                    id="username"
-                    type="date"
-                    placeholder="Date d'arrivée'"
-                    {...register('arrivalDate', {
-                      required: "la date d'arrivée' est obligatoire",
-                      validate(v) {
-                        if (
-                          !isArrivalDateIsBeforeDepartureDate(v, departureDate.current.toString())
-                        ) {
-                          return "La date d'arrivée doit être avant la date de départ"
-                        }
-                        if (isDateBeforeNow(v)) {
-                          return "La date d'arrivée doit être après aujourd’hui"
-                        } else {
-                          return true
-                        }
-                      }
-                    })}
-                  />
-
-                  <FormErrorMessage>
-                    {errors.arrivalDate && errors.arrivalDate.message}
-                  </FormErrorMessage>
-                </FormControl>
-
-                <FormControl isRequired isInvalid={errors.departureDate !== undefined}>
-                  <FormLabel htmlFor="departureDate" fontWeight={'bold'}>
-                    {'Date de départ'}
-                  </FormLabel>
-                  <Input
-                    id="username"
-                    type="date"
-                    placeholder="Date de départ"
-                    {...register('departureDate', {
-                      required: 'la date de départ est obligatoire'
-                    })}
-                  />
-
-                  <FormErrorMessage>
-                    {errors.departureDate && errors.departureDate.message}
-                  </FormErrorMessage>
-                </FormControl>
-              </HStack>
-              <FormControl>
-                <FormLabel htmlFor="selectionRepas" fontWeight={'bold'}>
-                  {'Sélection des repas :'}
+        my={4}
+      > */
+      }
+      <HStack py={2}>
+        <Heading size={'md'}>
+          Invités : nombre, date et repas
+        </Heading>
+        <BsPencil size={'30px'} color={'black'}></BsPencil>
+      </HStack>
+      <Box py={2}>
+        <form
+          onSubmit={handleSubmit(handleValidDateAndMealSubmit)}
+        >
+          <VStack spacing={10} py={2} alignItems={'flex-start'}>
+            <Stack spacing={12} my={2} direction={['column', 'row']}>
+              <FormControl
+                isRequired
+                isInvalid={errors.personNumber !== undefined}
+                size={'sm'}
+              >
+                <FormLabel htmlFor="personnes" fontWeight={'bold'}>
+                  {'Nombre de personnes'}
                 </FormLabel>
-                <HStack>
-                  <Text fontWeight={'bold'}>{"Jour d'arrivée :"}</Text>
-                  <Checkbox {...register('isArrivalBreakfast')}>petit déjeuner</Checkbox>
-                  <Checkbox {...register('isArrivalLunch')}>déjeuner</Checkbox>
-                  <Checkbox {...register('isArrivalDinner')}>dîner</Checkbox>
-                </HStack>
-                <HStack>
-                  <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>
-                  <Checkbox {...register('isDepartureBreakfast')}>petit déjeuner</Checkbox>
-                  <Checkbox {...register('isDepartureLunch')}>déjeuner</Checkbox>
-                  <Checkbox {...register('isDepartureDinner')}>dîner</Checkbox>
-                </HStack>
+                <Input
+                  type="number"
+                  placeholder="Nombre de personnes"
+                  width="auto"
+                  {...register('personNumber', {
+                    required: 'Le nombre de régimes spéciaux est obligatoire',
+                    validate(v) {
+                      if (v < 0) {
+                        return 'Le nombre de régimes spéciaux ne peut pas être négatif'
+                      }
+                    }
+                  })}
+                />
+
+                <FormErrorMessage>
+                  {errors.personNumber && errors.personNumber.message}
+                </FormErrorMessage>
               </FormControl>
-              {
-                /* <FormControl isRequired isInvalid={errors.specialDietNumber !== undefined}>
+              <FormControl
+                isRequired
+                isInvalid={errors.specialDietNumber !== undefined}
+                // width={'max-content'}
+              >
+                <FormLabel
+                  htmlFor="specialDietNumber"
+                  fontWeight={'bold'}
+                  width={screen.availWidth > 400 ? '400px' : '200px'}
+                  // alignItems={'flex-start'}
+                >
+                  {'Nombre de régimes sans gluten OU lactose'}
+                </FormLabel>
+                <Input
+                  width="auto"
+                  type="number"
+                  placeholder="Nombre de régimes spéciaux"
+                  {...register('specialDietNumber', {
+                    required: 'Le nombre de régimes spéciaux est obligatoire',
+                    validate(v) {
+                      console.log(personNumber.current)
+                      console.log(v)
+                      if (v > +personNumber.current) {
+                        return 'Le nombre de régimes spéciaux ne peut pas être supérieur au nombre de personnes'
+                      }
+                      if (v < 0) {
+                        return 'Le nombre de régimes spéciaux ne peut pas être négatif'
+                      }
+                    }
+                  })}
+                />
+
+                <FormErrorMessage>
+                  {errors.specialDietNumber && errors.specialDietNumber.message}
+                </FormErrorMessage>
+              </FormControl>
+            </Stack>
+            <Stack spacing={12} minW={600} my={4} direction={['column', 'row']}>
+              <FormControl isRequired isInvalid={errors.arrivalDate !== undefined}>
+                <FormLabel htmlFor="arrivalDate" fontWeight={'bold'}>
+                  {"Date d'arrivée"}
+                </FormLabel>
+                <Input
+                  id="username"
+                  width={'auto'}
+                  type="date"
+                  placeholder="Date d'arrivée'"
+                  {...register('arrivalDate', {
+                    required: "la date d'arrivée' est obligatoire",
+                    validate(v) {
+                      if (
+                        !isArrivalDateIsBeforeDepartureDate(v, departureDate.current.toString())
+                      ) {
+                        return "La date d'arrivée doit être avant la date de départ"
+                      }
+                      if (isDateBeforeNow(v)) {
+                        return "La date d'arrivée doit être après aujourd’hui"
+                      } else {
+                        return true
+                      }
+                    }
+                  })}
+                />
+
+                <FormErrorMessage>
+                  {errors.arrivalDate && errors.arrivalDate.message}
+                </FormErrorMessage>
+              </FormControl>
+
+              <FormControl isRequired isInvalid={errors.departureDate !== undefined}>
+                <FormLabel htmlFor="departureDate" fontWeight={'bold'}>
+                  {'Date de départ'}
+                </FormLabel>
+                <Input
+                  id="username"
+                  width={'auto'}
+                  type="date"
+                  placeholder="Date de départ"
+                  {...register('departureDate', {
+                    required: 'la date de départ est obligatoire'
+                  })}
+                />
+
+                <FormErrorMessage>
+                  {errors.departureDate && errors.departureDate.message}
+                </FormErrorMessage>
+              </FormControl>
+            </Stack>
+            <FormControl>
+              <FormLabel htmlFor="selectionRepas" fontWeight={'bold'}>
+                {'Sélection des repas :'}
+              </FormLabel>
+              <Stack direction={['column', 'row']}>
+                <Text fontWeight={'bold'}>{"Jour d'arrivée :"}</Text>
+                <Checkbox {...register('isArrivalBreakfast')}>petit déjeuner</Checkbox>
+                <Checkbox {...register('isArrivalLunch')}>déjeuner</Checkbox>
+                <Checkbox {...register('isArrivalDinner')}>dîner</Checkbox>
+              </Stack>
+              <Stack direction={['column', 'row']}>
+                <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>
+                <Checkbox {...register('isDepartureBreakfast')}>petit déjeuner</Checkbox>
+                <Checkbox {...register('isDepartureLunch')}>déjeuner</Checkbox>
+                <Checkbox {...register('isDepartureDinner')}>dîner</Checkbox>
+              </Stack>
+            </FormControl>
+            {
+              /* <FormControl isRequired isInvalid={errors.specialDietNumber !== undefined}>
                 <FormLabel htmlFor="selectionRepas" fontWeight={'bold'}>
                   {'Régime sans lactose OU sans gluten ?'}
                 </FormLabel>
@@ -214,54 +242,69 @@ export const DatesAndMealsChoices = (
                   </HStack>
                 </RadioGroup>
               </FormControl> */
-              }
-              <FormControl isInvalid={errors.comment !== undefined}>
-                <FormLabel htmlFor="comment" fontWeight={'bold'}>
-                  {'Commentaire :'}
-                </FormLabel>
-                <Textarea
-                  id="comment"
-                  placeholder="Votre commentaire"
-                  {...register('comment')}
-                  minH={100}
-                />
-
-                <FormErrorMessage>
-                  {errors.comment && errors.comment.message}
-                </FormErrorMessage>
-              </FormControl>
-              <FormControl isInvalid={errors.comment !== undefined}>
-                <FormLabel htmlFor="comment" fontWeight={'bold'}>
-                  {'Nuitée :'}
-                </FormLabel>
-
-                <Checkbox
-                  id="withBeds"
-                  {
-                    // onChange={updateBeds(true)}
-                    ...register('withBeds')
-                  }
-                >
-                  Je souhaite des lits pour mes invités
-                </Checkbox>
-
-                <FormErrorMessage>
-                  {errors.comment && errors.comment.message}
-                </FormErrorMessage>
-              </FormControl>
-
-              <Button
-                rightIcon={<CheckIcon />}
-                colorScheme={'green'}
-                alignSelf={'flex-start'}
-                type="submit"
+            }
+            <FormControl
+              isInvalid={errors.comment !== undefined}
+              width={'auto'}
+              alignItems={'flex-start'}
+            >
+              <FormLabel
+                htmlFor="comment"
+                fontWeight={'bold'}
+                alignItems={'flex-start'}
+                // width={'auto'}
               >
-                Confirmer
-              </Button>
-            </VStack>
-          </form>
-        </Box>
-      </VStack>
+                {'Commentaire:'}
+              </FormLabel>
+              <Textarea
+                id="comment"
+                // width={'500px'}
+                width={screen.availWidth > 800 ?
+                  '700px' :
+                  screen.availWidth > 500 ?
+                  '400px' :
+                  '280px'}
+                placeholder="Votre commentaire"
+                {...register('comment')}
+                minH={100}
+              />
+
+              <FormErrorMessage>
+                {errors.comment && errors.comment.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={errors.comment !== undefined}>
+              <FormLabel htmlFor="comment" fontWeight={'bold'}>
+                {'Nuitée :'}
+              </FormLabel>
+
+              <Checkbox
+                id="withBeds"
+                {
+                  // onChange={updateBeds(true)}
+                  ...register('withBeds')
+                }
+              >
+                Je souhaite des lits pour mes invités
+              </Checkbox>
+
+              <FormErrorMessage>
+                {errors.comment && errors.comment.message}
+              </FormErrorMessage>
+            </FormControl>
+
+            <Button
+              rightIcon={<CheckIcon />}
+              colorScheme={'green'}
+              alignSelf={'flex-start'}
+              type="submit"
+            >
+              Confirmer
+            </Button>
+          </VStack>
+        </form>
+      </Box>
+      {/* </VStack> */}
     </VStack>
   )
 }

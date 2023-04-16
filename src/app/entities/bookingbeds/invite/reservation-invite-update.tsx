@@ -436,7 +436,7 @@ export const ReservationInviteUpdate = (): JSX.Element => {
         null}
       {O.isSome(customer) && O.isSome(datesAndMeal) && !updateBeds ?
         (
-          <HStack justifyContent={'end'}>
+          <Stack justifyContent={'end'} direction={['column', 'row']}>
             <Button as={Link} to={''} colorScheme={'red'} rightIcon={<BsTrash />}>Annuler</Button>
             <Button
               isLoading={isLoading}
@@ -446,7 +446,7 @@ export const ReservationInviteUpdate = (): JSX.Element => {
             >
               Finaliser la réservation
             </Button>
-          </HStack>
+          </Stack>
         ) :
         null}
     </Stack>

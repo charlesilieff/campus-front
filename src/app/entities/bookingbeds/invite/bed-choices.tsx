@@ -3,6 +3,7 @@ import {
   HStack,
   Select,
   Spinner,
+  Stack,
   Text,
   VStack
 } from '@chakra-ui/react'
@@ -156,62 +157,67 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
         borderRadius={8}
         borderColor={personNumberMax !== placesBooked ? 'red' : 'green'}
       >
-        {loading ?
-          <Spinner alignSelf={'center'} /> :
-          (
-            <VStack spacing={10} alignItems={'flex-start'} width="100%">
-              <Heading fontWeight={'bold'} fontSize={'30'}>
-                {'Choisissez les lits :'}
-              </Heading>
-              <HStack justifyContent={'space-around'} width="100%">
-                <HStack>
-                  <Heading size={'md'} minW={'140px'}>Filtrer par lieu</Heading>
-                  <Select
-                    minW={'140px'}
-                    style={{ padding: '0.4rem', borderRadius: '0.3rem' }}
-                    onChange={e => {
-                      const placeId = pipe(
-                        Number(e.target.value),
-                        d => isNaN(d) ? O.none() : O.some(d)
-                      )
-                      filterBedPlace(placeId)
-                      pipe(
-                        placeId,
-                        O.map(getOnePlace),
-                        O.map(p => p.then(res => setPlace(O.some(res))))
-                      )
-                    }}
-                  >
-                    <option value={'undefined'}>Aucun</option>
+        {loading ? <Spinner alignSelf={'center'} /> : (
+          <Stack
+            spacing={10}
+            alignItems={'flex-start'}
+            width="100%"
+            direction={['column', 'row']}
+          >
+            <Heading fontWeight={'bold'} fontSize={'30'}>
+              {'Choisissez les lits :'}
+            </Heading>
+            <Stack justifyContent={'space-around'} width="100%" direction={['column', 'row']}>
+              <Stack>
+                <Heading size={'md'} minW={'140px'} direction={['column', 'row']}>
+                  Filtrer par lieu
+                </Heading>
+                <Select
+                  minW={'140px'}
+                  style={{ padding: '0.4rem', borderRadius: '0.3rem' }}
+                  onChange={e => {
+                    const placeId = pipe(
+                      Number(e.target.value),
+                      d => isNaN(d) ? O.none() : O.some(d)
+                    )
+                    filterBedPlace(placeId)
+                    pipe(
+                      placeId,
+                      O.map(getOnePlace),
+                      O.map(p => p.then(res => setPlace(O.some(res))))
+                    )
+                  }}
+                >
+                  <option value={'undefined'}>Aucun</option>
 
-                    {places?.map(p => (
-                      <option value={p.id} key={p.id}>
-                        {p.name}
-                      </option>
-                    ))}
-                  </Select>
-                  {O.isSome(placeImage) ? <PlaceModal {...placeImage.value} /> : null}
-                </HStack>
+                  {places?.map(p => (
+                    <option value={p.id} key={p.id}>
+                      {p.name}
+                    </option>
+                  ))}
+                </Select>
+                {O.isSome(placeImage) ? <PlaceModal {...placeImage.value} /> : null}
+              </Stack>
 
-                <HStack>
-                  <Heading size={'md'}>Filtre par type de chambre</Heading>
-                  <Select
-                    style={{ padding: '0.4rem', borderRadius: '0.3rem' }}
-                    onChange={e =>
-                      pipe(e.target.value, O.fromNullable, O.map(Number), filterBedRoomKind)}
-                  >
-                    <option value={null}>Aucune</option>
+              <HStack>
+                <Heading size={'md'}>Filtre par type de chambre</Heading>
+                <Select
+                  style={{ padding: '0.4rem', borderRadius: '0.3rem' }}
+                  onChange={e =>
+                    pipe(e.target.value, O.fromNullable, O.map(Number), filterBedRoomKind)}
+                >
+                  <option value={null}>Aucune</option>
 
-                    {roomKinds.map((p, index) => (
-                      <option value={p?.id} key={index}>
-                        {p?.name}
-                      </option>
-                    ))}
-                  </Select>
-                </HStack>
+                  {roomKinds.map((p, index) => (
+                    <option value={p?.id} key={index}>
+                      {p?.name}
+                    </option>
+                  ))}
+                </Select>
               </HStack>
-              {
-                /* <NoBeds
+            </Stack>
+            {
+              /* <NoBeds
                 // bedId={pipe(bedId, O.map(bedId => bedId.toString()))}
                 // rooms={rooms}
                 // selectedBedId={setSelectedBedId}
@@ -222,39 +228,39 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
                 // noBedId={pipe(bedId, O.map(bedId => bedId.toString()))}
                 selectBed={setSelectedBedId}
               /> */
-              }
-              <IntermittentBeds
-                bedId={pipe(bedId, O.map(bedId => bedId.toString()))}
-                rooms={rooms}
-                selectedBedId={setSelectedBedId}
-                // selectedBeds={selectedBeds}
-                // rooms={rooms.filter(room => room.beds.length > 0)}
-                // selectBed={selectBed}
-                // reservationBeds={reservationBeds}
-              />
+            }
+            <IntermittentBeds
+              bedId={pipe(bedId, O.map(bedId => bedId.toString()))}
+              rooms={rooms}
+              selectedBedId={setSelectedBedId}
+              // selectedBeds={selectedBeds}
+              // rooms={rooms.filter(room => room.beds.length > 0)}
+              // selectBed={selectBed}
+              // reservationBeds={reservationBeds}
+            />
 
-              <VStack alignItems={'left'}>
-                <Text fontWeight={'bold'}>
-                  {`Numéros des lit réservés : 
+            <VStack alignItems={'left'}>
+              <Text fontWeight={'bold'}>
+                {`Numéros des lit réservés : 
                 ${
-                    places
-                      ?.flatMap(place =>
-                        place.rooms?.flatMap(room =>
-                          room.beds.filter(bed => bed.id === O.getOrNull(bedId))
-                            // room.beds
-                            // room.beds.filter(bed => props.bedId.includes(bed.id))
-                            .map(b => b.number)
-                        )
-                      ).join(', ')
-                  }`}
-                </Text>
+                  places
+                    ?.flatMap(place =>
+                      place.rooms?.flatMap(room =>
+                        room.beds.filter(bed => bed.id === O.getOrNull(bedId))
+                          // room.beds
+                          // room.beds.filter(bed => props.bedId.includes(bed.id))
+                          .map(b => b.number)
+                      )
+                    ).join(', ')
+                }`}
+              </Text>
 
-                <Text style={{ color: personNumberMax !== placesBooked ? 'red' : 'green' }}>
-                  {`Nombre de personnes hébergées : ${placesBooked} `}
-                </Text>
-              </VStack>
+              <Text style={{ color: personNumberMax !== placesBooked ? 'red' : 'green' }}>
+                {`Nombre de personnes hébergées : ${placesBooked} `}
+              </Text>
             </VStack>
-          )}
+          </Stack>
+        )}
       </VStack>
     </VStack>
   )
