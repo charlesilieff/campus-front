@@ -50,17 +50,6 @@ export interface Customer {
 
 export type BedIds = ReadonlyArray<{ id: number }>
 
-// useEffect(() => {
-//   dispatch(getEntity(1))
-// }, [])
-// const user_categories = getEntities()
-// const user_category = getEntity(1)
-
-// const userCategories = useAppSelector(state => state.userCategory.entities)
-// const userCategory = userCategories.find(userCategory => userCategory.name === 'Intermittent')
-
-// const entity = userCategories.findIndex(userCategory => userCategory.id === 1)
-
 const createIReservationWithBedIds = (
   customer: Customer,
   datesAndMeals: DatesAndMeals,
@@ -91,11 +80,6 @@ const createIReservationWithBedIds = (
   },
   isArrivalBreakfast: datesAndMeals.isArrivalBreakfast,
   isDepartureBreakfast: datesAndMeals.isDepartureBreakfast
-  // userCategory: {
-  //   id: userCategory.id,
-  //   name: userCategory.name,
-  //   comment: userCategory.comment
-  // }
 })
 
 export const ReservationIntermittentUpdate = (): JSX.Element => {
@@ -112,7 +96,6 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
   const customerId = O.fromNullable(
     useAppSelector(state => state.authentication.account.customerId)
   )
-  // const getEntity = useAppSelector(state => state.user-category.)
 
   const userId: number = useAppSelector(state => state.authentication.account.id)
 
