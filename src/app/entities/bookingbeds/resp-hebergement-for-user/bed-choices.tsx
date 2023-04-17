@@ -20,13 +20,6 @@ import { IntermittentBeds } from './beds-intermittent'
 import type { DatesAndMeals } from './reservation-update'
 
 interface DatesAndMealsChoicesProps {
-  // selectBed: (bedId: number) => void
-  // selectedBeds: ReadonlyArray<number>
-  // bedId: O.Option<number>
-  // datesAndMeals: O.Option<DatesAndMeals>
-  // reservationId: O.Option<string>
-  // reservationBeds: ReadonlyArray<number>
-
   setSelectedBedId: (bedId: O.Option<number>) => void
   bedId: O.Option<number>
   datesAndMeals: O.Option<DatesAndMeals>
@@ -54,7 +47,6 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
         departureDate,
         reservationId
       )
-      console.log('data', data)
       const roomsData = data?.flatMap(place => place.rooms).sort((a, b) =>
         a?.name.localeCompare(b?.name) || 0
       )
@@ -120,32 +112,6 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
   const personNumberMax = 1
 
   return (
-    // <VStack alignItems={'flex-start'} my={4}>
-    //   <VStack
-    //     minW={'100%'}
-    //     alignItems={'flex-start'}
-    //     border={'solid'}
-    //     p={4}
-    //     borderRadius={8}
-    //     borderColor={'#D9D9D9'}
-    //   >
-    //     {loading ?
-    //       <Spinner alignSelf={'center'} /> :
-    //       (
-    //         <VStack spacing={10} alignItems={'flex-start'}>
-    //           <Heading fontWeight={'bold'} fontSize={'30'}>
-    //             {'Choisissez votre lit :'}
-    //           </Heading>
-
-    //           <IntermittentBeds
-    //             bedId={pipe(props.bedId, O.map(bedId => bedId.toString()))}
-    //             rooms={rooms}
-    //             selectedBedId={props.setSelectedBedId}
-    //           />
-    //         </VStack>
-    //       )}
-    //   </VStack>
-    // </VStack>
     <VStack alignItems={'flex-start'} my={4}>
       <VStack
         minW={'100%'}
@@ -213,10 +179,6 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
                 bedId={pipe(bedId, O.map(bedId => bedId.toString()))}
                 rooms={rooms}
                 selectedBedId={setSelectedBedId}
-                // selectedBeds={selectedBeds}
-                // rooms={rooms.filter(room => room.beds.length > 0)}
-                // selectBed={selectBed}
-                // reservationBeds={reservationBeds}
               />
               <VStack alignItems={'left'}>
                 <Text fontWeight={'bold'}>
