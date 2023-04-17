@@ -1,4 +1,3 @@
-import { Checkbox } from '@chakra-ui/react'
 import type { IMeal } from 'app/shared/model/meal.model'
 import { getDateKey } from 'app/shared/util/date-utils'
 import type { Dayjs } from 'dayjs'

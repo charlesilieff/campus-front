@@ -19,9 +19,9 @@ export const Home = (): JSX.Element => {
   const isIntermittent = useAppSelector(state =>
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.INTERMITTENT])
   )
-  const isHabitant = useAppSelector(state =>
-    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.HABITANT])
-  )
+  // const isHabitant = useAppSelector(state =>
+  //   hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.HABITANT])
+  // )
 
   const isRespHebergement = useAppSelector(state =>
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.RESPHEBERGEMENT])
