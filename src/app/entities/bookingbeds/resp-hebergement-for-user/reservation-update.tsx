@@ -11,11 +11,9 @@ import { BsTrash } from 'react-icons/bs'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import {
-  // getIntermittentReservations,
   getReservation
 } from '../../reservation/reservation.reducer'
 import {
-  // createEntity,
   createReservationAndUpdateUser,
   reset as resetReservations,
   updateEntity as updateReservation
@@ -23,8 +21,8 @@ import {
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
 import { CustomerUpdate } from './customer-update'
-import { DatesAndMealsChoices } from './dates-and-meals-choices-intermittent'
-import { DatesAndMealsSummary } from './dates-and-meals-summary-intermittent'
+import { DatesAndMealsChoices } from './dates-and-meals-choices-user'
+import { DatesAndMealsSummary } from './dates-and-meals-summary-user'
 import { UserSelect } from './user-select'
 // import { UserSummary } from './user-summary'
 
@@ -46,8 +44,7 @@ export interface User {
   firstname: O.Option<string>
   lastname: O.Option<string>
   email: string
-  // phoneNumber: O.Option<string>
-  // login: string
+
   customerId: O.Option<number>
 }
 
@@ -100,20 +97,14 @@ export const ReservationUserUpdate = (): JSX.Element => {
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
   const [selectUser, setSelectUser] = useState<boolean>(false)
-  // const [isExistCustomer, setExistCustomer] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
   const { reservationId } = useParams<{ reservationId: string }>()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const toast = useToast()
   const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
-  // const customerId = O.fromNullable(
-  //   useAppSelector(state => state.authentication.account.customerId)
-  // )
 
   const [userId, setUserId] = useState<number>(null)
-
-  // const [user, setUser] = useState<O.Option<User>>(O.none)
 
   const handleSubmitReservation = async (
     datesAndMeal: DatesAndMeals,
@@ -123,27 +114,6 @@ export const ReservationUserUpdate = (): JSX.Element => {
   ): Promise<void> => {
     setIsLoading(true)
     const reservation = createIReservationWithBedIds(customer, datesAndMeal, bedId)
-
-    // const findReservationByThisUser = getIntermittentReservations(userId)
-    // const findReservationByThisUser2 = dispatch(getIntermittentReservations(userId))
-
-    // const reservationList = useAppSelector(state => state.reservation.entities)
-    // useEffect(() => {
-    //   dispatch(getIntermittentReservations(userId))
-    // }, [])
-    // console.log('reservationList', reservationList)
-
-    // reservationList.forEach(reservation => {
-    //   if (reservation.customer.id === customer.id) {
-    //     toast({
-    //       title: 'Une réservation existe déjà pour ce client',
-    //       description: "Veuillez contacter l'administration",
-    //       status: 'error',
-    //       duration: 9000,
-    //       isClosable: true
-    //     })
-    //   }
-    // })
 
     if (reservationId !== undefined) {
       // FIXME: unsafe
@@ -160,23 +130,6 @@ export const ReservationUserUpdate = (): JSX.Element => {
   }
 
   const backendReservation = useAppSelector(state => state.reservation.entity)
-
-  // useEffect(() => {
-  //   if (backendCustomer.id === undefined) {
-  //     pipe(customerId, O.map(id => dispatch(getCustomer(id))))
-  //   }
-
-  //   if (backendCustomer.id !== undefined) {
-  //     setCustomer(O.some({
-  //       id: backendCustomer?.id,
-  //       firstname: backendCustomer?.firstname,
-  //       lastname: backendCustomer?.lastname,
-  //       email: backendCustomer?.email,
-  //       phoneNumber: O.some(backendCustomer?.phoneNumber),
-  //       age: O.some(backendCustomer?.age)
-  //     }))
-  //   }
-  // }, [backendCustomer.id])
 
   useEffect(() => {
     pipe(
@@ -235,11 +188,6 @@ export const ReservationUserUpdate = (): JSX.Element => {
       navigate('/planning')
     }
   }, [updateSuccess])
-  console.log('updateCustomer', updateCustomer)
-  console.log('customer c', O.isNone(customer))
-  console.log('userId ', userId)
-  console.log('updateEmail ', selectUser)
-  // const [selectedBeds, setSelectedBeds] = useState<readonly number[]>([])
 
   return (
     <Stack>
@@ -251,57 +199,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
         setUserId={setUserId}
         setCustomer={setCustomer}
         setUpdateUser={setSelectUser}
-        // setUser={setUser}
-        // user={user}
       />
-
-      {
-        /* {O.isNone(customer) && O.isNone(user) ? // {O.isNone(customer) || updateEmail  ?
-        (<UserSelect
-          setUserId={setUserId}
-          setCustomer={setCustomer}
-          setUpdateUser={setSelectUser}
-
-          setUser={setUser}
-          // user={user}
-        />) :
-        (
-          // customer.value.email
-          <UserSummary
-            setUpdateUser={setSelectUser}
-            user={O.getOrNull(user)}
-
-          />
-        )} */
-      }
-
-      {
-        /* {(O.isNone(customer) || !customer.value.email || !customer.value.lastname
-          || !customer.value.firstname)
-          || updateCustomer ? */
-      }
-      {/* {(O.isNone(customer)) || userId ? */}
-      {
-        /* {(O.isNone(customer)) || userId ?
-        (
-          <CustomerUpdate
-            customer={customer}
-            setUpdateCustomer={setUpdateCustomer}
-            setCustomer={setCustomer}
-            // setUpdateUser={setSelectUser}
-
-            // customer={customer}
-            // setUpdateCustomer={setUpdateCustomer}
-            // setCustomer={setCustomer}
-          />
-        ) :
-        (
-          <CustomerSummary
-            setUpdateCustomer={setUpdateCustomer}
-            customer={customer.value}
-          />
-        )} */
-      }
 
       {!userId ?
         (
@@ -325,11 +223,6 @@ export const ReservationUserUpdate = (): JSX.Element => {
             customer={customer}
             setUpdateCustomer={setUpdateCustomer}
             setCustomer={setCustomer}
-            // setUpdateUser={setSelectUser}
-
-            // customer={customer}
-            // setUpdateCustomer={setUpdateCustomer}
-            // setCustomer={setCustomer}
           />
         ) :
         (
@@ -377,14 +270,6 @@ export const ReservationUserUpdate = (): JSX.Element => {
             bedId={bedId}
             setSelectedBedId={setBedId}
             reservationId={O.fromNullable(reservationId)}
-            // bedId={bedId}
-            // selectedBeds={selectedBeds}
-            // reservationId={O.fromNullable(reservationId)}
-            // selectedBed={bedId => {
-            //   !selectedBeds.includes(bedId) ?
-            //     pipe(selectedBeds, A.append(bedId), d => setSelectedBeds(d)) :
-            //     pipe(selectedBeds, A.filter(id => id !== bedId), setSelectedBeds)
-            // }}
           />
         ) :
         (

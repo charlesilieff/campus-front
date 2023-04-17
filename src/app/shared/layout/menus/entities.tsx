@@ -65,7 +65,7 @@ export const EntitiesMenu = (props: EntitiesMenuProps) => (
           Mes réservations
         </MenuItem>
       )}
-      {(props.isResp || props.isHabitant) && (
+      {(props.isHabitant) && (
         <MenuItem icon={<FaUtensils />} to="/meals/planning">
           Mes repas
         </MenuItem>

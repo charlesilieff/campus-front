@@ -16,7 +16,7 @@ import React, { useEffect, useState } from 'react'
 import type { IPlace, IRoomWithBeds } from '../utils'
 import { getPlaceWithFreeBedsAndBookedBeds } from '../utils'
 import { getOnePlace } from '../utils'
-import { IntermittentBeds } from './beds-intermittent'
+import { IntermittentBeds } from './beds-user'
 import type { DatesAndMeals } from './reservation-update'
 
 interface DatesAndMealsChoicesProps {
@@ -105,7 +105,6 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
     + place.rooms?.reduce((accR, room) => (accR
       + room.beds?.reduce(
         (acc, bed) => acc + (O.getOrNull(bedId) === bed.id ? bed.numberOfPlaces : 0),
-        // (acc, bed) => acc + (selectedBeds?.includes(bed.id) ? bed.numberOfPlaces : 0),
         0
       )), 0)), 0)
 
@@ -126,7 +125,7 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
           (
             <VStack spacing={10} alignItems={'flex-start'} width="100%">
               <Heading fontWeight={'bold'} fontSize={'30'}>
-                {'Choisissez les lits :'}
+                {'Choisissez votre lit :'}
               </Heading>
               <HStack justifyContent={'space-around'} width="100%">
                 <HStack>
@@ -188,8 +187,6 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
                       ?.flatMap(place =>
                         place.rooms?.flatMap(room =>
                           room.beds.filter(bed => bed.id === O.getOrNull(bedId))
-                            // room.beds
-                            // room.beds.filter(bed => props.bedId.includes(bed.id))
                             .map(b => b.number)
                         )
                       ).join(', ')

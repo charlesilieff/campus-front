@@ -14,8 +14,7 @@ import type { DatesAndMeals } from './reservation-update'
 interface DatesAndMealsSummaryProps {
   datesAndMeals: DatesAndMeals
   setUpdate: (update: boolean) => void
-  // setSelectedBeds: (bedId: readonly number[]) => void
-  // setBedId: (bedId: number) => void
+
   setBedId: (bedId: O.Option<number>) => void
 }
 

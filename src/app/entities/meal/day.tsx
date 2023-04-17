@@ -135,7 +135,6 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
             color: 'orange'
           } as React.CSSProperties}
         >
-          {mealsNumber?.lunchtime.regularDiet}
           {mealsNumber?.id !== undefined && testRegular > 1
               && mealsNumber?.lunchtime.regularDiet < 2 ?
             (

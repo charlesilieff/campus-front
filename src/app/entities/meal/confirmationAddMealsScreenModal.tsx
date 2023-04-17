@@ -29,10 +29,6 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
    * select and update meals of planning on screen
    */
   const updateMealsOnPeriode = async (entity: IMeal[], date: Dayjs, numberOfDays: number) => {
-    console.log('entity', entity)
-    console.log('date', date)
-    console.log('numberOfDays', numberOfDays)
-
     entity = entity.filter((value, index) => {
       if (index < (numberOfDays)) {
         return value
@@ -52,7 +48,6 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
       }
       return value
     })
-    console.log('entity', entity)
 
     await axios.put<IMeal>(
       apiUrlUpdateMeal,

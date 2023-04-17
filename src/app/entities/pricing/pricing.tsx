@@ -5,7 +5,6 @@ import React, { useEffect } from 'react'
 import { FaEye, FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
-// import { ColumnSorter } from '../../components/table/ColumnSorter'
 import { getEntities } from './pricing.reducer'
 import { PricingDeleteDialog } from './pricingdelete-dialog'
 
@@ -34,26 +33,14 @@ export const Pricing = () => {
       a.typeReservation.name.localeCompare(b.typeReservation.name) :
       a.price - b.price
   )
-  console.log('mon tri ', mySort2)
 
   return (
     <VStack
-      // divider={<StackDivider borderColor="gray.200" />}
       divider={<StackDivider borderColor="white" />}
       spacing={4}
       align="stretch"
       maxWidth={'100%'}
-      // display={'inline-flex'}
-      // minWidth={300}
-      // alignItems={'block'}
-      // // minHeight={300}
     >
-      {
-        /* <Box bg="red.200" width={[1, 1 / 2, 1 / 4]}>
-        This is a box
-      </Box> */
-      }
-
       <Heading alignSelf={'flex-start'}>Tarifs</Heading>
       <HStack alignSelf={'flex-end'} display={'block'}>
         <Button
@@ -78,21 +65,15 @@ export const Pricing = () => {
       <Box>
         {mySort2 && pricingList.length > 0 ?
           (
-            // colorScheme="#FFE2C7"
-
             <Table
               id="tableTarif"
               variant="striped"
-              // colorScheme="orange"
-              // colorScheme="gray.200"
-              // overflow={'scroll'}
               display={'block'}
               // bgSize={'sm' || 'md' || 'lg'}
             >
               <Thead bgColor="white">
                 <Tr>
                   <Th
-                    // justifyContent={'flex-end'}
                     fontSize={{ base: '8px', sm: '10px', md: '12px' }}
                   >
                     Categorie utilisateur <br />
@@ -153,18 +134,7 @@ export const Pricing = () => {
                     <Td>
                       {pricing.comment}
                     </Td>
-                    {
-                      /* <Td>
-                    {pricing.typeReservation ?
-                      pricing.typeReservation.map((val, j) => (
-                        <span key={j}>
-                          <Link to={`bed/${val.id}`}>{val.number}</Link>
-                          {j === pricing.typeReservation.length - 1 ? '' : ', '}
-                        </span>
-                      )) :
-                      null}
-                  </Td> */
-                    }
+
                     <Td>
                       <HStack spacing={0}>
                         <SimpleGrid

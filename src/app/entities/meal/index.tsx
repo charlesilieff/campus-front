@@ -34,7 +34,7 @@ export const Index = () => {
         startDate.format('YYYY-MM-DD')
       }`
       const { data } = await axios.get<IMeal[]>(requestUrl)
-      console.log('data axios', data)
+
       // const dataSorted = data.sort((a, b) => (a > b.date ? 1 : -1))
       setMealsData(data)
     }
@@ -82,93 +82,6 @@ export const Index = () => {
     }
   }
 
-  /**
-   * update meals with start date and end date
-   */
-  // const getMealsBetweenTwoDateByUser = async (
-  //   startDate: Dayjs,
-  //   endDate: Dayjs,
-  //   customerId: number
-  // ) => {
-  //   const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/${customerId}/date1/${
-  //     startDate.format('YYYY-MM-DD')
-  //   }/date2/${endDate.format('YYYY-MM-DD')}`
-  //   const { data } = await axios.get<IMeal[]>(requestUrl)
-  //   console.log('data axios', data)
-  //   setMealsDataBetweenDate(data)
-  //   console.log('data 2 date', data)
-  // }
-
-  // const updateMealsFromDate = () => {
-  //   console.log('startDate', startDate.format('YYYY-MM-DD'))
-  //   console.log('endDate', endDate.format('YYYY-MM-DD'))
-  //   console.log('checkbox unsubscribe', unsubscribeDate)
-
-  //   getMealsBetweenTwoDateByUser(startDate, endDate, customerId)
-
-  //   const mealsDataBetweenDateUpdate = mealsDataBetweenDate.map((value, index) => {
-  //     value = {
-  //       ...value,
-  //       specialLunch: 0,
-  //       specialDinner: 0,
-  //       regularLunch: 0,
-  //       regularDinner: 0,
-  //       comment: mealsData[index].comment,
-  //       breakfast: 0
-  //     }
-  //     return value
-  //   })
-
-  //   console.log('mealsDataBetweenDateUpdate', mealsDataBetweenDateUpdate)
-
-  //   const result = axios.put<IMeal>(
-  //     apiUrlUpdateMeal,
-  //     mealsDataBetweenDateUpdate
-  //   )
-
-  //   return result
-  // }
-  // const updateMeals = async (entity: IMeal[]) =>
-  //   await axios.put<IMeal>(
-  //     apiUrlUpdateMeal,
-  //     entity.filter(value => value.id !== undefined)
-  //   )
-
-  /**
-   * select meals of planning
-   */
-  // const selectMealsOnPeriode = async (entity: IMeal[], date: Dayjs, numberOfDays: number) => {
-  //   console.log('entity', entity)
-  //   console.log('date', date)
-  //   console.log('numberOfDays', numberOfDays)
-
-  //   entity = entity.filter((value, index) => {
-  //     if (index < (numberOfDays)) {
-  //       return value
-  //     }
-  //   }).map((value, index) => {
-  //     // console.log('value', value)
-  //     if (index < numberOfDays) {
-  //       value = {
-  //         ...value,
-  //         specialLunch: 0,
-  //         specialDinner: 0,
-  //         regularLunch: 0,
-  //         regularDinner: 0,
-  //         comment: mealsData[index].comment,
-  //         breakfast: 0
-  //       }
-  //     }
-  //     return value
-  //   })
-  //   console.log('entity', entity)
-
-  //   await axios.put<IMeal>(
-  //     apiUrlUpdateMeal,
-  //     entity
-  //   )
-  // }
-
   return (
     <>
       <Box m={4}>
@@ -181,7 +94,7 @@ export const Index = () => {
 
             <Input
               type="date"
-              onChange={e => setStartDate(dayjs(e.target.value))} // todo getMealsDateFor31DaysByUser
+              onChange={e => setStartDate(dayjs(e.target.value))}
               title="Date de début"
             >
             </Input>
@@ -191,7 +104,7 @@ export const Index = () => {
             <Input
               id="endDate"
               type="date"
-              onChange={e => setEndDate(dayjs(e.target.value))} // todo getMealsDateFor31DaysByUser
+              onChange={e => setEndDate(dayjs(e.target.value))}
               title="Date de fin"
             >
             </Input>
@@ -213,20 +126,6 @@ export const Index = () => {
             customerId={customerId}
             setDate={setDate}
           />
-          {
-            /* <Button
-            onClick={() => updateMealsFromDate()} // , startDate, endDate, checkboxTwoDate
-            leftIcon={<FaSave />}
-            colorScheme={'green'}
-            _hover={{
-              textDecoration: 'none',
-              color: 'green.200',
-              backgroundColor: '#38A169'
-            }}
-          >
-            Se désinscrire sur la période sélectionnée
-          </Button> */
-          }
         </HStack>
 
         <HStack m={4} spacing={8}>

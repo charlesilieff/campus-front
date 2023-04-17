@@ -3,44 +3,33 @@ import {
   Box,
   Button,
   FormControl,
-  // FormErrorMessage,
   FormLabel,
   Heading,
   HStack,
   Select,
-  // Text,
   VStack
 } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import * as A from '@effect/data/ReadonlyArray'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-// import type { Customer } from './reservation-update'
 import { getUsersAsAdmin } from 'app/modules/administration/user-management/user-management.reducer'
-// import { IUser } from 'app/shared/model/user.model'
-// import axios from 'axios'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
 import type { Customer } from './reservation-update'
-// import type { User } from './reservation-update'
 
 interface UserUpdateProps {
   setCustomer: (user: O.Option<Customer>) => void
   setUserId: (userId: number) => void
   setUpdateUser: (updateUser: boolean) => void
-
-  // setUser: (user: O.Option<User>) => void
-  // user: O.Option<User>
 }
 
 export interface FormUser {
   id: number
 }
-
-// const url = 'api/admin/users' // .in("api" / "admin" / "users" / path[String]("login"))
 
 export const UserSelect = (
   props: UserUpdateProps
@@ -54,7 +43,7 @@ export const UserSelect = (
       getUsersAsAdmin()
     )
   }
-  // const [user, setUser] = useState<O.Option<User>>(O.none)
+
   const [userSelect, setUserSelect] = useState('default' as string)
 
   const users1 = useAppSelector(state => state.userManagement.users)
@@ -70,55 +59,14 @@ export const UserSelect = (
     // formState: { errors }
   } = useForm<FormUser>()
 
-  //   props.setUpdateUser(false)
-  // export const UserUpdate = (
-  //   props: UserUpdateProps
-  // ): JSX.Element => {
-  //   const {
-  //     handleSubmit,
-  //     register,
-  //     formState: { errors },
-  //     reset: resetForm
-  //   } = useForm<FormUser>()
-  //   useEffect(() => {
-  //     resetForm(
-  //       O.isSome(props.user) ?
-  //         {
-  //           ...props.user.value,
-  //           lastname: O.getOrUndefined(props.user.value.lastname),
-  //           firstname: O.getOrUndefined(props.user.value.firstname)
-  //         } :
-  //         {}
-  //     )
-  //   }, [props.user])
-
   const handleValidUserSubmit = (
-    // user: User,
     formUser: FormUser
   ) => {
-    // const requestUrl = `${url}/${user.login}`
-    // // await axios.get<IMeal[]>(requestUrl)
-    // const { data } = await axios.get<IUser>(requestUrl)
     console.log('userSelect', userSelect)
     console.log('formUser email', formUser)
     console.log('list users', users)
     console.log('id to find', Number(formUser.id))
     props.setUserId(Number(formUser.id))
-    // props.setUserEmail(formUser.email)
-
-    // todo  search and test customer , if customer exist then map customer with this, if customer don't existe  then map customer with user
-    // pipe(
-    //   users,
-    //   A.findFirst(user => user.id === Number(formUser.id)),
-    //   O.map(x => ({
-    //     firstname: O.some(x.firstName),
-    //     lastname: O.some(x.lastName),
-    //     email: x.email,
-    //     id: x.id,
-    //     customerId: O.some(x.customerId)
-    //   } as User)),
-    //   props.setUser
-    // )
 
     pipe(
       users,
@@ -134,31 +82,6 @@ export const UserSelect = (
       } as Customer)),
       props.setCustomer
     )
-
-    // const user = users.filter(user => user.id === Number(formUser.id))
-
-    // const customerFind = user.map(u => u.customerId)
-
-    // props.setUser(user)
-
-    // const lastname = formUser.lastname === undefined || formUser.lastname === '' ?
-    //   O.none() :
-    //   O.some(formUser.lastname)
-    // const firstname = formUser.firstname === undefined || formUser.firstname === '' ?
-    //   O.none() :
-    //   O.some(formUser.firstname)
-    // const phoneNumber = formUser.phoneNumber === undefined || formUser.phoneNumber === '' ?
-    //   O.none() :
-    //   O.some(formUser.phoneNumber)
-    // const customerId = formUser.customerId === undefined ? O.none() : O.some(formUser.customerId)
-    // props.setUser(O.some({ ...formUser }))
-
-    // props.setUser(O.some({ ...user }))
-    console.log('user mail', formUser)
-    // props.setUser(formUser)
-    console.log('userId ', formUser.id)
-
-    // console.log('user ', props.user)
 
     props.setUpdateUser(false) // todo false if we want to update the user
   }
@@ -192,7 +115,6 @@ export const UserSelect = (
 
                   <Select
                     onChange={e => setUserSelect(e.target.value)}
-                    // onChange={e => setUser(e.target.value)}
                     id="user"
                     {...register('id', {})}
                   >
@@ -206,25 +128,6 @@ export const UserSelect = (
                       null}
                   </Select>
                 </FormControl>
-
-                {
-                  /* <FormControl isInvalid={errors.id !== undefined}>
-                  <FormLabel htmlFor="firstname" fontWeight={'bold'}>
-                    {'Prénom'}
-                  </FormLabel>
-                  <Text
-                    id="firstname"
-                    placeholder="Prénom"
-                    // {...register('firstname', {
-                    //   required: 'Le prénom est obligatoire'
-                    // })}
-                  />
-
-                  <FormErrorMessage>
-                    {errors.firstname && errors.firstname.message}
-                  </FormErrorMessage>
-                </FormControl> */
-                }
               </HStack>
 
               <Button

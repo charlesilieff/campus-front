@@ -39,7 +39,7 @@ export const ConfirmationUpdateMealsByPeriodeModal: FunctionComponent<
     }/date2/${endDate.format('YYYY-MM-DD')}`
     // await axios.get<IMeal[]>(requestUrl)
     const { data } = await axios.get<IMeal[]>(requestUrl)
-    console.log('data axios', data)
+    // console.log('data axios', data)
     updateMealsFromDate2(data)
   }
 
@@ -47,10 +47,6 @@ export const ConfirmationUpdateMealsByPeriodeModal: FunctionComponent<
     mealsDataBetweenDate: IMeal[]
   ) => {
     setIsLoading(true)
-    // console.log('startDate', startDate.format('YYYY-MM-DD'))
-    // console.log('endDate', endDate.format('YYYY-MM-DD'))
-
-    // getMealsBetweenTwoDateByUser(startDate, endDate, customerId)
 
     const mealsDataBetweenDateUpdate = mealsDataBetweenDate.map((value, index) => {
       value = {
@@ -65,7 +61,7 @@ export const ConfirmationUpdateMealsByPeriodeModal: FunctionComponent<
       return value
     })
 
-    console.log('mealsDataBetweenDateUpdate', mealsDataBetweenDateUpdate)
+    // console.log('mealsDataBetweenDateUpdate', mealsDataBetweenDateUpdate)
 
     await axios.put<IMeal>(
       apiUrlUpdateMeal,
