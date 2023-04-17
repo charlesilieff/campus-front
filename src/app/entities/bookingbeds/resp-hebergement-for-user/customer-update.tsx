@@ -138,17 +138,6 @@ export const CustomerUpdate = (
                       required: "L'email est obligatoire"
                     })}
                   />
-                  {
-                    /* <Text
-                    color={'red.500'}
-                    fontSize={'sm'}
-                    fontWeight={'bold'}
-                    {...register('email')}
-                  >
-                    {errors.email !== undefined ? errors.email.message : ''}
-                  </Text> */
-                  }
-
                   <FormErrorMessage>
                     {errors.email && errors.email.message}
                   </FormErrorMessage>
