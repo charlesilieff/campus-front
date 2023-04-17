@@ -112,7 +112,6 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
       await dispatch(updateReservation({ ...reservation, id: Number(reservationId) }))
       setIsLoading(false)
     } else {
-      console.log('test reservation', reservation)
       await dispatch(
         createReservationAndUpdateUser({ entity: reservation, sendMail: false, userId })
       )
