@@ -216,11 +216,13 @@ export const DatesAndMealsChoices = (
                 <Text fontWeight={'bold'}>{"Jour d'arrivée :"}</Text>
                 <Checkbox {...register('isArrivalBreakfast')}>petit déjeuner</Checkbox>
                 <Checkbox {...register('isArrivalLunch')}>déjeuner</Checkbox>
-                <Checkbox {...register('isArrivalDinner')}>dîner</Checkbox>
+                <Checkbox defaultChecked {...register('isArrivalDinner')}>dîner</Checkbox>
               </Stack>
               <Stack direction={['column', 'row']}>
                 <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>
-                <Checkbox {...register('isDepartureBreakfast')}>petit déjeuner</Checkbox>
+                <Checkbox defaultChecked {...register('isDepartureBreakfast')}>
+                  petit déjeuner
+                </Checkbox>
                 <Checkbox {...register('isDepartureLunch')}>déjeuner</Checkbox>
                 <Checkbox {...register('isDepartureDinner')}>dîner</Checkbox>
               </Stack>

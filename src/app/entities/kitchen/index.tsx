@@ -51,9 +51,7 @@ export const Index = () => {
   const totalDays = date.daysInMonth()
 
   const getMealsDateFor31Days = async (startDate: Dayjs) => {
-    const requestUrl = `${apiUrlMealsDateFor31Days}/${startDate.format('YYYY-MM-DD')}?cacheBuster=${
-      new Date().getTime()
-    }`
+    const requestUrl = `${apiUrlMealsDateFor31Days}/${startDate.format('YYYY-MM-DD')}`
     const { data } = await axios.get<IMeal[]>(requestUrl)
     setMealsData(data)
   }
