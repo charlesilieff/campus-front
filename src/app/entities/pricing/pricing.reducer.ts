@@ -27,7 +27,7 @@ const apiUrl = 'api/pricings'
 export const getEntities = createAsyncThunk(
   'pricing/fetch_entity_list',
   async () => {
-    const requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`
+    const requestUrl = `${apiUrl}`
     return axios.get<IPricing[]>(requestUrl)
   }
 )
