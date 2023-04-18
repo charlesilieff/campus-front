@@ -96,7 +96,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
   const [customer, setCustomer] = useState<O.Option<Customer>>(O.none)
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
-  // const [selectUser, setSelectUser] = useState<boolean>(false)
+  const [selectUser, setSelectUser] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
   const { reservationId } = useParams<{ reservationId: string }>()
   const navigate = useNavigate()
@@ -201,7 +201,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
         setUpdateUser={setSelectUser}
       />
 
-      {!userId ?
+      {!userId || selectUser ?
         (
           <Heading
             p={4}
