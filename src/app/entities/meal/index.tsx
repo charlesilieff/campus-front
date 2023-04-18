@@ -32,7 +32,6 @@ export const Index = () => {
   const [endDate, setEndDate] = useState(dayjs())
   const [mealsData, setMealsData] = useState([] as IMeal[])
   const [numberOfDays, setNumberOfDays] = useState(31)
-  const [reservationId, setReservationId] = useState<number>(0)
 
   /**
    * Get Reservations by user.
@@ -66,8 +65,12 @@ export const Index = () => {
   // const reservationListFirstId = reservationList[0].id
   // console.log('reservationListFirstId', reservationListFirstId)
 
+  const [reservationId, setReservationId] = useState<number>(0)
+
   useEffect(() => {
     if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
+    setReservationId(reservationListFirst.id)
+    setDate(date.subtract(1, 'day'))
   }, [])
 
   // const handleSyncList = () => {
@@ -163,6 +166,9 @@ export const Index = () => {
 
   console.log('reservationId :', reservationId)
   console.log('reservationListFirst ', reservationListFirst)
+  // setReservationId(reservationListFirst.id)
+
+  // console.log('reservationListFirst  id', O.getOrElse(reservationListFirst.id, () => '0'))
   // console.log('reservationListFirst id', reservationListFirst.id)
 
   return (
@@ -177,16 +183,14 @@ export const Index = () => {
                 id="reservationId"
                 title="Mes réservations"
                 onChange={e => setReservationId(+e.target.value)}
-                // value={reservationListFirst ? reservationListFirst.id : null}
-                // value={reservationListFirst.id}
-                // value={reservationListFirstId}
+                defaultValue={reservationListFirst ? reservationListFirst.id : null}
                 // placeholder="Sélectionner une réservation"
-
                 // {...register('userCategoryId', {})}
                 // defaultValue={reservationList ? reservationList[1].id : null}
-                defaultValue={reservationListFirst ? reservationListFirst.id : null}
+                // defaultValue={reservationListFirst ? reservationListFirst.id : null}
+                // defaultValue={reservationListFirstId ? reservationListFirstId : null}
+                // defaultValue={reservationListFirst.id}
               >
-                <option value={reservationListFirst ? reservationListFirst.id : null} key="0" />
                 {reservationList ?
                   reservationList.map(reservation => (
                     <option
