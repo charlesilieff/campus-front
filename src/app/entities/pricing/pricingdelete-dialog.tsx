@@ -33,6 +33,8 @@ export const PricingDeleteDialog: FunctionComponent<{ pricingId: number }> = (
         onClick={onOpen}
         leftIcon={<FaTrash />}
         borderLeftRadius={0}
+        fontSize={{ base: '8px', sm: '10px', md: '12px' }}
+        minWidth={{ base: '55px', sm: '110px', md: '110px' }}
       >
         Supprimer
       </Button>

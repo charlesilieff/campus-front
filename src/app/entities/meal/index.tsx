@@ -70,7 +70,9 @@ export const Index = () => {
   useEffect(() => {
     if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
     setReservationId(reservationListFirst.id)
-    setDate(date.subtract(1, 'day'))
+    // MealsUserPlanning
+    // setDate(date)
+    // dispatch(MealsUserPlanning())
   }, [])
 
   // const handleSyncList = () => {

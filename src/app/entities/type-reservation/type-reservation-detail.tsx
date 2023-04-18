@@ -21,7 +21,7 @@ export const TypeReservationDetail = () => {
         <dt>
           <Heading size={'md'}>Nom</Heading>
         </dt>
-        <dd>{typeReservationEntity.name} €</dd>
+        <dd>{typeReservationEntity.name}</dd>
         <dt>
           <Heading size={'md'}>Commentaire</Heading>
         </dt>

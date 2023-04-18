@@ -101,7 +101,7 @@ const createIReservationWithBedIds = (
   isConfirmed: true,
   isPaid: false,
   paymentMode: '',
-  personNumber: 1,
+  personNumber: datesAndMeals.personNumber,
   customer: {
     id: customer.id,
     firstname: customer.firstname,
@@ -137,7 +137,7 @@ const createIReservationWithoutBedIds = (
   isConfirmed: true,
   isPaid: false,
   paymentMode: '',
-  personNumber: 1,
+  personNumber: datesAndMeals.personNumber,
   customer: {
     id: customer.id,
     firstname: customer.firstname,

@@ -62,21 +62,21 @@ export const Pricing = () => {
           Créez un nouveau tarif
         </Button>
       </HStack>
-      <Box>
+      <Box width={'100%'}>
         {mySort2 && pricingList.length > 0 ?
           (
             <Table
               id="tableTarif"
               variant="striped"
-              display={'block'}
-              // bgSize={'sm' || 'md' || 'lg'}
             >
-              <Thead bgColor="white">
+              <Thead bgColor="white" width={'auto'}>
                 <Tr>
                   <Th
                     fontSize={{ base: '8px', sm: '10px', md: '12px' }}
+                    margin={{ base: '2px', sm: '10px', md: '20px' }}
+                    padding={{ base: '2px', sm: '10px', md: '20px' }}
                   >
-                    Categorie utilisateur <br />
+                    Categorie utilisateur
                     <Button
                       as={Link}
                       color={'white'}
@@ -89,11 +89,25 @@ export const Pricing = () => {
                       {/* Créez une nouvelle catégorie utilisateur */}
                     </Button>
                   </Th>
-                  <Th fontSize={{ base: '8px', sm: '10px', md: '12px' }}>
+                  <Th
+                    fontSize={{ base: '8px', sm: '10px', md: '12px' }}
+                    margin={{ base: '2px', sm: '10px', md: '20px' }}
+                    padding={{ base: '2px', sm: '10px', md: '20px' }}
+                  >
                     Type de réservation
                   </Th>
-                  <Th fontSize={{ base: '8px', sm: '10px', md: '12px' }}>Prix</Th>
-                  <Th fontSize={{ base: '8px', sm: '10px', md: '12px' }}>
+                  <Th
+                    fontSize={{ base: '8px', sm: '10px', md: '12px' }}
+                    margin={{ base: '2px', sm: '10px', md: '20px' }}
+                    padding={{ base: '2px', sm: '10px', md: '20px' }}
+                  >
+                    Prix
+                  </Th>
+                  <Th
+                    fontSize={{ base: '8px', sm: '10px', md: '12px' }}
+                    margin={{ base: '2px', sm: '10px', md: '20px' }}
+                    padding={{ base: '2px', sm: '10px', md: '20px' }}
+                  >
                     Commentaire
                   </Th>
                   <Th></Th>
@@ -101,11 +115,15 @@ export const Pricing = () => {
               </Thead>
               <Tbody
                 fontSize={{ base: '8px', sm: '10px', md: '12px' }}
+                // width={'auto'}
               >
-                {/* {myData.map((pricing, i) => ( */}
                 {myData.map((pricing, i) => (
                   <Tr key={`entity-${i}`}>
-                    <Td>
+                    <Td
+                      margin={{ base: '2px', sm: '10px', md: '20px' }}
+                      padding={{ base: '2px', sm: '10px', md: '20px' }}
+                      // padding={screen.availWidth > 500 ? 'auto' : '5px'}
+                    >
                       {pricing.userCategory ?
                         (
                           <Link
@@ -117,7 +135,10 @@ export const Pricing = () => {
                         ) :
                         'yyy'}
                     </Td>
-                    <Td>
+                    <Td
+                      margin={{ base: '2px', sm: '10px', md: '20px' }}
+                      padding={{ base: '2px', sm: '10px', md: '20px' }}
+                    >
                       {pricing.typeReservation ?
                         (
                           <Link
@@ -130,8 +151,16 @@ export const Pricing = () => {
                         'xxx'}
                     </Td>
 
-                    <Td>{pricing.price}</Td>
-                    <Td>
+                    <Td
+                      margin={{ base: '2px', sm: '10px', md: '20px' }}
+                      padding={{ base: '2px', sm: '10px', md: '20px' }}
+                    >
+                      {pricing.price}
+                    </Td>
+                    <Td
+                      margin={{ base: '2px', sm: '10px', md: '20px' }}
+                      padding={{ base: '2px', sm: '10px', md: '20px' }}
+                    >
                       {pricing.comment}
                     </Td>
 
@@ -146,7 +175,7 @@ export const Pricing = () => {
                             variant={'see'}
                             leftIcon={<FaEye />}
                             size="sm"
-                            minWidth={'110px'}
+                            minWidth={{ base: '55px', sm: '110px', md: '110px' }}
                             borderRightRadius="0"
                             fontSize={{ base: '8px', sm: '10px', md: '12px' }}
                           >
@@ -158,16 +187,13 @@ export const Pricing = () => {
                             variant={'modify'}
                             leftIcon={<FaPencilAlt />}
                             size="sm"
-                            minWidth={'110px'}
+                            minWidth={{ base: '55px', sm: '110px', md: '110px' }}
                             borderRadius={0}
                             fontSize={{ base: '8px', sm: '10px', md: '12px' }}
                           >
                             Modifier
                           </Button>
-                          <Box
-                            minWidth={'110px'}
-                            fontSize={{ base: '8px', sm: '10px', md: '12px' }}
-                          >
+                          <Box>
                             <PricingDeleteDialog pricingId={pricing.id} />
                           </Box>
                         </SimpleGrid>
