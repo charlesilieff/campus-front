@@ -3,6 +3,7 @@ import React from 'react'
 import { Route } from 'react-router-dom'
 
 import { ReservationIntermittentUpdate } from './intermittent/reservation-intermittent-update'
+import { ReservationInviteUpdate } from './invite/reservation-invite-update'
 import { ReservationDetail } from './reservation-detail'
 import { BookingBedsUpdate } from './resp-hebergement/reservation-update'
 // import { ReservationUserUpdate } from './resp-hebergement-for-user/reservation-update'
@@ -18,6 +19,10 @@ export const BookingBedsRoutes = (): JSX.Element => (
     <Route
       path={`new/habitant`}
       element={<ReservationUserUpdate />}
+    />
+    <Route
+      path={`new/invite`}
+      element={<ReservationInviteUpdate />}
     />
     <Route
       path={`intermittent/:reservationId`}

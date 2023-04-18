@@ -9,6 +9,7 @@ import {
   Heading,
   HStack,
   Input,
+  Radio,
   Text,
   Textarea,
   VStack
@@ -18,18 +19,18 @@ import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import { isArrivalDateIsBeforeDepartureDate, isDateBeforeNow } from '../bookingbeds/utils'
-import type { Reservation } from './reservation-update'
+import { isArrivalDateIsBeforeDepartureDate, isDateBeforeNow } from '../utils'
+import type { DatesAndMeals } from './reservation-invite-update'
 
-interface ReservationChoicesProps {
-  setReservation: (reservation: O.Option<Reservation>) => void
-  setUpdateReservation: (updateReservation: boolean) => void
-  reservation: O.Option<Reservation>
-  setIsReservationSaved: (isSaved: boolean) => void
+interface DatesAndMealsChoicesProps {
+  setDatesAndMeal: (datesAndMeal: O.Option<DatesAndMeals>) => void
+  setUpdateDatesAndMeals: (updateDatesAndMeals: boolean) => void
+  setUpdateBeds: (updateBeds: boolean) => void
+  datesAndMeals: O.Option<DatesAndMeals>
 }
 
-export const ReservationChoices = (
-  props: ReservationChoicesProps
+export const DatesAndMealsChoices = (
+  props: DatesAndMealsChoicesProps
 ): JSX.Element => {
   const {
     handleSubmit,
@@ -37,23 +38,28 @@ export const ReservationChoices = (
     watch,
     formState: { errors },
     reset: resetForm
-  } = useForm<Reservation>()
-  const personNumber = useRef({})
-  personNumber.current = watch('personNumber', 0)
+  } = useForm<DatesAndMeals>()
+
   useEffect(() => {
     resetForm(
-      O.isSome(props.reservation) ? props.reservation.value : {}
+      O.isSome(props.datesAndMeals) ? props.datesAndMeals.value : {}
     )
-  }, [props.reservation])
-
+  }, [props.datesAndMeals])
+  const personNumber = useRef({})
+  personNumber.current = watch('personNumber', 0)
   const departureDate = useRef({})
   departureDate.current = watch('departureDate', '')
 
   const handleValidDateAndMealSubmit = (
-    reservation: Reservation
+    datesAndMeal: DatesAndMeals
   ): void => {
-    props.setUpdateReservation(false)
-    props.setReservation(O.some(reservation))
+    if (datesAndMeal.withBeds === true) {
+      props.setUpdateBeds(true)
+    } else {
+      props.setUpdateBeds(false)
+    }
+    props.setUpdateDatesAndMeals(false)
+    props.setDatesAndMeal(O.some(datesAndMeal))
   }
 
   return (
@@ -68,7 +74,7 @@ export const ReservationChoices = (
       >
         <HStack>
           <Heading size={'md'}>
-            Votre demande de réservation
+            Invités : nombre, date et repas
           </Heading>
           <BsPencil size={'30px'} color={'black'}></BsPencil>
         </HStack>
@@ -77,6 +83,54 @@ export const ReservationChoices = (
             onSubmit={handleSubmit(handleValidDateAndMealSubmit)}
           >
             <VStack spacing={10}>
+              <HStack spacing={12} minW={800} my={4}>
+                <FormControl isRequired isInvalid={errors.personNumber !== undefined}>
+                  <FormLabel htmlFor="personnes" fontWeight={'bold'}>
+                    {'Nombre de personnes'}
+                  </FormLabel>
+                  <Input
+                    type="number"
+                    placeholder="Nombre de personnes"
+                    {...register('personNumber', {
+                      required: 'Le nombre de régimes spéciaux est obligatoire',
+                      validate(v) {
+                        if (v < 0) {
+                          return 'Le nombre de régimes spéciaux ne peut pas être négatif'
+                        }
+                      }
+                    })}
+                  />
+
+                  <FormErrorMessage>
+                    {errors.personNumber && errors.personNumber.message}
+                  </FormErrorMessage>
+                </FormControl>
+                <FormControl isRequired isInvalid={errors.specialDietNumber !== undefined}>
+                  <FormLabel htmlFor="specialDietNumber" fontWeight={'bold'}>
+                    {'Nombre de régimes sans gluten OU lactose'}
+                  </FormLabel>
+                  <Input
+                    type="number"
+                    {...register('specialDietNumber', {
+                      required: 'Le nombre de régimes spéciaux est obligatoire',
+                      validate(v) {
+                        console.log(personNumber.current)
+                        console.log(v)
+                        if (v > +personNumber.current) {
+                          return 'Le nombre de régimes spéciaux ne peut pas être supérieur au nombre de personnes'
+                        }
+                        if (v < 0) {
+                          return 'Le nombre de régimes spéciaux ne peut pas être négatif'
+                        }
+                      }
+                    })}
+                  />
+
+                  <FormErrorMessage>
+                    {errors.specialDietNumber && errors.specialDietNumber.message}
+                  </FormErrorMessage>
+                </FormControl>
+              </HStack>
               <HStack spacing={12} minW={600} my={4}>
                 <FormControl isRequired isInvalid={errors.arrivalDate !== undefined}>
                   <FormLabel htmlFor="arrivalDate" fontWeight={'bold'}>
@@ -143,42 +197,24 @@ export const ReservationChoices = (
                   <Checkbox {...register('isDepartureDinner')}>dîner</Checkbox>
                 </HStack>
               </FormControl>
-              <FormControl isRequired isInvalid={errors.personNumber !== undefined}>
-                <FormLabel htmlFor="personNumber" fontWeight={'bold'}>
-                  {'Nombre de personnes à héberger'}
-                </FormLabel>
-                <Input
-                  type="number"
-                  {...register('personNumber', {})}
-                />
-
-                <FormErrorMessage>
-                  {errors.personNumber && errors.personNumber.message}
-                </FormErrorMessage>
-              </FormControl>
-              <FormControl isRequired isInvalid={errors.specialDietNumber !== undefined}>
+              {
+                /* <FormControl isRequired isInvalid={errors.specialDietNumber !== undefined}>
                 <FormLabel htmlFor="selectionRepas" fontWeight={'bold'}>
                   {'Régime sans lactose OU sans gluten ?'}
                 </FormLabel>
 
-                <Input
-                  type="number"
-                  {...register('specialDietNumber', {
-                    required: 'Le nombre de régimes spéciaux est obligatoire',
-                    validate(v) {
-                      if (v > +personNumber.current) {
-                        return 'Le nombre de régimes spéciaux ne peut pas être supérieur au nombre de personnes'
-                      }
-                      if (v < 0) {
-                        return 'Le nombre de régimes spéciaux ne peut pas être négatif'
-                      }
-                    }
-                  })}
-                />
-                <FormErrorMessage>
-                  {errors.specialDietNumber && errors.specialDietNumber.message}
-                </FormErrorMessage>
-              </FormControl>
+                <RadioGroup
+                  defaultValue={O.isSome(props.datesAndMeals) ?
+                    props.datesAndMeals.value.specialDietNumber :
+                    undefined}
+                >
+                  <HStack spacing="24px">
+                    <Radio {...register('specialDiet')} value={'true'} mb={0}>Oui</Radio>
+                    <Radio {...register('specialDiet')} value={'false'}>Non</Radio>
+                  </HStack>
+                </RadioGroup>
+              </FormControl> */
+              }
               <FormControl isInvalid={errors.comment !== undefined}>
                 <FormLabel htmlFor="comment" fontWeight={'bold'}>
                   {'Commentaire :'}
@@ -194,12 +230,31 @@ export const ReservationChoices = (
                   {errors.comment && errors.comment.message}
                 </FormErrorMessage>
               </FormControl>
+              <FormControl isInvalid={errors.comment !== undefined}>
+                <FormLabel htmlFor="comment" fontWeight={'bold'}>
+                  {'Nuitée :'}
+                </FormLabel>
+
+                <Checkbox
+                  id="withBeds"
+                  {
+                    // onChange={updateBeds(true)}
+                    ...register('withBeds')
+                  }
+                >
+                  Je souhaite des lits pour mes invités
+                </Checkbox>
+
+                <FormErrorMessage>
+                  {errors.comment && errors.comment.message}
+                </FormErrorMessage>
+              </FormControl>
+
               <Button
                 rightIcon={<CheckIcon />}
                 colorScheme={'green'}
                 alignSelf={'flex-start'}
                 type="submit"
-                onClick={() => props.setIsReservationSaved(false)}
               >
                 Confirmer
               </Button>
