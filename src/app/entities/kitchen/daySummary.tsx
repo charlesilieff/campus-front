@@ -54,9 +54,15 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
   return (
     <>
       <div className="day" style={style}>
-        {date.format('ddd DD ')}
+        toto
       </div>
-      <div
+      {
+        /* <div className="day" style={style}>
+        {date.format('ddd DD ')}
+      </div> */
+      }
+      {
+        /* <div
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -79,8 +85,10 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
             wtf
           </div>
         </div>
-      </div>
-      <div
+      </div> */
+      }
+      {
+        /* <div
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -177,7 +185,8 @@ export const DaySummary = ({ positionX, date, index }: IProps) => {
             wtf
           </div>
         </div>
-      </div>
+      </div> */
+      }
     </>
   )
 }

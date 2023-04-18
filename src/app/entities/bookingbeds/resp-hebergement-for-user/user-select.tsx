@@ -132,11 +132,12 @@ export const UserSelect = (
 
               <Button
                 rightIcon={<CheckIcon />}
-                colorScheme={'green'}
+                colorScheme={userSelect ? 'green' : 'red'}
                 alignSelf={'flex-start'}
                 type="submit"
               >
-                Confirmer
+                {/* {userSelect ? 'Modifier' : 'vvvvvvvvvvvvvvvvvvvvv Confirmer'} */}
+                Valider
               </Button>
             </VStack>
           </form>

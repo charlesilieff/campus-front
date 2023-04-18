@@ -1,3 +1,4 @@
+import { MoonIcon, SunIcon, TimeIcon } from '@chakra-ui/icons'
 import { getDateKey } from 'app/shared/util/date-utils'
 import type { Dayjs } from 'dayjs'
 import React from 'react'
@@ -28,9 +29,15 @@ export const KitchenSummary = ({ date, totalDays, numberOfDays }: IProps) => {
 
   return (
     <div className="grid-container" style={gridFormatStyle(numberOfDays)}>
-      <div className="time breakfast">Matin</div>
-      <div className="time lunch">Midi</div>
-      <div className="time dinner">Soir</div>
+      <div className="time breakfast">
+        <TimeIcon />Matin
+      </div>
+      <div className="time lunch">
+        <SunIcon />Midi
+      </div>
+      <div className="time dinner">
+        <MoonIcon /> Soir
+      </div>
 
       {
         /* <div className="diet specialdietlunch">Sans lactose ni gluten</div>

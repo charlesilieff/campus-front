@@ -1,3 +1,4 @@
+import { MoonIcon, SunIcon, TimeIcon } from '@chakra-ui/icons'
 import { Box, Grid, Text } from '@chakra-ui/react'
 import type { IMeal } from 'app/shared/model/meal.model'
 import { getDateKey } from 'app/shared/util/date-utils'
@@ -54,11 +55,36 @@ export const MealsUserPlanning = (
           mt={'-0.1rem'}
           borderBottom={0}
           borderLeft={0}
+          p={2}
+          backgroundColor={'yellow.50'}
         >
+          <TimeIcon />
+
           Matin
         </Text>
         <Text
           gridRowStart={5}
+          gridRowEnd={6}
+          gridColumnStart={1}
+          gridColumnEnd={8}
+          textAlign={'center'}
+          overflowWrap={'break-word'}
+          borderTopStyle={'solid'}
+          borderRightStyle={'solid'}
+          borderWidth={'0.15em'}
+          borderColor={'#D9D9D9'}
+          py={2}
+          mt={'-0.1rem'}
+          borderBottom={0}
+          borderLeft={0}
+          p={2}
+          backgroundColor={'#F7F7F7'}
+        >
+          <SunIcon />
+          Midi
+        </Text>
+        <Text
+          gridRowStart={6}
           gridRowEnd={7}
           gridColumnStart={1}
           gridColumnEnd={8}
@@ -72,25 +98,10 @@ export const MealsUserPlanning = (
           mt={'-0.1rem'}
           borderBottom={0}
           borderLeft={0}
+          p={2}
+          backgroundColor={'orange.100'}
         >
-          Midi
-        </Text>
-        <Text
-          gridRowStart={7}
-          gridRowEnd={9}
-          gridColumnStart={1}
-          gridColumnEnd={8}
-          textAlign={'center'}
-          overflowWrap={'break-word'}
-          borderTopStyle={'solid'}
-          borderRightStyle={'solid'}
-          borderWidth={'0.15em'}
-          borderColor={'#D9D9D9'}
-          py={2}
-          mt={'-0.1rem'}
-          borderBottom={0}
-          borderLeft={0}
-        >
+          <MoonIcon />
           Soir
         </Text>
         <Months date={date} month={0} totalDays={totalDays}></Months>
