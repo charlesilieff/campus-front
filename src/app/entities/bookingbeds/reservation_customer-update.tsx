@@ -132,6 +132,7 @@ export const ReservationCustomerUpdate = () => {
     isDepartureLunch: true,
     reservationComment: reservationEntity?.comment ?? '',
     customerComment: reservationEntity?.customer?.comment ?? '',
+    // pricingId: reservationEntity?.pricing?.id ?? null,
     firstname: reservationEntity?.customer?.firstname ?? '',
     lastname: reservationEntity?.customer?.lastname ?? '',
     age: reservationEntity?.customer?.age ?? null,

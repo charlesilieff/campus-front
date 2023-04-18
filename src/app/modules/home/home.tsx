@@ -30,6 +30,8 @@ export const Home = (): JSX.Element => {
 
   const reservationCreationIntermittentUrl = `bookingbeds/new/intermittent`
   const reservationCreationHabitantUrl = `bookingbeds/new/habitant`
+  const reservationCreationCustomerUrl = `bookingbeds/new`
+  const reservationCreationInviteUrl = `bookingbeds/new/invite`
 
   const reservationRequestUrl = 'reservation-request/new'
 
@@ -117,7 +119,40 @@ export const Home = (): JSX.Element => {
             </Box>
           ) :
           ''}
-        {isAdmin ?
+        {isRespHebergement ?
+          (
+            <Box
+              py={'10px'}
+              px={'25px'}
+              backgroundColor={'#C6F6D5'}
+              borderLeft={'4px'}
+              borderColor={'#38A169'}
+              minW={'650px'}
+            >
+              <HStack justifyContent={'space-between'}>
+                <VStack alignItems={'flex-start'}>
+                  <HStack>
+                    <BsPlusCircleFill color="#38A169" size={'24px'} />
+                    <Text fontWeight={'bold'}>Nouvelle réservation pour un client</Text>
+                  </HStack>
+                </VStack>
+                <Button
+                  as={Link}
+                  to={reservationCreationCustomerUrl}
+                  colorScheme={'green'}
+                  _hover={{
+                    textDecoration: 'none',
+                    color: 'white',
+                    backgroundColor: '#38A169'
+                  }}
+                >
+                  Créer une réservation
+                </Button>
+              </HStack>
+            </Box>
+          ) :
+          ''}
+        {isRespHebergement ?
           (
             <Box
               py={'10px'}
@@ -137,6 +172,39 @@ export const Home = (): JSX.Element => {
                 <Button
                   as={Link}
                   to={reservationCreationHabitantUrl}
+                  colorScheme={'green'}
+                  _hover={{
+                    textDecoration: 'none',
+                    color: 'white',
+                    backgroundColor: '#38A169'
+                  }}
+                >
+                  Créer une réservation
+                </Button>
+              </HStack>
+            </Box>
+          ) :
+          ''}
+        {isHabitant ?
+          (
+            <Box
+              py={'10px'}
+              px={'25px'}
+              backgroundColor={'#C6F6D5'}
+              borderLeft={'4px'}
+              borderColor={'#38A169'}
+              minW={'650px'}
+            >
+              <HStack justifyContent={'space-between'}>
+                <VStack alignItems={'flex-start'}>
+                  <HStack>
+                    <BsPlusCircleFill color="#38A169" size={'24px'} />
+                    <Text fontWeight={'bold'}>Nouvelle réservation pour un invité</Text>
+                  </HStack>
+                </VStack>
+                <Button
+                  as={Link}
+                  to={reservationCreationInviteUrl}
                   colorScheme={'green'}
                   _hover={{
                     textDecoration: 'none',
