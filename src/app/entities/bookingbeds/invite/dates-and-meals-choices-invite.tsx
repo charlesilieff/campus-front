@@ -20,7 +20,8 @@ import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import { isArrivalDateIsBeforeDepartureDate, isDateBeforeNow } from '../utils'
+import { isArrivalDateIsBeforeDepartureDate, isArrivalDateIsEgalDepartureDate,
+  isDateBeforeNow } from '../utils'
 import type { DatesAndMeals } from './reservation-invite-update'
 
 interface DatesAndMealsChoicesProps {
@@ -48,6 +49,8 @@ export const DatesAndMealsChoices = (
   }, [props.datesAndMeals])
   const personNumber = useRef({})
   personNumber.current = watch('personNumber', 0)
+  const specialDietNumber = useRef({})
+  specialDietNumber.current = watch('specialDietNumber', 0)
   const departureDate = useRef({})
   departureDate.current = watch('departureDate', '')
 
@@ -142,10 +145,10 @@ export const DatesAndMealsChoices = (
                     validate(v) {
                       console.log(personNumber.current)
                       console.log(v)
-                      if (v > +personNumber.current) {
+                      if (+v > +personNumber.current) {
                         return 'Le nombre de régimes spéciaux ne peut pas être supérieur au nombre de personnes'
                       }
-                      if (v < 0) {
+                      if (+v < 0) {
                         return 'Le nombre de régimes spéciaux ne peut pas être négatif'
                       }
                     }
@@ -171,9 +174,19 @@ export const DatesAndMealsChoices = (
                     required: "la date d'arrivée' est obligatoire",
                     validate(v) {
                       if (
-                        !isArrivalDateIsBeforeDepartureDate(v, departureDate.current.toString())
+                        isArrivalDateIsEgalDepartureDate(
+                          v,
+                          departureDate.current.toString()
+                        )
                       ) {
-                        return "La date d'arrivée doit être avant la date de départ"
+                        if (
+                          !isArrivalDateIsBeforeDepartureDate(
+                            v,
+                            departureDate.current.toString()
+                          )
+                        ) {
+                          return "La date d'arrivée doit être avant ou égale à la date de départ"
+                        }
                       }
                       if (isDateBeforeNow(v)) {
                         return "La date d'arrivée doit être après aujourd’hui"
