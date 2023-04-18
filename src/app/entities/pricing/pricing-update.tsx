@@ -124,7 +124,7 @@ export const PricingUpdate = () => {
       {loading ? <p>Chargement...</p> : (
         <form onSubmit={handleSubmit(saveEntity)}>
           <VStack minW={'300px'}>
-            <FormControl>
+            <FormControl isRequired isInvalid={errors.userCategoryId !== undefined}>
               <FormLabel htmlFor="userCategory" fontWeight={'bold'}>
                 {"Categorie d'utilisateur"}
               </FormLabel>
@@ -144,14 +144,22 @@ export const PricingUpdate = () => {
               </Select>
             </FormControl>
 
-            <FormControl>
+            <FormControl isRequired isInvalid={errors.typeReservationId !== undefined}>
               <FormLabel htmlFor="typeReservation" fontWeight={'bold'}>
                 {'Type de réservation'}
               </FormLabel>
               <Select
                 id="typeReservation"
-                {...register('typeReservationId', {})}
+                {
+                  // defaultValue={'Nuitée'}
+
+                  // defaultValue={'DEFAULT'}
+                  ...register('typeReservationId', {
+                    // required: "la date d'arrivée' est obligatoire"
+                  })
+                }
               >
+                {/* <option value="DEFAULT" disabled>Choississez un type de réservation ...</option> */}
                 <option value="" key="0" />
                 {typeReservations ?
                   typeReservations.map(typeReservation => (

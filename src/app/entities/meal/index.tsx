@@ -1,5 +1,9 @@
-import { Box, Button, Heading, HStack, Input, Text, VStack } from '@chakra-ui/react'
-import { useAppSelector } from 'app/config/store'
+import { Box, Button, FormControl, FormLabel, Heading, HStack, Input, List, ListItem, Select, Table,
+  Td, Text, Th, Tr, VStack } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
+import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { getIntermittentReservations } from 'app/entities/reservation/reservation.reducer'
 import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
 import type { Dayjs } from 'dayjs'
@@ -7,6 +11,7 @@ import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { FaCalendar } from 'react-icons/fa'
 
+import { IntermittentReservations } from '../bookingbeds/intermittent/reservations-list'
 import { ConfirmationAddMealsScreenModal } from './confirmationAddMealsScreenModal'
 import { ConfirmationRemoveMealsScreenModal } from './confirmationRemoveMealsScreenModal'
 import { ConfirmationUpdateMealsByPeriodeModal } from './confirmationUpdateMealsByPeriodeModal'
@@ -14,23 +19,82 @@ import { ConfirmationUpdateMealsModal } from './confirmationUpdateMealsModal'
 import { DisplayTotalMeals } from './displayTotalMeals'
 import { MealsUserPlanning } from './mealsUserPlanning'
 
-const apiUrlMealsDateFor31DaysByUser = 'api/meals/customer-id'
+const apiUrlMealsDateFor31DaysByUser = 'api/meals'
 // const apiUrlUpdateMeal = 'api/meals/update'
 
 export const Index = () => {
   const account = useAppSelector(state => state.authentication.account)
 
-  const customerId = account.customerId
+  // const customerId = account.customerId
 
   const [date, setDate] = useState(dayjs())
   const [startDate, setStartDate] = useState(dayjs())
   const [endDate, setEndDate] = useState(dayjs())
   const [mealsData, setMealsData] = useState([] as IMeal[])
   const [numberOfDays, setNumberOfDays] = useState(31)
+  const [reservationId, setReservationId] = useState<number>(0)
+
+  /**
+   * Get Reservations by user.
+   */
+
+  const dispatch = useAppDispatch()
+
+  // const customerId = pipe(
+  //   account.customerId,
+  //   O.fromNullable,
+  //   O.map(Number)
+  // )
+  const userId = pipe(
+    account.id,
+    O.fromNullable,
+    O.map(Number)
+  )
+  // console.log('userId', userId)
+
+  const reservationList = useAppSelector(state => state.reservation.entities).filter(x =>
+    // x.departureDate.setDate <= date.date
+    dayjs(dayjs(x?.departureDate)).isAfter(
+      date.subtract(1, 'day').format('YYYY-MM-DD'),
+      'day'
+    )
+  )
+  console.log('reservationList', reservationList)
+
+  const reservationListFirst = reservationList[0]
+  console.log('reservationListFirst', reservationListFirst)
+  // const reservationListFirstId = reservationList[0].id
+  // console.log('reservationListFirstId', reservationListFirstId)
 
   useEffect(() => {
-    const getMealsDateFor31DaysByUser = async (startDate: Dayjs, customerId: number) => {
-      const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/${customerId}/date/${
+    if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
+  }, [])
+
+  // const handleSyncList = () => {
+  //   if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
+  // }
+
+  /**
+   * Get meals for 31 days by user. //todo getMealsDateFor31DaysByUser by reservation
+   */
+  // useEffect(() => {
+  //   const getMealsDateFor31DaysByUser = async (startDate: Dayjs, customerId: number) => {
+  //     const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/customer-id/${customerId}/date/${
+  //       startDate.format('YYYY-MM-DD')
+  //     }`
+  //     const { data } = await axios.get<IMeal[]>(requestUrl)
+  //     console.log('data axios', data)
+  //     // const dataSorted = data.sort((a, b) => (a > b.date ? 1 : -1))
+  //     setMealsData(data)
+  //   }
+  //   getMealsDateFor31DaysByUser(date, customerId)
+  // }, [date])
+  /**
+   * Get meals for 31 days by reservation. //todo getMealsDateFor31DaysByUser by reservation
+   */
+  useEffect(() => {
+    const getMealsDateFor31DaysByReservation = async (startDate: Dayjs, reservationId: number) => {
+      const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/reservation-id/${reservationId}/date/${
         startDate.format('YYYY-MM-DD')
       }`
       const { data } = await axios.get<IMeal[]>(requestUrl)
@@ -38,8 +102,23 @@ export const Index = () => {
       // const dataSorted = data.sort((a, b) => (a > b.date ? 1 : -1))
       setMealsData(data)
     }
-    getMealsDateFor31DaysByUser(date, customerId)
-  }, [date])
+    getMealsDateFor31DaysByReservation(date, reservationId)
+  }, [reservationId, date])
+  /**
+   * Get meals for X days by reservation. //todo getMealsDateFor31DaysByUser by reservation
+   */
+  // useEffect(() => {
+  //   const getMealsDateFor31DaysByReservation = async (startDate: Dayjs, reservationId: number) => {
+  //     const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/reservation-id/${reservationId}/date1/${
+  //       startDate.format('YYYY-MM-DD')
+  //     }/date2/${startDate.add(31, 'day').format('YYYY-MM-DD')}`
+  //     const { data } = await axios.get<IMeal[]>(requestUrl)
+  //     console.log('data axios', data)
+  //     // const dataSorted = data.sort((a, b) => (a > b.date ? 1 : -1))
+  //     setMealsData(data)
+  //   }
+  //   getMealsDateFor31DaysByReservation(date, reservationId)
+  // }, [reservationId, date])
 
   /**
    * Calculation of total.
@@ -82,9 +161,82 @@ export const Index = () => {
     }
   }
 
+  console.log('reservationId :', reservationId)
+  console.log('reservationListFirst ', reservationListFirst)
+  // console.log('reservationListFirst id', reservationListFirst.id)
+
   return (
     <>
       <Box m={4}>
+        <HStack m={4} spacing={8} margin={4} marginBlockEnd={12} alignItems={'flex-start'}>
+          {/* todo  */}
+          <FormControl isRequired isInvalid={reservationId === 0}>
+            <Heading alignSelf={'flex-start'}>Ma reservation</Heading>
+            <HStack>
+              <Select
+                id="reservationId"
+                title="Mes réservations"
+                onChange={e => setReservationId(+e.target.value)}
+                // value={reservationListFirst ? reservationListFirst.id : null}
+                // value={reservationListFirst.id}
+                // value={reservationListFirstId}
+                // placeholder="Sélectionner une réservation"
+
+                // {...register('userCategoryId', {})}
+                // defaultValue={reservationList ? reservationList[1].id : null}
+                defaultValue={reservationListFirst ? reservationListFirst.id : null}
+              >
+                <option value={reservationListFirst ? reservationListFirst.id : null} key="0" />
+                {reservationList ?
+                  reservationList.map(reservation => (
+                    <option
+                      value={reservation.id}
+                      key={reservation.id}
+                      // accessKey={reservationListFirst.id}
+                    >
+                      {reservation.id}
+                      {
+                        /* {reservation.arrivalDate},
+                    {reservation.departureDate} */
+                      }
+                    </option>
+                  )) :
+                  null}
+              </Select>
+              <Table>
+                <Tr borderBottom={'solid'}>
+                  <Th>Id</Th>
+                  <Th>Date d&apos;arrivée</Th>
+                  <Th>Date de départ</Th>
+
+                  <Th>Nombre de personne</Th>
+                  <Th>Commentaire</Th>
+                </Tr>
+                {reservationList ?
+                  reservationList.map((reservation, index) => (
+                    <Tr key={index}>
+                      <Td>
+                        {reservation.id}
+                      </Td>
+                      <Td>
+                        {reservation.arrivalDate.toString()}
+                      </Td>
+                      <Td>
+                        {reservation.departureDate.toString()}
+                      </Td>
+                      <Td>
+                        {reservation.personNumber}
+                      </Td>
+                      <Td>
+                        {reservation.comment}
+                      </Td>
+                    </Tr>
+                  )) :
+                  null}
+              </Table>
+            </HStack>
+          </FormControl>
+        </HStack>
         <HStack m={4} spacing={8} margin={4} marginBlockEnd={12} alignItems={'flex-start'}>
           <Heading alignSelf={'flex-start'}>Changer mes repas par période</Heading>
         </HStack>
@@ -120,12 +272,14 @@ export const Index = () => {
             </Checkbox>
           </Box> */
           }
-          <ConfirmationUpdateMealsByPeriodeModal
-            startDate={startDate}
-            endDate={endDate}
-            customerId={customerId}
-            setDate={setDate}
-          />
+          <Box alignSelf={'end'}>
+            <ConfirmationUpdateMealsByPeriodeModal
+              startDate={startDate}
+              endDate={endDate}
+              reservationId={reservationId}
+              setDate={setDate}
+            />
+          </Box>
         </HStack>
 
         <HStack m={4} spacing={8}>

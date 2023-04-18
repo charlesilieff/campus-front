@@ -15,12 +15,12 @@ import type { FunctionComponent } from 'react'
 import React, { useState } from 'react'
 import { FaBan, FaSave, FaTrash } from 'react-icons/fa'
 
-const apiUrlMealsDateFor31DaysByUser = 'api/meals/customer-id'
+const apiUrlMealsDateFor31DaysByUser = 'api/meals'
 
 export const ConfirmationUpdateMealsByPeriodeModal: FunctionComponent<
-  { startDate: Dayjs; endDate: Dayjs; customerId: number; setDate: (date: Dayjs) => void }
+  { startDate: Dayjs; endDate: Dayjs; reservationId: number; setDate: (date: Dayjs) => void }
 > = (
-  { startDate, endDate, customerId, setDate }
+  { startDate, endDate, reservationId, setDate }
 ): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false)
   const apiUrlUpdateMeal = 'api/meals/update'
@@ -28,13 +28,13 @@ export const ConfirmationUpdateMealsByPeriodeModal: FunctionComponent<
   /**
    * update meals betwwen 2 date
    */
-  /* todo change : create a updateMealsBetweenTwoDateByUser */
+  /* todo change : create a updateMealsBetweenTwoDateByReservation */
   const updateMealsFromDate = async (
     startDate: Dayjs,
     endDate: Dayjs,
-    customerId: number
+    reservationId: number
   ) => {
-    const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/${customerId}/date1/${
+    const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/reservation-id/${reservationId}/date1/${
       startDate.format('YYYY-MM-DD')
     }/date2/${endDate.format('YYYY-MM-DD')}`
     // await axios.get<IMeal[]>(requestUrl)
@@ -98,14 +98,15 @@ export const ConfirmationUpdateMealsByPeriodeModal: FunctionComponent<
             Confirmer la mise à jour
           </ModalHeader>
           <ModalBody>
-            Êtes-vous sûr de vouloir modifier vos repas ?
+            Êtes-vous sûr de vouloir modifier vos repas du {startDate.format('DD/MM/YYYY')} au{' '}
+            {endDate.format('DD/MM/YYYY')} ?
           </ModalBody>
           <ModalFooter justifyContent={'space-between'}>
             <Button onClick={onClose} leftIcon={<FaBan />} variant="back" isLoading={isLoading}>
               Retour
             </Button>
             <Button
-              onClick={() => updateMealsFromDate(startDate, endDate, customerId)}
+              onClick={() => updateMealsFromDate(startDate, endDate, reservationId)}
               leftIcon={<FaTrash />}
               variant="danger"
               isLoading={isLoading}
