@@ -192,7 +192,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
   return (
     <Stack>
       <Heading size={'lg'} m={4}>
-        Votre réservation
+        Créer une réservation pour un habitant
       </Heading>
 
       <UserSelect
