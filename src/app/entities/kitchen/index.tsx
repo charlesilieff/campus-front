@@ -1,11 +1,11 @@
-import { Box, Button, FormControl, FormLabel, Heading, HStack, Input, Stack, useMediaQuery,
+import { Box, Button, FormLabel, Heading, HStack, Input, Stack, useMediaQuery,
   VStack } from '@chakra-ui/react'
 import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
-import { FaCalendar } from 'react-icons/fa'
+import { FaCalendar, FaCaretLeft, FaCaretRight } from 'react-icons/fa'
 
 import type { IMealsNumber } from './IMealsNumber'
 import { MealsContext } from './mealsContext'
@@ -45,6 +45,15 @@ export const Index = () => {
 
   const newDatePlanning = (dateStart: React.ChangeEvent<HTMLInputElement>) => {
     setDate(dayjs(dateStart.target.value))
+  }
+
+  const toggleAddDays = () => {
+    console.log('date', date)
+    setDate(date.add(1, 'day'))
+  }
+  const toggleSubtractDays = () => {
+    console.log('date', date)
+    setDate(date.subtract(1, 'day'))
   }
 
   // On calcule le nombre de jours du mois de la date passée par l'utilisateur.
@@ -114,7 +123,7 @@ export const Index = () => {
    */
   const toggleNumberOfDays = () => {
     if (numberOfDays === 31) {
-      setNumberOfDays(15)
+      setNumberOfDays(7)
     } else {
       setNumberOfDays(31)
     }
@@ -125,6 +134,14 @@ export const Index = () => {
       <Box m={4}>
         <HStack m={4} spacing={8}>
           <Heading alignSelf={'flex-start'}>Cuisine - Total des repas réservés</Heading>
+          <Button
+            onClick={() => toggleSubtractDays()}
+            leftIcon={<FaCaretLeft />}
+            color={'white'}
+            backgroundColor={'#e95420'}
+            _hover={{ textDecoration: 'none', color: 'orange' }}
+          >
+          </Button>
           <Box>
             <Input
               type="date"
@@ -134,13 +151,22 @@ export const Index = () => {
           </Box>
 
           <Button
+            onClick={() => toggleAddDays()}
+            leftIcon={<FaCaretRight />}
+            color={'white'}
+            backgroundColor={'#e95420'}
+            _hover={{ textDecoration: 'none', color: 'orange' }}
+          >
+          </Button>
+
+          <Button
             onClick={() => toggleNumberOfDays()}
             leftIcon={<FaCalendar />}
             color={'white'}
             backgroundColor={'#e95420'}
             _hover={{ textDecoration: 'none', color: 'orange' }}
           >
-            {numberOfDays === 31 ? '15 jours' : '31 jours'}
+            {numberOfDays === 31 ? '7 jours' : '31 jours'}
           </Button>
         </HStack>
 

@@ -132,51 +132,51 @@ export const Day = ({ positionX, date, index }: IProps) => {
     setMealsNumber(theNewMealsNumber)
   }, [mealsContext])
 
-  const colorNumber = (
-    time: 'lunchtime' | 'dinner' | 'breakfast',
-    diet: 'specialDiet' | 'classicDiet'
-  ) => {
-    let color: string
-    let referentialColor: number
-    let numberToColor: number
+  // const colorNumber = (
+  //   time: 'lunchtime' | 'dinner' | 'breakfast',
+  //   diet: 'specialDiet' | 'classicDiet'
+  // ) => {
+  //   let color: string
+  //   let referentialColor: number
+  //   let numberToColor: number
 
-    if (time === 'lunchtime') {
-      if (diet === 'specialDiet') {
-        referentialColor = mealsNumberReferential?.lunchtime.specialDiet
-        numberToColor = mealsNumber?.lunchtime.specialDiet
-      }
-      if (diet === 'classicDiet') {
-        referentialColor = mealsNumberReferential?.lunchtime.classicDiet
-        numberToColor = mealsNumber?.lunchtime.classicDiet
-      }
-    }
-    if (time === 'dinner') {
-      if (diet === 'specialDiet') {
-        referentialColor = mealsNumberReferential?.dinner.specialDiet
-        numberToColor = mealsNumber?.dinner.specialDiet
-      }
-      if (diet === 'classicDiet') {
-        referentialColor = mealsNumberReferential?.dinner.classicDiet
-        numberToColor = mealsNumber?.dinner.classicDiet
-      }
-    }
-    if (time === 'breakfast') {
-      referentialColor = mealsNumberReferential?.breakfast
-      numberToColor = mealsNumber?.breakfast
-      color = 'green'
-    }
+  //   if (time === 'lunchtime') {
+  //     if (diet === 'specialDiet') {
+  //       referentialColor = mealsNumberReferential?.lunchtime.specialDiet
+  //       numberToColor = mealsNumber?.lunchtime.specialDiet
+  //     }
+  //     if (diet === 'classicDiet') {
+  //       referentialColor = mealsNumberReferential?.lunchtime.classicDiet
+  //       numberToColor = mealsNumber?.lunchtime.classicDiet
+  //     }
+  //   }
+  //   if (time === 'dinner') {
+  //     if (diet === 'specialDiet') {
+  //       referentialColor = mealsNumberReferential?.dinner.specialDiet
+  //       numberToColor = mealsNumber?.dinner.specialDiet
+  //     }
+  //     if (diet === 'classicDiet') {
+  //       referentialColor = mealsNumberReferential?.dinner.classicDiet
+  //       numberToColor = mealsNumber?.dinner.classicDiet
+  //     }
+  //   }
+  //   if (time === 'breakfast') {
+  //     referentialColor = mealsNumberReferential?.breakfast
+  //     numberToColor = mealsNumber?.breakfast
+  //     color = 'green'
+  //   }
 
-    if (numberToColor > referentialColor) {
-      color = 'green'
-    }
-    if (numberToColor < referentialColor) {
-      color = 'red'
-    }
-    if (numberToColor === referentialColor) {
-      color = 'black'
-    }
-    return color
-  }
+  //   if (numberToColor > referentialColor) {
+  //     color = 'green'
+  //   }
+  //   if (numberToColor < referentialColor) {
+  //     color = 'red'
+  //   }
+  //   if (numberToColor === referentialColor) {
+  //     color = 'black'
+  //   }
+  //   return color
+  // }
 
   const [modal, setModal] = useState(false)
   const toggle = () => {

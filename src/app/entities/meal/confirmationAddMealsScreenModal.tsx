@@ -97,8 +97,8 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
     )
 
     setIsLoading(false)
-    setDate(date.add(1, 'day'))
-
+    // setDate(date.add(1, 'day'))
+    setDate(date)
     onClose()
   }
 
