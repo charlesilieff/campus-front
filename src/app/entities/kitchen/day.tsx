@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  color,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -10,9 +11,11 @@ import {
   ModalOverlay,
   Table,
   Td,
+  Text,
   Th,
   Tr,
-  useDisclosure
+  useDisclosure,
+  VStack
 } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
 import type { IMeal } from 'app/shared/model/meal.model'
@@ -21,6 +24,7 @@ import axios from 'axios'
 import type { Dayjs } from 'dayjs'
 import type dayjs from 'dayjs'
 import React, { useContext, useEffect, useState } from 'react'
+import { BsBorderTop } from 'react-icons/bs'
 
 import type { IMealsNumber } from './IMealsNumber'
 import { MealsContext } from './mealsContext'
@@ -200,150 +204,146 @@ export const Day = ({ positionX, date, index }: IProps) => {
 
   return (
     <>
+      <VStack className="day" style={style} px={1} borderColor={'#D9D9D9'}>
+        <Text>{date.format('ddd')}</Text>
+        <Text>{date.format('DD')}</Text>
+      </VStack>
       <div className="day popup-comment" style={style} onClick={() => toggle()}>
         {date.format('ddd DD ')}
       </div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gridColumnStart: positionX,
-          gridColumnEnd: positionX + 1,
-          gridRowStart: 4,
-          gridRowEnd: 5,
-          borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
-          borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
-          borderTopStyle: 'solid'
-        } as React.CSSProperties}
+      <Box
+        display={'flex'}
+        flexDirection={'column'}
+        backgroundColor={'yellow.50'}
+        gridColumnStart={positionX}
+        gridColumnEnd={positionX + 1}
+        gridRowStart={'4'}
+        gridRowEnd={'5'}
+        borderLeftWidth={dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em'}
+        borderLeftStyle={dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed'}
+        borderTopStyle={'solid'}
+        borderTopWidth={'0.1em'}
+        borderBottomWidth={'0.01em'}
+        borderBottomStyle={'solid'}
+        py={2}
       >
-        <div
-          style={{
-            color: colorNumber('dinner', 'specialDiet')
-          } as React.CSSProperties}
-        >
-          {mealsNumber?.breakfast}
-        </div>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gridColumnStart: positionX,
-          gridColumnEnd: positionX + 1,
-          gridRowStart: 5,
-          gridRowEnd: 6,
-          borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
-          borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
-          borderTopStyle: 'solid',
-          borderBottomWidth: '0.01em',
-          borderBottomStyle: 'solid'
-        } as React.CSSProperties}
-      >
-        <div
-          style={{
-            color: colorNumber('lunchtime', 'classicDiet')
-          } as React.CSSProperties}
-        >
-          {/* {mealsNumber?.lunchtime.classicDiet} */}
-          <Button
-            onClick={() => {
-              getMeals(date)
-              onOpenRegularLunch()
-            }}
-            size={'sm'}
-          >
-            {mealsNumber?.lunchtime.classicDiet}
-          </Button>
-          <Box p={1}>
-            <Modal
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-              size={'xxl'}
-              scrollBehavior={'inside'}
-              isOpen={isOpenRegularLunch}
-              onClose={onCloseRegularLunch}
-              isCentered
-            >
-              <ModalOverlay />
-              <ModalContent>
-                <ModalHeader borderBottom={'solid'}>
-                </ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                  {
-                    <Table>
-                      <Tr borderBottom={'solid'}>
-                        <Th>Prénom</Th>
-                        <Th>Nom</Th>
-                        <Th>Repas normaux midi</Th>
+        {mealsNumber?.breakfast}
+      </Box>
 
-                        <Th>Comentaire</Th>
+      <Box
+        display={'flex'}
+        flexDirection={'column'}
+        backgroundColor={'#F7F7F7'}
+        gridColumnStart={positionX}
+        gridColumnEnd={positionX + 1}
+        gridRowStart={'5'}
+        gridRowEnd={'6'}
+        borderLeftWidth={dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em'}
+        borderLeftStyle={dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed'}
+        borderTopStyle={'solid'}
+        // borderTopWidth={'0.1em'}
+        borderBottomWidth={'0.01em'}
+        borderBottomStyle={'solid'}
+        py={2}
+        // alignItems={'center'}
+        // justifyContent={'center'}
+        // verticalAlign={'middle'}
+      >
+        <Button
+          onClick={() => {
+            getMeals(date)
+            onOpenRegularLunch()
+          }}
+          size={'sm'}
+          colorScheme="orange"
+        >
+          {mealsNumber?.lunchtime.classicDiet}
+        </Button>
+        <Box p={1}>
+          <Modal
+            size={'xxl'}
+            scrollBehavior={'inside'}
+            isOpen={isOpenRegularLunch}
+            onClose={onCloseRegularLunch}
+            isCentered
+          >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader borderBottom={'solid'}>
+              </ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                {
+                  <Table>
+                    {/* <Caption>Détail du midi : {date}</Caption> */}
+                    <Tr borderBottom={'solid'}>
+                      <Th>Prénom</Th>
+                      <Th>Nom</Th>
+                      <Th>Repas normaux midi</Th>
+
+                      <Th>Comentaire</Th>
+                    </Tr>
+
+                    {mealsWithCustomerData.map((meals, index) => (
+                      <Tr key={index}>
+                        <Td>
+                          {meals.firstname && meals.regularLunch ? meals.firstname : null}
+                        </Td>
+                        <Td>
+                          {meals.lastname && meals.regularLunch ? meals.lastname : null}
+                        </Td>
+                        <Td>
+                          {meals.regularLunch ? meals.regularLunch : null}
+                        </Td>
+
+                        <Td>
+                          {meals.comment?.length > 0 && meals.regularLunch ? meals.comment : null}
+                        </Td>
                       </Tr>
+                    ))}
+                  </Table>
+                }
+              </ModalBody>
+              <ModalFooter>
+                <Button colorScheme="blue" mr={3} onClick={onCloseRegularLunch}>
+                  Close
+                </Button>
+                <Button variant="ghost" onClick={print}>Imprimer</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        </Box>
+      </Box>
 
-                      {mealsWithCustomerData.map((meals, index) => (
-                        <Tr key={index}>
-                          <Td>
-                            {meals.firstname && meals.regularLunch ? meals.firstname : null}
-                          </Td>
-                          <Td>
-                            {meals.lastname && meals.regularLunch ? meals.lastname : null}
-                          </Td>
-                          <Td>
-                            {meals.regularLunch ? meals.regularLunch : null}
-                          </Td>
-
-                          <Td>
-                            {meals.comment?.length > 0 && meals.regularLunch ? meals.comment : null}
-                          </Td>
-                        </Tr>
-                      ))}
-                    </Table>
-                  }
-                </ModalBody>
-                <ModalFooter>
-                  <Button colorScheme="blue" mr={3} onClick={onCloseRegularLunch}>
-                    Close
-                  </Button>
-                  <Button variant="ghost" onClick={print}>Imprimer</Button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
-          </Box>
-        </div>
-      </div>
-
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gridColumnStart: positionX,
-          gridColumnEnd: positionX + 1,
-          gridRowStart: 6,
-          gridRowEnd: 7,
-          borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
-          borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
-          borderTopStyle: 'solid',
-          borderBottomWidth: '0.1em',
-          borderBottomStyle: 'solid',
-          borderBottomColor: 'black'
-        } as React.CSSProperties}
+      <Box
+        display={'flex'}
+        flexDirection={'column'}
+        backgroundColor={'#F7F7F7'}
+        gridColumnStart={positionX}
+        gridColumnEnd={positionX + 1}
+        gridRowStart={'6'}
+        gridRowEnd={'7'}
+        borderLeftWidth={dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em'}
+        borderLeftStyle={dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed'}
+        borderTopStyle={'solid'}
+        // borderTopWidth={'0.1em'}
+        borderBottomWidth={'0.01em'}
+        borderBottomStyle={'solid'}
+        py={2}
       >
-        <div
-          style={{
-            color: colorNumber('lunchtime', 'specialDiet')
-          } as React.CSSProperties}
+        <Button
+          onClick={() => {
+            getMeals(date)
+            onOpenSpecialLunch()
+          }}
+          size={'sm'}
+          colorScheme="orange"
         >
-          <Button
-            onClick={() => {
-              getMeals(date)
-              onOpenSpecialLunch()
-            }}
-            size={'sm'}
-          >
-            {mealsNumber?.lunchtime.specialDiet}
-          </Button>
+          {mealsNumber?.lunchtime.specialDiet}
+        </Button>
+        {
           <Box p={1}>
             <Modal
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               size={'xxl'}
               scrollBehavior={'inside'}
               isOpen={isOpenSpecialLunch}
@@ -358,10 +358,10 @@ export const Day = ({ positionX, date, index }: IProps) => {
                 <ModalBody>
                   {
                     <Table>
+                      {/* <Caption>Détail du midi : {date}</Caption> */}
                       <Tr borderBottom={'solid'}>
                         <Th>Prénom</Th>
                         <Th>Nom</Th>
-
                         <Th>Repas speciaux midi</Th>
                         <Th>Comentaire</Th>
                       </Tr>
@@ -394,44 +394,127 @@ export const Day = ({ positionX, date, index }: IProps) => {
               </ModalContent>
             </Modal>
           </Box>
-        </div>
-      </div>
+        }
+      </Box>
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gridColumnStart: positionX,
-          gridColumnEnd: positionX + 1,
-          gridRowStart: 7,
-          gridRowEnd: 8,
-          borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
-          borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
-          borderTopStyle: 'solid',
-          borderBottomWidth: '0.01em',
-          borderBottomStyle: 'solid'
-        } as React.CSSProperties}
+      <Box
+        display={'flex'}
+        flexDirection={'column'}
+        backgroundColor={'orange.100'}
+        gridColumnStart={positionX}
+        gridColumnEnd={positionX + 1}
+        gridRowStart={'7'}
+        gridRowEnd={'8'}
+        borderLeftWidth={dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em'}
+        borderLeftStyle={dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed'}
+        borderTopStyle={'solid'}
+        // borderTopWidth={'0.1em'}
+        borderBottomWidth={'0.01em'}
+        borderBottomStyle={'solid'}
+        py={2}
+        // alignItems={'center'}
+        // justifyContent={'center'}
+        // verticalAlign={'middle'}
       >
-        <div
-          style={{
-            color: colorNumber('dinner', 'classicDiet')
-          } as React.CSSProperties}
+        <Button
+          onClick={() => {
+            getMeals(date)
+            onOpenRegularDiner()
+          }}
+          size={'sm'}
+          colorScheme="orange"
         >
-          <Button
-            onClick={() => {
-              getMeals(date)
-              onOpenRegularDiner()
-            }}
-            size={'sm'}
+          {mealsNumber?.dinner.classicDiet}
+        </Button>
+        <Box p={1}>
+          <Modal
+            size={'xxl'}
+            scrollBehavior={'inside'}
+            isOpen={isOpenRegularDiner}
+            onClose={onCloseRegularDiner}
+            isCentered
           >
-            {mealsNumber?.dinner.classicDiet}
-          </Button>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader borderBottom={'solid'}>
+              </ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                {
+                  <Table>
+                    {/* <Caption>Détail du midi : {date}</Caption> */}
+                    <Tr borderBottom={'solid'}>
+                      <Th>Prénom</Th>
+                      <Th>Nom</Th>
+                      <Th>Repas normaux soir</Th>
+
+                      <Th>Comentaire</Th>
+                    </Tr>
+
+                    {mealsWithCustomerData.map((meals, index) => (
+                      <Tr key={index}>
+                        <Td>
+                          {meals.firstname && meals.regularDinner ? meals.firstname : null}
+                        </Td>
+                        <Td>
+                          {meals.lastname && meals.regularDinner ? meals.lastname : null}
+                        </Td>
+                        <Td>
+                          {meals.regularDinner ? meals.regularDinner : null}
+                        </Td>
+
+                        <Td>
+                          {meals.comment?.length > 0 && meals.regularDinner ? meals.comment : null}
+                        </Td>
+                      </Tr>
+                    ))}
+                  </Table>
+                }
+              </ModalBody>
+              <ModalFooter>
+                <Button colorScheme="blue" mr={3} onClick={onCloseRegularDiner}>
+                  Close
+                </Button>
+                <Button variant="ghost" onClick={print}>Imprimer</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        </Box>
+      </Box>
+
+      <Box
+        display={'flex'}
+        flexDirection={'column'}
+        backgroundColor={'orange.100'}
+        gridColumnStart={positionX}
+        gridColumnEnd={positionX + 1}
+        gridRowStart={'8'}
+        gridRowEnd={'9'}
+        borderLeftWidth={dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em'}
+        borderLeftStyle={dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed'}
+        borderTopStyle={'solid'}
+        // borderTopWidth={'0.1em'}
+        borderBottomWidth={'0.01em'}
+        borderBottomStyle={'solid'}
+        py={2}
+      >
+        <Button
+          onClick={() => {
+            getMeals(date)
+            onOpenSpecialDiner()
+          }}
+          size={'sm'}
+          colorScheme="orange"
+        >
+          {mealsNumber?.dinner.specialDiet}
+        </Button>
+        {
           <Box p={1}>
             <Modal
               size={'xxl'}
               scrollBehavior={'inside'}
-              isOpen={isOpenRegularDiner}
-              onClose={onCloseRegularDiner}
+              isOpen={isOpenSpecialDiner}
+              onClose={onCloseSpecialDiner}
               isCentered
             >
               <ModalOverlay />
@@ -446,25 +529,23 @@ export const Day = ({ positionX, date, index }: IProps) => {
                       <Tr borderBottom={'solid'}>
                         <Th>Prénom</Th>
                         <Th>Nom</Th>
-                        <Th>Repas normaux soir</Th>
-
+                        <Th>Repas speciaux soir</Th>
                         <Th>Comentaire</Th>
                       </Tr>
 
                       {mealsWithCustomerData.map((meals, index) => (
                         <Tr key={index}>
                           <Td>
-                            {meals.firstname && meals.regularDinner ? meals.firstname : null}
+                            {meals.firstname && meals.specialDinner ? meals.firstname : null}
                           </Td>
                           <Td>
-                            {meals.lastname && meals.regularDinner ? meals.lastname : null}
+                            {meals.lastname && meals.specialDinner ? meals.lastname : null}
                           </Td>
                           <Td>
-                            {meals.regularDinner ? meals.regularDinner : null}
+                            {meals.specialDinner ? meals.specialDinner : null}
                           </Td>
-
                           <Td>
-                            {meals.comment?.length > 0 && meals.regularDinner ?
+                            {meals.comment?.length > 0 && meals.specialDinner ?
                               meals.comment :
                               null}
                           </Td>
@@ -474,7 +555,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
                   }
                 </ModalBody>
                 <ModalFooter>
-                  <Button colorScheme="blue" mr={3} onClick={onCloseRegularDiner}>
+                  <Button colorScheme="blue" mr={3} onClick={onCloseSpecialDiner}>
                     Close
                   </Button>
                   <Button variant="ghost" onClick={print}>Imprimer</Button>
@@ -482,94 +563,8 @@ export const Day = ({ positionX, date, index }: IProps) => {
               </ModalContent>
             </Modal>
           </Box>
-        </div>
-      </div>
-
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gridColumnStart: positionX,
-          gridColumnEnd: positionX + 1,
-          gridRowStart: 8,
-          gridRowEnd: 9,
-          borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
-          borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
-          borderTopStyle: 'solid'
-        } as React.CSSProperties}
-      >
-        <div
-          style={{
-            color: colorNumber('dinner', 'specialDiet')
-          } as React.CSSProperties}
-        >
-          <Button
-            onClick={() => {
-              getMeals(date)
-              onOpenSpecialDiner()
-            }}
-            size={'sm'}
-          >
-            {mealsNumber?.dinner.specialDiet}
-          </Button>
-          {
-            <Box p={1}>
-              <Modal
-                size={'xxl'}
-                scrollBehavior={'inside'}
-                isOpen={isOpenSpecialDiner}
-                onClose={onCloseSpecialDiner}
-                isCentered
-              >
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader borderBottom={'solid'}>
-                  </ModalHeader>
-                  <ModalCloseButton />
-                  <ModalBody>
-                    {
-                      <Table>
-                        {/* <Caption>Détail du midi : {date}</Caption> */}
-                        <Tr borderBottom={'solid'}>
-                          <Th>Prénom</Th>
-                          <Th>Nom</Th>
-                          <Th>Repas speciaux soir</Th>
-                          <Th>Comentaire</Th>
-                        </Tr>
-
-                        {mealsWithCustomerData.map((meals, index) => (
-                          <Tr key={index}>
-                            <Td>
-                              {meals.firstname && meals.specialDinner ? meals.firstname : null}
-                            </Td>
-                            <Td>
-                              {meals.lastname && meals.specialDinner ? meals.lastname : null}
-                            </Td>
-                            <Td>
-                              {meals.specialDinner ? meals.specialDinner : null}
-                            </Td>
-                            <Td>
-                              {meals.comment?.length > 0 && meals.specialDinner ?
-                                meals.comment :
-                                null}
-                            </Td>
-                          </Tr>
-                        ))}
-                      </Table>
-                    }
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button colorScheme="blue" mr={3} onClick={onCloseSpecialDiner}>
-                      Close
-                    </Button>
-                    <Button variant="ghost" onClick={print}>Imprimer</Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
-            </Box>
-          }
-        </div>
-      </div>
+        }
+      </Box>
     </>
   )
 }
@@ -587,7 +582,9 @@ function commentStyle(positionX: number, date: dayjs.Dayjs, mealsContext: IMeal[
     gridColumnStart: positionX,
     gridColumnEnd: positionX + 1,
     borderLeftWidth: '0.01em',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    borderColor: '#D9D9D9',
+    Border: 'none'
   } as React.CSSProperties
   if (positionX === 8 || date.date() === 1 || date.day() === 1) {
     style.borderLeftWidth = '0.2em'

@@ -11,7 +11,7 @@ import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { FaCalendar } from 'react-icons/fa'
 
-import { IntermittentReservations } from '../bookingbeds/intermittent/reservations-list'
+// import { IntermittentReservations } from '../bookingbeds/intermittent/reservations-list'
 import { ConfirmationAddMealsScreenModal } from './confirmationAddMealsScreenModal'
 import { ConfirmationRemoveMealsScreenModal } from './confirmationRemoveMealsScreenModal'
 import { ConfirmationUpdateMealsByPeriodeModal } from './confirmationUpdateMealsByPeriodeModal'

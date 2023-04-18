@@ -24,7 +24,7 @@ import { CustomerUpdate } from './customer-update'
 import { DatesAndMealsChoices } from './dates-and-meals-choices-user'
 import { DatesAndMealsSummary } from './dates-and-meals-summary-user'
 import { UserSelect } from './user-select'
-// import { UserSummary } from './user-summary'
+import { UserSummary } from './user-summary'
 
 export interface DatesAndMeals {
   arrivalDate: string
@@ -195,11 +195,24 @@ export const ReservationUserUpdate = (): JSX.Element => {
         Créer une réservation pour un habitant
       </Heading>
 
-      <UserSelect
-        setUserId={setUserId}
-        setCustomer={setCustomer}
-        setUpdateUser={setSelectUser}
-      />
+      {!userId ?
+        (
+          <UserSelect
+            setUserId={setUserId}
+            setCustomer={setCustomer}
+            setUpdateUser={setSelectUser}
+          />
+        ) :
+        (
+          <UserSummary
+            customer={customer.value}
+            setUserId={setUserId}
+            // setCustomer={setCustomer}
+            setUpdateUser={setSelectUser}
+            setUpdateMeal={setUpdateDatesAndMeals}
+            setUpdateCustomer={setUpdateCustomer}
+          />
+        )}
 
       {!userId || selectUser ?
         (
@@ -232,8 +245,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
           />
         )}
 
-      {(O.isNone(customer) || !customer.value.lastname || !customer.value.firstname)
-          || (updateCustomer && O.isNone(datesAndMeal)) ?
+      {!userId || (O.isNone(customer) || !customer.value.lastname || !customer.value.firstname) ?
         (
           <Heading
             p={4}
@@ -263,7 +275,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
           />
         )}
 
-      {O.isSome(datesAndMeal) && !updateDatesAndMeals ?
+      {O.isSome(datesAndMeal) && !updateDatesAndMeals && userId ?
         (
           <BedsChoices
             datesAndMeals={datesAndMeal}

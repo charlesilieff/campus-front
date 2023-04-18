@@ -85,159 +85,143 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
       <Box className="day popup-comment" style={style}>
         {date.format('ddd DD ')}
       </Box>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gridColumnStart: positionX,
-          gridColumnEnd: positionX + 1,
-          gridRowStart: 4,
-          gridRowEnd: 5,
-          borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
-          borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
-          borderTopStyle: 'solid',
-          borderBottomWidth: '0.01em',
-          borderBottomStyle: 'solid'
-        } as React.CSSProperties}
-      >
-        <div
-          style={{
-            color: 'orange' // colorNumber('breakfast', 'classicDiet')
-          } as React.CSSProperties}
-        >
-          {mealsNumber?.id !== undefined ?
-            (
-              <Checkbox
-                onChange={_ => handleChangeMeal('breakfast')}
-                isChecked={mealsNumber?.breakfast === 1}
-              />
-            ) :
-            null}
-        </div>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gridColumnStart: positionX,
-          gridColumnEnd: positionX + 1,
-          gridRowStart: 5,
-          gridRowEnd: 6,
-          borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
-          borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
-          borderTopStyle: 'solid',
-          borderBottomWidth: '0.01em',
-          borderBottomStyle: 'solid'
-        } as React.CSSProperties}
-      >
-        <div
-          style={{
-            color: 'orange'
-          } as React.CSSProperties}
-        >
-          {mealsNumber?.id !== undefined && testRegular > 1
-              && mealsNumber?.lunchtime.regularDiet < 2 ?
-            (
-              <Checkbox
-                onChange={_ => handleChangeMeal('regularLunch')}
-                isChecked={mealsNumber?.lunchtime.regularDiet === 1}
-              />
-            ) :
-            null}
-        </div>
-      </div>
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gridColumnStart: positionX,
-          gridColumnEnd: positionX + 1,
-          gridRowStart: 6,
-          gridRowEnd: 7,
-          borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
-          borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
-          borderTopStyle: 'solid',
-          borderBottomWidth: '0.1em',
-          borderBottomStyle: 'solid',
-          borderBottomColor: 'black'
-        } as React.CSSProperties}
+      <Box
+        display={'flex'}
+        flexDirection={'column'}
+        backgroundColor={'yellow.50'}
+        gridColumnStart={positionX}
+        gridColumnEnd={positionX + 1}
+        gridRowStart={'4'}
+        gridRowEnd={'5'}
+        borderLeftWidth={dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em'}
+        borderLeftStyle={dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed'}
+        borderTopStyle={'solid'}
+        borderTopWidth={'0.1em'}
+        borderBottomWidth={'0.01em'}
+        borderBottomStyle={'solid'}
+        py={2}
       >
-        <div
-          style={{
-            color: 'orange'
-          } as React.CSSProperties}
-        >
-          {mealsNumber?.id !== undefined && testSpecial > 1 ?
-            (
-              <Checkbox
-                onChange={_ => handleChangeMeal('specialLunch')}
-                isChecked={mealsNumber?.lunchtime.specialDiet === 1}
-              />
-            ) :
-            null}
-        </div>
-      </div>
+        {mealsNumber?.id !== undefined && mealsNumber?.breakfast < 2 ?
+          (
+            <Checkbox
+              colorScheme={'orange'}
+              onChange={_ => handleChangeMeal('breakfast')}
+              isChecked={mealsNumber?.breakfast === 1}
+            />
+          ) :
+          null}
+      </Box>
+      <Box
+        display={'flex'}
+        flexDirection={'column'}
+        backgroundColor={'#F7F7F7'}
+        gridColumnStart={positionX}
+        gridColumnEnd={positionX + 1}
+        gridRowStart={'5'}
+        gridRowEnd={testRegular ? '6' : '5'}
+        borderLeftWidth={dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em'}
+        borderLeftStyle={dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed'}
+        borderTopStyle={'solid'}
+        // borderTopWidth={'0.1em'}
+        borderBottomWidth={'0.01em'}
+        borderBottomStyle={'solid'}
+        py={2}
+        // visibility={mealsNumber?.id !== undefined && testRegular > 1 ? 'visible' : 'hidden'}
+      >
+        {mealsNumber?.id !== undefined && testRegular > 1
+            && mealsNumber?.lunchtime.regularDiet < 2 ?
+          (
+            <Checkbox
+              colorScheme={'orange'}
+              onChange={_ => handleChangeMeal('regularLunch')}
+              isChecked={mealsNumber?.lunchtime.regularDiet === 1}
+            />
+          ) :
+          null}
+      </Box>
+      <Box
+        display={'flex'}
+        flexDirection={'column'}
+        backgroundColor={'#F7F7F7'}
+        gridColumnStart={positionX}
+        gridColumnEnd={positionX + 1}
+        gridRowStart={'5'}
+        gridRowEnd={!testRegular ? '6' : '5'}
+        borderLeftWidth={dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em'}
+        borderLeftStyle={dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed'}
+        borderTopStyle={'solid'}
+        // borderTopWidth={'0.1em'}
+        borderBottomWidth={'0.01em'}
+        borderBottomStyle={'solid'}
+        py={2}
+        // visibility={mealsNumber?.id !== undefined && testSpecial > 1 ? 'visible' : 'hidden'}
+      >
+        {mealsNumber?.id !== undefined && testSpecial > 1 ?
+          (
+            <Checkbox
+              colorScheme={'orange'}
+              onChange={_ => handleChangeMeal('specialLunch')}
+              isChecked={mealsNumber?.lunchtime.specialDiet === 1}
+            />
+          ) :
+          null}
+      </Box>
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gridColumnStart: positionX,
-          gridColumnEnd: positionX + 1,
-          gridRowStart: 7,
-          gridRowEnd: 8,
-          borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
-          borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
-          borderTopStyle: 'solid',
-          borderBottomWidth: '0.01em',
-          borderBottomStyle: 'solid'
-        } as React.CSSProperties}
+      <Box
+        display={'flex'}
+        flexDirection={'column'}
+        backgroundColor={'orange.100'}
+        gridColumnStart={positionX}
+        gridColumnEnd={positionX + 1}
+        gridRowStart={'6'}
+        gridRowEnd={testRegular ? '7' : '6'}
+        borderLeftWidth={dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em'}
+        borderLeftStyle={dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed'}
+        borderTopStyle={'solid'}
+        // borderTopWidth={'0.1em'}
+        borderBottomWidth={'0.01em'}
+        borderBottomStyle={'solid'}
+        py={2}
+        // visibility={mealsNumber?.id !== undefined && testRegular > 1 ? 'visible' : 'hidden'}
       >
-        <div
-          style={{
-            color: 'orange'
-          } as React.CSSProperties}
-        >
-          {mealsNumber?.id !== undefined && testRegular > 1 ?
-            (
-              <Checkbox
-                onChange={_ => handleChangeMeal('regularDinner')}
-                isChecked={mealsNumber?.dinner.regularDiet === 1}
-              />
-            ) :
-            null}
-        </div>
-      </div>
+        {mealsNumber?.id !== undefined && testRegular > 1 ?
+          (
+            <Checkbox
+              colorScheme={'orange'}
+              onChange={_ => handleChangeMeal('regularDinner')}
+              isChecked={mealsNumber?.dinner.regularDiet === 1}
+            />
+          ) :
+          null}
+      </Box>
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gridColumnStart: positionX,
-          gridColumnEnd: positionX + 1,
-          gridRowStart: 8,
-          gridRowEnd: 9,
-          borderLeftWidth: dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em',
-          borderLeftStyle: dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed',
-          borderTopStyle: 'solid'
-        } as React.CSSProperties}
+      <Box
+        display={'flex'}
+        flexDirection={'column'}
+        backgroundColor={'orange.100'}
+        gridColumnStart={positionX}
+        gridColumnEnd={positionX + 1}
+        gridRowStart={'6'}
+        gridRowEnd={testRegular ? '7' : '6'}
+        borderLeftWidth={dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em'}
+        borderLeftStyle={dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed'}
+        borderTopStyle={'solid'}
+        // borderTopWidth={'0.1em'}
+        borderBottomWidth={'0.01em'}
+        borderBottomStyle={'solid'}
+        py={2}
       >
-        <div
-          style={{
-            color: 'orange'
-          } as React.CSSProperties}
-        >
-          {mealsNumber?.id !== undefined && testSpecial > 1 ?
-            (
-              <Checkbox
-                onChange={_ => handleChangeMeal('specialDinner')}
-                isChecked={mealsNumber?.dinner.specialDiet === 1}
-              />
-            ) :
-            null}
-        </div>
-      </div>
+        {mealsNumber?.id !== undefined && testSpecial > 1 ?
+          (
+            <Checkbox
+              colorScheme={'orange'}
+              onChange={_ => handleChangeMeal('specialDinner')}
+              isChecked={mealsNumber?.dinner.specialDiet === 1}
+            />
+          ) :
+          null}
+      </Box>
     </>
   )
 }
