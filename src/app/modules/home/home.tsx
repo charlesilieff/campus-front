@@ -7,7 +7,7 @@ import { useAppSelector } from 'app/config/store'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
 import React from 'react'
 import { BsPlusCircleFill } from 'react-icons/bs'
-import { GoScreenFull } from 'react-icons/go'
+
 import { Link } from 'react-router-dom'
 
 import { ReservationsToBeProcessed } from '../reservation-to-be-processed/reservationtobeprocessed'
