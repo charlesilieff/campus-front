@@ -1,5 +1,5 @@
-import { Box, Button, Heading, HStack, SimpleGrid, StackDivider, Table, Tbody, Td, Th, Thead, Tr,
-  VStack } from '@chakra-ui/react'
+import { Box, Button, Heading, HStack, Label, SimpleGrid, StackDivider, Table, Tbody, Td, Th, Thead,
+  Tr, VStack } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { FaEye, FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
@@ -25,8 +25,8 @@ export const Pricing = () => {
     ...pricing
   }))
 
-  // const mySort2 = pipe(pricingList, A.sort((a, b) =>
-  const mySort2 = myData.sort((a, b) =>
+  // const mySort = pipe(pricingList, A.sort((a, b) =>
+  const mySort = myData.sort((a, b) =>
     a.userCategory.name !== b.userCategory.name ?
       a.userCategory.name.localeCompare(b.userCategory.name) :
       a.typeReservation.name !== b.typeReservation.name ?
@@ -63,20 +63,21 @@ export const Pricing = () => {
         </Button>
       </HStack>
       <Box width={'100%'}>
-        {mySort2 && pricingList.length > 0 ?
+        {mySort && pricingList.length > 0 ?
           (
             <Table
               id="tableTarif"
               variant="striped"
+              // backgroundColor={'orange.100'}
             >
               <Thead bgColor="white" width={'auto'}>
                 <Tr>
                   <Th
-                    fontSize={{ base: '8px', sm: '10px', md: '12px' }}
                     margin={{ base: '2px', sm: '10px', md: '20px' }}
                     padding={{ base: '2px', sm: '10px', md: '20px' }}
+                    fontSize={{ base: '8px', sm: '10px', md: '14px' }}
                   >
-                    Categorie utilisateur
+                    <>Categorie utilisateur</>
                     <Button
                       as={Link}
                       color={'white'}
@@ -90,23 +91,23 @@ export const Pricing = () => {
                     </Button>
                   </Th>
                   <Th
-                    fontSize={{ base: '8px', sm: '10px', md: '12px' }}
                     margin={{ base: '2px', sm: '10px', md: '20px' }}
                     padding={{ base: '2px', sm: '10px', md: '20px' }}
+                    fontSize={{ base: '8px', sm: '10px', md: '14px' }}
                   >
                     Type de réservation
                   </Th>
                   <Th
-                    fontSize={{ base: '8px', sm: '10px', md: '12px' }}
                     margin={{ base: '2px', sm: '10px', md: '20px' }}
                     padding={{ base: '2px', sm: '10px', md: '20px' }}
+                    fontSize={{ base: '8px', sm: '10px', md: '14px' }}
                   >
                     Prix
                   </Th>
                   <Th
-                    fontSize={{ base: '8px', sm: '10px', md: '12px' }}
                     margin={{ base: '2px', sm: '10px', md: '20px' }}
                     padding={{ base: '2px', sm: '10px', md: '20px' }}
+                    fontSize={{ base: '8px', sm: '10px', md: '14px' }}
                   >
                     Commentaire
                   </Th>
@@ -114,7 +115,7 @@ export const Pricing = () => {
                 </Tr>
               </Thead>
               <Tbody
-                fontSize={{ base: '8px', sm: '10px', md: '12px' }}
+                fontSize={{ base: '8px', sm: '10px', md: '16px' }}
                 // width={'auto'}
               >
                 {myData.map((pricing, i) => (
@@ -177,7 +178,7 @@ export const Pricing = () => {
                             size="sm"
                             minWidth={{ base: '55px', sm: '110px', md: '110px' }}
                             borderRightRadius="0"
-                            fontSize={{ base: '8px', sm: '10px', md: '12px' }}
+                            fontSize={{ base: '8px', sm: '10px', md: '14px' }}
                           >
                             Voir
                           </Button>
@@ -189,7 +190,7 @@ export const Pricing = () => {
                             size="sm"
                             minWidth={{ base: '55px', sm: '110px', md: '110px' }}
                             borderRadius={0}
-                            fontSize={{ base: '8px', sm: '10px', md: '12px' }}
+                            fontSize={{ base: '8px', sm: '10px', md: '14px' }}
                           >
                             Modifier
                           </Button>
