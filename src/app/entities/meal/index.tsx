@@ -1,5 +1,5 @@
-import { Box, Button, FormControl, FormLabel, Heading, HStack, Input, List, ListItem, Select, Table,
-  Td, Text, Th, Tr, VStack } from '@chakra-ui/react'
+import { Box, Button, FormControl, FormLabel, Heading, HStack, Input, List, ListItem, Select, Stack,
+  Table, Td, Text, Th, Tr, VStack } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
@@ -9,7 +9,7 @@ import axios from 'axios'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
-import { FaCalendar } from 'react-icons/fa'
+import { FaCalendar, FaCaretLeft, FaCaretRight } from 'react-icons/fa'
 
 // import { IntermittentReservations } from '../bookingbeds/intermittent/reservations-list'
 import { ConfirmationAddMealsScreenModal } from './confirmationAddMealsScreenModal'
@@ -25,7 +25,12 @@ const apiUrlMealsDateFor31DaysByUser = 'api/meals'
 export const Index = () => {
   const account = useAppSelector(state => state.authentication.account)
 
-  // const customerId = account.customerId
+  const customerId = account.customerId
+  // const customerId = pipe(
+  //   account.customerId,
+  //   O.fromNullable,
+  //   O.map(Number)
+  // )
 
   const [date, setDate] = useState(dayjs())
   const [startDate, setStartDate] = useState(dayjs())
@@ -39,11 +44,6 @@ export const Index = () => {
 
   const dispatch = useAppDispatch()
 
-  // const customerId = pipe(
-  //   account.customerId,
-  //   O.fromNullable,
-  //   O.map(Number)
-  // )
   const userId = pipe(
     account.id,
     O.fromNullable,
@@ -57,13 +57,19 @@ export const Index = () => {
       date.subtract(1, 'day').format('YYYY-MM-DD'),
       'day'
     )
-  )
+  ).filter(x =>
+    // x.departureDate.setDate <= date.date
+    dayjs(dayjs(x?.arrivalDate)).isBefore(
+      date.format('YYYY-MM-DD'),
+      'day'
+    )
+  ).filter(x => x.beds?.length > 0)
   console.log('reservationList', reservationList)
 
   const reservationListFirst = reservationList[0]
-  console.log('reservationListFirst', reservationListFirst)
-  // const reservationListFirstId = reservationList[0].id
-  // console.log('reservationListFirstId', reservationListFirstId)
+  // // console.log('reservationListFirst', reservationListFirst)
+  // // const reservationListFirstId = reservationList[0].id
+  // // console.log('reservationListFirstId', reservationListFirstId)
 
   const [reservationId, setReservationId] = useState<number>(0)
 
@@ -82,18 +88,18 @@ export const Index = () => {
   /**
    * Get meals for 31 days by user. //todo getMealsDateFor31DaysByUser by reservation
    */
-  // useEffect(() => {
-  //   const getMealsDateFor31DaysByUser = async (startDate: Dayjs, customerId: number) => {
-  //     const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/customer-id/${customerId}/date/${
-  //       startDate.format('YYYY-MM-DD')
-  //     }`
-  //     const { data } = await axios.get<IMeal[]>(requestUrl)
-  //     console.log('data axios', data)
-  //     // const dataSorted = data.sort((a, b) => (a > b.date ? 1 : -1))
-  //     setMealsData(data)
-  //   }
-  //   getMealsDateFor31DaysByUser(date, customerId)
-  // }, [date])
+  useEffect(() => {
+    const getMealsDateFor31DaysByUser = async (startDate: Dayjs, customerId: number) => {
+      const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/customer-id/${customerId}/date/${
+        startDate.format('YYYY-MM-DD')
+      }`
+      const { data } = await axios.get<IMeal[]>(requestUrl)
+      console.log('data axios', data)
+      // const dataSorted = data.sort((a, b) => (a > b.date ? 1 : -1))
+      setMealsData(data)
+    }
+    getMealsDateFor31DaysByUser(date, customerId)
+  }, [date])
   /**
    * Get meals for 31 days by reservation. //todo getMealsDateFor31DaysByUser by reservation
    */
@@ -105,25 +111,10 @@ export const Index = () => {
       const { data } = await axios.get<IMeal[]>(requestUrl)
 
       // const dataSorted = data.sort((a, b) => (a > b.date ? 1 : -1))
-      setMealsData(data)
+      // TODO stand-by setMealsData(data)
     }
     getMealsDateFor31DaysByReservation(date, reservationId)
   }, [reservationId, date])
-  /**
-   * Get meals for X days by reservation. //todo getMealsDateFor31DaysByUser by reservation
-   */
-  // useEffect(() => {
-  //   const getMealsDateFor31DaysByReservation = async (startDate: Dayjs, reservationId: number) => {
-  //     const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/reservation-id/${reservationId}/date1/${
-  //       startDate.format('YYYY-MM-DD')
-  //     }/date2/${startDate.add(31, 'day').format('YYYY-MM-DD')}`
-  //     const { data } = await axios.get<IMeal[]>(requestUrl)
-  //     console.log('data axios', data)
-  //     // const dataSorted = data.sort((a, b) => (a > b.date ? 1 : -1))
-  //     setMealsData(data)
-  //   }
-  //   getMealsDateFor31DaysByReservation(date, reservationId)
-  // }, [reservationId, date])
 
   /**
    * Calculation of total.
@@ -156,14 +147,24 @@ export const Index = () => {
   }, [mealsData, numberOfDays])
 
   /**
-   * 15 days display or 31 days.
+   * 7 days display or 31 days.
    */
   const toggleNumberOfDays = () => {
     if (numberOfDays === 31) {
-      setNumberOfDays(15)
+      setNumberOfDays(7)
     } else {
       setNumberOfDays(31)
     }
+  }
+
+  const toggleAddDays = () => {
+    console.log('date', date)
+    // TODO check if it's necessarry to load new data (if calendar is showing 7 days)
+    setDate(date.add(1, 'day'))
+  }
+  const toggleSubtractDays = () => {
+    console.log('date', date)
+    setDate(date.subtract(1, 'day'))
   }
 
   console.log('reservationId :', reservationId)
@@ -176,16 +177,21 @@ export const Index = () => {
   return (
     <>
       <Box m={4}>
-        <HStack m={4} spacing={8} margin={4} marginBlockEnd={12} alignItems={'flex-start'}>
-          {/* todo  */}
+        {/* todo  */}
+        {
+          /* <HStack m={4} spacing={8} margin={4} marginBlockEnd={12} alignItems={'flex-start'}>
+
           <FormControl isRequired isInvalid={reservationId === 0}>
-            <Heading alignSelf={'flex-start'}>Ma reservation</Heading>
+            <Stack>
+              <Heading alignSelf={'flex-start'}>Ma reservation :</Heading>
+            </Stack>
             <HStack>
               <Select
                 id="reservationId"
                 title="Mes réservations"
                 onChange={e => setReservationId(+e.target.value)}
-                defaultValue={reservationListFirst ? reservationListFirst.id : null}
+                // defaultValue={reservationListFirst ? reservationListFirst.id : null}
+
                 // placeholder="Sélectionner une réservation"
                 // {...register('userCategoryId', {})}
                 // defaultValue={reservationList ? reservationList[1].id : null}
@@ -201,10 +207,6 @@ export const Index = () => {
                       // accessKey={reservationListFirst.id}
                     >
                       {reservation.id}
-                      {
-                        /* {reservation.arrivalDate},
-                    {reservation.departureDate} */
-                      }
                     </option>
                   )) :
                   null}
@@ -242,7 +244,8 @@ export const Index = () => {
               </Table>
             </HStack>
           </FormControl>
-        </HStack>
+        </HStack> */
+        }
         <HStack m={4} spacing={8} margin={4} marginBlockEnd={12} alignItems={'flex-start'}>
           <Heading alignSelf={'flex-start'}>Changer mes repas par période</Heading>
         </HStack>
@@ -290,6 +293,14 @@ export const Index = () => {
 
         <HStack m={4} spacing={8}>
           <Heading alignSelf={'flex-start'}>Mes repas réservés</Heading>
+          <Button
+            onClick={() => toggleSubtractDays()}
+            leftIcon={<FaCaretLeft />}
+            color={'white'}
+            backgroundColor={'#e95420'}
+            _hover={{ textDecoration: 'none', color: 'orange' }}
+          >
+          </Button>
           <Box>
             <Input
               type="date"
@@ -299,13 +310,22 @@ export const Index = () => {
           </Box>
 
           <Button
+            onClick={() => toggleAddDays()}
+            leftIcon={<FaCaretRight />}
+            color={'white'}
+            backgroundColor={'#e95420'}
+            _hover={{ textDecoration: 'none', color: 'orange' }}
+          >
+          </Button>
+
+          <Button
             onClick={() => toggleNumberOfDays()}
             leftIcon={<FaCalendar />}
             color={'white'}
             backgroundColor={'#e95420'}
             _hover={{ textDecoration: 'none', color: 'orange' }}
           >
-            {numberOfDays === 31 ? '15 jours' : '31 jours'}
+            {numberOfDays === 31 ? '7 jours' : '31 jours'}
           </Button>
         </HStack>
 

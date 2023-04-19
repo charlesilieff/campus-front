@@ -25,6 +25,10 @@ export const BookingBedsRoutes = (): JSX.Element => (
       element={<ReservationInviteUpdate />}
     />
     <Route
+      path={`invite/:reservationId`}
+      element={<ReservationInviteUpdate />}
+    />
+    <Route
       path={`intermittent/:reservationId`}
       element={<ReservationIntermittentUpdate />}
     />

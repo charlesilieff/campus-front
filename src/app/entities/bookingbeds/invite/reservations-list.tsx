@@ -23,7 +23,7 @@ import { getIntermittentReservations } from '../../reservation/reservation.reduc
 import { TextFormat } from '../text-format'
 import { CancelReservationModal } from './cancel-modal'
 
-export const IntermittentReservations = () => {
+export const InviteReservations = () => {
   const dispatch = useAppDispatch()
 
   const account = useAppSelector(state => state.authentication.account)
@@ -51,7 +51,7 @@ export const IntermittentReservations = () => {
 
   return (
     <VStack>
-      <Heading alignSelf={'flex-start'}>Mes réservations</Heading>
+      <Heading alignSelf={'flex-start'}>Mes réservations invité</Heading>
       <HStack alignSelf={'flex-end'}>
         <Button
           backgroundColor={'#17a2b8'}
@@ -66,7 +66,7 @@ export const IntermittentReservations = () => {
           color={'white'}
           backgroundColor={'#E95420'}
           as={Link}
-          to="/bookingbeds/new/intermittent"
+          to="/bookingbeds/new/invite"
           leftIcon={<FaPlus />}
           _hover={{ textDecoration: 'none', color: 'orange' }}
         >

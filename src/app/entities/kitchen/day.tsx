@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  color,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -24,7 +23,6 @@ import axios from 'axios'
 import type { Dayjs } from 'dayjs'
 import type dayjs from 'dayjs'
 import React, { useContext, useEffect, useState } from 'react'
-import { BsBorderTop } from 'react-icons/bs'
 
 import type { IMealsNumber } from './IMealsNumber'
 import { MealsContext } from './mealsContext'
@@ -62,8 +60,6 @@ export const Day = ({ positionX, date, index }: IProps) => {
 
   const [mealsNumber, setMealsNumber] = useState(defaultValue)
 
-  const [mealsNumberReferential, setMealsNumberReferential] = useState(defaultValue)
-
   let style: React.CSSProperties
   style = commentStyle(positionX, date, mealsContext, index)
   useEffect(() => {
@@ -96,7 +92,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
       },
       comment: mealsContext[index]?.comment
     }
-    setMealsNumberReferential(mealsReferentialFromDb)
+    // setMealsNumberReferential(mealsReferentialFromDb)
 
     const theNewMealsNumber = {
       breakfast: mealsToCookFromDb.breakfast - mealsReferentialFromDb.breakfast === 0 ?
@@ -221,8 +217,8 @@ export const Day = ({ positionX, date, index }: IProps) => {
         gridRowEnd={'5'}
         borderLeftWidth={dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em'}
         borderLeftStyle={dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed'}
-        borderTopStyle={'solid'}
-        borderTopWidth={'0.1em'}
+        // borderTopStyle={'solid'}
+        // borderTopWidth={'0.1em'}
         borderBottomWidth={'0.01em'}
         borderBottomStyle={'solid'}
         py={2}
@@ -582,15 +578,24 @@ function commentStyle(positionX: number, date: dayjs.Dayjs, mealsContext: IMeal[
     gridColumnStart: positionX,
     gridColumnEnd: positionX + 1,
     borderLeftWidth: '0.01em',
+    borderBottomWidth: '0.15em',
     backgroundColor: 'white',
     borderColor: '#D9D9D9',
     Border: 'none'
   } as React.CSSProperties
-  if (positionX === 8 || date.date() === 1 || date.day() === 1) {
+  if (date.day() === 1) {
     style.borderLeftWidth = '0.2em'
   }
   if (mealsContext[index]?.comment?.length > 0) {
     style.backgroundColor = '#B8D8BA'
   }
+  if (date.date() === 1) {
+    style.borderLeftWidth = '0.4em'
+    style.borderStyle = 'double'
+  }
+  // bug depuis modif largeur calendrier special à 7 jours
+  // if (positionX === 8) {
+  //   style.borderLeftWidth = '0em'
+  // }
   return style
 }

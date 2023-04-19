@@ -34,7 +34,7 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
   { mealsData, date, numberOfDays, setDate }
 ): JSX.Element => {
   const {
-    handleSubmit,
+    // handleSubmit,
     register
     // watch,
     // formState: { errors },
@@ -42,6 +42,7 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
   } = useForm<MealSpecial>()
 
   const [isLoading, setIsLoading] = useState(false)
+  // TODO : Check from reservation if special meal , why isSpecialMeal is not working ?
   // const [isSpecialMeal, setIsSpecialMeal] = useState<boolean>(false)
   // const isSpecialMeal2 = useState<boolean>(false)
 
@@ -129,18 +130,7 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
           <ModalBody>
             Êtes-vous sûr de vouloir vous réinscrire aux repas sur la période affichée sur
             l&apos;écran ? <br />
-            {
-              /* <Checkbox
-              colorScheme={'green'}
-              defaultChecked={true}
-              size={'lg'}
-              id={'specialMeal'}
-              // isSpecialMeal={true}
-            >
-              Repas spéciaux
-            </Checkbox> */
-            }
-            {/* <Checkbox {...setIsSpecialMeal}>Repas spéciaux</Checkbox> */}
+
             <Checkbox colorScheme={'green'} defaultChecked={true} {...register('isSpecialMeal3')}>
               Repas spéciaux
             </Checkbox>

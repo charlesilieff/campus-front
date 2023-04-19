@@ -160,6 +160,36 @@ export const DatesAndMealsChoices = (
                 </FormErrorMessage>
               </FormControl>
             </Stack>
+            <FormControl
+              isInvalid={errors.comment !== undefined}
+              width={'auto'}
+              alignItems={'flex-start'}
+            >
+              <FormLabel
+                htmlFor="comment"
+                fontWeight={'bold'}
+                alignItems={'flex-start'}
+                // width={'auto'}
+              >
+                {'Commentaire:'}
+              </FormLabel>
+              <Textarea
+                id="comment"
+                // width={'500px'}
+                width={screen.availWidth > 800 ?
+                  '700px' :
+                  screen.availWidth > 500 ?
+                  '400px' :
+                  '280px'}
+                placeholder="Votre commentaire"
+                {...register('comment')}
+                minH={100}
+              />
+
+              <FormErrorMessage>
+                {errors.comment && errors.comment.message}
+              </FormErrorMessage>
+            </FormControl>
             <Stack spacing={12} minW={600} my={4} direction={['column', 'row']}>
               <FormControl isRequired isInvalid={errors.arrivalDate !== undefined}>
                 <FormLabel htmlFor="arrivalDate" fontWeight={'bold'}>
