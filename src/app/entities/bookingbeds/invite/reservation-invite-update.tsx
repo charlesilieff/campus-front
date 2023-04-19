@@ -40,7 +40,7 @@ export interface DatesAndMeals {
   isDepartureBreakfast: boolean
   personNumber: number
   specialDietNumber: number
-  // commentMeals: string
+  commentMeals: string
   withBeds: boolean
 }
 
@@ -58,6 +58,7 @@ export interface Reservation {
   comment: string
   isArrivalBreakfast: boolean
   isDepartureBreakfast: boolean
+  commentMeals: string
 }
 
 export interface Customer {
@@ -111,12 +112,13 @@ const createIReservationWithBedIds = (
     age: O.getOrUndefined(customer.age)
   },
   isArrivalBreakfast: datesAndMeals.isArrivalBreakfast,
-  isDepartureBreakfast: datesAndMeals.isDepartureBreakfast
+  isDepartureBreakfast: datesAndMeals.isDepartureBreakfast,
   // userCategory: {
   //   id: userCategory.id,
   //   name: userCategory.name,
   //   comment: userCategory.comment
   // }
+  commentMeals: datesAndMeals.commentMeals
 })
 const createIReservationWithoutBedIds = (
   customer: Customer,
@@ -147,12 +149,13 @@ const createIReservationWithoutBedIds = (
     age: O.getOrUndefined(customer.age)
   },
   isArrivalBreakfast: datesAndMeals.isArrivalBreakfast,
-  isDepartureBreakfast: datesAndMeals.isDepartureBreakfast
+  isDepartureBreakfast: datesAndMeals.isDepartureBreakfast,
   // userCategory: {
   //   id: userCategory.id,
   //   name: userCategory.name,
   //   comment: userCategory.comment
   // }
+  commentMeals: datesAndMeals.commentMeals
 })
 
 export const ReservationInviteUpdate = (): JSX.Element => {
@@ -299,7 +302,7 @@ export const ReservationInviteUpdate = (): JSX.Element => {
         isArrivalBreakfast: backendReservation.isArrivalBreakfast,
         isDepartureBreakfast: backendReservation.isDepartureBreakfast,
         personNumber: backendReservation.personNumber,
-        // commentMeals: backendReservation.commentMeals
+        commentMeals: backendReservation.commentMeals,
         // withBeds: backendReservation.withBeds
         withBeds: false
       }))

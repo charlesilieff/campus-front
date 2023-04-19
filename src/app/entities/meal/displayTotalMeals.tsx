@@ -33,11 +33,14 @@ export const DisplayTotalMeals = ({ resultTotalMeals }: { resultTotalMeals: numb
     <Stack
       m={4}
       spacing={8}
-      // minW={400}
+      // minW={800}
       // direction={['column', 'row']}
       // direction={isLargerThan768 ? 'row' : 'column-reverse'}
-      direction={useMediaQuery('(min-width: 1200px)') ? 'row' : 'column'}
-      w={{ base: 'initial', md: '50%' }}
+      // direction={useMediaQuery('min-width: 1200px') ? 'row' : 'column'}
+      // direction={screen.availWidth < 1200 ? ['row'] : ['column', 'row']}
+      direction={{ base: 'column', xl: 'row' }}
+      // w={{ base: 'initial', lg: '50%' }}
+      display={'flex'}
     >
       <VStack
         border={'solid'}

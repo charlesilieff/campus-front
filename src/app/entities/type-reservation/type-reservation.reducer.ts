@@ -27,7 +27,7 @@ const apiUrl = 'api/type-reservations'
 export const getEntities = createAsyncThunk(
   'type-reservation/fetch_entity_list',
   async () => {
-    const requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`
+    const requestUrl = `${apiUrl}`
     return axios.get<ITypeReservation[]>(requestUrl)
   }
 )

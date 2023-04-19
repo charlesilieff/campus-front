@@ -61,8 +61,6 @@ export const ConfirmationUpdateMealsByPeriodeModal: FunctionComponent<
       return value
     })
 
-    // console.log('mealsDataBetweenDateUpdate', mealsDataBetweenDateUpdate)
-
     await axios.put<IMeal>(
       apiUrlUpdateMeal,
       mealsDataBetweenDateUpdate
