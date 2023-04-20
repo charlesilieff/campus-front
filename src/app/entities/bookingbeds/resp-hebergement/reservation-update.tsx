@@ -47,6 +47,7 @@ export interface DatesAndMeals {
   comment: string
   isArrivalBreakfast: boolean
   isDepartureBreakfast: boolean
+  commentMeals: string
 }
 
 export interface Customer {
@@ -92,7 +93,8 @@ const createIReservationWithBedIds = (
     age: O.getOrUndefined(customer.age)
   },
   isArrivalBreakfast: datesAndMeals.isArrivalBreakfast,
-  isDepartureBreakfast: datesAndMeals.isDepartureBreakfast
+  isDepartureBreakfast: datesAndMeals.isDepartureBreakfast,
+  commentMeals: datesAndMeals.commentMeals
 })
 
 export const BookingBedsUpdate = (): JSX.Element => {
@@ -142,7 +144,7 @@ export const BookingBedsUpdate = (): JSX.Element => {
         phoneNumber: O.fromNullable(backendReservation.value.customer.phoneNumber),
         age: O.fromNullable(backendReservation.value.customer.age),
         personNumber: backendReservation.value.personNumber,
-        specialDietNumber: backendReservation.value.specialDietNumber
+        specialDietNumber: backendReservation.value.specialDietNumber // TODO move this in setDatesAndMeal and move comment
       }))
       setDatesAndMeal(O.some({
         arrivalDate: backendReservation.value.arrivalDate.toString(),
@@ -154,7 +156,8 @@ export const BookingBedsUpdate = (): JSX.Element => {
         isDepartureDinner: backendReservation.value.isDepartureDiner,
         comment: backendReservation.value.comment,
         isArrivalBreakfast: backendReservation.value.isArrivalBreakfast,
-        isDepartureBreakfast: backendReservation.value.isDepartureBreakfast
+        isDepartureBreakfast: backendReservation.value.isDepartureBreakfast,
+        commentMeals: backendReservation.value.commentMeals
       }))
       setSelectedBeds(pipe(backendReservation.value.beds, A.map(bed => bed.id)))
     }

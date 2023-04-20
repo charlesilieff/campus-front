@@ -1,6 +1,5 @@
 import { MoonIcon, SunIcon, TimeIcon } from '@chakra-ui/icons'
-import { Box, FormLabel, Grid, Heading, HStack, Stack, Text, useMediaQuery,
-  VStack } from '@chakra-ui/react'
+import { Box, FormLabel, Heading, HStack, Stack, VStack } from '@chakra-ui/react'
 import React from 'react'
 
 // const [isLargerThan1200] = useMediaQuery('(min-width: 1200px)')

@@ -76,7 +76,7 @@ export const ReservationChoices = (
           <form
             onSubmit={handleSubmit(handleValidDateAndMealSubmit)}
           >
-            <VStack spacing={10}>
+            <VStack spacing={5}>
               <HStack spacing={12} minW={600} my={4}>
                 <FormControl isRequired isInvalid={errors.arrivalDate !== undefined}>
                   <FormLabel htmlFor="arrivalDate" fontWeight={'bold'}>
@@ -126,6 +126,21 @@ export const ReservationChoices = (
                   </FormErrorMessage>
                 </FormControl>
               </HStack>
+              <FormControl isInvalid={errors.comment !== undefined}>
+                <FormLabel htmlFor="comment" fontWeight={'bold'}>
+                  {'Commentaire :'}
+                </FormLabel>
+                <Textarea
+                  id="comment"
+                  placeholder="Votre commentaire"
+                  {...register('comment')}
+                  minH={100}
+                />
+
+                <FormErrorMessage>
+                  {errors.comment && errors.comment.message}
+                </FormErrorMessage>
+              </FormControl>
               <FormControl>
                 <FormLabel htmlFor="selectionRepas" fontWeight={'bold'}>
                   {'Sélection des repas :'}
@@ -179,19 +194,19 @@ export const ReservationChoices = (
                   {errors.specialDietNumber && errors.specialDietNumber.message}
                 </FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={errors.comment !== undefined}>
-                <FormLabel htmlFor="comment" fontWeight={'bold'}>
-                  {'Commentaire :'}
+              <FormControl isInvalid={errors.commentMeals !== undefined}>
+                <FormLabel htmlFor="commentMeals" fontWeight={'bold'}>
+                  {'Commentaire des repas :'}
                 </FormLabel>
                 <Textarea
-                  id="comment"
-                  placeholder="Votre commentaire"
-                  {...register('comment')}
+                  id="commentMeals"
+                  placeholder="Votre commentaire à propos des repas (ex : allergie, régime, vegan...)"
+                  {...register('commentMeals')}
                   minH={100}
                 />
 
                 <FormErrorMessage>
-                  {errors.comment && errors.comment.message}
+                  {errors.commentMeals && errors.commentMeals.message}
                 </FormErrorMessage>
               </FormControl>
               <Button

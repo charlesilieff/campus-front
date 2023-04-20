@@ -18,6 +18,7 @@ import {
 } from '../../reservation/reservation.reducer'
 import {
   createReservationAndUpdateUser,
+  createReservationWithoutMealsAndUpdateUser,
   reset as resetReservations,
   updateEntity as updateReservation
 } from '../booking-beds.reducer'
@@ -183,7 +184,7 @@ export const ReservationInviteUpdate = (): JSX.Element => {
     customer: Customer
   ): Promise<void> => {
     const reservation = createIReservationWithBedIds(customer, datesAndMeal, bedId)
-    console.log('reservation', reservation)
+    // console.log('reservation', reservation)
 
     setIsLoading(true)
     if (reservationId !== undefined) {
@@ -200,48 +201,85 @@ export const ReservationInviteUpdate = (): JSX.Element => {
       setIsLoading(false)
     }
   }
-
   const handleSubmitReservationWithoutBed = async (
     datesAndMeal: DatesAndMeals,
+    // bedId: number,
     customer: Customer
   ): Promise<void> => {
     const reservation = createIReservationWithoutBedIds(customer, datesAndMeal)
+    console.log('reservation', reservation)
 
     setIsLoading(true)
+    if (reservationId !== undefined) {
+      // FIXME: unsafe
+      await dispatch(updateReservation({ ...reservation, id: Number(reservationId) }))
+      setIsLoading(false)
+    } else {
+      await dispatch(
+        createReservationWithoutMealsAndUpdateUser({ entity: reservation, sendMail: false, userId })
+      )
 
-    // const toto = async (
-    //   reservation: IBookingBeds,
-    //   sendMail: boolean,
-    //   userId: number) => {
-    const requestUrl = `/api/bookingbeds/test/${userId}`
-    const result = await axios.post<IBookingBeds>(
-      requestUrl,
-      // cleanEntity(reservation),
-      reservation,
-      {
-        params: { sendMail: false }
-      }
-    )
-    result
+      dispatch(getSession())
+      setIsLoading(false)
+    }
 
-    //   return result
-    // }
+    // await dispatch(
+    //   createReservationWithoutMealsAndUpdateUser({ entity: reservation, sendMail: false, userId })
+    // )
 
-    // if (reservationId !== undefined) {
-    //   // FIXME: unsafe
-    //   await dispatch(updateReservation({ ...reservation, id: Number(reservationId) }))
-    //   setIsLoading(false)
-    // } else {
-    //   console.log('test reservation', reservation)
-    //   await dispatch(
-    //     // createEntity({ entity: reservation, sendMail: false, userId })
-    //     createReservationAndUpdateUser({ entity: reservation, sendMail: false, userId })
-    //   )
-
-    //   dispatch(getSession())
-    //   setIsLoading(false)
-    // }
+    // dispatch(getSession())
+    // setIsLoading(false)
   }
+
+  // const handleSubmitReservationWithoutBed = async (
+  //   datesAndMeal: DatesAndMeals,
+  //   customer: Customer
+  // ): Promise<void> => {
+  //   // if (customer !== undefined) {
+  //   //   // FIXME: unsafe
+  //   //   // await dispatch(updateReservation({ ...reservation, id: Number(result) }))
+  //   //   // setIsLoading(false)
+  //   // } else {
+
+  //   // }
+
+  //   const reservation = createIReservationWithoutBedIds(customer, datesAndMeal)
+
+  //   setIsLoading(true)
+
+  //   const requestUrl = `/api/bookingbeds/meals/${userId}`
+  //   const result = await axios.post<IBookingBeds>(
+  //     requestUrl,
+  //     // cleanEntity(reservation),
+  //     reservation,
+  //     {
+  //       params: { sendMail: false }
+  //     }
+  //   )
+  //   dispatch(getSession())
+  //   setIsLoading(false)
+
+  //   result
+
+  //   //   return result
+  //   // }
+
+  //   // if (reservationId !== undefined) {
+  //   //   // FIXME: unsafe
+  //   //   await dispatch(updateReservation({ ...reservation, id: Number(reservationId) }))
+  //   //   setIsLoading(false)
+  //   // } else {
+  //   //   console.log('test reservation', reservation)
+  //   //   await dispatch(
+  //   //     // createEntity({ entity: reservation, sendMail: false, userId })
+  //   //     createReservationAndUpdateUser({ entity: reservation, sendMail: false, userId })
+  //   //   )
+
+  //   //   dispatch(getSession())
+  //   //   setIsLoading(false)
+  //   // }
+  // }
+
   // const handleSubmitReservation2 = async (
   //   reservation: Reservation,
   //   customer: Customer

@@ -154,6 +154,30 @@ export const DatesAndMealsChoices = (
                   {errors.comment && errors.comment.message}
                 </FormErrorMessage>
               </FormControl>
+              <FormControl
+                isInvalid={errors.commentMeals !== undefined}
+                width={'auto'}
+                alignItems={'flex-start'}
+              >
+                <FormLabel
+                  htmlFor="commentMeals"
+                  fontWeight={'bold'}
+                  alignItems={'flex-start'}
+                  // width={'auto'}
+                >
+                  {'Commentaire repas:'}
+                </FormLabel>
+                <Textarea
+                  id="commentMeals"
+                  width={{ base: '300px', lg: '1000px' }}
+                  placeholder="Votre commentaire à propos des repas (ex : allergie, régime, vegan...)"
+                  {...register('commentMeals')}
+                  minH={{ base: '100', lg: '50' }}
+                />
+                <FormErrorMessage>
+                  {errors.commentMeals && errors.commentMeals.message}
+                </FormErrorMessage>
+              </FormControl>
               <Button
                 rightIcon={<CheckIcon />}
                 colorScheme={'green'}

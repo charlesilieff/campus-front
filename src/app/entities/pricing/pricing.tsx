@@ -77,7 +77,7 @@ export const Pricing = () => {
                     padding={{ base: '2px', sm: '10px', md: '20px' }}
                     fontSize={{ base: '8px', sm: '10px', md: '14px' }}
                   >
-                    <>Categorie utilisateur</>
+                    Categorie utilisateur&nbsp;
                     <Button
                       as={Link}
                       color={'white'}
