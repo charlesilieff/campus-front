@@ -7,7 +7,6 @@ import { useAppSelector } from 'app/config/store'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
 import React from 'react'
 import { BsPlusCircleFill } from 'react-icons/bs'
-
 import { Link } from 'react-router-dom'
 
 import { ReservationsToBeProcessed } from '../reservation-to-be-processed/reservationtobeprocessed'
@@ -63,33 +62,58 @@ export const Home = (): JSX.Element => {
         >
           Bienvenue dans l&apos;outil de gestion d&apos;hebergement du Campus de la Transition.
         </Text>
-        <Box backgroundColor={'blue.100'} p={5} width={'auto'}>
-          <Stack
-            direction={['column', 'row']}
+        <Box
+          // width={'auto'}
+          m={5}
+          // spacing={'5px'}
+        >
+          <Box
             alignItems={'flex-start'}
-            minW={'300px'}
-            maxW={'600px'}
-            width={screen.availWidth > 300 ? 'auto' : '400px'}
+            minW={{ base: '400px', md: '650px' }}
+            // maxW={'600px'}
+            backgroundColor={'blue.100'}
+            p={5}
+            width={'auto'}
           >
-            <Box>
-              Vous vous voulez voir la page de demande de réservation publique ?{' '}
-              <Link target="_blank" data-cy="reservation-request" to={reservationRequestUrl}>
-                Cliquez ici.
-              </Link>
-            </Box>
-            <Button
-              id="jhi-copy-link-request-reservation"
-              data-cy="entityCopyLink"
-              colorScheme={'blue'}
-              onClick={copyLink}
-              leftIcon={<CopyIcon />}
-              minWidth={'340px'}
+            <Stack
+              justifyContent={'space-between'}
+              direction={{ base: 'column', md: 'row' }}
             >
-              Copier le lien de demande de réservation
-            </Button>
-          </Stack>
+              <Box>
+                Vous vous voulez voir la page de demande de réservation publique ? {
+                  /* <Link target="_blank" data-cy="reservation-request" to={reservationRequestUrl}>
+                  Cliquez ici.
+                </Link> */
+                }
+              </Box>
+              <Button
+                id="jhi-link-request-reservation"
+                // data-cy="entityCopyLink"
+                colorScheme={'blue'}
+                as={Link}
+                to={reservationRequestUrl}
+                // minWidth={'340px'}
+                width={'100px'}
+                px={1}
+              >
+                Cliquez ici.
+              </Button>
+            </Stack>
+            <Box py={2}>
+              <Button
+                id="jhi-copy-link-request-reservation"
+                data-cy="entityCopyLink"
+                colorScheme={'blue'}
+                onClick={copyLink}
+                leftIcon={<CopyIcon />}
+                minWidth={'340px'}
+                px={5}
+              >
+                Copier le lien de demande de réservation
+              </Button>
+            </Box>
+          </Box>
         </Box>
-
         {account && account.login ?
           (
             <Box backgroundColor={'blue.100'} p={5}>
@@ -105,9 +129,9 @@ export const Home = (): JSX.Element => {
               backgroundColor={'#C6F6D5'}
               borderLeft={'4px'}
               borderColor={'#38A169'}
-              minW={'650px'}
+              minW={{ base: '400px', md: '650px' }}
             >
-              <HStack justifyContent={'space-between'}>
+              <Stack justifyContent={'space-between'} direction={{ base: 'column', md: 'row' }}>
                 <VStack alignItems={'flex-start'}>
                   <HStack>
                     <BsPlusCircleFill color="#38A169" size={'24px'} />
@@ -126,7 +150,7 @@ export const Home = (): JSX.Element => {
                 >
                   Créer une réservation
                 </Button>
-              </HStack>
+              </Stack>
             </Box>
           ) :
           ''}
@@ -138,9 +162,9 @@ export const Home = (): JSX.Element => {
               backgroundColor={'#C6F6D5'}
               borderLeft={'4px'}
               borderColor={'#38A169'}
-              minW={'650px'}
+              minW={{ base: '400px', md: '650px' }}
             >
-              <HStack justifyContent={'space-between'}>
+              <Stack justifyContent={'space-between'} direction={{ base: 'column', md: 'row' }}>
                 <VStack alignItems={'flex-start'}>
                   <HStack>
                     <BsPlusCircleFill color="#38A169" size={'24px'} />
@@ -159,7 +183,7 @@ export const Home = (): JSX.Element => {
                 >
                   Créer une réservation
                 </Button>
-              </HStack>
+              </Stack>
             </Box>
           ) :
           ''}
@@ -171,9 +195,9 @@ export const Home = (): JSX.Element => {
               backgroundColor={'#C6F6D5'}
               borderLeft={'4px'}
               borderColor={'#38A169'}
-              minW={'650px'}
+              minW={{ base: '400px', md: '650px' }}
             >
-              <HStack justifyContent={'space-between'}>
+              <Stack justifyContent={'space-between'} direction={{ base: 'column', md: 'row' }}>
                 <VStack alignItems={'flex-start'}>
                   <HStack>
                     <BsPlusCircleFill color="#38A169" size={'24px'} />
@@ -192,7 +216,7 @@ export const Home = (): JSX.Element => {
                 >
                   Créer une réservation
                 </Button>
-              </HStack>
+              </Stack>
             </Box>
           ) :
           ''}
@@ -204,12 +228,13 @@ export const Home = (): JSX.Element => {
               backgroundColor={'#C6F6D5'}
               borderLeft={'4px'}
               borderColor={'#38A169'}
+              minW={{ base: '400px', md: '650px' }}
             >
               <Stack
                 justifyContent={'space-between'}
-                direction={['column', 'row']}
+                direction={{ base: 'column', md: 'row' }}
                 // minW={screen.availWidth > 300 ? '500px' : '300px'}
-                width={screen.availWidth > 300 ? 'auto' : '400px'}
+                // width={screen.availWidth > 300 ? 'auto' : '400px'}
               >
                 <VStack alignItems={'flex-start'}>
                   <HStack>

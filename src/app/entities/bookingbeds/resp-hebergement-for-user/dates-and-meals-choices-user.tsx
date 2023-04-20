@@ -75,20 +75,20 @@ export const DatesAndMealsChoices = (
           </Heading>
           <BsPencil size={'30px'} color={'black'}></BsPencil>
         </HStack>
-        <Box minW={'500px'}>
+        <Box>
           <form
             onSubmit={handleSubmit(handleValidDateAndMealSubmit)}
           >
             <Stack
               spacing={{ base: '15', lg: '30' }}
               direction={{ base: 'column', md: 'row' }}
-              // display={'flex'}
-              // alignItems={'center'}
+              display={'flex'}
+              alignItems={'center'}
               // justifyContent={'space-between'}
               my={5}
             >
               {/* <Stack spacing={12} minW={600} my={4}> */}
-              <FormControl isRequired isInvalid={errors.arrivalDate !== undefined}>
+              <FormControl isRequired isInvalid={errors.arrivalDate !== undefined} maxW={'300px'}>
                 <FormLabel htmlFor="arrivalDate" fontWeight={'bold'}>
                   {"Date d'arrivée"}
                 </FormLabel>
@@ -118,7 +118,7 @@ export const DatesAndMealsChoices = (
                 </FormErrorMessage>
               </FormControl>
 
-              <FormControl isRequired isInvalid={errors.departureDate !== undefined}>
+              <FormControl isRequired isInvalid={errors.departureDate !== undefined} maxW={'300px'}>
                 <FormLabel htmlFor="departureDate" fontWeight={'bold'}>
                   {'Date de départ'}
                 </FormLabel>

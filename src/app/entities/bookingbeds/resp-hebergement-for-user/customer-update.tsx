@@ -8,6 +8,7 @@ import {
   Heading,
   HStack,
   Input,
+  Stack,
   VStack
 } from '@chakra-ui/react'
 import * as O from '@effect/data/Option'
@@ -69,12 +70,12 @@ export const CustomerUpdate = (
   return (
     <VStack alignItems={'flex-start'}>
       <VStack
-        minW={'100%'}
         alignItems={'flex-start'}
         border={'solid'}
         p={4}
         borderRadius={8}
         borderColor={'#D9D9D9'}
+        w={'100%'}
       >
         <HStack>
           <Heading size={'md'}>
@@ -82,107 +83,122 @@ export const CustomerUpdate = (
           </Heading>
           <BsPencil size={'30px'} color={'black'}></BsPencil>
         </HStack>
-        <Box minW={'500px'}>
+        <Box w={'100%'}>
           <form
             onSubmit={handleSubmit(handleValidCustomerSubmit)}
           >
-            <VStack spacing={10} alignItems={'left'}>
-              <HStack spacing={12} minW={600} my={4}>
-                <FormControl isRequired isInvalid={errors.firstname !== undefined}>
-                  <FormLabel htmlFor="firstname" fontWeight={'bold'}>
-                    {'Prénom'}
-                  </FormLabel>
-                  <Input
-                    id="firstname"
-                    type="text"
-                    placeholder="Prénom"
-                    {...register('firstname', {
-                      required: 'Le prénom est obligatoire'
-                    })}
-                  />
+            {/* <HStack spacing={12} my={4}> */}
+            <Stack
+              direction={{ base: 'column', md: 'row' }}
+              alignItems={'flex-start'}
+              my={4}
+            >
+              <FormControl isRequired isInvalid={errors.firstname !== undefined} maxW={500}>
+                <FormLabel htmlFor="firstname" fontWeight={'bold'}>
+                  {'Prénom'}
+                </FormLabel>
+                <Input
+                  id="firstname"
+                  type="text"
+                  placeholder="Prénom"
+                  {...register('firstname', {
+                    required: 'Le prénom est obligatoire'
+                  })}
+                />
 
-                  <FormErrorMessage>
-                    {errors.firstname && errors.firstname.message}
-                  </FormErrorMessage>
-                </FormControl>
-                <FormControl isRequired isInvalid={errors.lastname !== undefined}>
-                  <FormLabel htmlFor="lastname" fontWeight={'bold'}>
-                    {'Nom'}
-                  </FormLabel>
-                  <Input
-                    id="lastname"
-                    type="text"
-                    placeholder="Nom"
-                    {...register('lastname', {
-                      required: 'Le prénom est obligatoire'
-                    })}
-                  />
-
-                  <FormErrorMessage>
-                    {errors.lastname && errors.lastname.message}
-                  </FormErrorMessage>
-                </FormControl>
-              </HStack>
-              <HStack spacing={12} minW={800} my={4}>
-                <FormControl isRequired isInvalid={errors.firstname !== undefined}>
-                  <FormLabel htmlFor="email" fontWeight={'bold'}>
-                    {'Email'}
-                  </FormLabel>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="Email"
-                    readOnly={true}
-                    disabled={true}
-                    {...register('email', {
-                      required: "L'email est obligatoire"
-                    })}
-                  />
-                  <FormErrorMessage>
-                    {errors.email && errors.email.message}
-                  </FormErrorMessage>
-                </FormControl>
-                <FormControl>
-                  <FormLabel htmlFor="phoneNumber" fontWeight={'bold'}>
-                    {'Téléphone'}
-                  </FormLabel>
-                  <Input
-                    id="phoneNumber"
-                    type="string"
-                    placeholder="Téléphone"
-                    {...register('phoneNumber', {})}
-                  />
-
-                  <FormErrorMessage>
-                    {errors.phoneNumber && errors.phoneNumber.message}
-                  </FormErrorMessage>
-                </FormControl>
-                <FormControl>
-                  <FormLabel htmlFor="age" fontWeight={'bold'}>
-                    {'Age'}
-                  </FormLabel>
-                  <Input
-                    id="age"
-                    type="number"
-                    placeholder="Age"
-                    {...register('age')}
-                  />
-
-                  <FormErrorMessage>
-                    {errors.age && errors.age.message}
-                  </FormErrorMessage>
-                </FormControl>
-              </HStack>
-
-              <Button
-                rightIcon={<CheckIcon />}
-                colorScheme={'green'}
-                alignSelf={'flex-start'}
-                type="submit"
+                <FormErrorMessage>
+                  {errors.firstname && errors.firstname.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl
+                isRequired
+                isInvalid={errors.lastname !== undefined}
+                px={{ base: '0', md: '20' }}
+                maxW={500}
               >
-                Confirmer
-              </Button>
-            </VStack>
+                <FormLabel htmlFor="lastname" fontWeight={'bold'}>
+                  {'Nom'}
+                </FormLabel>
+                <Input
+                  id="lastname"
+                  type="text"
+                  placeholder="Nom"
+                  {...register('lastname', {
+                    required: 'Le prénom est obligatoire'
+                  })}
+                />
+
+                <FormErrorMessage>
+                  {errors.lastname && errors.lastname.message}
+                </FormErrorMessage>
+              </FormControl>
+            </Stack>
+            <Stack
+              direction={{ base: 'column', md: 'row' }}
+              alignItems={'flex-start'}
+              my={4}
+            >
+              <FormControl maxW={500}>
+                <FormLabel htmlFor="phoneNumber" fontWeight={'bold'}>
+                  {'Téléphone'}
+                </FormLabel>
+                <Input
+                  id="phoneNumber"
+                  type="string"
+                  placeholder="Téléphone"
+                  {...register('phoneNumber', {})}
+                />
+
+                <FormErrorMessage>
+                  {errors.phoneNumber && errors.phoneNumber.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl maxW={500} px={{ base: '0', md: '20' }}>
+                <FormLabel htmlFor="age" fontWeight={'bold'}>
+                  {'Age'}
+                </FormLabel>
+                <Input
+                  id="age"
+                  type="number"
+                  placeholder="Age"
+                  {...register('age')}
+                />
+
+                <FormErrorMessage>
+                  {errors.age && errors.age.message}
+                </FormErrorMessage>
+              </FormControl>
+            </Stack>
+            <Stack spacing={12} maxW={600} my={4}>
+              <FormControl isRequired isInvalid={errors.firstname !== undefined}>
+                <FormLabel htmlFor="email" fontWeight={'bold'}>
+                  {'Email'}
+                </FormLabel>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Email"
+                  readOnly={true}
+                  disabled={true}
+                  {...register('email', {
+                    required: "L'email est obligatoire"
+                  })}
+                />
+                <FormErrorMessage>
+                  {errors.email && errors.email.message}
+                </FormErrorMessage>
+              </FormControl>
+            </Stack>
+
+            <Button
+              rightIcon={<CheckIcon />}
+              colorScheme={'green'}
+              alignSelf={'flex-start'}
+              type="submit"
+            >
+              Confirmer
+            </Button>
+            {/* </HStack> */}
           </form>
         </Box>
       </VStack>

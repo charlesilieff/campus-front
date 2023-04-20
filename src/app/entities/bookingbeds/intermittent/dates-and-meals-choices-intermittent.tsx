@@ -126,6 +126,21 @@ export const DatesAndMealsChoices = (
                   </FormErrorMessage>
                 </FormControl>
               </HStack>
+              <FormControl isInvalid={errors.comment !== undefined}>
+                <FormLabel htmlFor="comment" fontWeight={'bold'}>
+                  {'Commentaire :'}
+                </FormLabel>
+                <Textarea
+                  id="comment"
+                  placeholder="Votre commentaire"
+                  {...register('comment')}
+                  minH={100}
+                />
+
+                <FormErrorMessage>
+                  {errors.comment && errors.comment.message}
+                </FormErrorMessage>
+              </FormControl>
               <FormControl>
                 <FormLabel htmlFor="selectionRepas" fontWeight={'bold'}>
                   {'Sélection des repas :'}
@@ -159,19 +174,19 @@ export const DatesAndMealsChoices = (
                   </HStack>
                 </RadioGroup>
               </FormControl>
-              <FormControl isInvalid={errors.comment !== undefined}>
+              <FormControl isInvalid={errors.commentMeals !== undefined}>
                 <FormLabel htmlFor="comment" fontWeight={'bold'}>
-                  {'Commentaire :'}
+                  {'Commentaire à propos des repas :'}
                 </FormLabel>
                 <Textarea
-                  id="comment"
-                  placeholder="Votre commentaire"
-                  {...register('comment')}
+                  id="commentMeals"
+                  placeholder="Votre commentaire à propos des repas (ex : allergie, régime, vegan...)"
+                  {...register('commentMeals')}
                   minH={100}
                 />
 
                 <FormErrorMessage>
-                  {errors.comment && errors.comment.message}
+                  {errors.commentMeals && errors.commentMeals.message}
                 </FormErrorMessage>
               </FormControl>
               <Button
