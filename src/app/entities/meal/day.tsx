@@ -115,7 +115,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
       <Box
         display={'flex'}
         flexDirection={'column'}
-        backgroundColor={'#F7F7F7'}
+        backgroundColor={'orange.100'}
         gridColumnStart={positionX}
         gridColumnEnd={positionX + 1}
         gridRowStart={'5'}
@@ -143,7 +143,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
       <Box
         display={'flex'}
         flexDirection={'column'}
-        backgroundColor={'#F7F7F7'}
+        backgroundColor={'orange.100'}
         gridColumnStart={positionX}
         gridColumnEnd={positionX + 1}
         gridRowStart={'5'}
@@ -171,7 +171,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
       <Box
         display={'flex'}
         flexDirection={'column'}
-        backgroundColor={'orange.100'}
+        backgroundColor={'#F7F7F7'}
         gridColumnStart={positionX}
         gridColumnEnd={positionX + 1}
         gridRowStart={'6'}
@@ -199,7 +199,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
       <Box
         display={'flex'}
         flexDirection={'column'}
-        backgroundColor={'orange.100'}
+        backgroundColor={'#F7F7F7'}
         gridColumnStart={positionX}
         gridColumnEnd={positionX + 1}
         gridRowStart={'6'}

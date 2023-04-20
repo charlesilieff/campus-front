@@ -99,7 +99,7 @@ export const MealsPlanning = ({ date, totalDays, numberOfDays }: IProps) => {
           alignContent={'center'} // TODO : center??
           verticalAlign={'middle'} // TODO : center??
           // center
-          backgroundColor={'#F7F7F7'}
+          backgroundColor={'orange.100'}
           p={2}
         >
           Midi &nbsp;<SunIcon />
@@ -119,7 +119,7 @@ export const MealsPlanning = ({ date, totalDays, numberOfDays }: IProps) => {
           mt={'-0.1rem'}
           borderBottom={0}
           borderLeft={0}
-          backgroundColor={'#F7F7F7'}
+          backgroundColor={'orange.100'}
         >
           Repas normaux
         </Text>
@@ -138,7 +138,7 @@ export const MealsPlanning = ({ date, totalDays, numberOfDays }: IProps) => {
           mt={'-0.1rem'}
           borderBottom={0}
           borderLeft={0}
-          backgroundColor={'#F7F7F7'}
+          backgroundColor={'orange.100'}
         >
           Repas Sans lactose ni gluten
         </Text>
@@ -157,7 +157,7 @@ export const MealsPlanning = ({ date, totalDays, numberOfDays }: IProps) => {
           mt={'-0.1rem'}
           borderBottom={0}
           borderLeft={0}
-          backgroundColor={'orange.100'}
+          backgroundColor={'#F7F7F7'}
           p={2}
         >
           Soir <MoonIcon />
@@ -177,7 +177,7 @@ export const MealsPlanning = ({ date, totalDays, numberOfDays }: IProps) => {
           mt={'-0.1rem'}
           borderBottom={0}
           borderLeft={0}
-          backgroundColor={'orange.100'}
+          backgroundColor={'#F7F7F7'}
         >
           Repas normaux
         </Text>
@@ -196,7 +196,7 @@ export const MealsPlanning = ({ date, totalDays, numberOfDays }: IProps) => {
           mt={'-0.1rem'}
           borderBottom={0}
           borderLeft={0}
-          backgroundColor={'orange.100'}
+          backgroundColor={'#F7F7F7'}
         >
           Repas Sans lactose ni gluten
         </Text>

@@ -256,7 +256,7 @@ function displayTotalMeals(resultTotalMeals: number[]) {
           borderColor={'#D9D9D9'}
           alignItems={'flex-start'}
           p={2}
-          backgroundColor={'#F2F2F2'}
+          backgroundColor={'orange.100'}
         >
           <Stack
             minW={320}
@@ -291,7 +291,7 @@ function displayTotalMeals(resultTotalMeals: number[]) {
           borderColor={'#D9D9D9'}
           alignItems={'flex-start'}
           p={2}
-          backgroundColor={'orange.100'}
+          backgroundColor={'#F7F7F7'}
         >
           <Stack
             minW={320}

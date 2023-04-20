@@ -1,5 +1,5 @@
-import { Box, Button, Heading, HStack, Label, SimpleGrid, StackDivider, Table, Tbody, Td, Th, Thead,
-  Tr, VStack } from '@chakra-ui/react'
+import { Box, Button, Heading, HStack, SimpleGrid, StackDivider, Table, Tbody, Td, Th, Thead, Tr,
+  VStack } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { FaEye, FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'

@@ -1,5 +1,4 @@
-import { Box, Button, FormControl, FormLabel, Heading, HStack, Input, List, ListItem, Select, Stack,
-  Table, Td, Text, Th, Tr, VStack } from '@chakra-ui/react'
+import { Box, Button, Heading, HStack, Input, Text, VStack } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
@@ -115,6 +114,7 @@ export const Index = () => {
         startDate.format('YYYY-MM-DD')
       }`
       const { data } = await axios.get<IMeal[]>(requestUrl)
+      console.log('data axios', data)
 
       // const dataSorted = data.sort((a, b) => (a > b.date ? 1 : -1))
       // TODO stand-by setMealsData(data)
