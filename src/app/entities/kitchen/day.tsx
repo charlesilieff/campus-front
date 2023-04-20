@@ -257,7 +257,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
                         <Th>Prénom</Th>
                         <Th>Nom</Th>
                         <Th>Petit-déjeuner</Th>
-                        <Th>Comentaire</Th>
+                        <Th>Commentaire</Th>
                       </Tr>
 
                       {mealsWithCustomerData.filter(x => x.breakfast !== 0).map((
@@ -284,7 +284,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
                 </ModalBody>
                 <ModalFooter>
                   <Button colorScheme="blue" mr={3} onClick={onCloseBreakfast}>
-                    Close
+                    Fermer
                   </Button>
                   <Button variant="ghost" onClick={print}>Imprimer</Button>
                 </ModalFooter>
@@ -297,7 +297,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
       <Box
         display={'flex'}
         flexDirection={'column'}
-        backgroundColor={'#F7F7F7'}
+        backgroundColor={'orange.100'}
         gridColumnStart={positionX}
         gridColumnEnd={positionX + 1}
         gridRowStart={'5'}
@@ -345,7 +345,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
                       <Th>Nom</Th>
                       <Th>Repas normaux midi</Th>
 
-                      <Th>Comentaire</Th>
+                      <Th>Commentaire</Th>
                     </Tr>
 
                     {mealsWithCustomerData.filter(x => x.regularLunch !== 0).map((meals, index) => (
@@ -370,7 +370,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
               </ModalBody>
               <ModalFooter>
                 <Button colorScheme="blue" mr={3} onClick={onCloseRegularLunch}>
-                  Close
+                  Fermer
                 </Button>
                 <Button variant="ghost" onClick={print}>Imprimer</Button>
               </ModalFooter>
@@ -382,7 +382,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
       <Box
         display={'flex'}
         flexDirection={'column'}
-        backgroundColor={'#F7F7F7'}
+        backgroundColor={'orange.100'}
         gridColumnStart={positionX}
         gridColumnEnd={positionX + 1}
         gridRowStart={'6'}
@@ -427,7 +427,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
                         <Th>Prénom</Th>
                         <Th>Nom</Th>
                         <Th>Repas speciaux midi</Th>
-                        <Th>Comentaire</Th>
+                        <Th>Commentaire</Th>
                       </Tr>
 
                       {mealsWithCustomerData.filter(x => x.specialLunch !== 0).map((
@@ -454,7 +454,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
                 </ModalBody>
                 <ModalFooter>
                   <Button colorScheme="blue" mr={3} onClick={onCloseSpecialLunch}>
-                    Close
+                    Fermer
                   </Button>
                   <Button variant="ghost" onClick={print}>Imprimer</Button>
                 </ModalFooter>
@@ -467,7 +467,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
       <Box
         display={'flex'}
         flexDirection={'column'}
-        backgroundColor={'orange.100'}
+        backgroundColor={'#F7F7F7'}
         gridColumnStart={positionX}
         gridColumnEnd={positionX + 1}
         gridRowStart={'7'}
@@ -515,7 +515,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
                       <Th>Nom</Th>
                       <Th>Repas normaux soir</Th>
 
-                      <Th>Comentaire</Th>
+                      <Th>Commentaire</Th>
                     </Tr>
 
                     {mealsWithCustomerData.filter(x => x.regularDinner !== 0).map((
@@ -543,7 +543,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
               </ModalBody>
               <ModalFooter>
                 <Button colorScheme="blue" mr={3} onClick={onCloseRegularDiner}>
-                  Close
+                  Fermer
                 </Button>
                 <Button variant="ghost" onClick={print}>Imprimer</Button>
               </ModalFooter>
@@ -555,7 +555,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
       <Box
         display={'flex'}
         flexDirection={'column'}
-        backgroundColor={'orange.100'}
+        backgroundColor={'#F7F7F7'}
         gridColumnStart={positionX}
         gridColumnEnd={positionX + 1}
         gridRowStart={'8'}
@@ -600,7 +600,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
                         <Th>Prénom</Th>
                         <Th>Nom</Th>
                         <Th>Repas speciaux soir</Th>
-                        <Th>Comentaire</Th>
+                        <Th>Commentaire</Th>
                       </Tr>
 
                       {mealsWithCustomerData.filter(x => x.specialDinner !== 0).map((
@@ -629,7 +629,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
                 </ModalBody>
                 <ModalFooter>
                   <Button colorScheme="blue" mr={3} onClick={onCloseSpecialDiner}>
-                    Close
+                    Fermer
                   </Button>
                   <Button variant="ghost" onClick={print}>Imprimer</Button>
                 </ModalFooter>

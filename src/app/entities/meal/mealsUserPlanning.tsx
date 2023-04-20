@@ -100,7 +100,7 @@ export const MealsUserPlanning = (
           alignContent={'center'} // TODO : center??
           verticalAlign={'middle'} // TODO : center??
           // center
-          backgroundColor={'#F7F7F7'}
+          backgroundColor={'orange.100'}
           p={2}
         >
           Midi&nbsp;<SunIcon />
@@ -121,7 +121,7 @@ export const MealsUserPlanning = (
           borderBottom={0}
           borderLeft={0}
           p={2}
-          backgroundColor={'orange.100'}
+          backgroundColor={'#F7F7F7'}
         >
           Soir&nbsp;<MoonIcon />
         </Text>

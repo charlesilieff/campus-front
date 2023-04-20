@@ -1,4 +1,4 @@
-import { Box, Grid, Text } from '@chakra-ui/react'
+import { Text } from '@chakra-ui/react'
 import type { Dayjs } from 'dayjs'
 import type { FunctionComponent } from 'react'
 import React from 'react'

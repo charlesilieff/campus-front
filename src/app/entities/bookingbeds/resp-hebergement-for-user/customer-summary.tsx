@@ -1,6 +1,5 @@
 import { CheckCircleIcon } from '@chakra-ui/icons'
 import {
-  Box,
   Button,
   Heading,
   HStack,
