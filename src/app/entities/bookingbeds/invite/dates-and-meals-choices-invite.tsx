@@ -12,6 +12,7 @@ import {
   Stack,
   Text,
   Textarea,
+  useToast,
   VStack
 } from '@chakra-ui/react'
 import * as O from '@effect/data/Option'
@@ -41,6 +42,8 @@ export const DatesAndMealsChoices = (
     reset: resetForm
   } = useForm<DatesAndMeals>()
 
+  const toast = useToast()
+
   useEffect(() => {
     resetForm(
       O.isSome(props.datesAndMeals) ? props.datesAndMeals.value : {}
@@ -52,10 +55,38 @@ export const DatesAndMealsChoices = (
   specialDietNumber.current = watch('specialDietNumber', 0)
   const departureDate = useRef({})
   departureDate.current = watch('departureDate', '')
+  const arrivalDate = useRef({})
+  arrivalDate.current = watch('arrivalDate', '')
 
   const handleValidDateAndMealSubmit = (
     datesAndMeal: DatesAndMeals
   ): void => {
+    if (
+      !isArrivalDateIsEgalDepartureDate(datesAndMeal.arrivalDate, datesAndMeal.departureDate)
+      && (datesAndMeal.isArrivalDinner !== datesAndMeal.isDepartureDinner
+        || datesAndMeal.isArrivalLunch !== datesAndMeal.isDepartureLunch
+        || datesAndMeal.isArrivalBreakfast !== datesAndMeal.isDepartureBreakfast)
+    ) {
+      toast({
+        position: 'bottom',
+        title: 'Alert !',
+        description:
+          'Les repas doivent être identique si la date d arrivée est égale de la date de départ',
+        status: 'error',
+        duration: 4000,
+        isClosable: true
+      })
+      return
+    } else {
+      // toast({
+      //   position: 'top',
+      //   title: 'Alert !!!',
+      //   description: 'ok',
+      //   status: 'error',
+      //   duration: 4000,
+      //   isClosable: true
+      // })
+    }
     if (datesAndMeal.withBeds === true) {
       props.setUpdateBeds(true)
     } else {
@@ -259,9 +290,23 @@ export const DatesAndMealsChoices = (
               </FormLabel>
               <Stack direction={{ base: 'column', md: 'row' }}>
                 <Text fontWeight={'bold'}>{"Jour d'arrivée :"}</Text>
-                <Checkbox {...register('isArrivalBreakfast')}>petit déjeuner</Checkbox>
-                <Checkbox {...register('isArrivalLunch')}>déjeuner</Checkbox>
-                <Checkbox defaultChecked {...register('isArrivalDinner')}>dîner</Checkbox>
+                <Checkbox
+                  {...register('isArrivalBreakfast')}
+                >
+                  petit déjeuner
+                </Checkbox>
+                <Checkbox
+                  {...register('isArrivalLunch')}
+                >
+                  déjeuner
+                </Checkbox>
+
+                <Checkbox
+                  defaultChecked // TODO: fix checkbox
+                  {...register('isArrivalDinner')}
+                >
+                  dîner
+                </Checkbox>
               </Stack>
               <Stack direction={{ base: 'column', md: 'row' }}>
                 <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>
