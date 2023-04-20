@@ -102,7 +102,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
         borderBottomStyle={'solid'}
         py={2}
       >
-        {mealsNumber?.id !== undefined && mealsNumber?.breakfast < 2 ?
+        {mealsNumber?.id !== undefined ?
           (
             <Checkbox
               colorScheme={'orange'}

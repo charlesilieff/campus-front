@@ -27,10 +27,6 @@ export const MealsPlanning = ({ date, totalDays, numberOfDays }: IProps) => {
   // On souhaite afficher 31 jours => Tableau de 31 élements.
   const monthDays = Array.from({ length: numberOfDays })
 
-  console.log('monthDays', monthDays)
-  console.log('totalDays', totalDays)
-  console.log('numberOfDays MealsPlanning', numberOfDays)
-
   // Objets contenant la position en x dans la grille des jours.
   const positionX = {}
 

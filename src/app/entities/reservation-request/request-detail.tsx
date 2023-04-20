@@ -45,7 +45,7 @@ export const ReservationRequestDetail = (): JSX.Element => {
           <dd>{customerEntity?.email}</dd>
         </VStack>
         <VStack alignItems={'left'} pt={4} borderTop={'solid'} mt={8}>
-          <Heading my={3} size={'md'}>Votre réservations</Heading>
+          <Heading my={3} size={'md'}>Votre réservation</Heading>
 
           <Heading size={'sm'}>Nombre de personnes à héberger</Heading>
 
