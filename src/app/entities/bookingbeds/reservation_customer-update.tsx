@@ -119,7 +119,8 @@ export const ReservationCustomerUpdate = () => {
 
       customer,
       isArrivalBreakfast: values.isArrivalBreakfast,
-      isDepartureBreakfast: values.isDepartureBreakfast
+      isDepartureBreakfast: values.isDepartureBreakfast,
+      mealsComment: values.mealsComment
     }
 
     dispatch(setData(reservation))
@@ -140,6 +141,7 @@ export const ReservationCustomerUpdate = () => {
     phoneNumber: reservationEntity?.customer?.phoneNumber ?? null,
     personNumber: reservationEntity?.personNumber ?? null,
     specialDietNumber: reservationEntity?.specialDietNumber ?? null,
+    mealsComment: reservationEntity?.customer?.comment ?? '',
     ...reservationEntity,
     ...reservationEntity.customer
   })

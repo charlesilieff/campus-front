@@ -26,7 +26,7 @@ export interface IReservation {
   userCategory?: IUserCategory | null
   isArrivalBreakfast?: boolean
   isDepartureBreakfast?: boolean
-  // commentMeals?: string | null
+  commentMeals?: string | null
 }
 
 export const defaultValue: Readonly<IReservation> = {

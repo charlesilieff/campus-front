@@ -37,6 +37,7 @@ export interface DatesAndMeals {
   comment: string
   isArrivalBreakfast: boolean
   isDepartureBreakfast: boolean
+  commentMeals: string
 }
 
 export interface User {
@@ -88,7 +89,8 @@ const createIReservationWithBedIds = (
     age: O.getOrUndefined(customer.age)
   },
   isArrivalBreakfast: datesAndMeals.isArrivalBreakfast,
-  isDepartureBreakfast: datesAndMeals.isDepartureBreakfast
+  isDepartureBreakfast: datesAndMeals.isDepartureBreakfast,
+  commentMeals: datesAndMeals.commentMeals
 })
 
 export const ReservationUserUpdate = (): JSX.Element => {
@@ -149,7 +151,8 @@ export const ReservationUserUpdate = (): JSX.Element => {
         isDepartureDinner: backendReservation.isDepartureDiner,
         comment: backendReservation.comment,
         isArrivalBreakfast: backendReservation.isArrivalBreakfast,
-        isDepartureBreakfast: backendReservation.isDepartureBreakfast
+        isDepartureBreakfast: backendReservation.isDepartureBreakfast,
+        commentMeals: backendReservation.commentMeals
       }))
       setBedId(pipe(backendReservation.beds, A.head, O.map(bed => bed.id)))
     }
@@ -205,7 +208,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
         ) :
         (
           <UserSummary
-            customer={customer.value}
+            customer={customer.value} // TODO fix this
             setUserId={setUserId}
             // setCustomer={setCustomer}
             setUpdateUser={setSelectUser}

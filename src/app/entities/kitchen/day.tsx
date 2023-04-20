@@ -36,6 +36,8 @@ const apiUrlMealForOneDay = 'api/meals/forOneDay'
 
 export const Day = ({ positionX, date, index }: IProps) => {
   // const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen: isOpenBreakfast, onOpen: onOpenBreakfast, onClose: onCloseBreakfast } =
+    useDisclosure()
   const { isOpen: isOpenSpecialLunch, onOpen: onOpenSpecialLunch, onClose: onCloseSpecialLunch } =
     useDisclosure()
   const { isOpen: isOpenRegularLunch, onOpen: onOpenRegularLunch, onClose: onCloseRegularLunch } =
@@ -223,7 +225,73 @@ export const Day = ({ positionX, date, index }: IProps) => {
         borderBottomStyle={'solid'}
         py={2}
       >
-        {mealsNumber?.breakfast}
+        <Button
+          onClick={() => {
+            getMeals(date)
+            onOpenBreakfast()
+          }}
+          size={'sm'}
+          colorScheme="orange"
+        >
+          {mealsNumber?.breakfast}
+        </Button>
+        {
+          <Box p={1}>
+            <Modal
+              size={'xxl'}
+              scrollBehavior={'inside'}
+              isOpen={isOpenBreakfast}
+              onClose={onCloseBreakfast}
+              isCentered
+            >
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader borderBottom={'solid'}>
+                </ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  {
+                    <Table>
+                      {/* <Caption>Détail du midi : {date}</Caption> */}
+                      <Tr borderBottom={'solid'}>
+                        <Th>Prénom</Th>
+                        <Th>Nom</Th>
+                        <Th>Petit-déjeuner</Th>
+                        <Th>Comentaire</Th>
+                      </Tr>
+
+                      {mealsWithCustomerData.filter(x => x.breakfast !== 0).map((
+                        meals,
+                        index
+                      ) => (
+                        <Tr key={index}>
+                          <Td>
+                            {meals.firstname && meals.breakfast ? meals.firstname : null}
+                          </Td>
+                          <Td>
+                            {meals.lastname && meals.breakfast ? meals.lastname : null}
+                          </Td>
+                          <Td>
+                            {meals.breakfast ? meals.breakfast : null}
+                          </Td>
+                          <Td>
+                            {meals.comment?.length > 0 && meals.breakfast ? meals.comment : null}
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Table>
+                  }
+                </ModalBody>
+                <ModalFooter>
+                  <Button colorScheme="blue" mr={3} onClick={onCloseBreakfast}>
+                    Close
+                  </Button>
+                  <Button variant="ghost" onClick={print}>Imprimer</Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
+          </Box>
+        }
       </Box>
 
       <Box
@@ -280,7 +348,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
                       <Th>Comentaire</Th>
                     </Tr>
 
-                    {mealsWithCustomerData.map((meals, index) => (
+                    {mealsWithCustomerData.filter(x => x.regularLunch !== 0).map((meals, index) => (
                       <Tr key={index}>
                         <Td>
                           {meals.firstname && meals.regularLunch ? meals.firstname : null}
@@ -362,7 +430,10 @@ export const Day = ({ positionX, date, index }: IProps) => {
                         <Th>Comentaire</Th>
                       </Tr>
 
-                      {mealsWithCustomerData.map((meals, index) => (
+                      {mealsWithCustomerData.filter(x => x.specialLunch !== 0).map((
+                        meals,
+                        index
+                      ) => (
                         <Tr key={index}>
                           <Td>
                             {meals.firstname && meals.specialLunch ? meals.firstname : null}
@@ -447,7 +518,10 @@ export const Day = ({ positionX, date, index }: IProps) => {
                       <Th>Comentaire</Th>
                     </Tr>
 
-                    {mealsWithCustomerData.map((meals, index) => (
+                    {mealsWithCustomerData.filter(x => x.regularDinner !== 0).map((
+                      meals,
+                      index
+                    ) => (
                       <Tr key={index}>
                         <Td>
                           {meals.firstname && meals.regularDinner ? meals.firstname : null}
@@ -529,7 +603,10 @@ export const Day = ({ positionX, date, index }: IProps) => {
                         <Th>Comentaire</Th>
                       </Tr>
 
-                      {mealsWithCustomerData.map((meals, index) => (
+                      {mealsWithCustomerData.filter(x => x.specialDinner !== 0).map((
+                        meals,
+                        index
+                      ) => (
                         <Tr key={index}>
                           <Td>
                             {meals.firstname && meals.specialDinner ? meals.firstname : null}

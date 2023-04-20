@@ -211,7 +211,7 @@ function displayTotalMeals(resultTotalMeals: number[]) {
   return (
     <Box
       m={4}
-      minW={'100%'}
+      minW={'90%'}
       alignItems={'flex-start'}
       border={'solid'}
       p={4}

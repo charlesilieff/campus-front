@@ -32,7 +32,8 @@ export const DatesAndMealsSummary = (
       isArrivalBreakfast,
       isDepartureBreakfast,
       personNumber,
-      withBeds
+      withBeds,
+      commentMeals
     },
     setUpdate,
     setBedId
@@ -77,6 +78,10 @@ export const DatesAndMealsSummary = (
         <Text pl={12} fontWeight={'bold'}>{'Date de départ :'}</Text>
         <Text>{specialDiet}</Text>
       </HStack>
+      <VStack alignItems={'flex-start'} py={2}>
+        <Text fontWeight={'bold'}>Commentaire :</Text>
+        <Text>{comment}</Text>
+      </VStack>
 
       <HStack py={2}>
         <Text fontWeight={'bold'}>{"Date d'arrivée :"}</Text>
@@ -104,8 +109,8 @@ export const DatesAndMealsSummary = (
       </HStack> */
       }
       <VStack alignItems={'flex-start'} py={2}>
-        <Text fontWeight={'bold'}>Commentaire :</Text>
-        <Text>{comment}</Text>
+        <Text fontWeight={'bold'}>Commentaire repas :</Text>
+        <Text>{commentMeals}</Text>
       </VStack>
       <VStack alignItems={'flex-start'} py={2}>
         <Text fontWeight={'bold'}>Nuitée :</Text>

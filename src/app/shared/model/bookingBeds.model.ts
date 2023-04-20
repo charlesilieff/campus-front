@@ -30,6 +30,7 @@ export interface IBookingBeds {
   comment?: string
   isArrivalBreakfast?: boolean
   isDepartureBreakfast?: boolean
+  mealsComment?: string
 }
 
 export const defaultValue: Readonly<IBookingBeds> = {

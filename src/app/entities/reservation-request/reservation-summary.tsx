@@ -31,7 +31,8 @@ export const DatesAndMealsSummary = (
       specialDietNumber,
       personNumber,
       isArrivalBreakfast,
-      isDepartureBreakfast
+      isDepartureBreakfast,
+      commentMeals
     },
     setUpdate,
     isReservationSaved
@@ -82,6 +83,10 @@ export const DatesAndMealsSummary = (
         <Text>{new Date(departureDate).toLocaleDateString('fr')}</Text>
       </HStack>
       <VStack alignItems={'flex-start'} py={2}>
+        <Text fontWeight={'bold'}>Commentaire :</Text>
+        <Text>{comment}</Text>
+      </VStack>
+      <VStack alignItems={'flex-start'} py={2}>
         <Text fontWeight={'bold'}>Repas sélectionnés :</Text>
         <HStack>
           <Text fontWeight={'bold'}>{"Jour d'arrivée :"}</Text>
@@ -103,8 +108,8 @@ export const DatesAndMealsSummary = (
         <Text>{specialDietNumber}</Text>
       </HStack>
       <VStack alignItems={'flex-start'} py={2}>
-        <Text fontWeight={'bold'}>Commentaire :</Text>
-        <Text>{comment}</Text>
+        <Text fontWeight={'bold'}>Commentaire des repas :</Text>
+        <Text>{commentMeals}</Text>
       </VStack>
       <Button
         colorScheme="blue"

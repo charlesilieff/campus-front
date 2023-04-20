@@ -9,7 +9,6 @@ import {
   Heading,
   HStack,
   Input,
-  Radio,
   Stack,
   Text,
   Textarea,
@@ -73,7 +72,7 @@ export const DatesAndMealsChoices = (
       p={4}
       borderRadius={8}
       borderColor={'#D9D9D9'}
-      my={4}
+      my={2}
     >
       {
         /* <VStack
@@ -86,17 +85,110 @@ export const DatesAndMealsChoices = (
       > */
       }
       <HStack py={2}>
-        <Heading size={'md'}>
+        <Heading size={'lg'}>
           Invités : nombre, date et repas
         </Heading>
         <BsPencil size={'30px'} color={'black'}></BsPencil>
       </HStack>
-      <Box py={2}>
+      <Box py={1}>
         <form
           onSubmit={handleSubmit(handleValidDateAndMealSubmit)}
         >
-          <VStack spacing={10} py={2} alignItems={'flex-start'}>
-            <Stack spacing={12} my={2} direction={['column', 'row']}>
+          <VStack spacing={10} alignItems={'flex-start'}>
+            <Stack
+              spacing={{ base: '5', md: '30' }}
+              direction={{ base: 'column', md: 'row' }}
+            >
+              <FormControl isRequired isInvalid={errors.arrivalDate !== undefined}>
+                <FormLabel htmlFor="arrivalDate" fontWeight={'bold'}>
+                  {"Date d'arrivée"}
+                </FormLabel>
+                <Input
+                  id="username"
+                  width={'auto'}
+                  type="date"
+                  placeholder="Date d'arrivée'"
+                  {...register('arrivalDate', {
+                    required: "la date d'arrivée' est obligatoire",
+                    validate(v) {
+                      if (
+                        isArrivalDateIsEgalDepartureDate(
+                          v,
+                          departureDate.current.toString()
+                        )
+                      ) {
+                        if (
+                          !isArrivalDateIsBeforeDepartureDate(
+                            v,
+                            departureDate.current.toString()
+                          )
+                        ) {
+                          return "La date d'arrivée doit être avant ou égale à la date de départ"
+                        }
+                      }
+                      if (isDateBeforeNow(v)) {
+                        return "La date d'arrivée doit être après aujourd’hui"
+                      } else {
+                        return true
+                      }
+                    }
+                  })}
+                />
+
+                <FormErrorMessage>
+                  {errors.arrivalDate && errors.arrivalDate.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl isRequired isInvalid={errors.departureDate !== undefined}>
+                <FormLabel htmlFor="departureDate" fontWeight={'bold'}>
+                  {'Date de départ'}
+                </FormLabel>
+                <Input
+                  id="username"
+                  width={'auto'}
+                  type="date"
+                  placeholder="Date de départ"
+                  {...register('departureDate', {
+                    required: 'la date de départ est obligatoire'
+                  })}
+                />
+
+                <FormErrorMessage>
+                  {errors.departureDate && errors.departureDate.message}
+                </FormErrorMessage>
+              </FormControl>
+            </Stack>
+            <FormControl
+              isInvalid={errors.comment !== undefined}
+              width={'auto'}
+              alignItems={'flex-start'}
+            >
+              <FormLabel
+                htmlFor="comment"
+                fontWeight={'bold'}
+                alignItems={'flex-start'}
+                // width={'auto'}
+              >
+                {'Commentaire:'}
+              </FormLabel>
+              <Textarea
+                id="comment"
+                width={{ base: '300px', lg: '1000px' }}
+                placeholder="Votre commentaire à propos de la réservation : le noms de vos invités, etc."
+                {...register('comment')}
+                minH={{ base: '100', lg: '50' }}
+              />
+
+              <FormErrorMessage>
+                {errors.comment && errors.comment.message}
+              </FormErrorMessage>
+            </FormControl>
+
+            <Stack
+              spacing={{ base: '5', md: '30' }}
+              my={1}
+              direction={{ base: 'column', md: 'row' }}
+            >
               <FormControl
                 isRequired
                 isInvalid={errors.personNumber !== undefined}
@@ -160,108 +252,18 @@ export const DatesAndMealsChoices = (
                 </FormErrorMessage>
               </FormControl>
             </Stack>
-            <FormControl
-              isInvalid={errors.comment !== undefined}
-              width={'auto'}
-              alignItems={'flex-start'}
-            >
-              <FormLabel
-                htmlFor="comment"
-                fontWeight={'bold'}
-                alignItems={'flex-start'}
-                // width={'auto'}
-              >
-                {'Commentaire:'}
-              </FormLabel>
-              <Textarea
-                id="comment"
-                // width={'500px'}
-                width={screen.availWidth > 800 ?
-                  '700px' :
-                  screen.availWidth > 500 ?
-                  '400px' :
-                  '280px'}
-                placeholder="Votre commentaire"
-                {...register('comment')}
-                minH={100}
-              />
 
-              <FormErrorMessage>
-                {errors.comment && errors.comment.message}
-              </FormErrorMessage>
-            </FormControl>
-            <Stack spacing={12} minW={600} my={4} direction={['column', 'row']}>
-              <FormControl isRequired isInvalid={errors.arrivalDate !== undefined}>
-                <FormLabel htmlFor="arrivalDate" fontWeight={'bold'}>
-                  {"Date d'arrivée"}
-                </FormLabel>
-                <Input
-                  id="username"
-                  width={'auto'}
-                  type="date"
-                  placeholder="Date d'arrivée'"
-                  {...register('arrivalDate', {
-                    required: "la date d'arrivée' est obligatoire",
-                    validate(v) {
-                      if (
-                        isArrivalDateIsEgalDepartureDate(
-                          v,
-                          departureDate.current.toString()
-                        )
-                      ) {
-                        if (
-                          !isArrivalDateIsBeforeDepartureDate(
-                            v,
-                            departureDate.current.toString()
-                          )
-                        ) {
-                          return "La date d'arrivée doit être avant ou égale à la date de départ"
-                        }
-                      }
-                      if (isDateBeforeNow(v)) {
-                        return "La date d'arrivée doit être après aujourd’hui"
-                      } else {
-                        return true
-                      }
-                    }
-                  })}
-                />
-
-                <FormErrorMessage>
-                  {errors.arrivalDate && errors.arrivalDate.message}
-                </FormErrorMessage>
-              </FormControl>
-
-              <FormControl isRequired isInvalid={errors.departureDate !== undefined}>
-                <FormLabel htmlFor="departureDate" fontWeight={'bold'}>
-                  {'Date de départ'}
-                </FormLabel>
-                <Input
-                  id="username"
-                  width={'auto'}
-                  type="date"
-                  placeholder="Date de départ"
-                  {...register('departureDate', {
-                    required: 'la date de départ est obligatoire'
-                  })}
-                />
-
-                <FormErrorMessage>
-                  {errors.departureDate && errors.departureDate.message}
-                </FormErrorMessage>
-              </FormControl>
-            </Stack>
             <FormControl>
               <FormLabel htmlFor="selectionRepas" fontWeight={'bold'}>
                 {'Sélection des repas :'}
               </FormLabel>
-              <Stack direction={['column', 'row']}>
+              <Stack direction={{ base: 'column', md: 'row' }}>
                 <Text fontWeight={'bold'}>{"Jour d'arrivée :"}</Text>
                 <Checkbox {...register('isArrivalBreakfast')}>petit déjeuner</Checkbox>
                 <Checkbox {...register('isArrivalLunch')}>déjeuner</Checkbox>
                 <Checkbox defaultChecked {...register('isArrivalDinner')}>dîner</Checkbox>
               </Stack>
-              <Stack direction={['column', 'row']}>
+              <Stack direction={{ base: 'column', md: 'row' }}>
                 <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>
                 <Checkbox defaultChecked {...register('isDepartureBreakfast')}>
                   petit déjeuner
@@ -270,52 +272,36 @@ export const DatesAndMealsChoices = (
                 <Checkbox {...register('isDepartureDinner')}>dîner</Checkbox>
               </Stack>
             </FormControl>
-            {
-              /* <FormControl isRequired isInvalid={errors.specialDietNumber !== undefined}>
-                <FormLabel htmlFor="selectionRepas" fontWeight={'bold'}>
-                  {'Régime sans lactose OU sans gluten ?'}
-                </FormLabel>
 
-                <RadioGroup
-                  defaultValue={O.isSome(props.datesAndMeals) ?
-                    props.datesAndMeals.value.specialDietNumber :
-                    undefined}
-                >
-                  <HStack spacing="24px">
-                    <Radio {...register('specialDiet')} value={'true'} mb={0}>Oui</Radio>
-                    <Radio {...register('specialDiet')} value={'false'}>Non</Radio>
-                  </HStack>
-                </RadioGroup>
-              </FormControl> */
-            }
             <FormControl
-              isInvalid={errors.comment !== undefined}
+              isInvalid={errors.commentMeals !== undefined}
               width={'auto'}
               alignItems={'flex-start'}
             >
               <FormLabel
-                htmlFor="comment"
+                htmlFor="commentMeals"
                 fontWeight={'bold'}
                 alignItems={'flex-start'}
                 // width={'auto'}
               >
-                {'Commentaire:'}
+                {'Commentaire repas:'}
               </FormLabel>
               <Textarea
-                id="comment"
+                id="commentMeals"
                 // width={'500px'}
-                width={screen.availWidth > 800 ?
-                  '700px' :
-                  screen.availWidth > 500 ?
-                  '400px' :
-                  '280px'}
-                placeholder="Votre commentaire"
-                {...register('comment')}
-                minH={100}
+                // width={screen.availWidth > 800 ?
+                //   '700px' :
+                //   screen.availWidth > 500 ?
+                //   '400px' :
+                //   '280px'}
+                width={{ base: '300px', lg: '1000px' }}
+                placeholder="Votre commentaire à propos des repas (ex : allergie, régime, vegan...)"
+                {...register('commentMeals')}
+                minH={{ base: '100', lg: '50' }}
               />
 
               <FormErrorMessage>
-                {errors.comment && errors.comment.message}
+                {errors.commentMeals && errors.commentMeals.message}
               </FormErrorMessage>
             </FormControl>
             <FormControl isInvalid={errors.comment !== undefined}>
