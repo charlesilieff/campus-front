@@ -3,7 +3,8 @@ import { Box, Button, FormControl, FormLabel, Heading, HStack, Input, List, List
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import { getIntermittentReservations } from 'app/entities/reservation/reservation.reducer'
+import { getIntermittentReservations,
+  getReservation } from 'app/entities/reservation/reservation.reducer'
 import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
 import type { Dayjs } from 'dayjs'
@@ -38,6 +39,7 @@ export const Index = () => {
   const [mealsData, setMealsData] = useState([] as IMeal[])
   const [numberOfDays, setNumberOfDays] = useState(31)
 
+  const [reservationId, setReservationId] = useState<number>(0)
   /**
    * Get Reservations by user.
    */
@@ -49,33 +51,37 @@ export const Index = () => {
     O.fromNullable,
     O.map(Number)
   )
-  // console.log('userId', userId)
+  console.log('userId', userId)
 
   const reservationList = useAppSelector(state => state.reservation.entities).filter(x =>
-    // x.departureDate.setDate <= date.date
     dayjs(dayjs(x?.departureDate)).isAfter(
       date.subtract(1, 'day').format('YYYY-MM-DD'),
       'day'
     )
   ).filter(x =>
-    // x.departureDate.setDate <= date.date
     dayjs(dayjs(x?.arrivalDate)).isBefore(
       date.format('YYYY-MM-DD'),
       'day'
     )
-  ).filter(x => x.beds?.length > 0)
-  console.log('reservationList', reservationList)
+  ) // .filter(x => x.beds?.length > 0)
+  console.log('reservationList :', reservationList)
+  // reservationList
 
   const reservationListFirst = reservationList[0]
+  // if (reservationList.length > 1) {
+  //   setReservationId(reservationListFirst.id)
+
+  // }
+
   // // console.log('reservationListFirst', reservationListFirst)
   // // const reservationListFirstId = reservationList[0].id
   // // console.log('reservationListFirstId', reservationListFirstId)
 
-  const [reservationId, setReservationId] = useState<number>(0)
-
   useEffect(() => {
     if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
-    setReservationId(reservationListFirst.id)
+    if (reservationList.length > 0) dispatch(getReservation(reservationList[0].id))
+
+    // setReservationId(reservationListFirst.id)
     // MealsUserPlanning
     // setDate(date)
     // dispatch(MealsUserPlanning())
@@ -161,14 +167,22 @@ export const Index = () => {
     console.log('date', date)
     // TODO check if it's necessarry to load new data (if calendar is showing 7 days)
     setDate(date.add(1, 'day'))
+    if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
+    dispatch(getReservation(reservationList[0].id))
+    setReservationId(reservationListFirst.id)
+    if (reservationList.length > 0) {
+      console.log('erreur plusieurs réservation', reservationList.length)
+    }
   }
   const toggleSubtractDays = () => {
     console.log('date', date)
     setDate(date.subtract(1, 'day'))
+    if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
+    // reservationList[0]
   }
 
-  console.log('reservationId :', reservationId)
-  console.log('reservationListFirst ', reservationListFirst)
+  // console.log('reservationId :', reservationId)
+  // console.log('reservationListFirst ', reservationListFirst)
   // setReservationId(reservationListFirst.id)
 
   // console.log('reservationListFirst  id', O.getOrElse(reservationListFirst.id, () => '0'))
@@ -305,6 +319,7 @@ export const Index = () => {
             <Input
               type="date"
               onChange={e => setDate(dayjs(e.target.value))} // todo getMealsDateFor31DaysByUser
+              value={date.format('YYYY-MM-DD')}
             >
             </Input>
           </Box>

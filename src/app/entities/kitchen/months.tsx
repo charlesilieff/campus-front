@@ -11,10 +11,6 @@ interface IProps {
 }
 
 export const Months: FunctionComponent<IProps> = ({ month, date, totalDays, numberOfDays }) => {
-  console.log('month Months: ', month)
-  console.log('date Months:', date)
-  console.log('totalDays Months :', totalDays)
-  console.log('numberOfDays Months:', numberOfDays)
   const offSet = numberOfDays === 7 ? 6 : 8
 
   // const endTable = totalDays + offSet
@@ -36,8 +32,8 @@ export const Months: FunctionComponent<IProps> = ({ month, date, totalDays, numb
   // const gridColumnEnd = endTable
   const gridColumnEnd = remainingDays < 4 ? offSet + remainingDays : endTable
 
-  console.log('gridColumnStart Months:', gridColumnStart)
-  console.log('remainingDays Months:', remainingDays)
+  // console.log('gridColumnStart Months:', gridColumnStart)
+  // console.log('remainingDays Months:', remainingDays)
 
   // const style = {
   //   gridColumnStart,

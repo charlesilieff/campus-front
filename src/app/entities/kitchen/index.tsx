@@ -146,6 +146,7 @@ export const Index = () => {
             <Input
               type="date"
               onChange={newDatePlanning}
+              value={date.format('YYYY-MM-DD')}
             >
             </Input>
           </Box>
