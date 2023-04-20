@@ -6,7 +6,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from '@chakra-ui/react'
 import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
@@ -24,6 +25,7 @@ export const ConfirmationRemoveMealsScreenModal: FunctionComponent<
   const [isLoading, setIsLoading] = useState(false)
 
   const apiUrlUpdateMeal = 'api/meals/update'
+  const toast = useToast()
 
   /**
    * select and update meals of planning on screen
@@ -55,7 +57,16 @@ export const ConfirmationRemoveMealsScreenModal: FunctionComponent<
     )
 
     setIsLoading(false)
-    setDate(date.add(1, 'day'))
+    // TODO : refresh screen + add toast
+    setDate(date)
+    toast({
+      position: 'top',
+      title: 'Réservation modifiée !',
+      description: 'A bientôt !',
+      status: 'success',
+      duration: 9000,
+      isClosable: true
+    })
 
     onClose()
   }
