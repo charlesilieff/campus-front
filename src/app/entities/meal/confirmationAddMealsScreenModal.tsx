@@ -1,7 +1,5 @@
 import {
   Button,
-  Checkbox,
-  HStack,
   Modal,
   ModalBody,
   ModalContent,
@@ -9,7 +7,8 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from '@chakra-ui/react'
 import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
@@ -17,29 +16,28 @@ import type { Dayjs } from 'dayjs'
 // import type dayjs from 'dayjs'
 import type { FunctionComponent } from 'react'
 import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
 import { FaBan, FaSave, FaTrash } from 'react-icons/fa'
 
-interface MealSpecial {
-  isSpecialMeal3: boolean
-  // setUpdateBeds: (updateBeds: boolean) => void
-  entity: IMeal[]
-  date: Dayjs
-  numberOfDays: number
-}
+// interface MealSpecial {
+//   isSpecialMeal3: boolean
+//   // setUpdateBeds: (updateBeds: boolean) => void
+//   entity: IMeal[]
+//   date: Dayjs
+//   numberOfDays: number
+// }
 
 export const ConfirmationAddMealsScreenModal: FunctionComponent<
   { mealsData: IMeal[]; date: Dayjs; numberOfDays: number; setDate: (date: Dayjs) => void }
 > = (
   { mealsData, date, numberOfDays, setDate }
 ): JSX.Element => {
-  const {
-    // handleSubmit,
-    register
-    // watch,
-    // formState: { errors },
-    // reset: resetForm
-  } = useForm<MealSpecial>()
+  // const {
+  //   // handleSubmit,
+  //   register
+  //   // watch,
+  //   // formState: { errors },
+  //   // reset: resetForm
+  // } = useForm<MealSpecial>()
 
   const [isLoading, setIsLoading] = useState(false)
   // TODO : Check from reservation if special meal , why isSpecialMeal is not working ?
@@ -47,6 +45,7 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
   // const isSpecialMeal2 = useState<boolean>(false)
 
   const apiUrlUpdateMeal = 'api/meals/update'
+  const toast = useToast()
 
   /**
    * select and update meals of planning on screen
@@ -99,7 +98,20 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
 
     setIsLoading(false)
     // setDate(date.add(1, 'day'))
+
+    //
+
+    // TODO : refresh screen + add toast
     setDate(date)
+    toast({
+      position: 'top',
+      title: 'Repas modifiés !',
+      description: 'A bientôt !',
+      status: 'success',
+      duration: 9000,
+      isClosable: true
+    })
+
     onClose()
   }
 
@@ -131,9 +143,11 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
             Êtes-vous sûr de vouloir vous réinscrire aux repas sur la période affichée sur
             l&apos;écran ? <br />
 
-            <Checkbox colorScheme={'green'} defaultChecked={true} {...register('isSpecialMeal3')}>
+            {
+              /* <Checkbox colorScheme={'green'} defaultChecked={true} {...register('isSpecialMeal3')}>
               Repas spéciaux
-            </Checkbox>
+            </Checkbox> */
+            }
           </ModalBody>
           <ModalFooter justifyContent={'space-between'}>
             <Button onClick={onClose} leftIcon={<FaBan />} variant="back" isLoading={isLoading}>

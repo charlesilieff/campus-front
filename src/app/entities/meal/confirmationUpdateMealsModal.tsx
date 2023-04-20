@@ -6,7 +6,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from '@chakra-ui/react'
 import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
@@ -20,6 +21,7 @@ export const ConfirmationUpdateMealsModal: FunctionComponent<{ mealsData: IMeal[
   const [isLoading, setIsLoading] = useState(false)
 
   const apiUrlUpdateMeal = 'api/meals/update'
+  const toast = useToast()
   /**
    * update meals with checkbox
    */
@@ -30,6 +32,14 @@ export const ConfirmationUpdateMealsModal: FunctionComponent<{ mealsData: IMeal[
       entity.filter(value => value.id !== undefined)
     )
     setIsLoading(false)
+    toast({
+      position: 'top',
+      title: 'Réservation modifiée !',
+      description: 'A bientôt !',
+      status: 'success',
+      duration: 9000,
+      isClosable: true
+    })
     onClose()
   }
 
