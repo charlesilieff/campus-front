@@ -37,6 +37,7 @@ export interface DatesAndMeals {
   comment: string
   isArrivalBreakfast: boolean
   isDepartureBreakfast: boolean
+  commentMeals: string
 }
 
 export interface Customer {
@@ -79,7 +80,9 @@ const createIReservationWithBedIds = (
     age: O.getOrUndefined(customer.age)
   },
   isArrivalBreakfast: datesAndMeals.isArrivalBreakfast,
-  isDepartureBreakfast: datesAndMeals.isDepartureBreakfast
+  isDepartureBreakfast: datesAndMeals.isDepartureBreakfast,
+  commentMeals: datesAndMeals.commentMeals,
+  userCategoryId: 2
 })
 
 export const ReservationIntermittentUpdate = (): JSX.Element => {
@@ -159,7 +162,9 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
         isDepartureDinner: backendReservation.isDepartureDiner,
         comment: backendReservation.comment,
         isArrivalBreakfast: backendReservation.isArrivalBreakfast,
-        isDepartureBreakfast: backendReservation.isDepartureBreakfast
+        isDepartureBreakfast: backendReservation.isDepartureBreakfast,
+        commentMeals: backendReservation.commentMeals
+        // userCategoryId: backendReservation.userCategory
       }))
       setBedId(pipe(backendReservation.beds, A.head, O.map(bed => bed.id)))
     }

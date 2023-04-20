@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Spinner, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, HStack, Spinner, Stack, Text, VStack } from '@chakra-ui/react'
 import * as O from '@effect/data/Option'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
@@ -37,9 +37,9 @@ export const ReservationsToBeProcessed = () => {
                   backgroundColor={'#FED7D7'}
                   borderLeft={'4px'}
                   borderColor={'#E53E3E'}
-                  minW={'650px'}
+                  minW={{ base: '400px', md: '650px' }}
                 >
-                  <HStack justifyContent={'space-between'}>
+                  <Stack justifyContent={'space-between'} direction={{ base: 'column', md: 'row' }}>
                     <VStack alignItems={'flex-start'}>
                       <HStack>
                         <BsFillExclamationCircleFill color="#E53E3E" size={'24px'} />
@@ -50,7 +50,7 @@ export const ReservationsToBeProcessed = () => {
                         réservations urgentes à traiter
                       </Text>
                     </VStack>
-                  </HStack>
+                  </Stack>
                 </Box>
               ) :
               null}
@@ -62,9 +62,9 @@ export const ReservationsToBeProcessed = () => {
                   backgroundColor={'#BEE3F8'}
                   borderLeft={'4px'}
                   borderColor={'#3182CE'}
-                  minW={'650px'}
+                  minW={{ base: '400px', md: '650px' }}
                 >
-                  <HStack justifyContent={'space-between'}>
+                  <Stack justifyContent={'space-between'} direction={{ base: 'column', md: 'row' }}>
                     <VStack alignItems={'flex-start'}>
                       <HStack>
                         <BsFillExclamationCircleFill color="#3182CE" size={'24px'} />
@@ -83,7 +83,7 @@ export const ReservationsToBeProcessed = () => {
                     >
                       Traiter les réservations
                     </Button>
-                  </HStack>
+                  </Stack>
                 </Box>
               ) :
               null}

@@ -1,8 +1,10 @@
 import { CheckCircleIcon } from '@chakra-ui/icons'
 import {
+  Box,
   Button,
   Heading,
   HStack,
+  Stack,
   Text,
   VStack
 } from '@chakra-ui/react'
@@ -36,7 +38,7 @@ export const CustomerSummary = (
       border={'solid'}
       p={4}
       borderRadius={8}
-      borderColor={'#D9D9D9'}
+      borderColor={'green'}
       my={4}
     >
       <HStack>
@@ -45,12 +47,16 @@ export const CustomerSummary = (
         </Heading>
       </HStack>
 
-      <HStack py={2}>
-        <Text fontWeight={'bold'}>{'Nom :'}</Text>
-        <Text>{firstname}</Text>
-        <Text pl={12} fontWeight={'bold'}>{'Prénom :'}</Text>
-        <Text>{lastname}</Text>
-      </HStack>
+      <Stack direction={['column', 'row']} alignItems={'flex-start'} my={4}>
+        <HStack>
+          <Text fontWeight={'bold'}>{'Nom :'}</Text>
+          <Text>{firstname}</Text>
+        </HStack>
+        <HStack>
+          <Text pl={12} fontWeight={'bold'}>{'Prénom :'}</Text>
+          <Text>{lastname}</Text>
+        </HStack>
+      </Stack>
       <VStack alignItems={'flex-start'} py={2}>
         {O.isSome(age) ?
           (

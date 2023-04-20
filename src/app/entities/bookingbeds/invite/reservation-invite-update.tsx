@@ -114,6 +114,7 @@ const createIReservationWithBedIds = (
   },
   isArrivalBreakfast: datesAndMeals.isArrivalBreakfast,
   isDepartureBreakfast: datesAndMeals.isDepartureBreakfast,
+  userCategoryId: 1,
   // userCategory: {
   //   id: userCategory.id,
   //   name: userCategory.name,
@@ -151,6 +152,7 @@ const createIReservationWithoutBedIds = (
   },
   isArrivalBreakfast: datesAndMeals.isArrivalBreakfast,
   isDepartureBreakfast: datesAndMeals.isDepartureBreakfast,
+  userCategoryId: 1,
   // userCategory: {
   //   id: userCategory.id,
   //   name: userCategory.name,

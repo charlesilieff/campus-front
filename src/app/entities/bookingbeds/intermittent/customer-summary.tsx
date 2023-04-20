@@ -66,7 +66,12 @@ export const CustomerSummary = (
                 <Text>Non renseigné</Text>}
             </HStack>
           ) :
-          null}
+          (
+            <HStack py={2}>
+              <Text fontWeight={'bold'}>{'Age :'}</Text>
+              <Text>{'Non renseigé'}</Text>
+            </HStack>
+          )}
       </VStack>
       <HStack py={2}>
         <Text fontWeight={'bold'}>{'Email :'}</Text>

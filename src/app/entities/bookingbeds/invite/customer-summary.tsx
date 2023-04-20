@@ -39,7 +39,6 @@ export const CustomerSummary = (
       borderRadius={8}
       // borderColor={'#D9D9D9'}
       my={4}
-      // borderColor={(firstname && lastname && email) ? 'green' : 'green'}
       borderColor={'green'}
     >
       <HStack>

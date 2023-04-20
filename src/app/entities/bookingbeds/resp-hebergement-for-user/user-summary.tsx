@@ -6,18 +6,12 @@ import {
   FormLabel,
   Heading,
   HStack,
-  Select,
+  Stack,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import type * as O from '@effect/data/Option'
-import * as A from '@effect/data/ReadonlyArray'
-import { EffectTypeId } from '@effect/io/Effect'
-import { None } from '@effect/io/Logger/Level'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getUsersAsAdmin } from 'app/modules/administration/user-management/user-management.reducer'
 import React, { useEffect } from 'react'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
@@ -49,7 +43,7 @@ export const UserSummary = (
     )
   }
 
-  const [userSelect, setUserSelect] = useState('default' as string)
+  // const [userSelect, setUserSelect] = useState('default' as string)
 
   const users1 = useAppSelector(state => state.userManagement.users)
 
@@ -59,34 +53,19 @@ export const UserSummary = (
   const users = myData.sort((a, b) => a.email.localeCompare(b.email))
 
   const {
-    handleSubmit,
-    register
+    handleSubmit
+    // register
     // formState: { errors }
   } = useForm<FormUser>()
 
   const handleValidUserSubmit = (
     formUser: FormUser
   ) => {
-    console.log('userSelect', userSelect)
+    // console.log('userSelect', userSelect)
     console.log('formUser email', formUser)
     console.log('list users', users)
     console.log('id to find', Number(formUser.id))
-    // props.setUserId(Number(formUser.id))
 
-    // pipe(
-    //   users,
-    //   A.findFirst(user => user.id === Number(formUser.id)),
-    //   O.map(x => ({
-    //     firstname: x.firstName,
-    //     lastname: x.lastName,
-    //     email: x.email,
-    //     id: x.id,
-    //     phoneNumber: O.none(),
-    //     customerId: O.some(x.customerId),
-    //     age: O.none()
-    //   } as Customer)),
-    //   props.setCustomer
-    // )
     props.setUserId(null)
     props.setUpdateMeal(true)
     props.setUpdateCustomer(true)
@@ -96,12 +75,12 @@ export const UserSummary = (
   return (
     <VStack alignItems={'flex-start'}>
       <VStack
-        minW={'100%'}
+        w={'100%'}
         alignItems={'flex-start'}
         border={'solid'}
         p={4}
         borderRadius={8}
-        borderColor={'#D9D9D9'}
+        borderColor={'green'}
       >
         <HStack>
           <Heading size={'md'}>
@@ -113,42 +92,67 @@ export const UserSummary = (
           <form
             onSubmit={handleSubmit(handleValidUserSubmit)}
           >
-            <VStack spacing={10} alignItems={'left'}>
-              <HStack spacing={12} minW={800} my={4}>
+            <VStack spacing={2} alignItems={'left'}>
+              <Stack
+                spacing={2}
+                alignItems={'flex-start'}
+                width="100%"
+                direction={['column', 'row']}
+              >
                 <FormControl>
                   <FormLabel htmlFor="users" fontWeight={'bold'}>
-                    {'Utilisateur'}
+                    {'Email :'}
                   </FormLabel>
-                  <FormLabel htmlFor="users" fontWeight={'bold'}>
+                </FormControl>
+                <FormControl>
+                  <FormLabel htmlFor="users">
                     {props.customer.email}
                   </FormLabel>
-
-                  {
-                    /* <Select
-                    onChange={e => setUserSelect(e.target.value)}
-                    id="user"
-                    {...register('id', {})}
-                  >
-                    <option value="" key="0" />
-                    {users ?
-                      users.map(user => (
-                        <option value={user.id} key={user.id}>
-                          {user.email}
-                        </option>
-                      )) :
-                      null}
-                  </Select> */
-                  }
                 </FormControl>
-              </HStack>
+              </Stack>
+              {
+                /* <Stack
+                spacing={2}
+                alignItems={'flex-start'}
+                width="100%"
+                direction={['column', 'row']}
+              >
+                <FormControl>
+                  <FormLabel htmlFor="users" fontWeight={'bold'}>
+                    {'Prénom : '}
+                  </FormLabel>
+                </FormControl>
+                <FormControl>
+                  <FormLabel htmlFor="users">
+                    {props.customer.firstname}
+                  </FormLabel>
+                </FormControl>
+              </Stack>
+              <Stack
+                spacing={2}
+                alignItems={'flex-start'}
+                width="100%"
+                direction={['column', 'row']}
+              >
+                <FormControl>
+                  <FormLabel htmlFor="users" fontWeight={'bold'}>
+                    {'Nom : '}
+                  </FormLabel>
+                </FormControl>
+                <FormControl>
+                  <FormLabel htmlFor="users">
+                    {props.customer.lastname}
+                  </FormLabel>
+                </FormControl>
+              </Stack> */
+              }
 
               <Button
                 rightIcon={<CheckIcon />}
-                colorScheme={userSelect ? 'green' : 'red'}
+                colorScheme={'blue'}
                 alignSelf={'flex-start'}
                 type="submit"
               >
-                {/* {userSelect ? 'Modifier' : 'vvvvvvvvvvvvvvvvvvvvv Confirmer'} */}
                 Modifier
               </Button>
             </VStack>

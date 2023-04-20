@@ -25,6 +25,7 @@ interface UserUpdateProps {
   setCustomer: (user: O.Option<Customer>) => void
   setUserId: (userId: number) => void
   setUpdateUser: (updateUser: boolean) => void
+  // customer: O.Option<Customer>
 }
 
 export interface FormUser {
@@ -89,12 +90,12 @@ export const UserSelect = (
   return (
     <VStack alignItems={'flex-start'}>
       <VStack
-        minW={'100%'}
         alignItems={'flex-start'}
         border={'solid'}
         p={4}
         borderRadius={8}
         borderColor={'#D9D9D9'}
+        width={'100%'}
       >
         <HStack>
           <Heading size={'md'}>
@@ -102,12 +103,12 @@ export const UserSelect = (
           </Heading>
           <BsPencil size={'30px'} color={'black'}></BsPencil>
         </HStack>
-        <Box minW={'500px'}>
+        <Box>
           <form
             onSubmit={handleSubmit(handleValidUserSubmit)}
           >
             <VStack spacing={10} alignItems={'left'}>
-              <HStack spacing={12} minW={800} my={4}>
+              <HStack spacing={12} my={4}>
                 <FormControl>
                   <FormLabel htmlFor="users" fontWeight={'bold'}>
                     {'Utilisateur'}
