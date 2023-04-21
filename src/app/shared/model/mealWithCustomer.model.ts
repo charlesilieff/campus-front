@@ -4,7 +4,7 @@ export interface IMealWithCustomer {
 
   regularLunch?: number
   regularDinner?: number
-  comment?: string | null // todo à garder pour detail repas speciaux
+  commentMeals?: string | null // todo à garder pour detail repas speciaux
   specialLunch?: number
   specialDinner?: number
   firstname?: string | null
