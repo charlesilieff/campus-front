@@ -2,6 +2,7 @@ import { Box, Button, Heading, HStack, Input, Text, VStack } from '@chakra-ui/re
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+// import { isArrivalDateIsBeforeDepartureDate, isDateBeforeNow } from 'app/entities/bookingbeds/utils'
 import { getIntermittentReservations,
   getReservation } from 'app/entities/reservation/reservation.reducer'
 import type { IMeal } from 'app/shared/model/meal.model'
@@ -9,6 +10,7 @@ import axios from 'axios'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
+// import { useForm } from 'react-hook-form'
 import { FaCalendar, FaCaretLeft, FaCaretRight } from 'react-icons/fa'
 
 // import { IntermittentReservations } from '../bookingbeds/intermittent/reservations-list'
@@ -23,6 +25,13 @@ const apiUrlMealsDateFor31DaysByUser = 'api/meals'
 // const apiUrlUpdateMeal = 'api/meals/update'
 
 export const Index = () => {
+  // const {
+  //   register,
+  //   watch
+  // } = useForm()
+  // const endDateCheck = useRef({})
+  // endDateCheck.current = watch('endDateCheck')
+
   const account = useAppSelector(state => state.authentication.account)
 
   const customerId = account.customerId
@@ -260,32 +269,47 @@ export const Index = () => {
           </FormControl>
         </HStack> */
         }
-        <HStack m={4} spacing={8} margin={4} marginBlockEnd={12} alignItems={'flex-start'}>
-          <Heading alignSelf={'flex-start'}>Changer mes repas par période</Heading>
-        </HStack>
-        <HStack m={4} spacing={8} margin={4} marginBlockEnd={12} alignItems={'flex-start'}>
-          <Box>
-            <Text>Du</Text>
+        <form>
+          <HStack m={4} spacing={8} margin={4} marginBlockEnd={12} alignItems={'flex-start'}>
+            <Heading alignSelf={'flex-start'}>Changer mes repas par période</Heading>
+          </HStack>
+          <HStack m={4} spacing={8} margin={4} marginBlockEnd={12} alignItems={'flex-start'}>
+            <Box>
+              <Text>Du</Text>
 
-            <Input
-              type="date"
-              onChange={e => setStartDate(dayjs(e.target.value))}
-              title="Date de début"
-            >
-            </Input>
-          </Box>
-          <Box>
-            <Text>Au</Text>
-            <Input
-              id="endDate"
-              type="date"
-              onChange={e => setEndDate(dayjs(e.target.value))}
-              title="Date de fin"
-            >
-            </Input>
-          </Box>
-          {
-            /* Todo later <Box>
+              <Input
+                type="date"
+                onChange={e => setStartDate(dayjs(e.target.value))}
+                title="Date de début"
+                placeholder="Date de début'"
+                // TODO check in onChange if the date is before the end date
+                // {...register('arrivalDate', {
+                //   required: "la date d'arrivée' est obligatoire",
+                //   validate(v) {
+                //     if (!isArrivalDateIsBeforeDepartureDate(v, endDateCheck.current.toString())) {
+                //       return "La date d'arrivée doit être avant la date de départ"
+                //     }
+                //   }
+                // })}
+              >
+              </Input>
+            </Box>
+            <Box>
+              <Text>Au</Text>
+              <Input
+                id="endDate"
+                type="date"
+                onChange={e => setEndDate(dayjs(e.target.value))}
+                title="Date de fin"
+                placeholder="Date de fin"
+                // {...register('endDateCheck', {
+                //   required: 'la date de fin est obligatoire'
+                // })}
+              >
+              </Input>
+            </Box>
+            {
+              /* Todo later <Box>
             <Text>Se désinscrire</Text>
             <Checkbox
               id="unsubscribeDate"
@@ -294,17 +318,18 @@ export const Index = () => {
             >
             </Checkbox>
           </Box> */
-          }
-          <Box alignSelf={'end'}>
-            <ConfirmationUpdateMealsByPeriodeModal
-              startDate={startDate}
-              endDate={endDate}
-              reservationId={reservationId}
-              setDate={setDate}
-            />
-          </Box>
-        </HStack>
+            }
 
+            <Box alignSelf={'end'}>
+              <ConfirmationUpdateMealsByPeriodeModal
+                startDate={startDate}
+                endDate={endDate}
+                reservationId={reservationId}
+                setDate={setDate}
+              />
+            </Box>
+          </HStack>
+        </form>
         <HStack m={4} spacing={8}>
           <Heading alignSelf={'flex-start'}>Mes repas réservés</Heading>
           <Button
@@ -318,7 +343,7 @@ export const Index = () => {
           <Box>
             <Input
               type="date"
-              onChange={e => setDate(dayjs(e.target.value))} // todo getMealsDateFor31DaysByUser
+              onChange={e => setDate(dayjs(e.target.value))}
               value={date.format('YYYY-MM-DD')}
             >
             </Input>

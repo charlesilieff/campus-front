@@ -73,7 +73,7 @@ export const ConfirmationUpdateMealsByPeriodeModal: FunctionComponent<
 
     toast({
       position: 'top',
-      title: 'Réservation modifiée !',
+      title: 'Repas modifiés !',
       description: 'A bientôt !',
       status: 'success',
       duration: 9000,
