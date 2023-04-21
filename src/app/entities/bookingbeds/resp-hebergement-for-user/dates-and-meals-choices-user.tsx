@@ -84,7 +84,6 @@ export const DatesAndMealsChoices = (
               direction={{ base: 'column', md: 'row' }}
               display={'flex'}
               alignItems={'center'}
-              // justifyContent={'space-between'}
               my={5}
             >
               {/* <Stack spacing={12} minW={600} my={4}> */}
@@ -147,7 +146,6 @@ export const DatesAndMealsChoices = (
                   htmlFor="comment"
                   fontWeight={'bold'}
                   alignItems={'flex-start'}
-                  // width={'auto'}
                 >
                   {'Commentaire:'}
                 </FormLabel>
@@ -210,18 +208,11 @@ export const DatesAndMealsChoices = (
                   htmlFor="commentMeals"
                   fontWeight={'bold'}
                   alignItems={'flex-start'}
-                  // width={'auto'}
                 >
                   {'Commentaire repas:'}
                 </FormLabel>
                 <Textarea
                   id="commentMeals"
-                  // width={'500px'}
-                  // width={screen.availWidth > 800 ?
-                  //   '700px' :
-                  //   screen.availWidth > 500 ?
-                  //   '400px' :
-                  //   '280px'}
                   width={{ base: '300px', lg: '1000px' }}
                   placeholder="Votre commentaire à propos des repas (ex : allergie, régime, vegan...)"
                   {...register('commentMeals')}
