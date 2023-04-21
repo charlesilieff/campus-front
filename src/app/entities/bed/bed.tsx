@@ -37,12 +37,7 @@ export const Bed = () => {
     ...bed
   }))
 
-  const mySort2 = myData.sort((a, b) =>
-    // a.room.name !== b.room.name ?
-    //   a.room.name.localeCompare(b.room.name) :
-    a.number.localeCompare(b.number)
-  )
-  console.log('liste : ', mySort2)
+  const mySort2 = myData.sort((a, b) => a.number.localeCompare(b.number))
 
   return (
     <VStack>

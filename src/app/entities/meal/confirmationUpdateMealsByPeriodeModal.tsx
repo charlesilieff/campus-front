@@ -18,10 +18,16 @@ import { FaBan, FaSave, FaTrash } from 'react-icons/fa'
 
 const apiUrlMealsDateFor31DaysByUser = 'api/meals'
 
-export const ConfirmationUpdateMealsByPeriodeModal: FunctionComponent<
-  { startDate: Dayjs; endDate: Dayjs; reservationId: number; setDate: (date: Dayjs) => void }
+export const ConfirmationUpdateMealsByPeriodModal: FunctionComponent<
+  {
+    startDate: Dayjs
+    endDate: Dayjs
+    reservationId: number
+    setDate: (date: Dayjs) => void
+    setRefreshing: (refreshing: boolean) => void
+  }
 > = (
-  { startDate, endDate, reservationId, setDate }
+  { startDate, endDate, reservationId, setDate, setRefreshing }
 ): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false)
   const apiUrlUpdateMeal = 'api/meals/update'
@@ -120,7 +126,10 @@ export const ConfirmationUpdateMealsByPeriodeModal: FunctionComponent<
               Retour
             </Button>
             <Button
-              onClick={() => updateMealsFromDate(startDate, endDate, reservationId)}
+              onClick={() =>
+                updateMealsFromDate(startDate, endDate, reservationId).then(() => {
+                  setRefreshing(true)
+                })}
               leftIcon={<FaTrash />}
               variant="danger"
               isLoading={isLoading}
