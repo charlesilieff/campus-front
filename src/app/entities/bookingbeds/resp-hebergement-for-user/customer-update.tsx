@@ -64,7 +64,7 @@ export const CustomerUpdate = (
       O.some(customer.phoneNumber)
     props.setCustomer(O.some({ ...customer, age, phoneNumber }))
 
-    props.setUpdateCustomer(false)
+    props.setUpdateCustomer(true)
   }
 
   return (
