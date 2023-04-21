@@ -173,7 +173,7 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
                   Filtrer par lieu
                 </Heading>
                 <Select
-                  minW={'140px'}
+                  // minW={'140px'}
                   style={{ padding: '0.4rem', borderRadius: '0.3rem' }}
                   onChange={e => {
                     const placeId = pipe(
@@ -200,7 +200,7 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
               </Stack>
 
               <HStack>
-                <Heading size={'md'}>Filtre par type de chambre</Heading>
+                <Heading>Filtre par type de chambre</Heading>
                 <Select
                   style={{ padding: '0.4rem', borderRadius: '0.3rem' }}
                   onChange={e =>
