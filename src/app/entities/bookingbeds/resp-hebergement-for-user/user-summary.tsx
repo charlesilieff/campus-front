@@ -9,7 +9,7 @@ import {
   Stack,
   VStack
 } from '@chakra-ui/react'
-import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { useAppDispatch } from 'app/config/store'
 import { getUsersAsAdmin } from 'app/modules/administration/user-management/user-management.reducer'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -42,20 +42,11 @@ export const UserSummary = (
     )
   }
 
-  const users1 = useAppSelector(state => state.userManagement.users)
-
-  const myData = users1.flatMap(user => ({
-    ...user
-  }))
-  const users = myData.sort((a, b) => a.email.localeCompare(b.email))
-
   const {
     handleSubmit
   } = useForm<FormUser>()
 
-  const handleValidUserSubmit = (
-    formUser: FormUser
-  ) => {
+  const handleValidUserSubmit = () => {
     props.setUserId(null)
     props.setUpdateMeal(true)
     props.setUpdateCustomer(true)
