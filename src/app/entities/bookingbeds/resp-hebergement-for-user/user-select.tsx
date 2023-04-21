@@ -144,7 +144,6 @@ export const UserSelect = (
                 alignSelf={'flex-start'}
                 type="submit"
               >
-                {/* {userSelect ? 'Modifier' : 'vvvvvvvvvvvvvvvvvvvvv Confirmer'} */}
                 Valider
               </Button>
             </VStack>
