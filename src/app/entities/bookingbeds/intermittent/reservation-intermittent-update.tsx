@@ -82,7 +82,7 @@ const createIReservationWithBedIds = (
   isArrivalBreakfast: datesAndMeals.isArrivalBreakfast,
   isDepartureBreakfast: datesAndMeals.isDepartureBreakfast,
   commentMeals: datesAndMeals.commentMeals,
-  userCategoryId: 2
+  //userCategoryId: 2
 })
 
 export const ReservationIntermittentUpdate = (): JSX.Element => {
