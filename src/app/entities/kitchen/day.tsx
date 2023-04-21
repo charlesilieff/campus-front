@@ -275,7 +275,9 @@ export const Day = ({ positionX, date, index }: IProps) => {
                             {meals.breakfast ? meals.breakfast : null}
                           </Td>
                           <Td>
-                            {meals.comment?.length > 0 && meals.breakfast ? meals.comment : null}
+                            {meals.commentMeals?.length > 0 && meals.breakfast ?
+                              meals.commentMeals :
+                              null}
                           </Td>
                         </Tr>
                       ))}
@@ -361,7 +363,9 @@ export const Day = ({ positionX, date, index }: IProps) => {
                         </Td>
 
                         <Td>
-                          {meals.comment?.length > 0 && meals.regularLunch ? meals.comment : null}
+                          {meals.commentMeals?.length > 0 && meals.regularLunch ?
+                            meals.commentMeals :
+                            null}
                         </Td>
                       </Tr>
                     ))}
@@ -445,7 +449,9 @@ export const Day = ({ positionX, date, index }: IProps) => {
                             {meals.specialLunch ? meals.specialLunch : null}
                           </Td>
                           <Td>
-                            {meals.comment?.length > 0 && meals.specialLunch ? meals.comment : null}
+                            {meals.commentMeals?.length > 0 && meals.specialLunch ?
+                              meals.commentMeals :
+                              null}
                           </Td>
                         </Tr>
                       ))}
@@ -534,7 +540,9 @@ export const Day = ({ positionX, date, index }: IProps) => {
                         </Td>
 
                         <Td>
-                          {meals.comment?.length > 0 && meals.regularDinner ? meals.comment : null}
+                          {meals.commentMeals?.length > 0 && meals.regularDinner ?
+                            meals.commentMeals :
+                            null}
                         </Td>
                       </Tr>
                     ))}
@@ -618,8 +626,8 @@ export const Day = ({ positionX, date, index }: IProps) => {
                             {meals.specialDinner ? meals.specialDinner : null}
                           </Td>
                           <Td>
-                            {meals.comment?.length > 0 && meals.specialDinner ?
-                              meals.comment :
+                            {meals.commentMeals?.length > 0 && meals.specialDinner ?
+                              meals.commentMeals :
                               null}
                           </Td>
                         </Tr>
