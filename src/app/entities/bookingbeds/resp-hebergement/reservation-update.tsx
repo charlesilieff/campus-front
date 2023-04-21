@@ -144,7 +144,7 @@ export const BookingBedsUpdate = (): JSX.Element => {
         phoneNumber: O.fromNullable(backendReservation.value.customer.phoneNumber),
         age: O.fromNullable(backendReservation.value.customer.age),
         personNumber: backendReservation.value.personNumber,
-        specialDietNumber: backendReservation.value.specialDietNumber // TODO move this in setDatesAndMeal and move comment
+        specialDietNumber: backendReservation.value.specialDietNumber
       }))
       setDatesAndMeal(O.some({
         arrivalDate: backendReservation.value.arrivalDate.toString(),
