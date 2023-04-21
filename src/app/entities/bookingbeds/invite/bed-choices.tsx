@@ -18,7 +18,6 @@ import type { IPlace, IRoomWithBeds } from '../utils'
 import { getPlaceWithFreeBedsAndBookedBeds } from '../utils'
 import { getOnePlace } from '../utils'
 import { IntermittentBeds } from './beds-intermittent'
-import { NoBeds } from './no-beds'
 import type { DatesAndMeals } from './reservation-invite-update'
 
 interface DatesAndMealsChoicesProps {
@@ -169,11 +168,11 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
             </Heading>
             <Stack justifyContent={'space-around'} width="100%" direction={['column', 'row']}>
               <Stack>
-                <Heading size={'md'} minW={'140px'} direction={['column', 'row']}>
+                <Heading size={'md'} minW={'140px'}>
                   Filtrer par lieu
                 </Heading>
                 <Select
-                  // minW={'140px'}
+                  minW={'140px'}
                   style={{ padding: '0.4rem', borderRadius: '0.3rem' }}
                   onChange={e => {
                     const placeId = pipe(
@@ -200,7 +199,7 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
               </Stack>
 
               <HStack>
-                <Heading>Filtre par type de chambre</Heading>
+                <Heading size={'md'}>Filtre par type de chambre</Heading>
                 <Select
                   style={{ padding: '0.4rem', borderRadius: '0.3rem' }}
                   onChange={e =>
