@@ -91,7 +91,7 @@ const createIReservationWithBedIds = (
   isArrivalBreakfast: datesAndMeals.isArrivalBreakfast,
   isDepartureBreakfast: datesAndMeals.isDepartureBreakfast,
   commentMeals: datesAndMeals.commentMeals,
-  userCategoryID: 5
+  //userCategoryID: 5
 })
 
 export const ReservationUserUpdate = (): JSX.Element => {
@@ -205,7 +205,6 @@ export const ReservationUserUpdate = (): JSX.Element => {
             setUserId={setUserId}
             setCustomer={setCustomer}
             setUpdateUser={setSelectUser}
-            // customer={customer}
             setUpdateCustomer={setUpdateCustomer}
           />
         ) :
@@ -213,7 +212,6 @@ export const ReservationUserUpdate = (): JSX.Element => {
           <UserSummary
             customer={customer.value}
             setUserId={setUserId}
-            // setCustomer={setCustomer}
             setUpdateUser={setSelectUser}
             setUpdateMeal={setUpdateDatesAndMeals}
             setUpdateCustomer={setUpdateCustomer}
@@ -234,7 +232,6 @@ export const ReservationUserUpdate = (): JSX.Element => {
             {'Informations personnelles'}
           </Heading>
         ) :
-        // || updateCustomer
         (O.isNone(customer) || (!updateCustomer)) ?
         (
           <CustomerUpdate
