@@ -90,8 +90,8 @@ const createIReservationWithBedIds = (
   },
   isArrivalBreakfast: datesAndMeals.isArrivalBreakfast,
   isDepartureBreakfast: datesAndMeals.isDepartureBreakfast,
-  commentMeals: datesAndMeals.commentMeals,
-  //userCategoryID: 5
+  commentMeals: datesAndMeals.commentMeals
+  // userCategoryID: 5
 })
 
 export const ReservationUserUpdate = (): JSX.Element => {
