@@ -16,7 +16,7 @@ import { FaCalendar, FaCaretLeft, FaCaretRight } from 'react-icons/fa'
 // import { IntermittentReservations } from '../bookingbeds/intermittent/reservations-list'
 import { ConfirmationAddMealsScreenModal } from './confirmationAddMealsScreenModal'
 import { ConfirmationRemoveMealsScreenModal } from './confirmationRemoveMealsScreenModal'
-import { ConfirmationUpdateMealsByPeriodeModal } from './confirmationUpdateMealsByPeriodeModal'
+import { ConfirmationUpdateMealsByPeriodModal as ConfirmationUpdateMealsByPeriodModal } from './confirmationUpdateMealsByPeriodeModal'
 import { ConfirmationUpdateMealsModal } from './confirmationUpdateMealsModal'
 import { DisplayTotalMeals } from './displayTotalMeals'
 import { MealsUserPlanning } from './mealsUserPlanning'
@@ -40,7 +40,7 @@ export const Index = () => {
   //   O.fromNullable,
   //   O.map(Number)
   // )
-
+  const [refreshing, setRefreshing] = useState(false)
   const [date, setDate] = useState(dayjs())
   const [startDate, setStartDate] = useState(dayjs())
   const [endDate, setEndDate] = useState(dayjs())
@@ -111,9 +111,10 @@ export const Index = () => {
       console.log('data axios', data)
       // const dataSorted = data.sort((a, b) => (a > b.date ? 1 : -1))
       setMealsData(data)
+      setRefreshing(false)
     }
     getMealsDateFor31DaysByUser(date, customerId)
-  }, [date])
+  }, [date, refreshing])
   /**
    * Get meals for 31 days by reservation. //todo getMealsDateFor31DaysByUser by reservation
    */
@@ -321,7 +322,8 @@ export const Index = () => {
             }
 
             <Box alignSelf={'end'}>
-              <ConfirmationUpdateMealsByPeriodeModal
+              <ConfirmationUpdateMealsByPeriodModal
+                setRefreshing={setRefreshing}
                 startDate={startDate}
                 endDate={endDate}
                 reservationId={reservationId}
@@ -382,12 +384,14 @@ export const Index = () => {
               mealsData={mealsData}
               date={date}
               numberOfDays={numberOfDays}
+              setRefreshing={setRefreshing}
               setDate={setDate}
             />
             <ConfirmationAddMealsScreenModal
               mealsData={mealsData}
               date={date}
               numberOfDays={numberOfDays}
+              setRefreshing={setRefreshing}
               setDate={setDate}
             />
           </HStack>

@@ -18,9 +18,15 @@ import React, { useState } from 'react'
 import { FaBan, FaSave, FaTrash } from 'react-icons/fa'
 
 export const ConfirmationRemoveMealsScreenModal: FunctionComponent<
-  { mealsData: IMeal[]; date: Dayjs; numberOfDays: number; setDate: (date: Dayjs) => void }
+  {
+    mealsData: IMeal[]
+    date: Dayjs
+    numberOfDays: number
+    setDate: (date: Dayjs) => void
+    setRefreshing: (refreshing: boolean) => void
+  }
 > = (
-  { mealsData, date, numberOfDays, setDate }
+  { mealsData, date, numberOfDays, setDate, setRefreshing }
 ): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false)
 
@@ -30,13 +36,12 @@ export const ConfirmationRemoveMealsScreenModal: FunctionComponent<
   /**
    * select and update meals of planning on screen
    */
-  const updateMealsOnPeriode = async (entity: IMeal[], date: Dayjs, numberOfDays: number) => {
+  const updateMealsOnPeriod = async (entity: IMeal[], date: Dayjs, numberOfDays: number) => {
     entity = entity.filter((value, index) => {
       if (index < (numberOfDays)) {
         return value
       }
     }).map((value, index) => {
-      // console.log('value', value)
       if (index < numberOfDays) {
         value = {
           ...value,
@@ -85,7 +90,6 @@ export const ConfirmationRemoveMealsScreenModal: FunctionComponent<
           color: 'green.200',
           backgroundColor: '#38A169'
         }}
-        // variant={'update'}
       >
         Se désinscrire sur la période affichée
       </Button>
@@ -104,7 +108,10 @@ export const ConfirmationRemoveMealsScreenModal: FunctionComponent<
               Retour
             </Button>
             <Button
-              onClick={() => updateMealsOnPeriode(mealsData, date, numberOfDays)}
+              onClick={() =>
+                updateMealsOnPeriod(mealsData, date, numberOfDays).then(() => {
+                  setRefreshing(true)
+                })}
               leftIcon={<FaTrash />}
               variant="danger"
               isLoading={isLoading}

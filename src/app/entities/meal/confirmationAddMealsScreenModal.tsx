@@ -27,9 +27,15 @@ import { FaBan, FaSave, FaTrash } from 'react-icons/fa'
 // }
 
 export const ConfirmationAddMealsScreenModal: FunctionComponent<
-  { mealsData: IMeal[]; date: Dayjs; numberOfDays: number; setDate: (date: Dayjs) => void }
+  {
+    mealsData: IMeal[]
+    date: Dayjs
+    numberOfDays: number
+    setDate: (date: Dayjs) => void
+    setRefreshing: (refreshing: boolean) => void
+  }
 > = (
-  { mealsData, date, numberOfDays, setDate }
+  { mealsData, date, numberOfDays, setDate, setRefreshing }
 ): JSX.Element => {
   // const {
   //   // handleSubmit,
@@ -165,7 +171,10 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
                 Confirmer (repas spéciaux)
               </Button>
               <Button
-                onClick={() => updateMealsOnPeriode(mealsData, date, numberOfDays, false)}
+                onClick={() =>
+                  updateMealsOnPeriode(mealsData, date, numberOfDays, false).then(() => {
+                    setRefreshing(true)
+                  })}
                 leftIcon={<FaTrash />}
                 variant="danger"
                 isLoading={isLoading}
