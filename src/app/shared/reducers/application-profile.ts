@@ -29,7 +29,6 @@ export const ApplicationProfileSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder.addCase(getProfile.fulfilled, (state, action) => {
-      console.log('aaaaction', action)
       const { data } = action.payload
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       state.ribbonEnv = data['display-ribbon-on-profiles']

@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { PasswordStrengthBar } from 'app/shared/layout/password/password-strength-bar'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -17,6 +17,7 @@ import { toast } from 'react-toastify'
 import { handlePasswordResetFinish, reset } from '../password-reset.reducer'
 
 export const PasswordResetFinish = () => {
+  const [isLoading, setIsLoading] = useState(false)
   const {
     handleSubmit,
     register,
@@ -38,8 +39,13 @@ export const PasswordResetFinish = () => {
     []
   )
 
-  const handleValidSubmit = ({ newPassword }: { newPassword: string }) =>
-    dispatch(handlePasswordResetFinish({ key, newPassword }))
+  const handleValidSubmit = async ({ newPassword }: { newPassword: string }) => {
+    setIsLoading(true)
+    const result = await dispatch(handlePasswordResetFinish({ key, newPassword }))
+    setIsLoading(false)
+
+    return result
+  }
 
   const getResetForm = () => (<form
     onSubmit={handleSubmit(handleValidSubmit)}
@@ -95,7 +101,7 @@ export const PasswordResetFinish = () => {
         </FormErrorMessage>
       </FormControl>
 
-      <Button variant={'save'} type="submit">
+      <Button variant={'save'} type="submit" isLoading={isLoading}>
         Réinitialiser le mot de passe
       </Button>
     </VStack>
