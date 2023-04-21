@@ -11,12 +11,12 @@ interface IProps {
 }
 
 export const Months: FunctionComponent<IProps> = ({ month, date, totalDays, numberOfDays }) => {
-  // const offSet = 8
+ 
   const offSet = numberOfDays === 7 ? 6 : 8
 
-  // const endTable = totalDays + offSet
+  
   const endTable = numberOfDays + offSet
-  // const endTable = 39
+  
 
   // Le jour de la date passé en paramétre.
   const today = date.date()
@@ -28,7 +28,6 @@ export const Months: FunctionComponent<IProps> = ({ month, date, totalDays, numb
   const gridColumnStart = offSet + month * remainingDays
 
   // Position de fin vertical des cases. Si c'est le deuxième mois (month = 1), la postion est absolu à la fin (endTable)
-  // const gridColumnEnd = month === 0 ? offSet + remainingDays : endTable
   const gridColumnEnd = remainingDays < 4 ? offSet + remainingDays : endTable
   // TODO: Improve this
   // numberOfDays === 7 ? offSet + remainingDays : endTable
@@ -42,14 +41,12 @@ export const Months: FunctionComponent<IProps> = ({ month, date, totalDays, numb
     <Text
       className="month"
       gridColumnEnd={gridColumnEnd}
-      gridColumnStart={gridColumnStart}
-      // textAlign={remainingDays < 4 ? 'start' : 'center'}
+      gridColumnStart={gridColumnStart}   
       textAlign={'center'}
       py={2}
       borderColor={'#D9D9D9'}
       borderBottomWidth={'0.1em'}
       borderLeftWidth={'0.2em'}
-      // borderRightWidth={'0.2em'}
       textTransform={'capitalize'}
       fontWeight={'bold'}
       backgroundColor={'white'}
