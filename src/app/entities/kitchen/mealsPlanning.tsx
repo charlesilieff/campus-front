@@ -216,8 +216,5 @@ export const MealsPlanning = ({ date, totalDays, numberOfDays }: IProps) => {
         })}
       </Grid>
     </Box>
-
-   
   )
 }
-
