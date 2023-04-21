@@ -216,45 +216,8 @@ export const MealsPlanning = ({ date, totalDays, numberOfDays }: IProps) => {
         })}
       </Grid>
     </Box>
-    // <div className="grid-container" style={gridFormatStyle(numberOfDays)}>
-    //   <div className="time breakfast">Matin</div>
-    //   <div className="time lunch">Midi</div>
-    //   <div className="time dinner">Soir</div>
 
-    //   <div className="diet dietbreakfast">Total</div>
-    //   <div className="diet specialdietlunch">Sans lactose ni gluten</div>
-    //   <div className="diet classicdietlunch">Classique</div>
-    //   <div className="diet specialdietdinner">Sans lactose ni gluten</div>
-    //   <div className="diet classicdietdinner">Classique</div>
-
-    //   <Months date={date} month={0} totalDays={totalDays}></Months>
-
-    // {date.date() + numberOfDays - 1 > totalDays && (
-    //   <Months date={date} month={1} totalDays={totalDays}></Months>
-    // )}
-
-    // {monthDays.map((_, index) => {
-    //   const gridColumnStart = 8 + index
-    //   // On construit l'objet qui va permettre de récuperer la bonne position en X pour afficher les réservations.
-    //   const dateDay = date.add(index, 'day')
-    //   const dateKey = getDateKey(dateDay)
-    //   positionX[dateKey] = gridColumnStart
-    //   return <Day positionX={gridColumnStart} key={dateKey} date={dateDay} index={index}></Day>
-    // })}
-    // </div>
+   
   )
 }
 
-// /**
-//  * Style of the grid according to the number of days.
-//  * @param numberOfDays
-//  * @returns
-//  */
-// function gridFormatStyle(numberOfDays: number) {
-//   const style = {} as React.CSSProperties
-//   if (numberOfDays === 15) {
-//     style.borderLeftWidth = '0.2em'
-//     style.gridTemplateColumns = '3em repeat(21, minmax(20px, 1fr))'
-//   }
-//   return style
-// }
