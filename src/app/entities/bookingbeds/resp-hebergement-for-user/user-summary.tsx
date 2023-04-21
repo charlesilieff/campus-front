@@ -18,7 +18,6 @@ import { BsPencil } from 'react-icons/bs'
 import type { Customer } from './reservation-update'
 
 interface UserUpdateProps {
-  // setCustomer: (user: O.Option<Customer>) => void
   setUserId: (userId: number) => void
   setUpdateUser: (updateUser: boolean) => void
   customer: Customer
@@ -43,8 +42,6 @@ export const UserSummary = (
     )
   }
 
-  // const [userSelect, setUserSelect] = useState('default' as string)
-
   const users1 = useAppSelector(state => state.userManagement.users)
 
   const myData = users1.flatMap(user => ({
@@ -61,11 +58,6 @@ export const UserSummary = (
   const handleValidUserSubmit = (
     formUser: FormUser
   ) => {
-    // console.log('userSelect', userSelect)
-    console.log('formUser email', formUser)
-    console.log('list users', users)
-    console.log('id to find', Number(formUser.id))
-
     props.setUserId(null)
     props.setUpdateMeal(true)
     props.setUpdateCustomer(true)
