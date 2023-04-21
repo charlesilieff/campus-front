@@ -51,8 +51,6 @@ export const UserSummary = (
 
   const {
     handleSubmit
-    // register
-    // formState: { errors }
   } = useForm<FormUser>()
 
   const handleValidUserSubmit = (
@@ -102,43 +100,6 @@ export const UserSummary = (
                   </FormLabel>
                 </FormControl>
               </Stack>
-              {
-                /* <Stack
-                spacing={2}
-                alignItems={'flex-start'}
-                width="100%"
-                direction={['column', 'row']}
-              >
-                <FormControl>
-                  <FormLabel htmlFor="users" fontWeight={'bold'}>
-                    {'Prénom : '}
-                  </FormLabel>
-                </FormControl>
-                <FormControl>
-                  <FormLabel htmlFor="users">
-                    {props.customer.firstname}
-                  </FormLabel>
-                </FormControl>
-              </Stack>
-              <Stack
-                spacing={2}
-                alignItems={'flex-start'}
-                width="100%"
-                direction={['column', 'row']}
-              >
-                <FormControl>
-                  <FormLabel htmlFor="users" fontWeight={'bold'}>
-                    {'Nom : '}
-                  </FormLabel>
-                </FormControl>
-                <FormControl>
-                  <FormLabel htmlFor="users">
-                    {props.customer.lastname}
-                  </FormLabel>
-                </FormControl>
-              </Stack> */
-              }
-
               <Button
                 rightIcon={<CheckIcon />}
                 colorScheme={'blue'}
