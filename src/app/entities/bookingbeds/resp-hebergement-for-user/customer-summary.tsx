@@ -38,7 +38,6 @@ export const CustomerSummary = (
       p={4}
       borderRadius={8}
       borderColor={'green'}
-      my={4}
     >
       <HStack>
         <Heading size={'lg'} marginBottom={4}>
@@ -46,13 +45,13 @@ export const CustomerSummary = (
         </Heading>
       </HStack>
 
-      <Stack direction={['column', 'row']} alignItems={'flex-start'} my={4}>
+      <Stack direction={{ base: 'column', md: 'row' }} alignItems={'flex-start'} my={4}>
         <HStack>
           <Text fontWeight={'bold'}>{'Nom :'}</Text>
           <Text>{firstname}</Text>
         </HStack>
         <HStack>
-          <Text pl={12} fontWeight={'bold'}>{'Prénom :'}</Text>
+          <Text pl={{ base: '0', md: '16' }} fontWeight={'bold'}>{'Prénom :'}</Text>
           <Text>{lastname}</Text>
         </HStack>
       </Stack>
@@ -73,21 +72,27 @@ export const CustomerSummary = (
           ) :
           null}
       </VStack>
-      <HStack py={2}>
-        <Text fontWeight={'bold'}>{'Email :'}</Text>
-        <Text>{email}</Text>
-        <Text pl={12} fontWeight={'bold'}>{'Téléphone :'}</Text>
-        <Text>{phoneNumberString}</Text>
+      <Stack direction={{ base: 'column', md: 'row' }} alignItems={'flex-start'} my={4}>
+        <HStack>
+          <Text fontWeight={'bold'}>{'Email :'}</Text>
+          <Text>{email}</Text>
+        </HStack>
+        <HStack>
+          <Text pl={{ base: '0', md: '12' }} fontWeight={'bold'}>{'Téléphone :'}</Text>
+          <Text>{phoneNumberString}</Text>
+        </HStack>
+      </Stack>
+      <HStack>
+        <Button
+          colorScheme="blue"
+          rightIcon={<BsPencil />}
+          onClick={() => setUpdateCustomer(true)}
+          disabled={true}
+          marginTop={4}
+        >
+          Modifier
+        </Button>
       </HStack>
-
-      <Button
-        colorScheme="blue"
-        rightIcon={<BsPencil />}
-        onClick={() => setUpdateCustomer(true)}
-        disabled={true}
-      >
-        Modifier
-      </Button>
     </VStack>
   )
 }
