@@ -210,7 +210,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
         ) :
         (
           <UserSummary
-            customer={customer.value} // TODO fix this
+            customer={customer ? customer.value : null} // TODO fix this
             setUserId={setUserId}
             // setCustomer={setCustomer}
             setUpdateUser={setSelectUser}

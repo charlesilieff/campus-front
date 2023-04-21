@@ -36,6 +36,11 @@ export const ConfirmationUpdateMealsByPeriodeModal: FunctionComponent<
     endDate: Dayjs,
     reservationId: number
   ) => {
+    if (startDate > endDate) {
+      // TODO : add toast
+      return
+    }
+
     const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/reservation-id/${reservationId}/date1/${
       startDate.format('YYYY-MM-DD')
     }/date2/${endDate.format('YYYY-MM-DD')}`
