@@ -199,7 +199,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
         Créer une réservation pour un habitant
       </Heading>
 
-      {!userId ?
+      {!userId || O.isNone(customer) ?
         (
           <UserSelect
             setUserId={setUserId}
@@ -210,7 +210,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
         ) :
         (
           <UserSummary
-            customer={customer ? customer.value : null} // TODO fix this
+            customer={customer.value} // TODO fix this
             setUserId={setUserId}
             // setCustomer={setCustomer}
             setUpdateUser={setSelectUser}
