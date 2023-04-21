@@ -19,9 +19,9 @@ export const Home = (): JSX.Element => {
   const isIntermittent = useAppSelector(state =>
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.INTERMITTENT])
   )
-  const isHabitant = useAppSelector(state =>
-    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.HABITANT])
-  )
+  // const isHabitant = useAppSelector(state =>
+  //   hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.HABITANT])
+  // )
 
   const isRespHebergement = useAppSelector(state =>
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.RESPHEBERGEMENT])
@@ -31,7 +31,7 @@ export const Home = (): JSX.Element => {
   const reservationCreationIntermittentUrl = `bookingbeds/new/intermittent`
   const reservationCreationHabitantUrl = `bookingbeds/new/habitant`
   const reservationCreationCustomerUrl = `bookingbeds/new`
-  const reservationCreationInviteUrl = `bookingbeds/new/invite`
+  // const reservationCreationInviteUrl = `bookingbeds/new/invite`
 
   const reservationRequestUrl = 'reservation-request/new'
 
@@ -220,7 +220,8 @@ export const Home = (): JSX.Element => {
             </Box>
           ) :
           ''}
-        {isHabitant ?
+        {
+          /* {isHabitant ?
           (
             <Box
               py={'10px'}
@@ -259,7 +260,8 @@ export const Home = (): JSX.Element => {
               </Stack>
             </Box>
           ) :
-          ''}
+          ''} */
+        }
 
         {isRespHebergement ? <ReservationsToBeProcessed /> : ''}
         {isAdmin ? <RGPDAnonymizeData /> : ''}
