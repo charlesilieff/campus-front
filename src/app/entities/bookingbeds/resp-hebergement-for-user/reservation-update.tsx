@@ -206,11 +206,12 @@ export const ReservationUserUpdate = (): JSX.Element => {
             setCustomer={setCustomer}
             setUpdateUser={setSelectUser}
             // customer={customer}
+            setUpdateCustomer={setUpdateCustomer}
           />
         ) :
         (
           <UserSummary
-            customer={customer.value} // TODO fix this
+            customer={customer.value}
             setUserId={setUserId}
             // setCustomer={setCustomer}
             setUpdateUser={setSelectUser}
@@ -234,8 +235,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
           </Heading>
         ) :
         // || updateCustomer
-        (O.isNone(customer) || !customer.value.email || !customer.value.lastname
-            || !customer.value.firstname) ?
+        (O.isNone(customer) || (!updateCustomer)) ?
         (
           <CustomerUpdate
             customer={customer}
@@ -250,7 +250,7 @@ export const ReservationUserUpdate = (): JSX.Element => {
           />
         )}
 
-      {!userId || (O.isNone(customer) || !customer.value.lastname || !customer.value.firstname) ?
+      {!userId || (O.isNone(customer) || !updateCustomer) ?
         (
           <Heading
             p={4}

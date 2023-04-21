@@ -26,6 +26,7 @@ interface UserUpdateProps {
   setUserId: (userId: number) => void
   setUpdateUser: (updateUser: boolean) => void
   // customer: O.Option<Customer>
+  setUpdateCustomer: (updateUser: boolean) => void
 }
 
 export interface FormUser {
@@ -84,7 +85,11 @@ export const UserSelect = (
       props.setCustomer
     )
 
-    props.setUpdateUser(false) // todo false if we want to update the user
+    users.find(user => user.id === Number(formUser.id)).firstName ?
+      props.setUpdateCustomer(true) :
+      props.setUpdateCustomer(false)
+
+    props.setUpdateUser(false)
   }
 
   return (
