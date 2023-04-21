@@ -34,7 +34,7 @@ export const ConfirmationUpdateMealsModal: FunctionComponent<{ mealsData: IMeal[
     setIsLoading(false)
     toast({
       position: 'top',
-      title: 'Réservation modifiée !',
+      title: 'Repas modifiés !',
       description: 'A bientôt !',
       status: 'success',
       duration: 9000,
