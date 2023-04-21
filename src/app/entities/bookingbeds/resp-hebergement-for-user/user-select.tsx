@@ -123,7 +123,9 @@ export const UserSelect = (
                     {users ?
                       users.map(user => (
                         <option value={user.id} key={user.id}>
-                          {user.email}
+                          {user.email} {user.firstName ? '; Prénom : ' : null} {user.firstName}
+                          {user.firstName ? '; Nom : ' : null}
+                          {user.lastName}
                         </option>
                       )) :
                       null}
