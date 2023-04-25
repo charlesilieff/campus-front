@@ -25,7 +25,7 @@ export const MainLayout = (props: IHeaderProps) => (
       <HStack backgroundColor={'#E95420'} justifyContent={'space-between'} px={4}>
         <Brand />
 
-        <Stack direction={{ base: 'column-reverse', md: 'row' }} maxH="190px">
+        <Stack direction={{ base: 'column-reverse', md: 'row' }} maxH="200px" py={1} mx={4}>
           {!window.location.pathname.endsWith('reservation-request/new') && <Help />}
           {!window.location.pathname.endsWith('reservation-request/new') && <Home />}
 

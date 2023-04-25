@@ -11,7 +11,9 @@ export const Brand = () => (
     <Stack direction={{ base: 'column', md: 'row' }}>
       <Image src={logo} alt="Logo" w="130px" h="50px" objectFit="contain" />
 
-      <Heading color={'white'} size="lg" px={8}>Gestion de l&apos;hébergement</Heading>
+      <Heading color={'white'} px={{ base: 2, md: 8 }} size={{ base: 'sm', lg: 'lg' }}>
+        Gestion de l&apos;hébergement
+      </Heading>
     </Stack>
   </Box>
 )
@@ -22,7 +24,8 @@ export const Home = () => (
     as={Link}
     to="/"
     verticalAlign={'center'}
-    p={2}
+    p={{ base: 0, md: 2 }}
+    px={2}
     size={{ base: 'sm', md: 'md' }}
   >
     <HStack color="white">
@@ -35,7 +38,8 @@ export const Help = () => (
   <ChakraLink
     _hover={{ color: 'white', textDecoration: 'none' }}
     verticalAlign={'center'}
-    p={2}
+    p={{ base: 0, md: 2 }}
+    px={2}
     color="white"
     isExternal
     href="https://docs.google.com/document/d/1cn06oT9xgk26M6tQDHyq9GNug_EHe_sD9bxa-Wbl_X0/edit?usp=sharing"
