@@ -249,7 +249,7 @@ function displayTotalMeals(resultTotalMeals: number[]) {
             px={2}
             direction={['column', 'row']}
           >
-            <FormLabel>Total des petits-déjeuner</FormLabel>
+            <FormLabel maxW={{ base: 180, sm: 300 }}>Total des petits-déjeuner</FormLabel>
             <FormLabel>{resultTotalMeals[7]}</FormLabel>
           </Stack>
         </VStack>
@@ -267,7 +267,7 @@ function displayTotalMeals(resultTotalMeals: number[]) {
             px={2}
             direction={['column', 'row']}
           >
-            <FormLabel>Total repas classiques du midi :</FormLabel>
+            <FormLabel maxW={{ base: 180, sm: 300 }}>Total repas classiques du midi :</FormLabel>
             <FormLabel>{resultTotalMeals[0]}</FormLabel>
           </Stack>
           <Stack
@@ -275,7 +275,7 @@ function displayTotalMeals(resultTotalMeals: number[]) {
             px={2}
             direction={['column', 'row']}
           >
-            <FormLabel>Total repas spéciaux du midi :</FormLabel>
+            <FormLabel maxW={{ base: 180, sm: 300 }}>Total repas spéciaux du midi :</FormLabel>
             <FormLabel>{resultTotalMeals[2]}</FormLabel>
           </Stack>
 
@@ -302,7 +302,7 @@ function displayTotalMeals(resultTotalMeals: number[]) {
             px={2}
             direction={['column', 'row']}
           >
-            <FormLabel>Total repas classiques du soir :</FormLabel>
+            <FormLabel maxW={{ base: 180, sm: 300 }}>Total repas classiques du soir :</FormLabel>
             <FormLabel>{resultTotalMeals[1]}</FormLabel>
           </Stack>
           <Stack
@@ -310,7 +310,7 @@ function displayTotalMeals(resultTotalMeals: number[]) {
             px={2}
             direction={['column', 'row']}
           >
-            <FormLabel>Total repas spéciaux du soir :</FormLabel>
+            <FormLabel maxW={{ base: 180, sm: 300 }}>Total repas spéciaux du soir :</FormLabel>
             <FormLabel>{resultTotalMeals[3]}</FormLabel>
           </Stack>
 
@@ -338,7 +338,9 @@ function displayTotalMeals(resultTotalMeals: number[]) {
           px={2}
           direction={['column', 'row']}
         >
-          <FormLabel>Total repas classiques (hors petit-déj) :</FormLabel>
+          <FormLabel maxW={{ base: 180, sm: 300 }}>
+            Total repas classiques (hors petit-déj) :
+          </FormLabel>
           <FormLabel>{resultTotalMeals[4]}</FormLabel>
         </Stack>
         <Stack
@@ -346,7 +348,9 @@ function displayTotalMeals(resultTotalMeals: number[]) {
           px={2}
           direction={['column', 'row']}
         >
-          <FormLabel>Total repas spéciaux (hors petit-déj) :</FormLabel>
+          <FormLabel maxW={{ base: 180, sm: 300 }}>
+            Total repas spéciaux (hors petit-déj) :
+          </FormLabel>
           <FormLabel>{resultTotalMeals[5]}</FormLabel>
         </Stack>
 
@@ -355,7 +359,7 @@ function displayTotalMeals(resultTotalMeals: number[]) {
           px={2}
           direction={['column', 'row']}
         >
-          <FormLabel>Total repas (hors petit-déj) :</FormLabel>
+          <FormLabel maxW={{ base: 180, sm: 300 }}>Total repas (hors petit-déj) :</FormLabel>
           <FormLabel>{resultTotalMeals[6]}</FormLabel>
         </Stack>
       </Stack>

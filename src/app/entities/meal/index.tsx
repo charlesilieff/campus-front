@@ -272,7 +272,7 @@ export const Index = () => {
         }
 
         <Heading alignSelf={'flex-start'}>Mes repas réservés</Heading>
-        <Stack direction={{ base: 'column', md: 'row' }} spacing={4} justifyContent={'center'}>
+        <Stack direction={{ base: 'column', md: 'row' }} justifyContent={'center'}>
           <HStack m={4} spacing={8}>
             <Button
               onClick={() => toggleSubtractDays()}
@@ -345,9 +345,9 @@ export const Index = () => {
         </HStack>
         <Stack
           m={4}
-          spacing={8}
+          spacing={{ base: 2, md: 8 }}
           margin={4}
-          marginBlockEnd={12}
+          marginBlockEnd={8}
           justifyContent={'center'}
           direction={{ base: 'column', md: 'row' }}
         >
@@ -397,7 +397,7 @@ export const Index = () => {
           </Box> */
           }
 
-          <Box alignSelf={'end'}>
+          <Box alignSelf={'self-end'}>
             <ConfirmationUpdateMealsByPeriodModal
               setRefreshing={setRefreshing}
               startDate={startDate}
