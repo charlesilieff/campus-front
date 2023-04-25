@@ -16,7 +16,7 @@ const initialState = {
 export type SettingsState = Readonly<typeof initialState>
 
 // Actions
-const apiUrl = 'api/account'
+const apiUrl = 'api/account/update'
 
 export const saveAccountSettings: (account: IUser) => AppThunk = account => async dispatch => {
   await dispatch(updateAccount(account))
@@ -26,7 +26,7 @@ export const saveAccountSettings: (account: IUser) => AppThunk = account => asyn
 
 export const updateAccount = createAsyncThunk(
   'settings/update_account',
-  async (account: IUser) => axios.post<IUser>(apiUrl, account),
+  async (account: IUser) => axios.put<IUser>(apiUrl, account),
   {
     serializeError: serializeAxiosError
   }
