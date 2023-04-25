@@ -118,19 +118,19 @@ export const Index = () => {
   /**
    * Get meals for 31 days by reservation. //todo getMealsDateFor31DaysByUser by reservation
    */
-  useEffect(() => {
-    const getMealsDateFor31DaysByReservation = async (startDate: Dayjs, reservationId: number) => {
-      const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/reservation-id/${reservationId}/date/${
-        startDate.format('YYYY-MM-DD')
-      }`
-      const { data } = await axios.get<IMeal[]>(requestUrl)
-      console.log('data axios', data)
+  // useEffect(() => {
+  //   const getMealsDateFor31DaysByReservation = async (startDate: Dayjs, reservationId: number) => {
+  //     const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/reservation-id/${reservationId}/date/${
+  //       startDate.format('YYYY-MM-DD')
+  //     }`
+  //     const { data } = await axios.get<IMeal[]>(requestUrl)
+  //     console.log('data axios', data)
 
-      // const dataSorted = data.sort((a, b) => (a > b.date ? 1 : -1))
-      // TODO stand-by setMealsData(data)
-    }
-    getMealsDateFor31DaysByReservation(date, reservationId)
-  }, [reservationId, date])
+  //     // const dataSorted = data.sort((a, b) => (a > b.date ? 1 : -1))
+  //     // TODO stand-by setMealsData(data)
+  //   }
+  //   getMealsDateFor31DaysByReservation(date, reservationId)
+  // }, [reservationId, date])
 
   /**
    * Calculation of total.

@@ -46,14 +46,21 @@ export const ConfirmationUpdateMealsByPeriodModal: FunctionComponent<
       // TODO : add toast
       return
     }
-
-    const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/reservation-id/${reservationId}/date1/${
+    const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/customer-id/${reservationId}/date1/${
       startDate.format('YYYY-MM-DD')
     }/date2/${endDate.format('YYYY-MM-DD')}`
     // await axios.get<IMeal[]>(requestUrl)
     const { data } = await axios.get<IMeal[]>(requestUrl)
     // console.log('data axios', data)
     updateMealsFromDate2(data)
+
+    // const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/reservation-id/${reservationId}/date1/${
+    //   startDate.format('YYYY-MM-DD')
+    // }/date2/${endDate.format('YYYY-MM-DD')}`
+    // // await axios.get<IMeal[]>(requestUrl)
+    // const { data } = await axios.get<IMeal[]>(requestUrl)
+    // // console.log('data axios', data)
+    // updateMealsFromDate2(data)
   }
 
   const updateMealsFromDate2 = async (
@@ -118,7 +125,7 @@ export const ConfirmationUpdateMealsByPeriodModal: FunctionComponent<
             Confirmer la mise à jour
           </ModalHeader>
           <ModalBody>
-            Êtes-vous sûr de vouloir modifier vos repas du {startDate.format('DD/MM/YYYY')} au{' '}
+            Êtes-vous sûr de vouloir supprimer vos repas du {startDate.format('DD/MM/YYYY')} au{' '}
             {endDate.format('DD/MM/YYYY')} ?
           </ModalBody>
           <ModalFooter justifyContent={'space-between'}>

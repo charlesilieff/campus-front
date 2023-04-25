@@ -164,9 +164,10 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
                 // onSubmit={handleSubmit(handleValidDateAndMealSubmit)}
                 onClick={() => updateMealsOnPeriode(mealsData, date, numberOfDays, true)}
                 // onClick={handleSubmit(updateMealsOnPeriode)}
-                leftIcon={<FaTrash />}
-                variant="danger"
+                leftIcon={<FaSave />}
+                colorScheme={'green'}
                 isLoading={isLoading}
+                size={'sm'}
               >
                 Confirmer (repas spéciaux)
               </Button>
@@ -175,8 +176,8 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
                   updateMealsOnPeriode(mealsData, date, numberOfDays, false).then(() => {
                     setRefreshing(true)
                   })}
-                leftIcon={<FaTrash />}
-                variant="danger"
+                leftIcon={<FaSave />}
+                colorScheme={'green'}
                 isLoading={isLoading}
               >
                 Confirmer

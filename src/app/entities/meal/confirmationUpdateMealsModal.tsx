@@ -76,8 +76,8 @@ export const ConfirmationUpdateMealsModal: FunctionComponent<{ mealsData: IMeal[
             </Button>
             <Button
               onClick={() => updateMeals(mealsData)}
-              leftIcon={<FaTrash />}
-              variant="danger"
+              leftIcon={<FaSave />}
+              colorScheme={'green'}
               isLoading={isLoading}
             >
               Confirmer
