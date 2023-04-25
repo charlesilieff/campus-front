@@ -90,6 +90,7 @@ export const ConfirmationRemoveMealsScreenModal: FunctionComponent<
           color: 'green.200',
           backgroundColor: '#38A169'
         }}
+        size={{ base: 'sm', md: 'md' }}
       >
         Se désinscrire sur la période affichée
       </Button>

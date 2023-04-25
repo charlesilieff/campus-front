@@ -135,6 +135,7 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
           color: 'green.200',
           backgroundColor: '#38A169'
         }}
+        size={{ base: 'sm', md: 'md' }}
         // variant={'update'}
       >
         Se résinscrire sur la période affichée

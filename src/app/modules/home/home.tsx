@@ -46,7 +46,7 @@ export const Home = (): JSX.Element => {
   }
   const campus = new URL('../../../content/images/campus.webp', import.meta.url).href
   return (
-    <HStack>
+    <HStack mx={{ base: '-15px', md: '0px' }}>
       <Box>
         <Image
           src={campus}
@@ -69,7 +69,7 @@ export const Home = (): JSX.Element => {
         >
           <Box
             alignItems={'flex-start'}
-            minW={{ base: '400px', md: '650px' }}
+            minW={{ base: '380px', md: '650px' }}
             // maxW={'600px'}
             backgroundColor={'blue.100'}
             p={5}
@@ -95,6 +95,7 @@ export const Home = (): JSX.Element => {
                 // minWidth={'340px'}
                 width={'100px'}
                 px={1}
+                size={{ base: 'sm', md: 'md' }}
               >
                 Cliquez ici.
               </Button>
@@ -108,6 +109,7 @@ export const Home = (): JSX.Element => {
                 leftIcon={<CopyIcon />}
                 minWidth={'340px'}
                 px={5}
+                size={{ base: 'sm', md: 'md' }}
               >
                 Copier le lien de demande de réservation
               </Button>
@@ -129,7 +131,7 @@ export const Home = (): JSX.Element => {
               backgroundColor={'#C6F6D5'}
               borderLeft={'4px'}
               borderColor={'#38A169'}
-              minW={{ base: '400px', md: '650px' }}
+              minW={{ base: '380px', md: '650px' }}
             >
               <Stack justifyContent={'space-between'} direction={{ base: 'column', md: 'row' }}>
                 <VStack alignItems={'flex-start'}>
@@ -147,6 +149,7 @@ export const Home = (): JSX.Element => {
                     color: 'white',
                     backgroundColor: '#38A169'
                   }}
+                  size={{ base: 'sm', md: 'md' }}
                 >
                   Créer une réservation
                 </Button>
@@ -162,7 +165,7 @@ export const Home = (): JSX.Element => {
               backgroundColor={'#C6F6D5'}
               borderLeft={'4px'}
               borderColor={'#38A169'}
-              minW={{ base: '400px', md: '650px' }}
+              minW={{ base: '380px', md: '650px' }}
             >
               <Stack justifyContent={'space-between'} direction={{ base: 'column', md: 'row' }}>
                 <VStack alignItems={'flex-start'}>
@@ -180,6 +183,7 @@ export const Home = (): JSX.Element => {
                     color: 'white',
                     backgroundColor: '#38A169'
                   }}
+                  size={{ base: 'sm', md: 'md' }}
                 >
                   Créer une réservation
                 </Button>
@@ -195,7 +199,7 @@ export const Home = (): JSX.Element => {
               backgroundColor={'#C6F6D5'}
               borderLeft={'4px'}
               borderColor={'#38A169'}
-              minW={{ base: '400px', md: '650px' }}
+              minW={{ base: '380px', md: '650px' }}
             >
               <Stack justifyContent={'space-between'} direction={{ base: 'column', md: 'row' }}>
                 <VStack alignItems={'flex-start'}>
@@ -213,6 +217,7 @@ export const Home = (): JSX.Element => {
                     color: 'white',
                     backgroundColor: '#38A169'
                   }}
+                  size={{ base: 'sm', md: 'md' }}
                 >
                   Créer une réservation
                 </Button>

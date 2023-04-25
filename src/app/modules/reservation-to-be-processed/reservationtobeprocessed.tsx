@@ -37,7 +37,7 @@ export const ReservationsToBeProcessed = () => {
                   backgroundColor={'#FED7D7'}
                   borderLeft={'4px'}
                   borderColor={'#E53E3E'}
-                  minW={{ base: '400px', md: '650px' }}
+                  minW={{ base: '380px', md: '650px' }}
                 >
                   <Stack justifyContent={'space-between'} direction={{ base: 'column', md: 'row' }}>
                     <VStack alignItems={'flex-start'}>
@@ -62,7 +62,7 @@ export const ReservationsToBeProcessed = () => {
                   backgroundColor={'#BEE3F8'}
                   borderLeft={'4px'}
                   borderColor={'#3182CE'}
-                  minW={{ base: '400px', md: '650px' }}
+                  minW={{ base: '380px', md: '650px' }}
                 >
                   <Stack justifyContent={'space-between'} direction={{ base: 'column', md: 'row' }}>
                     <VStack alignItems={'flex-start'}>
@@ -80,6 +80,7 @@ export const ReservationsToBeProcessed = () => {
                       as={Link}
                       to="/reservation/to-be-processed"
                       _hover={{ textDecoration: 'none', color: 'white' }}
+                      size={{ base: 'sm', md: 'md' }}
                     >
                       Traiter les réservations
                     </Button>

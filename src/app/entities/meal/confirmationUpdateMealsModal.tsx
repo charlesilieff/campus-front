@@ -57,6 +57,7 @@ export const ConfirmationUpdateMealsModal: FunctionComponent<{ mealsData: IMeal[
           color: 'green.200',
           backgroundColor: '#38A169'
         }}
+        size={{ base: 'sm', md: 'md' }}
         // variant={'update'}
       >
         Modifier les repas tels que sélectionnés
