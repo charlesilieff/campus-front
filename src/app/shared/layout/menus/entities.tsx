@@ -60,7 +60,7 @@ export const EntitiesMenu = (props: EntitiesMenuProps) => (
           Planning
         </MenuItem>
       )}
-      {(props.isIntermittent || props.isHabitant) && (
+      {(props.isIntermittent) && (
         <MenuItem icon={<FaCalendar />} to="/reservation/intermittent">
           Mes réservations
         </MenuItem>

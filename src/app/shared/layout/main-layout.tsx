@@ -1,4 +1,4 @@
-import { HStack } from '@chakra-ui/react'
+import { HStack, Stack } from '@chakra-ui/react'
 import type { ReactNode } from 'react'
 import React from 'react'
 
@@ -25,7 +25,7 @@ export const MainLayout = (props: IHeaderProps) => (
       <HStack backgroundColor={'#E95420'} justifyContent={'space-between'} px={4}>
         <Brand />
 
-        <HStack>
+        <Stack direction={{ base: 'column', md: 'row' }}>
           {!window.location.pathname.endsWith('reservation-request/new') && <Help />}
           {!window.location.pathname.endsWith('reservation-request/new') && <Home />}
 
@@ -43,7 +43,7 @@ export const MainLayout = (props: IHeaderProps) => (
           {!window.location.pathname.endsWith('reservation-request/new') && (
             <AccountMenu isAuthenticated={props.isAuthenticated} />
           )}
-        </HStack>
+        </Stack>
       </HStack>
     }
     main={props.main}
