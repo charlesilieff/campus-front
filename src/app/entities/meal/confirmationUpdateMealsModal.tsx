@@ -15,8 +15,10 @@ import type { FunctionComponent } from 'react'
 import React, { useState } from 'react'
 import { FaBan, FaSave } from 'react-icons/fa'
 
-export const ConfirmationUpdateMealsModal: FunctionComponent<{ mealsData: IMeal[] }> = (
-  { mealsData }
+export const ConfirmationUpdateMealsModal: FunctionComponent<
+  { mealsData: IMeal[]; setRefreshing: (refreshing: boolean) => void }
+> = (
+  { mealsData, setRefreshing }
 ): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false)
 
@@ -34,7 +36,7 @@ export const ConfirmationUpdateMealsModal: FunctionComponent<{ mealsData: IMeal[
     setIsLoading(false)
     toast({
       position: 'top',
-      title: 'Repas modifiés !',
+      title: 'Repas modifiés ! (sauf dans le passé)',
       description: 'A bientôt !',
       status: 'success',
       duration: 9000,
@@ -76,7 +78,10 @@ export const ConfirmationUpdateMealsModal: FunctionComponent<{ mealsData: IMeal[
               Retour
             </Button>
             <Button
-              onClick={() => updateMeals(mealsData)}
+              onClick={() =>
+                updateMeals(mealsData).then(() => {
+                  setRefreshing(true)
+                })}
               leftIcon={<FaSave />}
               colorScheme={'green'}
               isLoading={isLoading}

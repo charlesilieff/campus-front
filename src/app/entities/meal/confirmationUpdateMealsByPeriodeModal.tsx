@@ -12,6 +12,7 @@ import {
 import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
 import type { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 import type { FunctionComponent } from 'react'
 import React, { useState } from 'react'
 import { FaBan, FaSave, FaTrash } from 'react-icons/fa'
@@ -42,8 +43,17 @@ export const ConfirmationUpdateMealsByPeriodModal: FunctionComponent<
     endDate: Dayjs,
     reservationId: number
   ) => {
-    if (startDate > endDate) {
-      // TODO : add toast
+    if (startDate > endDate || startDate < dayjs()) {
+      // TODO : add toast and check startDate < date
+      toast({
+        position: 'top',
+        title: 'Erreur !',
+        description:
+          "La date de début doit être inférieure à la date de fin et supérieur à aujourd'hui.",
+        status: 'error',
+        duration: 4000,
+        isClosable: true
+      })
       return
     }
     // const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/reservation-id/${reservationId}/date1/${

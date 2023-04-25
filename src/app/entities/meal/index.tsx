@@ -1,4 +1,5 @@
-import { Box, Button, Heading, HStack, Input, Stack, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, Heading, HStack, Input, Stack, Text, useToast,
+  VStack } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
@@ -31,7 +32,7 @@ export const Index = () => {
   // } = useForm()
   // const endDateCheck = useRef({})
   // endDateCheck.current = watch('endDateCheck')
-
+  const toast = useToast()
   const account = useAppSelector(state => state.authentication.account)
 
   const customerId = account.customerId
@@ -191,6 +192,40 @@ export const Index = () => {
     // reservationList[0]
   }
 
+  const startDateChange = (e: Dayjs) => {
+    if (dayjs(e).isBefore(dayjs().subtract(1, 'day'))) {
+      console.log('no', e)
+      toast({
+        position: 'bottom',
+        title: 'Erreur date !',
+        description: "La date ne peut pas être antérieure à aujourd'hui.",
+        status: 'error',
+        duration: 4000,
+        isClosable: true
+      })
+      // inputStartDate
+      return
+    } else {
+      setStartDate(dayjs(e))
+    }
+  }
+  const startEndChange = (e: Dayjs) => {
+    if (dayjs(e).isBefore(startDate)) {
+      console.log('no', e)
+      toast({
+        position: 'bottom',
+        title: 'Erreur date !',
+        description: 'La date ne peut pas être antérieure à la date de début.',
+        status: 'error',
+        duration: 4000,
+        isClosable: true
+      })
+      return
+    } else {
+      setEndDate(dayjs(e))
+    }
+  }
+
   // console.log('reservationId :', reservationId)
   // console.log('reservationListFirst ', reservationListFirst)
   // setReservationId(reservationListFirst.id)
@@ -320,7 +355,7 @@ export const Index = () => {
           mealsData={mealsData}
         />
         <VStack m={4} spacing={8}>
-          <ConfirmationUpdateMealsModal mealsData={mealsData} />
+          <ConfirmationUpdateMealsModal mealsData={mealsData} setRefreshing={setRefreshing} />
           <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
             <ConfirmationRemoveMealsScreenModal
               mealsData={mealsData}
@@ -355,8 +390,9 @@ export const Index = () => {
             <Text>Du</Text>
 
             <Input
+              id="inputStartDate"
               type="date"
-              onChange={e => setStartDate(dayjs(e.target.value))}
+              onChange={e => startDateChange(dayjs(e.target.value))} // {e => startDateChange(dayjs(e.target.value))}
               title="Date de début"
               placeholder="Date de début'"
               // TODO check in onChange if the date is before the end date
@@ -376,7 +412,7 @@ export const Index = () => {
             <Input
               id="endDate"
               type="date"
-              onChange={e => setEndDate(dayjs(e.target.value))}
+              onChange={e => startEndChange(dayjs(e.target.value))}
               title="Date de fin"
               placeholder="Date de fin"
               // {...register('endDateCheck', {

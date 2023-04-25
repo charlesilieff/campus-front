@@ -163,7 +163,10 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
             <Stack>
               <Button
                 // onSubmit={handleSubmit(handleValidDateAndMealSubmit)}
-                onClick={() => updateMealsOnPeriode(mealsData, date, numberOfDays, true)}
+                onClick={() =>
+                  updateMealsOnPeriode(mealsData, date, numberOfDays, true).then(() => {
+                    setRefreshing(true)
+                  })}
                 // onClick={handleSubmit(updateMealsOnPeriode)}
                 leftIcon={<FaSave />}
                 colorScheme={'green'}
