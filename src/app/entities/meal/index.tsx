@@ -72,7 +72,7 @@ export const Index = () => {
       'day'
     )
   ) // .filter(x => x.beds?.length > 0)
-  console.log('reservationList :', reservationList)
+  console.log('reservationList :', reservationId)
   // reservationList
 
   const reservationListFirst = reservationList[0]
