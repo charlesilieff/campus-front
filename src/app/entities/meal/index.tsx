@@ -326,7 +326,8 @@ export const Index = () => {
                 setRefreshing={setRefreshing}
                 startDate={startDate}
                 endDate={endDate}
-                reservationId={reservationId}
+                // reservationId={reservationId}
+                reservationId={customerId} // TODO tmp to test without reservation id
                 setDate={setDate}
               />
             </Box>
