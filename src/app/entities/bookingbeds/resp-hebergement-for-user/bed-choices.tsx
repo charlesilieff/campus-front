@@ -1,8 +1,8 @@
 import {
   Heading,
-  HStack,
   Select,
   Spinner,
+  Stack,
   Text,
   VStack
 } from '@chakra-ui/react'
@@ -123,12 +123,14 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
         {loading ?
           <Spinner alignSelf={'center'} /> :
           (
-            <VStack spacing={10} alignItems={'flex-start'} width="100%">
+            <VStack spacing={10} alignItems={'flex-start'}>
               <Heading fontWeight={'bold'} fontSize={'30'}>
                 {'Choisissez votre lit :'}
               </Heading>
-              <HStack justifyContent={'space-around'} width="100%">
-                <HStack>
+              <Stack
+                direction={{ base: 'column', lg: 'row' }}
+              >
+                <Stack direction={{ base: 'column', md: 'row' }}>
                   <Heading size={'md'} minW={'140px'}>Filtrer par lieu</Heading>
                   <Select
                     minW={'140px'}
@@ -155,9 +157,9 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
                     ))}
                   </Select>
                   {O.isSome(placeImage) ? <PlaceModal {...placeImage.value} /> : null}
-                </HStack>
+                </Stack>
 
-                <HStack>
+                <Stack direction={{ base: 'column', md: 'row' }}>
                   <Heading size={'md'}>Filtre par type de chambre</Heading>
                   <Select
                     style={{ padding: '0.4rem', borderRadius: '0.3rem' }}
@@ -172,8 +174,8 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
                       </option>
                     ))}
                   </Select>
-                </HStack>
-              </HStack>
+                </Stack>
+              </Stack>
               <IntermittentBeds
                 bedId={pipe(bedId, O.map(bedId => bedId.toString()))}
                 rooms={rooms}

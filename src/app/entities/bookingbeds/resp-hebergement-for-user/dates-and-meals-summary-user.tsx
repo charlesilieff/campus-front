@@ -2,6 +2,7 @@ import {
   Button,
   Heading,
   HStack,
+  Stack,
   Text,
   VStack
 } from '@chakra-ui/react'
@@ -66,16 +67,16 @@ export const DatesAndMealsSummary = (
       borderRadius={8}
       borderColor={'green'}
     >
-      <Heading size={'lg'} marginBottom={8}>
+      <Heading size={'lg'} marginBottom={4}>
         Dates et repas
       </Heading>
 
-      <HStack py={2}>
+      <Stack py={2} direction={{ base: 'column', md: 'row' }}>
         <Text fontWeight={'bold'}>{"Date d'arrivée :"}</Text>
         <Text>{new Date(arrivalDate).toLocaleDateString('fr')}</Text>
-        <Text pl={12} fontWeight={'bold'}>{'Date de départ :'}</Text>
+        <Text pl={{ base: '0', sm: '12' }} fontWeight={'bold'}>{'Date de départ :'}</Text>
         <Text>{new Date(departureDate).toLocaleDateString('fr')}</Text>
-      </HStack>
+      </Stack>
       <VStack alignItems={'flex-start'} py={2}>
         <Text fontWeight={'bold'}>Repas sélectionnés :</Text>
         <HStack>

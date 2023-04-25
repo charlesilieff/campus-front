@@ -302,7 +302,9 @@ export const ReservationUserUpdate = (): JSX.Element => {
       {O.isSome(customer) && O.isSome(datesAndMeal) && O.isSome(bedId) && userId ?
         (
           <HStack justifyContent={'end'}>
-            <Button as={Link} to={''} colorScheme={'red'} rightIcon={<BsTrash />}>Annuler</Button>
+            <Button as={Link} to={'../../'} colorScheme={'red'} rightIcon={<BsTrash />}>
+              Annuler
+            </Button>
             <Button
               isLoading={isLoading}
               colorScheme={'blue'}
