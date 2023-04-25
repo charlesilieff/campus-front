@@ -27,6 +27,7 @@ export const AdminMenu = ({ showOpenAPI }) => (
       aria-label="Options"
       leftIcon={<FaUsersCog />}
       rightIcon={<GoTriangleDown />}
+      size={{ base: 'sm', md: 'md' }}
     >
       Administration
     </MenuButton>

@@ -43,6 +43,7 @@ export const AccountMenu = ({ isAuthenticated = false }) => (
       aria-label="Options"
       leftIcon={<HiUser />}
       rightIcon={<GoTriangleDown />}
+      size={{ base: 'sm', md: 'md' }}
     >
       Compte
     </MenuButton>

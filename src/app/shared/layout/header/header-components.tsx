@@ -23,6 +23,7 @@ export const Home = () => (
     to="/"
     verticalAlign={'center'}
     p={2}
+    size={{ base: 'sm', md: 'md' }}
   >
     <HStack color="white">
       <FaHome /> <Text>Accueil</Text>
@@ -38,6 +39,8 @@ export const Help = () => (
     color="white"
     isExternal
     href="https://docs.google.com/document/d/1cn06oT9xgk26M6tQDHyq9GNug_EHe_sD9bxa-Wbl_X0/edit?usp=sharing"
+    size={{ base: 'sm', md: 'md' }}
+    maxH="25px"
   >
     <HStack>
       <InfoOutlineIcon /> <Text>Aide</Text>

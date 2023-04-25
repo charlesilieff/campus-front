@@ -21,6 +21,7 @@ export const EntitiesMenu = (props: EntitiesMenuProps) => (
       aria-label="Options"
       leftIcon={<HiViewList />}
       rightIcon={<GoTriangleDown />}
+      size={{ base: 'sm', md: 'md' }}
     >
       {"Gestion de l'hébergement"}
     </MenuButton>
