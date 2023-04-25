@@ -46,8 +46,8 @@ export const ConfirmationUpdateMealsByPeriodModal: FunctionComponent<
       // TODO : add toast
       return
     }
-
-    const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/reservation-id/${reservationId}/date1/${
+    // const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/reservation-id/${reservationId}/date1/${
+    const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/customer-id/${reservationId}/date1/${
       startDate.format('YYYY-MM-DD')
     }/date2/${endDate.format('YYYY-MM-DD')}`
     // await axios.get<IMeal[]>(requestUrl)
