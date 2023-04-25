@@ -16,7 +16,7 @@ import type { Dayjs } from 'dayjs'
 // import type dayjs from 'dayjs'
 import type { FunctionComponent } from 'react'
 import React, { useState } from 'react'
-import { FaBan, FaSave, FaTrash } from 'react-icons/fa'
+import { FaBan, FaSave } from 'react-icons/fa'
 
 // interface MealSpecial {
 //   isSpecialMeal3: boolean

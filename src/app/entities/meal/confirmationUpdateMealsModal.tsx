@@ -13,7 +13,7 @@ import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
 import type { FunctionComponent } from 'react'
 import React, { useState } from 'react'
-import { FaBan, FaSave, FaTrash } from 'react-icons/fa'
+import { FaBan, FaSave } from 'react-icons/fa'
 
 export const ConfirmationUpdateMealsModal: FunctionComponent<{ mealsData: IMeal[] }> = (
   { mealsData }
