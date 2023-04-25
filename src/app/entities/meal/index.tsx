@@ -1,4 +1,4 @@
-import { Box, Button, Heading, HStack, Input, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, Heading, HStack, Input, Stack, Text, VStack } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
@@ -270,107 +270,48 @@ export const Index = () => {
           </FormControl>
         </HStack> */
         }
-        <form>
-          <HStack m={4} spacing={8} margin={4} marginBlockEnd={12} alignItems={'flex-start'}>
-            <Heading alignSelf={'flex-start'}>Changer mes repas par période</Heading>
-          </HStack>
-          <HStack m={4} spacing={8} margin={4} marginBlockEnd={12} alignItems={'flex-start'}>
-            <Box>
-              <Text>Du</Text>
 
+        <Heading alignSelf={'flex-start'}>Mes repas réservés</Heading>
+        <Stack direction={{ base: 'column', md: 'row' }} spacing={4} justifyContent={'center'}>
+          <HStack m={4} spacing={8}>
+            <Button
+              onClick={() => toggleSubtractDays()}
+              leftIcon={<FaCaretLeft />}
+              color={'white'}
+              backgroundColor={'#e95420'}
+              _hover={{ textDecoration: 'none', color: 'orange' }}
+            >
+            </Button>
+            <Box>
               <Input
                 type="date"
-                onChange={e => setStartDate(dayjs(e.target.value))}
-                title="Date de début"
-                placeholder="Date de début'"
-                // TODO check in onChange if the date is before the end date
-                // {...register('arrivalDate', {
-                //   required: "la date d'arrivée' est obligatoire",
-                //   validate(v) {
-                //     if (!isArrivalDateIsBeforeDepartureDate(v, endDateCheck.current.toString())) {
-                //       return "La date d'arrivée doit être avant la date de départ"
-                //     }
-                //   }
-                // })}
+                onChange={e => setDate(dayjs(e.target.value))}
+                value={date.format('YYYY-MM-DD')}
               >
               </Input>
             </Box>
-            <Box>
-              <Text>Au</Text>
-              <Input
-                id="endDate"
-                type="date"
-                onChange={e => setEndDate(dayjs(e.target.value))}
-                title="Date de fin"
-                placeholder="Date de fin"
-                // {...register('endDateCheck', {
-                //   required: 'la date de fin est obligatoire'
-                // })}
-              >
-              </Input>
-            </Box>
-            {
-              /* Todo later <Box>
-            <Text>Se désinscrire</Text>
-            <Checkbox
-              id="unsubscribeDate"
-              isChecked={true}
-              onChange={newunsubscribeDate} // todo getMealsDateFor31DaysByUser
-            >
-            </Checkbox>
-          </Box> */
-            }
 
-            <Box alignSelf={'end'}>
-              <ConfirmationUpdateMealsByPeriodModal
-                setRefreshing={setRefreshing}
-                startDate={startDate}
-                endDate={endDate}
-                // reservationId={reservationId}
-                reservationId={customerId} // TODO tmp to test without reservation id
-                setDate={setDate}
-              />
-            </Box>
+            <Button
+              onClick={() => toggleAddDays()}
+              leftIcon={<FaCaretRight />}
+              color={'white'}
+              backgroundColor={'#e95420'}
+              _hover={{ textDecoration: 'none', color: 'orange' }}
+            >
+            </Button>
           </HStack>
-        </form>
-        <HStack m={4} spacing={8}>
-          <Heading alignSelf={'flex-start'}>Mes repas réservés</Heading>
-          <Button
-            onClick={() => toggleSubtractDays()}
-            leftIcon={<FaCaretLeft />}
-            color={'white'}
-            backgroundColor={'#e95420'}
-            _hover={{ textDecoration: 'none', color: 'orange' }}
-          >
-          </Button>
-          <Box>
-            <Input
-              type="date"
-              onChange={e => setDate(dayjs(e.target.value))}
-              value={date.format('YYYY-MM-DD')}
+          <HStack m={4} spacing={8} py={4} justifyContent={'center'}>
+            <Button
+              onClick={() => toggleNumberOfDays()}
+              leftIcon={<FaCalendar />}
+              color={'white'}
+              backgroundColor={'#e95420'}
+              _hover={{ textDecoration: 'none', color: 'orange' }}
             >
-            </Input>
-          </Box>
-
-          <Button
-            onClick={() => toggleAddDays()}
-            leftIcon={<FaCaretRight />}
-            color={'white'}
-            backgroundColor={'#e95420'}
-            _hover={{ textDecoration: 'none', color: 'orange' }}
-          >
-          </Button>
-
-          <Button
-            onClick={() => toggleNumberOfDays()}
-            leftIcon={<FaCalendar />}
-            color={'white'}
-            backgroundColor={'#e95420'}
-            _hover={{ textDecoration: 'none', color: 'orange' }}
-          >
-            {numberOfDays === 31 ? '7 jours' : '31 jours'}
-          </Button>
-        </HStack>
+              {numberOfDays === 31 ? '7 jours' : '31 jours'}
+            </Button>
+          </HStack>
+        </Stack>
 
         <MealsUserPlanning
           date={date}
@@ -380,7 +321,7 @@ export const Index = () => {
         />
         <VStack m={4} spacing={8}>
           <ConfirmationUpdateMealsModal mealsData={mealsData} />
-          <HStack>
+          <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
             <ConfirmationRemoveMealsScreenModal
               mealsData={mealsData}
               date={date}
@@ -395,9 +336,79 @@ export const Index = () => {
               setRefreshing={setRefreshing}
               setDate={setDate}
             />
-          </HStack>
+          </Stack>
         </VStack>
       </Box>
+      <form>
+        <HStack m={4} spacing={8} margin={4} alignItems={'flex-start'}>
+          <Heading alignSelf={'flex-start'} size={'md'}>Changer mes repas par période</Heading>
+        </HStack>
+        <Stack
+          m={4}
+          spacing={8}
+          margin={4}
+          marginBlockEnd={12}
+          justifyContent={'center'}
+          direction={{ base: 'column', md: 'row' }}
+        >
+          <Box>
+            <Text>Du</Text>
+
+            <Input
+              type="date"
+              onChange={e => setStartDate(dayjs(e.target.value))}
+              title="Date de début"
+              placeholder="Date de début'"
+              // TODO check in onChange if the date is before the end date
+              // {...register('arrivalDate', {
+              //   required: "la date d'arrivée' est obligatoire",
+              //   validate(v) {
+              //     if (!isArrivalDateIsBeforeDepartureDate(v, endDateCheck.current.toString())) {
+              //       return "La date d'arrivée doit être avant la date de départ"
+              //     }
+              //   }
+              // })}
+            >
+            </Input>
+          </Box>
+          <Box>
+            <Text>Au</Text>
+            <Input
+              id="endDate"
+              type="date"
+              onChange={e => setEndDate(dayjs(e.target.value))}
+              title="Date de fin"
+              placeholder="Date de fin"
+              // {...register('endDateCheck', {
+              //   required: 'la date de fin est obligatoire'
+              // })}
+            >
+            </Input>
+          </Box>
+          {
+            /* Todo later <Box>
+            <Text>Se désinscrire</Text>
+            <Checkbox
+              id="unsubscribeDate"
+              isChecked={true}
+              onChange={newunsubscribeDate} // todo getMealsDateFor31DaysByUser
+            >
+            </Checkbox>
+          </Box> */
+          }
+
+          <Box alignSelf={'end'}>
+            <ConfirmationUpdateMealsByPeriodModal
+              setRefreshing={setRefreshing}
+              startDate={startDate}
+              endDate={endDate}
+              // reservationId={reservationId}
+              reservationId={customerId} // TODO tmp to test without reservation id
+              setDate={setDate}
+            />
+          </Box>
+        </Stack>
+      </form>
       <DisplayTotalMeals resultTotalMeals={resultTotalMeals} />
     </>
   )

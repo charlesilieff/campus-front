@@ -131,45 +131,49 @@ export const Index = () => {
 
   return (
     <MealsContext.Provider value={[mealsData, changeMeal]}>
-      <Box m={4}>
-        <HStack m={4} spacing={8}>
-          <Heading alignSelf={'flex-start'}>Cuisine - Total des repas réservés</Heading>
-          <Button
-            onClick={() => toggleSubtractDays()}
-            leftIcon={<FaCaretLeft />}
-            color={'white'}
-            backgroundColor={'#e95420'}
-            _hover={{ textDecoration: 'none', color: 'orange' }}
-          >
-          </Button>
-          <Box>
-            <Input
-              type="date"
-              onChange={newDatePlanning}
-              value={date.format('YYYY-MM-DD')}
+      <Heading alignSelf={'flex-start'}>Cuisine - Total des repas réservés</Heading>
+      <Box>
+        <Stack direction={{ base: 'column', md: 'row' }} m={4} justifyContent={'center'}>
+          <HStack m={4} spacing={8}>
+            <Button
+              onClick={() => toggleSubtractDays()}
+              leftIcon={<FaCaretLeft />}
+              color={'white'}
+              backgroundColor={'#e95420'}
+              _hover={{ textDecoration: 'none', color: 'orange' }}
             >
-            </Input>
-          </Box>
+            </Button>
+            <Box>
+              <Input
+                type="date"
+                onChange={newDatePlanning}
+                value={date.format('YYYY-MM-DD')}
+              >
+              </Input>
+            </Box>
 
-          <Button
-            onClick={() => toggleAddDays()}
-            leftIcon={<FaCaretRight />}
-            color={'white'}
-            backgroundColor={'#e95420'}
-            _hover={{ textDecoration: 'none', color: 'orange' }}
-          >
-          </Button>
+            <Button
+              onClick={() => toggleAddDays()}
+              leftIcon={<FaCaretRight />}
+              color={'white'}
+              backgroundColor={'#e95420'}
+              _hover={{ textDecoration: 'none', color: 'orange' }}
+            >
+            </Button>
+          </HStack>
+          <HStack m={4} spacing={8} py={4} justifyContent={'center'}>
+            <Button
+              onClick={() => toggleNumberOfDays()}
+              leftIcon={<FaCalendar />}
+              color={'white'}
+              backgroundColor={'#e95420'}
+              _hover={{ textDecoration: 'none', color: 'orange' }}
+            >
+              {numberOfDays === 31 ? '7 jours' : '31 jours'}
+            </Button>
+          </HStack>
+        </Stack>
 
-          <Button
-            onClick={() => toggleNumberOfDays()}
-            leftIcon={<FaCalendar />}
-            color={'white'}
-            backgroundColor={'#e95420'}
-            _hover={{ textDecoration: 'none', color: 'orange' }}
-          >
-            {numberOfDays === 31 ? '7 jours' : '31 jours'}
-          </Button>
-        </HStack>
         {/* <MealsPlanning date={date} totalDays={totalDays} numberOfDays={numberOfDays} /> */}
         <MealsPlanning date={date} totalDays={totalDays} numberOfDays={numberOfDays} />
       </Box>
