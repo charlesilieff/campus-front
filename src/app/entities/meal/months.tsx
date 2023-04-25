@@ -11,12 +11,9 @@ interface IProps {
 }
 
 export const Months: FunctionComponent<IProps> = ({ month, date, totalDays, numberOfDays }) => {
- 
   const offSet = numberOfDays === 7 ? 6 : 8
 
-  
   const endTable = numberOfDays + offSet
-  
 
   // Le jour de la date passé en paramétre.
   const today = date.date()
@@ -41,7 +38,7 @@ export const Months: FunctionComponent<IProps> = ({ month, date, totalDays, numb
     <Text
       className="month"
       gridColumnEnd={gridColumnEnd}
-      gridColumnStart={gridColumnStart}   
+      gridColumnStart={gridColumnStart}
       textAlign={'center'}
       py={2}
       borderColor={'#D9D9D9'}
