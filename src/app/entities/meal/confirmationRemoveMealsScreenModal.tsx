@@ -66,7 +66,7 @@ export const ConfirmationRemoveMealsScreenModal: FunctionComponent<
     setDate(date)
     toast({
       position: 'top',
-      title: 'Repas modifiés !',
+      title: 'Repas modifiés ! (sauf dans le passé)',
       description: 'A bientôt !',
       status: 'success',
       duration: 9000,

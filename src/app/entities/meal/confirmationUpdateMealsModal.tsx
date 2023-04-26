@@ -36,7 +36,7 @@ export const ConfirmationUpdateMealsModal: FunctionComponent<
     setIsLoading(false)
     toast({
       position: 'top',
-      title: 'Repas modifiés ! (sauf dans le passé)',
+      title: 'Repas modifiés ! ',
       description: 'A bientôt !',
       status: 'success',
       duration: 9000,

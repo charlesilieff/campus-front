@@ -43,7 +43,7 @@ export const ConfirmationUpdateMealsByPeriodModal: FunctionComponent<
     endDate: Dayjs,
     reservationId: number
   ) => {
-    if (startDate > endDate || startDate < dayjs()) {
+    if (startDate.isAfter(endDate) || startDate.isBefore(dayjs())) {
       // TODO : add toast and check startDate < date
       toast({
         position: 'top',

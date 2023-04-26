@@ -4,7 +4,7 @@ import {
 } from '@chakra-ui/react'
 import type { IMeal } from 'app/shared/model/meal.model'
 import type { Dayjs } from 'dayjs'
-import type dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 
 import type { IMealsNumber } from './IMealsNumber'
@@ -108,6 +108,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
               colorScheme={'orange'}
               onChange={_ => handleChangeMeal('breakfast')}
               isChecked={mealsNumber?.breakfast === 1}
+              isDisabled={date.isBefore(dayjs().subtract(1, 'day'))}
             />
           ) :
           null}
@@ -136,6 +137,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
               colorScheme={'orange'}
               onChange={_ => handleChangeMeal('regularLunch')}
               isChecked={mealsNumber?.lunchtime.regularDiet === 1}
+              isDisabled={date.isBefore(dayjs().subtract(1, 'day'))}
             />
           ) :
           null}
@@ -163,6 +165,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
               colorScheme={'orange'}
               onChange={_ => handleChangeMeal('specialLunch')}
               isChecked={mealsNumber?.lunchtime.specialDiet === 1}
+              isDisabled={date.isBefore(dayjs().subtract(1, 'day'))}
             />
           ) :
           null}
@@ -191,6 +194,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
               colorScheme={'orange'}
               onChange={_ => handleChangeMeal('regularDinner')}
               isChecked={mealsNumber?.dinner.regularDiet === 1}
+              isDisabled={date.isBefore(dayjs().subtract(1, 'day'))}
             />
           ) :
           null}
@@ -218,6 +222,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
               colorScheme={'orange'}
               onChange={_ => handleChangeMeal('specialDinner')}
               isChecked={mealsNumber?.dinner.specialDiet === 1}
+              isDisabled={date.isBefore(dayjs().subtract(1, 'day'))}
             />
           ) :
           null}

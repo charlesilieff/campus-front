@@ -198,16 +198,26 @@ export const Index = () => {
       toast({
         position: 'bottom',
         title: 'Erreur date !',
-        description: "La date ne peut pas être antérieure à aujourd'hui.",
+        description: "La date de début ne peut pas être antérieure à aujourd'hui.",
         status: 'error',
         duration: 4000,
         isClosable: true
       })
-      // inputStartDate
       return
-    } else {
-      setStartDate(dayjs(e))
     }
+    if (dayjs(e).isAfter(endDate)) {
+      console.log('no', e)
+      toast({
+        position: 'bottom',
+        title: 'Erreur date !',
+        description: 'La date de début ne peut pas être postérieure à la date de fin.',
+        status: 'error',
+        duration: 4000,
+        isClosable: true
+      })
+      return
+    }
+    setStartDate(dayjs(e))
   }
   const startEndChange = (e: Dayjs) => {
     if (dayjs(e).isBefore(startDate)) {
@@ -215,7 +225,7 @@ export const Index = () => {
       toast({
         position: 'bottom',
         title: 'Erreur date !',
-        description: 'La date ne peut pas être antérieure à la date de début.',
+        description: 'La date de fin ne peut pas être antérieure à la date de début.',
         status: 'error',
         duration: 4000,
         isClosable: true
