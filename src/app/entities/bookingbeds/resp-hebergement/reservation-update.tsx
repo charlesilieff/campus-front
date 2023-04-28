@@ -162,6 +162,7 @@ export const BookingBedsUpdate = (): JSX.Element => {
       setSelectedBeds(pipe(backendReservation.value.beds, A.map(bed => bed.id)))
     }
   }, [pipe(backendReservation, O.map(reservation => reservation.arrivalDate), O.getOrUndefined)])
+  const [selectedBeds, setSelectedBeds] = useState<readonly number[]>([])
   useEffect(() => {
     pipe(
       reservationId,
@@ -174,7 +175,6 @@ export const BookingBedsUpdate = (): JSX.Element => {
       }, id => dispatch(getReservation(id)))
     )
   }, [])
-  const [selectedBeds, setSelectedBeds] = useState<readonly number[]>([])
 
   useEffect(() => {
     if (updateSuccess) {
@@ -242,13 +242,13 @@ export const BookingBedsUpdate = (): JSX.Element => {
             datesAndMeals={datesAndMeal}
             setUpdateDatesAndMeals={setUpdateDatesAndMeals}
             setDatesAndMeal={setDatesAndMeal}
+            setSelectedBeds={setSelectedBeds}
           />
         ) :
         (
           <DatesAndMealsSummary
             datesAndMeals={datesAndMeal.value}
             setUpdate={setUpdateDatesAndMeals}
-            setSelectedBeds={setSelectedBeds}
           />
         )}
       {O.isSome(datesAndMeal) && !updateDatesAndMeals ?

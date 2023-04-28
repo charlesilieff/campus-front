@@ -14,7 +14,6 @@ import type { DatesAndMeals } from './reservation-update'
 interface DatesAndMealsSummaryProps {
   datesAndMeals: DatesAndMeals
   setUpdate: (update: boolean) => void
-  setSelectedBeds: (bedId: readonly number[]) => void
 }
 
 export const DatesAndMealsSummary = (
@@ -30,8 +29,7 @@ export const DatesAndMealsSummary = (
       isArrivalBreakfast,
       isDepartureBreakfast
     },
-    setUpdate,
-    setSelectedBeds
+    setUpdate
   }: DatesAndMealsSummaryProps
 ): JSX.Element => {
   const mealSelected = (isBreakfast: boolean, isDinner: boolean, isLunch: boolean): string => {
@@ -94,7 +92,6 @@ export const DatesAndMealsSummary = (
         colorScheme="blue"
         rightIcon={<BsPencil />}
         onClick={() => {
-          setSelectedBeds([])
           setUpdate(true)
         }}
       >

@@ -25,6 +25,7 @@ interface DatesAndMealsChoicesProps {
   setDatesAndMeal: (datesAndMeal: O.Option<DatesAndMeals>) => void
   setUpdateDatesAndMeals: (updateDatesAndMeals: boolean) => void
   datesAndMeals: O.Option<DatesAndMeals>
+  setSelectedBeds: (bedId: readonly number[]) => void
 }
 
 export const DatesAndMealsChoices = (
@@ -50,6 +51,7 @@ export const DatesAndMealsChoices = (
   const handleValidDateAndMealSubmit = (
     datesAndMeal: DatesAndMeals
   ): void => {
+    props.setSelectedBeds([])
     props.setUpdateDatesAndMeals(false)
     props.setDatesAndMeal(O.some(datesAndMeal))
   }

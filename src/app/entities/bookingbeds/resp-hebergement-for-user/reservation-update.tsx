@@ -267,13 +267,13 @@ export const ReservationUserUpdate = (): JSX.Element => {
             datesAndMeals={datesAndMeal}
             setUpdateDatesAndMeals={setUpdateDatesAndMeals}
             setDatesAndMeal={setDatesAndMeal}
+            setBedId={setBedId}
           />
         ) :
         (
           <DatesAndMealsSummary
             datesAndMeals={datesAndMeal.value}
             setUpdate={setUpdateDatesAndMeals}
-            setBedId={setBedId}
           />
         )}
 
