@@ -54,7 +54,7 @@ export type BedIds = ReadonlyArray<{ id: number }>
 const createIReservationWithBedIds = (
   customer: Customer,
   datesAndMeals: DatesAndMeals,
-  bedId: number
+  bedId: O.Option<number>
 ): IBookingBeds => ({
   // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
   arrivalDate: datesAndMeals.arrivalDate,
@@ -66,7 +66,7 @@ const createIReservationWithBedIds = (
   isDepartureLunch: datesAndMeals.isDepartureLunch,
   isDepartureDiner: datesAndMeals.isDepartureDinner,
   comment: datesAndMeals.comment,
-  bedIds: [bedId],
+  bedIds: O.isSome(bedId) ? [bedId.value] : [],
   isConfirmed: true,
   isPaid: false,
   paymentMode: '',
@@ -104,7 +104,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
 
   const handleSubmitReservation = async (
     datesAndMeal: DatesAndMeals,
-    bedId: number,
+    bedId: O.Option<number>,
     customer: Customer
   ): Promise<void> => {
     const reservation = createIReservationWithBedIds(customer, datesAndMeal, bedId)
@@ -278,6 +278,21 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
             {'Choix des lits'}
           </Heading>
         )}
+      {O.isSome(customer) && O.isSome(datesAndMeal) && O.isNone(bedId) ?
+        (
+          <HStack justifyContent={'end'}>
+            <Button as={Link} to={''} colorScheme={'red'} rightIcon={<BsTrash />}>Annuler</Button>
+            <Button
+              isLoading={isLoading}
+              colorScheme={'blue'}
+              rightIcon={<CheckIcon />}
+              onClick={() => handleSubmitReservation(datesAndMeal.value, O.none(), customer.value)}
+            >
+              Finaliser la réservation sans lit
+            </Button>
+          </HStack>
+        ) :
+        null}
       {O.isSome(customer) && O.isSome(datesAndMeal) && O.isSome(bedId) ?
         (
           <HStack justifyContent={'end'}>
@@ -286,8 +301,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
               isLoading={isLoading}
               colorScheme={'blue'}
               rightIcon={<CheckIcon />}
-              onClick={() =>
-                handleSubmitReservation(datesAndMeal.value, bedId.value, customer.value)}
+              onClick={() => handleSubmitReservation(datesAndMeal.value, bedId, customer.value)}
             >
               Finaliser la réservation
             </Button>
