@@ -5,6 +5,7 @@ import React, { useEffect } from 'react'
 import { FaEye, FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
+import { ReservationDeleteDialog } from '../bookingbeds/reservation-delete-dialog'
 import { TextFormat } from '../bookingbeds/text-format'
 import { getReservationsToBeProcessed } from './reservation.reducer'
 
@@ -145,10 +146,16 @@ export const ReservationsToBeProcessed = () => {
                         variant={'modify'}
                         size="sm"
                         leftIcon={<FaPencilAlt />}
-                        borderLeftRadius={0}
+                        borderRadius={0}
                       >
                         Modifier
                       </Button>
+                      <ReservationDeleteDialog
+                        reservationId={reservation.id}
+                        buttonProps={{ size: 'sm', variant: 'danger', borderLeftRadius: 0 }}
+                        backToPlanning={false}
+                        handleSyncList={handleSyncList}
+                      />
                     </HStack>
                   </Td>
                 </Tr>

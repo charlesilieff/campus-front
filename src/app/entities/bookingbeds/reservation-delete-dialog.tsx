@@ -1,3 +1,6 @@
+import type {
+  ButtonProps
+} from '@chakra-ui/react'
 import {
   Button,
   Modal,
@@ -19,8 +22,15 @@ import { useNavigate } from 'react-router'
 
 import { deleteEntity, reset } from './booking-beds.reducer'
 
-export const ReservationDeleteDialog: FunctionComponent<{ reservationId: number }> = (
-  { reservationId }
+export const ReservationDeleteDialog: FunctionComponent<
+  {
+    reservationId: number
+    buttonProps?: ButtonProps
+    backToPlanning?: boolean
+    handleSyncList?: () => void
+  }
+> = (
+  { reservationId, buttonProps, backToPlanning = true, handleSyncList }
 ): JSX.Element => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isDeleting, setIsDeleting] = React.useState(false)
@@ -52,8 +62,12 @@ export const ReservationDeleteDialog: FunctionComponent<{ reservationId: number 
             isClosable: true
           })
           dispatch(reset())
-
-          navigate('/planning')
+          if (backToPlanning) {
+            navigate('/planning')
+          }
+          if (handleSyncList) {
+            handleSyncList()
+          }
         }
 
         if (requestStatus === 'rejected') {
@@ -182,6 +196,7 @@ export const ReservationDeleteDialog: FunctionComponent<{ reservationId: number 
         variant="danger"
         onClick={onOpen}
         leftIcon={<FaTrash />}
+        {...buttonProps}
       >
         Supprimer
       </Button>
