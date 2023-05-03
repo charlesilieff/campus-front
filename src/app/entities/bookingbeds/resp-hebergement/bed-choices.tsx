@@ -16,7 +16,7 @@ import React, { useEffect, useState } from 'react'
 import type { IPlace, IRoomWithBeds } from '../utils'
 import { getOnePlace } from '../utils'
 import { getPlaceWithFreeBedsAndBookedBeds } from '../utils'
-import { IntermittentBeds } from './beds-checkbox'
+import { Beds as Beds } from './beds-checkbox'
 import type { DatesAndMeals } from './reservation-update'
 
 interface DatesAndMealsChoicesProps {
@@ -118,7 +118,7 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
         {loading ?
           <Spinner alignSelf={'center'} /> :
           (
-            <VStack spacing={10} alignItems={'flex-start'} width="100%">
+            <VStack spacing={6} alignItems={'flex-start'} width="100%">
               <Heading fontWeight={'bold'} fontSize={'30'}>
                 {'Choisissez les lits :'}
               </Heading>
@@ -169,7 +169,7 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
                   </Select>
                 </HStack>
               </HStack>
-              <IntermittentBeds
+              <Beds
                 selectedBeds={selectedBeds}
                 rooms={rooms.filter(room => room.beds.length > 0)}
                 selectBed={selectBed}

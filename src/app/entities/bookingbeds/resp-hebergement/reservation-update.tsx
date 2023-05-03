@@ -19,7 +19,7 @@ import * as A from '@effect/data/ReadonlyArray'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
 import React, { useEffect, useState } from 'react'
-import { BsTrash } from 'react-icons/bs'
+import { FaArrowLeft } from 'react-icons/fa'
 import { FaSave } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
@@ -291,9 +291,10 @@ export const BookingBedsUpdate = (): JSX.Element => {
               as={Link}
               to={''}
               colorScheme={'red'}
-              rightIcon={<BsTrash />}
+              leftIcon={<FaArrowLeft />}
+              onClick={() => navigate(-1)}
             >
-              Annuler
+              Retour
             </Button>
 
             <Button

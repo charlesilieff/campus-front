@@ -8,7 +8,7 @@ import { getEntities as getUserCategories } from 'app/entities/user-category/use
 import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
 import { getSession } from 'app/shared/reducers/authentication'
 import React, { useEffect, useState } from 'react'
-import { BsTrash } from 'react-icons/bs'
+import { FaArrowLeft } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { getCustomer } from '../../customer/customer.reducer'
@@ -281,7 +281,15 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
       {O.isSome(customer) && O.isSome(datesAndMeal) && O.isNone(bedId) ?
         (
           <HStack justifyContent={'end'}>
-            <Button as={Link} to={''} colorScheme={'red'} rightIcon={<BsTrash />}>Annuler</Button>
+            <Button
+              as={Link}
+              to={''}
+              colorScheme={'red'}
+              leftIcon={<FaArrowLeft />}
+              onClick={() => navigate(-1)}
+            >
+              Retour
+            </Button>
             <Button
               isLoading={isLoading}
               colorScheme={'blue'}
@@ -296,7 +304,15 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
       {O.isSome(customer) && O.isSome(datesAndMeal) && O.isSome(bedId) ?
         (
           <HStack justifyContent={'end'}>
-            <Button as={Link} to={''} colorScheme={'red'} rightIcon={<BsTrash />}>Annuler</Button>
+            <Button
+              as={Link}
+              to={''}
+              colorScheme={'red'}
+              leftIcon={<FaArrowLeft />}
+              onClick={() => navigate(-1)}
+            >
+              Retour
+            </Button>
             <Button
               isLoading={isLoading}
               colorScheme={'blue'}

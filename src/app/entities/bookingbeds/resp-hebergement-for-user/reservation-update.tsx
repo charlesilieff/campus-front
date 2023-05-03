@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
 import { getSession } from 'app/shared/reducers/authentication'
 import React, { useEffect, useState } from 'react'
-import { BsTrash } from 'react-icons/bs'
+import { FaArrowLeft } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import {
@@ -302,8 +302,13 @@ export const ReservationUserUpdate = (): JSX.Element => {
       {O.isSome(customer) && O.isSome(datesAndMeal) && O.isSome(bedId) && userId ?
         (
           <HStack justifyContent={'end'}>
-            <Button as={Link} to={'../../'} colorScheme={'red'} rightIcon={<BsTrash />}>
-              Annuler
+            <Button
+              as={Link}
+              colorScheme={'red'}
+              leftIcon={<FaArrowLeft />}
+              onClick={() => navigate(-1)}
+            >
+              Retour
             </Button>
             <Button
               isLoading={isLoading}

@@ -1,4 +1,4 @@
-import { Checkbox, Text, VStack } from '@chakra-ui/react'
+import { Checkbox, Stack, Text } from '@chakra-ui/react'
 import type { FunctionComponent } from 'react'
 import React from 'react'
 
@@ -10,7 +10,7 @@ interface IProps {
   reservationBeds: ReadonlyArray<number>
   selectBed: (bedId: number) => void
 }
-export const IntermittentBeds: FunctionComponent<IProps> = (
+export const Beds: FunctionComponent<IProps> = (
   { rooms, selectBed, selectedBeds, reservationBeds }
 ) => (
   <>
@@ -18,11 +18,11 @@ export const IntermittentBeds: FunctionComponent<IProps> = (
       const bedRoomKind = room.bedroomKind ? `(${room.bedroomKind.name})` : ''
       const isRoomFull = room.beds.length === room.beds.filter(b => b.booked).length
       return (
-        <VStack key={room.id} mb={6} alignItems={'flex-start'}>
+        <Stack key={room.id} alignItems={'flex-start'} direction={isRoomFull ? 'row' : 'column'}>
           <Text fontWeight={'bold'} color={isRoomFull ? 'grey' : 'black'}>
             {`Chambre ${room.name} ${bedRoomKind}`}
           </Text>
-          {isRoomFull ? <Text color={'grey'}>Chambre complète</Text> : room.beds.map(bed => {
+          {isRoomFull ? <Text color={'grey'}>Complète</Text> : room.beds.map(bed => {
             const bedkind = bed.kind ? `(${bed.kind})` : ''
             const isDisabled = bed.booked
               && !reservationBeds.includes(bed.id)
@@ -41,7 +41,7 @@ export const IntermittentBeds: FunctionComponent<IProps> = (
               </Checkbox>
             )
           })}
-        </VStack>
+        </Stack>
       )
     })}
   </>
