@@ -8,10 +8,6 @@ import { TypeReservationUpdate } from './type-reservation-update'
 
 export const TypeReservationRoutes = () => (
   <ErrorBoundaryRoutes>
-    {
-      /* <Route path={`new`} element={<RoomUpdate />} />
-    <Route index element={<Room />} /> */
-    }
     <Route path=":id">
       <Route path={`edit`} element={<TypeReservationUpdate />} />
       <Route index element={<TypeReservationDetail />} />

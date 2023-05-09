@@ -5,13 +5,13 @@ import { Route } from 'react-router-dom'
 import { ReservationIntermittentUpdate } from './intermittent/reservation-intermittent-update'
 import { ReservationInviteUpdate } from './invite/reservation-invite-update'
 import { ReservationDetail } from './reservation-detail'
-import { BookingBedsUpdate } from './resp-hebergement/reservation-update'
+import { ReservationUpdate } from './resp-hebergement/reservation-update'
 // import { ReservationUserUpdate } from './resp-hebergement-for-user/reservation-update'
 import { ReservationUserUpdate } from './resp-hebergement-for-user/reservation-update'
 
 export const BookingBedsRoutes = (): JSX.Element => (
   <ErrorBoundaryRoutes>
-    <Route path={`new`} element={<BookingBedsUpdate />} />
+    <Route path={`new`} element={<ReservationUpdate />} />
     <Route
       path={`new/intermittent`}
       element={<ReservationIntermittentUpdate />}
@@ -33,7 +33,7 @@ export const BookingBedsRoutes = (): JSX.Element => (
       element={<ReservationIntermittentUpdate />}
     />
     <Route path=":reservationId">
-      <Route path={`edit`} element={<BookingBedsUpdate />} />
+      <Route path={`edit`} element={<ReservationUpdate />} />
       <Route index element={<ReservationDetail />} />
     </Route>
   </ErrorBoundaryRoutes>

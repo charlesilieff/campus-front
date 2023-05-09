@@ -97,7 +97,7 @@ const createIReservationWithBedIds = (
   commentMeals: datesAndMeals.commentMeals
 })
 
-export const BookingBedsUpdate = (): JSX.Element => {
+export const ReservationUpdate = (): JSX.Element => {
   const [datesAndMeal, setDatesAndMeal] = useState<O.Option<DatesAndMeals>>(O.none)
   const [customer, setCustomer] = useState<O.Option<Customer>>(O.none)
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
