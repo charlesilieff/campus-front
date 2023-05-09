@@ -278,7 +278,8 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
             {'Choix des lits'}
           </Heading>
         )}
-      {O.isSome(customer) && O.isSome(datesAndMeal) && O.isNone(bedId) ?
+      {O.isSome(customer) && O.isSome(datesAndMeal) && O.isNone(bedId) && !updateDatesAndMeals
+          && !updateCustomer ?
         (
           <HStack justifyContent={'end'}>
             <Button
