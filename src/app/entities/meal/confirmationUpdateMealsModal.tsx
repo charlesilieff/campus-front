@@ -60,7 +60,6 @@ export const ConfirmationUpdateMealsModal: FunctionComponent<
           backgroundColor: '#38A169'
         }}
         size={{ base: 'sm', md: 'md' }}
-        // variant={'update'}
       >
         Modifier les repas tels que sélectionnés
       </Button>

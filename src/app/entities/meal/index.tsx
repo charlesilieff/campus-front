@@ -60,7 +60,6 @@ export const Index = () => {
     O.fromNullable,
     O.map(Number)
   )
-  console.log('userId', userId)
 
   const reservationList = useAppSelector(state => state.reservation.entities).filter(x =>
     dayjs(dayjs(x?.departureDate)).isAfter(
@@ -109,7 +108,7 @@ export const Index = () => {
         startDate.format('YYYY-MM-DD')
       }`
       const { data } = await axios.get<IMeal[]>(requestUrl)
-      console.log('data axios', data)
+
       // const dataSorted = data.sort((a, b) => (a > b.date ? 1 : -1))
       setMealsData(data)
       setRefreshing(false)
@@ -175,18 +174,16 @@ export const Index = () => {
   }
 
   const toggleAddDays = () => {
-    console.log('date', date)
     // TODO check if it's necessarry to load new data (if calendar is showing 7 days)
     setDate(date.add(1, 'day'))
     if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
     dispatch(getReservation(reservationList[0].id))
     setReservationId(reservationListFirst.id)
     if (reservationList.length > 0) {
-      console.log('erreur plusieurs réservation', reservationList.length)
+      console.error('erreur plusieurs réservation', reservationList.length)
     }
   }
   const toggleSubtractDays = () => {
-    console.log('date', date)
     setDate(date.subtract(1, 'day'))
     if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
     // reservationList[0]
@@ -194,7 +191,6 @@ export const Index = () => {
 
   const startDateChange = (e: Dayjs) => {
     if (dayjs(e).isBefore(dayjs().subtract(1, 'day'))) {
-      console.log('no', e)
       toast({
         position: 'bottom',
         title: 'Erreur date !',
@@ -206,7 +202,6 @@ export const Index = () => {
       return
     }
     if (dayjs(e).isAfter(endDate)) {
-      console.log('no', e)
       toast({
         position: 'bottom',
         title: 'Erreur date !',
@@ -221,7 +216,6 @@ export const Index = () => {
   }
   const startEndChange = (e: Dayjs) => {
     if (dayjs(e).isBefore(startDate)) {
-      console.log('no', e)
       toast({
         position: 'bottom',
         title: 'Erreur date !',

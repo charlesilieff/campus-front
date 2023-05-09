@@ -51,10 +51,8 @@ export const MealsUserPlanning = (
           borderRightWidth={'0.15em'}
           borderColor={'#D9D9D9'}
           py={2}
-          // mt={'-0.1rem'}
           borderBottom={0}
           borderLeft={0}
-          // backgroundColor={'blue.50'}
           justifyContent={'center'}
           display={'flex'}
           alignItems={'center'}
@@ -93,13 +91,11 @@ export const MealsUserPlanning = (
           borderRightStyle={'solid'}
           borderWidth={'0.15em'}
           borderColor={'#D9D9D9'}
-          // py={2}
           mt={'-0.1rem'}
           borderBottom={0}
           borderLeft={0}
           alignContent={'center'} // TODO : center??
           verticalAlign={'middle'} // TODO : center??
-          // center
           backgroundColor={'orange.100'}
           p={2}
         >
@@ -132,7 +128,7 @@ export const MealsUserPlanning = (
 
         {monthDays.map((_, index) => {
           const gridColumnStart = positionX7Day + index
-          // On construit l'objet qui va permettre de récuperer la bonne position en X pour afficher les réservations.
+          // On construit l'objet qui va permettre de récupérer la bonne position en X pour afficher les réservations.
           const dateDay = date.add(index, 'day')
           const dateKey = getDateKey(dateDay)
           positionX[dateKey] = gridColumnStart

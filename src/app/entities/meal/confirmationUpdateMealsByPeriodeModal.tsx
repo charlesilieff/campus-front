@@ -71,18 +71,15 @@ export const ConfirmationUpdateMealsByPeriodModal: FunctionComponent<
   ) => {
     setIsLoading(true)
 
-    const mealsDataBetweenDateUpdate = mealsDataBetweenDate.map((value, index) => {
-      value = {
-        ...value,
-        specialLunch: 0,
-        specialDinner: 0,
-        regularLunch: 0,
-        regularDinner: 0,
-        comment: mealsDataBetweenDate[index].comment,
-        breakfast: 0
-      }
-      return value
-    })
+    const mealsDataBetweenDateUpdate = mealsDataBetweenDate.map((value, index) => ({
+      ...value,
+      specialLunch: 0,
+      specialDinner: 0,
+      regularLunch: 0,
+      regularDinner: 0,
+      comment: mealsDataBetweenDate[index].comment,
+      breakfast: 0
+    }))
 
     await axios.put<IMeal>(
       apiUrlUpdateMeal,
@@ -110,7 +107,6 @@ export const ConfirmationUpdateMealsByPeriodModal: FunctionComponent<
     <>
       <Button
         onClick={onOpen}
-        // onClick={() => updateMealsFromDate()} // , startDate, endDate, checkboxTwoDate
         leftIcon={<FaSave />}
         colorScheme={'green'}
         _hover={{

@@ -13,18 +13,9 @@ import {
 import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
 import type { Dayjs } from 'dayjs'
-// import type dayjs from 'dayjs'
 import type { FunctionComponent } from 'react'
 import React, { useState } from 'react'
 import { FaBan, FaSave } from 'react-icons/fa'
-
-// interface MealSpecial {
-//   isSpecialMeal3: boolean
-//   // setUpdateBeds: (updateBeds: boolean) => void
-//   entity: IMeal[]
-//   date: Dayjs
-//   numberOfDays: number
-// }
 
 export const ConfirmationAddMealsScreenModal: FunctionComponent<
   {
@@ -37,18 +28,7 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
 > = (
   { mealsData, date, numberOfDays, setDate, setRefreshing }
 ): JSX.Element => {
-  // const {
-  //   // handleSubmit,
-  //   register
-  //   // watch,
-  //   // formState: { errors },
-  //   // reset: resetForm
-  // } = useForm<MealSpecial>()
-
   const [isLoading, setIsLoading] = useState(false)
-  // TODO : Check from reservation if special meal , why isSpecialMeal is not working ?
-  // const [isSpecialMeal, setIsSpecialMeal] = useState<boolean>(false)
-  // const isSpecialMeal2 = useState<boolean>(false)
 
   const apiUrlUpdateMeal = 'api/meals/update'
   const toast = useToast()
@@ -103,11 +83,7 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
     )
 
     setIsLoading(false)
-    // setDate(date.add(1, 'day'))
 
-    //
-
-    // TODO : refresh screen + add toast
     setDate(date)
     toast({
       position: 'top',
@@ -136,9 +112,8 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
           backgroundColor: '#38A169'
         }}
         size={{ base: 'sm', md: 'md' }}
-        // variant={'update'}
       >
-        Se résinscrire sur la période affichée
+        Se réinscrire sur la période affichée
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -162,12 +137,10 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
             </Button>
             <Stack>
               <Button
-                // onSubmit={handleSubmit(handleValidDateAndMealSubmit)}
                 onClick={() =>
                   updateMealsOnPeriode(mealsData, date, numberOfDays, true).then(() => {
                     setRefreshing(true)
                   })}
-                // onClick={handleSubmit(updateMealsOnPeriode)}
                 leftIcon={<FaSave />}
                 colorScheme={'green'}
                 isLoading={isLoading}

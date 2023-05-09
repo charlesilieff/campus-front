@@ -12,7 +12,6 @@ import {
 import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
 import type { Dayjs } from 'dayjs'
-// import type dayjs from 'dayjs'
 import type { FunctionComponent } from 'react'
 import React, { useState } from 'react'
 import { FaBan, FaSave, FaTrash } from 'react-icons/fa'

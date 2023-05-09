@@ -108,7 +108,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
               colorScheme={'orange'}
               onChange={_ => handleChangeMeal('breakfast')}
               isChecked={mealsNumber?.breakfast === 1}
-              isDisabled={date.isBefore(dayjs().subtract(1, 'day'))}
+              isDisabled={date.isBefore(dayjs().add(1, 'day'))}
             />
           ) :
           null}
@@ -137,7 +137,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
               colorScheme={'orange'}
               onChange={_ => handleChangeMeal('regularLunch')}
               isChecked={mealsNumber?.lunchtime.regularDiet === 1}
-              isDisabled={date.isBefore(dayjs().subtract(1, 'day'))}
+              isDisabled={date.isBefore(dayjs().add(1, 'day'))}
             />
           ) :
           null}
@@ -165,7 +165,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
               colorScheme={'orange'}
               onChange={_ => handleChangeMeal('specialLunch')}
               isChecked={mealsNumber?.lunchtime.specialDiet === 1}
-              isDisabled={date.isBefore(dayjs().subtract(1, 'day'))}
+              isDisabled={date.isBefore(dayjs().add(1, 'day'))}
             />
           ) :
           null}
@@ -194,7 +194,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
               colorScheme={'orange'}
               onChange={_ => handleChangeMeal('regularDinner')}
               isChecked={mealsNumber?.dinner.regularDiet === 1}
-              isDisabled={date.isBefore(dayjs().subtract(1, 'day'))}
+              isDisabled={date.isBefore(dayjs().add(1, 'day'))}
             />
           ) :
           null}
@@ -211,7 +211,6 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
         borderLeftWidth={dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em'}
         borderLeftStyle={dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed'}
         borderTopStyle={'solid'}
-        // borderTopWidth={'0.1em'}
         borderBottomWidth={'0.01em'}
         borderBottomStyle={'solid'}
         py={2}
@@ -222,7 +221,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
               colorScheme={'orange'}
               onChange={_ => handleChangeMeal('specialDinner')}
               isChecked={mealsNumber?.dinner.specialDiet === 1}
-              isDisabled={date.isBefore(dayjs().subtract(1, 'day'))}
+              isDisabled={date.isBefore(dayjs().add(1, 'day'))}
             />
           ) :
           null}
