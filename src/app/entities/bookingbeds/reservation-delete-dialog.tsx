@@ -18,7 +18,7 @@ import { useAppDispatch } from 'app/config/store'
 import type { FunctionComponent } from 'react'
 import React from 'react'
 import { FaBan, FaTrash } from 'react-icons/fa'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 
 import { deleteEntity, reset } from './booking-beds.reducer'
 
