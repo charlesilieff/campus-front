@@ -484,7 +484,8 @@ export const ReservationInviteUpdate = (): JSX.Element => {
           </HStack>
         ) :
         null}
-      {O.isSome(customer) && O.isSome(datesAndMeal) && !updateBeds ?
+      {O.isSome(customer) && O.isSome(datesAndMeal) && !updateBeds && !updateDatesAndMeals
+          && !updateCustomer ?
         (
           <Stack justifyContent={'end'} direction={['column', 'row']}>
             <Button
