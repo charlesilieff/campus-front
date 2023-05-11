@@ -466,8 +466,8 @@ export const ReservationInviteUpdate = (): JSX.Element => {
             {'Choix des lits'}
           </Heading>
         )}
-      {O.isSome(customer) && O.isSome(datesAndMeal) && O.isSome(bedId) && !updateDatesAndMeals
-          && !updateCustomer ?
+      {!(O.isNone(customer) || !updateCustomer) && !(O.isNone(datesAndMeal) || updateDatesAndMeals)
+          && O.isSome(bedId) && userId ?
         (
           <HStack justifyContent={'end'}>
             <Button
@@ -491,8 +491,8 @@ export const ReservationInviteUpdate = (): JSX.Element => {
           </HStack>
         ) :
         null}
-      {O.isSome(customer) && O.isSome(datesAndMeal) && !updateBeds && !updateDatesAndMeals
-          && !updateCustomer ?
+      {!(O.isNone(customer) || !updateCustomer) && !(O.isNone(datesAndMeal) || updateDatesAndMeals)
+          && userId && O.isNone(bedId) ?
         (
           <Stack justifyContent={'end'} direction={['column', 'row']}>
             <Button
@@ -510,7 +510,7 @@ export const ReservationInviteUpdate = (): JSX.Element => {
               rightIcon={<CheckIcon />}
               onClick={() => handleSubmitReservationWithoutBed(datesAndMeal.value, customer.value)}
             >
-              Finaliser la réservation
+              Finaliser la réservation sans lit
             </Button>
           </Stack>
         ) :

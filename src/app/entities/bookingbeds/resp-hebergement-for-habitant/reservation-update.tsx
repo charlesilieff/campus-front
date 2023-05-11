@@ -1,5 +1,5 @@
 import { CheckIcon } from '@chakra-ui/icons'
-import { Button, Heading, HStack, Stack, useToast } from '@chakra-ui/react'
+import { Button, Heading, HStack, Stack, Text, useToast } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import * as A from '@effect/data/ReadonlyArray'
@@ -256,6 +256,7 @@ export const ReservationHabitantUpdate = (): JSX.Element => {
           && !updateDatesAndMeals && !updateCustomer ?
         (
           <HStack justifyContent={'end'}>
+            <Text>{updateDatesAndMeals}</Text>
             <Button
               as={Link}
               colorScheme={'red'}
