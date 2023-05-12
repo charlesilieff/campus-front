@@ -49,8 +49,6 @@ export interface Customer {
   age: O.Option<number>
 }
 
-export type BedIds = ReadonlyArray<{ id: number }>
-
 const createIReservationWithBedIds = (
   customer: Customer,
   datesAndMeals: DatesAndMeals,
