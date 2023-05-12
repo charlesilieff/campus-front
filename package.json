@@ -27,6 +27,7 @@
     "@vitejs/plugin-react": "4.0.0",
     "axios": "1.4.0",
     "dayjs": "1.11.7",
+    "immer": "^10.0.2",
     "lodash": "4.17.21",
     "numeral": "2.0.6",
     "path-browserify": "1.0.1",

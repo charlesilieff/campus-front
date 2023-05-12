@@ -5,7 +5,7 @@ import * as O from '@effect/data/Option'
 import * as A from '@effect/data/ReadonlyArray'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getUserCategories } from 'app/entities/user-category/user-category.reducer'
-import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
+import type { IntermittentReservation } from 'app/shared/model/intermittentReservation.model'
 import { getSession } from 'app/shared/reducers/authentication'
 import React, { useEffect, useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
@@ -16,9 +16,9 @@ import {
   getReservation
 } from '../../reservation/reservation.reducer'
 import {
-  createReservationAndUpdateUser,
+  createIntermittentReservationAndUpdateUser,
   reset as resetReservations,
-  updateEntity as updateReservation
+  updateIntermittentReservation
 } from '../booking-beds.reducer'
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
@@ -27,9 +27,9 @@ import { DatesAndMealsChoices } from './dates-and-meals-choices-intermittent'
 import { DatesAndMealsSummary } from './dates-and-meals-summary-intermittent'
 
 export interface DatesAndMeals {
-  arrivalDate: string
-  departureDate: string
-  specialDiet: 'false' | 'true'
+  arrivalDate: Date
+  departureDate: Date
+  isSpecialDiet: 'false' | 'true'
   isArrivalLunch: boolean
   isArrivalDinner: boolean
   isDepartureLunch: boolean
@@ -49,26 +49,21 @@ export interface Customer {
   age: O.Option<number>
 }
 
-const createIReservationWithBedIds = (
+const createIReservation = (
   customer: Customer,
   datesAndMeals: DatesAndMeals,
   bedId: O.Option<number>
-): IBookingBeds => ({
-  // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
+): IntermittentReservation => ({
+  id: O.none(),
   arrivalDate: datesAndMeals.arrivalDate,
-  // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
   departureDate: datesAndMeals.departureDate,
-  specialDietNumber: datesAndMeals.specialDiet === 'true' ? 1 : 0,
+  isSpecialDiet: datesAndMeals.isSpecialDiet === 'true',
   isArrivalLunch: datesAndMeals.isArrivalLunch,
   isArrivalDiner: datesAndMeals.isArrivalDinner,
   isDepartureLunch: datesAndMeals.isDepartureLunch,
   isDepartureDiner: datesAndMeals.isDepartureDinner,
   comment: datesAndMeals.comment,
-  bedIds: O.isSome(bedId) ? [bedId.value] : [],
-  isConfirmed: true,
-  isPaid: false,
-  paymentMode: '',
-  personNumber: 1,
+  bedId,
   customer: {
     id: customer.id,
     firstname: customer.firstname,
@@ -80,7 +75,6 @@ const createIReservationWithBedIds = (
   isArrivalBreakfast: datesAndMeals.isArrivalBreakfast,
   isDepartureBreakfast: datesAndMeals.isDepartureBreakfast,
   commentMeals: datesAndMeals.commentMeals
-  // userCategoryId: 2
 })
 
 export const ReservationIntermittentUpdate = (): JSX.Element => {
@@ -105,16 +99,18 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
     bedId: O.Option<number>,
     customer: Customer
   ): Promise<void> => {
-    const reservation = createIReservationWithBedIds(customer, datesAndMeal, bedId)
+    const reservation = createIReservation(customer, datesAndMeal, bedId)
 
     setIsLoading(true)
     if (reservationId !== undefined) {
       // FIXME: unsafe
-      await dispatch(updateReservation({ ...reservation, id: Number(reservationId) }))
+      await dispatch(
+        updateIntermittentReservation({ ...reservation, id: O.some(Number(reservationId)) })
+      )
       setIsLoading(false)
     } else {
       await dispatch(
-        createReservationAndUpdateUser({ entity: reservation, sendMail: false, userId })
+        createIntermittentReservationAndUpdateUser({ entity: reservation, sendMail: false, userId })
       )
 
       dispatch(getSession())
@@ -151,9 +147,9 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
 
     if (backendReservation.arrivalDate !== undefined) {
       setDatesAndMeal(O.some({
-        arrivalDate: backendReservation?.arrivalDate.toString(),
-        departureDate: backendReservation.departureDate.toString(),
-        specialDiet: backendReservation.specialDietNumber === 1 ? 'true' : 'false',
+        arrivalDate: backendReservation.arrivalDate,
+        departureDate: backendReservation.departureDate,
+        isSpecialDiet: backendReservation.specialDietNumber === 1 ? 'true' : 'false',
         isArrivalLunch: backendReservation.isArrivalLunch,
         isArrivalDinner: backendReservation.isArrivalDiner,
         isDepartureLunch: backendReservation.isDepartureLunch,
@@ -162,7 +158,6 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
         isArrivalBreakfast: backendReservation.isArrivalBreakfast,
         isDepartureBreakfast: backendReservation.isDepartureBreakfast,
         commentMeals: backendReservation.commentMeals
-        // userCategoryId: backendReservation.userCategory
       }))
       setBedId(pipe(backendReservation.beds, A.head, O.map(bed => bed.id)))
     }

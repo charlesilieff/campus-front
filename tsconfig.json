@@ -26,7 +26,7 @@
     ],
     "allowJs": true,
     "checkJs": false,
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "app/*": [
         "./src/app/*"

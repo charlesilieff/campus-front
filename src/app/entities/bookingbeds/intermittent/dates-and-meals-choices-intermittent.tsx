@@ -160,14 +160,14 @@ export const DatesAndMealsChoices = (
                   <Checkbox {...register('isDepartureDinner')}>dîner</Checkbox>
                 </HStack>
               </FormControl>
-              <FormControl isRequired isInvalid={errors.specialDiet !== undefined}>
+              <FormControl isRequired isInvalid={errors.isSpecialDiet !== undefined}>
                 <FormLabel htmlFor="selectionRepas" fontWeight={'bold'}>
                   {'Régime sans lactose OU sans gluten ?'}
                 </FormLabel>
 
                 <RadioGroup
                   defaultValue={O.isSome(props.datesAndMeals) ?
-                    props.datesAndMeals.value.specialDiet :
+                    props.datesAndMeals.value.isSpecialDiet :
                     undefined}
                 >
                   <HStack spacing="24px">

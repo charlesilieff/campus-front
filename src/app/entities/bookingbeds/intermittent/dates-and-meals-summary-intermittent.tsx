@@ -25,7 +25,7 @@ export const DatesAndMealsSummary = (
       isArrivalLunch,
       isDepartureDinner,
       isDepartureLunch,
-      specialDiet,
+      isSpecialDiet: specialDiet,
       isArrivalBreakfast,
       isDepartureBreakfast
     },

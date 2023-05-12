@@ -2,6 +2,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
 import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
 import { defaultValue } from 'app/shared/model/bookingBeds.model'
+import type { IntermittentReservation } from 'app/shared/model/intermittentReservation.model'
 import type {
   EntityState
 } from 'app/shared/reducers/reducer.utils'
@@ -77,6 +78,12 @@ export const createEntity = createAsyncThunk(
   { serializeError: serializeAxiosError }
 )
 
+interface IntermittentReservationAndSendMailAndUpdateUser {
+  entity: IntermittentReservation
+  sendMail: boolean
+  userId: number
+}
+
 interface ReservationAndSendMailAndUpdateUser {
   entity: IBookingBeds
   sendMail: boolean
@@ -98,6 +105,24 @@ export const createReservationAndUpdateUser = createAsyncThunk(
   },
   { serializeError: serializeAxiosError }
 )
+
+export const createIntermittentReservationAndUpdateUser = createAsyncThunk(
+  'bookingBeds/create_entity',
+  async (reservationAndSendMailAndUpdateUser: IntermittentReservationAndSendMailAndUpdateUser) => {
+    const requestUrl = `${apiUrlBookingBeds}/${reservationAndSendMailAndUpdateUser.userId}`
+    const result = await axios.post<IntermittentReservation>(
+      requestUrl,
+      cleanEntity(reservationAndSendMailAndUpdateUser.entity),
+      {
+        params: { sendMail: reservationAndSendMailAndUpdateUser.sendMail }
+      }
+    )
+
+    return result
+  },
+  { serializeError: serializeAxiosError }
+)
+
 export const createReservationWithoutMealsAndUpdateUser = createAsyncThunk(
   'bookingBeds/create_entity',
   async (reservationAndSendMailAndUpdateUser: ReservationAndSendMailAndUpdateUser) => {
@@ -122,7 +147,18 @@ export const updateEntity = createAsyncThunk(
       `${apiUrlBookingBeds}/${entity.id}`,
       cleanEntity(entity)
     )
-    // thunkAPI.dispatch(getEntities())
+    return result
+  },
+  { serializeError: serializeAxiosError }
+)
+
+export const updateIntermittentReservation = createAsyncThunk(
+  'bookingBeds/update_entity',
+  async (entity: IntermittentReservation) => {
+    const result = await axios.put<IntermittentReservation>(
+      `${apiUrlBookingBeds}/${entity.id}`,
+      cleanEntity(entity)
+    )
     return result
   },
   { serializeError: serializeAxiosError }
@@ -135,7 +171,6 @@ export const partialUpdateEntity = createAsyncThunk(
       `${apiUrlBookingBeds}/${entity.id}`,
       cleanEntity(entity)
     )
-    // thunkAPI.dispatch(getEntities())
     return result
   },
   { serializeError: serializeAxiosError }
@@ -157,17 +192,7 @@ export const deleteEntity = createAsyncThunk(
     const result = await axios.delete<IBookingBeds>(
       requestUrl,
       options
-      // false
-      // cancelReservationAndSendMail.sendMail
-      // cleanEntity(cancelReservationAndSendMail.entity),
-      // {
-      //  params: {
-      //    sendMail: cancelReservationAndSendMail.sendMail
-      //  }
-      // }
     )
-
-    // thunkAPI.dispatch(getEntities())
     return result
   },
   { serializeError: serializeAxiosError }
