@@ -17,4 +17,5 @@ export interface IntermittentReservation {
   isArrivalBreakfast: boolean
   isDepartureBreakfast: boolean
   commentMeals: string
+  userId: number
 }

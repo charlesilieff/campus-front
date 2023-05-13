@@ -12,10 +12,12 @@ import {
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import * as A from '@effect/data/ReadonlyArray'
+import * as String from '@effect/data/String'
+import type { Order } from '@effect/data/typeclass/Order'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getUsersAsAdmin } from 'app/modules/administration/user-management/user-management.reducer'
-import React, { useEffect } from 'react'
-import { useState } from 'react'
+import type { IUser } from 'app/shared/model/user.model'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
@@ -25,7 +27,6 @@ interface UserUpdateProps {
   setCustomer: (user: O.Option<Customer>) => void
   setUserId: (userId: number) => void
   setUpdateUser: (updateUser: boolean) => void
-  // customer: O.Option<Customer>
   setUpdateCustomer: (updateUser: boolean) => void
 }
 
@@ -46,28 +47,26 @@ export const UserSelect = (
     )
   }
 
-  const [userSelect, setUserSelect] = useState('default' as string)
+  const [userSelect, setUserSelect] = useState<O.Option<string>>(O.none())
 
-  const users1 = useAppSelector(state => state.userManagement.users)
+  const userOderByEmail: Order<IUser> = {
+    compare: (self, that) => String.Order.compare(self.email, that.email)
+  }
 
-  const myData = users1.flatMap(user => ({
-    ...user
-  }))
-  const users = myData.sort((a, b) => a.email.localeCompare(b.email))
+  const users = pipe(
+    useAppSelector(state => state.userManagement.users),
+    A.filter(u => pipe(u.authorities, A.contains(String.Equivalence)('ROLE_HABITANT'))),
+    A.sort<IUser>(userOderByEmail)
+  )
 
   const {
     handleSubmit,
     register
-    // formState: { errors }
   } = useForm<FormUser>()
 
   const handleValidUserSubmit = (
     formUser: FormUser
   ) => {
-    console.log('userSelect', userSelect)
-    console.log('formUser email', formUser)
-    console.log('list users', users)
-    console.log('id to find', Number(formUser.id))
     props.setUserId(Number(formUser.id))
 
     pipe(
@@ -85,9 +84,10 @@ export const UserSelect = (
       props.setCustomer
     )
 
-    users.find(user => user.id === Number(formUser.id)).firstName ?
-      props.setUpdateCustomer(true) :
-      props.setUpdateCustomer(false)
+    users.find(user => user.id === Number(formUser.id)).firstName
+      && users.find(user => user.id === Number(formUser.id)).lastName ?
+      props.setUpdateCustomer(false) :
+      props.setUpdateCustomer(true)
 
     props.setUpdateUser(false)
   }
@@ -120,7 +120,7 @@ export const UserSelect = (
                   </FormLabel>
 
                   <Select
-                    onChange={e => setUserSelect(e.target.value)}
+                    onChange={e => setUserSelect(O.some(e.target.value))}
                     id="user"
                     {...register('id', {})}
                   >
@@ -144,7 +144,7 @@ export const UserSelect = (
                 alignSelf={'flex-start'}
                 type="submit"
               >
-                Valider
+                Confirmer
               </Button>
             </VStack>
           </form>

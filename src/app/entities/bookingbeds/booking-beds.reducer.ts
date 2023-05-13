@@ -27,6 +27,7 @@ const initialState: EntityState<IBookingBeds> = {
 
 const apiUrlBookingBeds = 'api/bookingbeds'
 const apiUrlReservations = 'api/reservations'
+const apiUrlIntermittentReservation = 'api/intermittent/bookingbeds'
 const apiAllPlaces = 'api/all-places-with-rooms-and-beds'
 // Actions
 
@@ -78,12 +79,6 @@ export const createEntity = createAsyncThunk(
   { serializeError: serializeAxiosError }
 )
 
-interface IntermittentReservationAndSendMailAndUpdateUser {
-  entity: IntermittentReservation
-  sendMail: boolean
-  userId: number
-}
-
 interface ReservationAndSendMailAndUpdateUser {
   entity: IBookingBeds
   sendMail: boolean
@@ -108,14 +103,11 @@ export const createReservationAndUpdateUser = createAsyncThunk(
 
 export const createIntermittentReservationAndUpdateUser = createAsyncThunk(
   'bookingBeds/create_entity',
-  async (reservationAndSendMailAndUpdateUser: IntermittentReservationAndSendMailAndUpdateUser) => {
-    const requestUrl = `${apiUrlBookingBeds}/${reservationAndSendMailAndUpdateUser.userId}`
+  async (intermittentReservation: IntermittentReservation) => {
+    const requestUrl = `${apiUrlIntermittentReservation}`
     const result = await axios.post<IntermittentReservation>(
       requestUrl,
-      cleanEntity(reservationAndSendMailAndUpdateUser.entity),
-      {
-        params: { sendMail: reservationAndSendMailAndUpdateUser.sendMail }
-      }
+      cleanEntity(intermittentReservation)
     )
 
     return result
@@ -156,7 +148,7 @@ export const updateIntermittentReservation = createAsyncThunk(
   'bookingBeds/update_entity',
   async (entity: IntermittentReservation) => {
     const result = await axios.put<IntermittentReservation>(
-      `${apiUrlBookingBeds}/${entity.id}`,
+      `${apiUrlIntermittentReservation}/${entity.id}`,
       cleanEntity(entity)
     )
     return result

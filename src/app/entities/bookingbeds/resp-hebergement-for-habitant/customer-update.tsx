@@ -64,7 +64,7 @@ export const CustomerUpdate = (
       O.some(customer.phoneNumber)
     props.setCustomer(O.some({ ...customer, age, phoneNumber }))
 
-    props.setUpdateCustomer(true)
+    props.setUpdateCustomer(false)
   }
 
   return (
@@ -87,7 +87,6 @@ export const CustomerUpdate = (
           <form
             onSubmit={handleSubmit(handleValidCustomerSubmit)}
           >
-            {/* <HStack spacing={12} my={4}> */}
             <Stack
               direction={{ base: 'column', md: 'row' }}
               alignItems={'flex-start'}
@@ -198,7 +197,6 @@ export const CustomerUpdate = (
             >
               Confirmer
             </Button>
-            {/* </HStack> */}
           </form>
         </Box>
       </VStack>

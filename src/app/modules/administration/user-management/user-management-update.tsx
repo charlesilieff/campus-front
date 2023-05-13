@@ -9,6 +9,9 @@ import {
   Input,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
+import * as A from '@effect/data/ReadonlyArray'
+import * as String from '@effect/data/String'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { IUser } from 'app/shared/model/user.model'
 import React, { useEffect } from 'react'
@@ -82,11 +85,7 @@ export const UserManagementUpdate = () => {
 
   const loading = useAppSelector(state => state.userManagement.loading)
   const updating = useAppSelector(state => state.userManagement.updating)
-  // const [selectedAuthorities, setSelectedAuthorities] = useState<ReadonlyArray<string>>(A.empty)
-  // useEffect(() => {
-  //   setSelectedAuthorities(user.authorities)
-  // }, [user.authorities])
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+
   const authorities = useAppSelector(state => state.userManagement.authorities)
 
   return (
@@ -203,6 +202,17 @@ export const UserManagementUpdate = () => {
                 {authorities.map(role => (
                   <Checkbox
                     value={role}
+                    disabled={(role === 'ROLE_HABITANT' && pipe(
+                      authoritiesSelected,
+                      A.contains(
+                        String.Equivalence
+                      )('ROLE_EMPLOYEE')
+                    ))
+                      || (role === 'ROLE_EMPLOYEE'
+                        && pipe(
+                          authoritiesSelected,
+                          A.contains(String.Equivalence)('ROLE_HABITANT')
+                        ))}
                     onChange={e => {
                       if (e.target.checked) {
                         setAuthoritiesSelected([...authoritiesSelected, role])
