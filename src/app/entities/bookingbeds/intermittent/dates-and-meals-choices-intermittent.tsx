@@ -171,8 +171,8 @@ export const DatesAndMealsChoices = (
                     undefined}
                 >
                   <HStack spacing="24px">
-                    <Radio {...register('specialDiet')} value={'true'} mb={0}>Oui</Radio>
-                    <Radio {...register('specialDiet')} value={'false'}>Non</Radio>
+                    <Radio {...register('isSpecialDiet')} value={'true'} mb={0}>Oui</Radio>
+                    <Radio {...register('isSpecialDiet')} value={'false'}>Non</Radio>
                   </HStack>
                 </RadioGroup>
               </FormControl>

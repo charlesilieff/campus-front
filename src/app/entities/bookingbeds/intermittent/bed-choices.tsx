@@ -46,8 +46,8 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
 
     if (O.isSome(props.datesAndMeals)) {
       getIntermittentPlaceWithFreeAndBookedBedsAsync(
-        props.datesAndMeals.value.arrivalDate.toString(),
-        props.datesAndMeals.value.departureDate.toString(),
+        props.datesAndMeals.value.arrivalDate,
+        props.datesAndMeals.value.departureDate,
         props.reservationId
       )
     }
