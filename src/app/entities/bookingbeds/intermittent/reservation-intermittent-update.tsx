@@ -27,8 +27,8 @@ import { DatesAndMealsChoices } from './dates-and-meals-choices-intermittent'
 import { DatesAndMealsSummary } from './dates-and-meals-summary-intermittent'
 
 export interface DatesAndMeals {
-  arrivalDate: Date
-  departureDate: Date
+  arrivalDate: string
+  departureDate: string
   isSpecialDiet: 'false' | 'true'
   isArrivalLunch: boolean
   isArrivalDinner: boolean
@@ -57,7 +57,9 @@ const createIReservation = (
 ): IntermittentReservation => ({
   id: O.none(),
   userId,
+  // @ts-expect-error TODO: fix this
   arrivalDate: datesAndMeals.arrivalDate,
+  // @ts-expect-error TODO: fix this
   departureDate: datesAndMeals.departureDate,
   isSpecialDiet: datesAndMeals.isSpecialDiet === 'true',
   isArrivalLunch: datesAndMeals.isArrivalLunch,
@@ -150,8 +152,8 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
 
     if (backendReservation.arrivalDate !== undefined) {
       setDatesAndMeal(O.some({
-        arrivalDate: backendReservation.arrivalDate,
-        departureDate: backendReservation.departureDate,
+        arrivalDate: backendReservation.arrivalDate.toString(),
+        departureDate: backendReservation.departureDate.toString(),
         isSpecialDiet: backendReservation.specialDietNumber === 1 ? 'true' : 'false',
         isArrivalLunch: backendReservation.isArrivalLunch,
         isArrivalDinner: backendReservation.isArrivalDiner,
