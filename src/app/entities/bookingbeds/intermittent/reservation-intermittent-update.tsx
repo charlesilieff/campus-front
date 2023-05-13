@@ -52,9 +52,11 @@ export interface Customer {
 const createIReservation = (
   customer: Customer,
   datesAndMeals: DatesAndMeals,
-  bedId: O.Option<number>
+  bedId: O.Option<number>,
+  userId: number
 ): IntermittentReservation => ({
   id: O.none(),
+  userId,
   arrivalDate: datesAndMeals.arrivalDate,
   departureDate: datesAndMeals.departureDate,
   isSpecialDiet: datesAndMeals.isSpecialDiet === 'true',
@@ -97,9 +99,10 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
   const handleSubmitReservation = async (
     datesAndMeal: DatesAndMeals,
     bedId: O.Option<number>,
-    customer: Customer
+    customer: Customer,
+    userId: number
   ): Promise<void> => {
-    const reservation = createIReservation(customer, datesAndMeal, bedId)
+    const reservation = createIReservation(customer, datesAndMeal, bedId, userId)
 
     setIsLoading(true)
     if (reservationId !== undefined) {
@@ -110,7 +113,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
       setIsLoading(false)
     } else {
       await dispatch(
-        createIntermittentReservationAndUpdateUser({ entity: reservation, sendMail: false, userId })
+        createIntermittentReservationAndUpdateUser(reservation)
       )
 
       dispatch(getSession())
@@ -288,7 +291,8 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
               isLoading={isLoading}
               colorScheme={'blue'}
               rightIcon={<CheckIcon />}
-              onClick={() => handleSubmitReservation(datesAndMeal.value, O.none(), customer.value)}
+              onClick={() =>
+                handleSubmitReservation(datesAndMeal.value, O.none(), customer.value, userId)}
             >
               Finaliser la réservation sans lit
             </Button>
@@ -312,7 +316,8 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
               isLoading={isLoading}
               colorScheme={'blue'}
               rightIcon={<CheckIcon />}
-              onClick={() => handleSubmitReservation(datesAndMeal.value, bedId, customer.value)}
+              onClick={() =>
+                handleSubmitReservation(datesAndMeal.value, bedId, customer.value, userId)}
             >
               Finaliser la réservation
             </Button>
