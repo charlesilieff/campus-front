@@ -11,20 +11,16 @@ import {
 } from '@chakra-ui/react'
 import { useAppDispatch } from 'app/config/store'
 import type { FunctionComponent } from 'react'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { FaBan, FaTrash } from 'react-icons/fa'
 
-import { deleteUser, getUser } from './user-management.reducer'
+import { deleteUser } from './user-management.reducer'
 
 export const UserManagementDeleteDialog: FunctionComponent<{ login: string }> = (
   { login }
 ): JSX.Element => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    dispatch(getUser(login))
-  }, [])
 
   const confirmDelete = (login: string) => {
     dispatch(deleteUser(login))

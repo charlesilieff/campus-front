@@ -25,7 +25,7 @@ const adminUrl = 'api/admin/users'
 export const getUsers = createAsyncThunk(
   'userManagement/fetch_users',
   async ({ page, size, sort }: IQueryParams) => {
-    const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`
+    const requestUrl = `${apiUrl}`
     return axios.get<IUser[]>(requestUrl)
   }
 )
@@ -52,8 +52,6 @@ export const getUser = createAsyncThunk(
 export const createUser = createAsyncThunk(
   'userManagement/create_user',
   async (user: IUser, thunkAPI) => {
-    // user.password = 'password'
-    // user.activated = true
     user.langKey = 'fr'
     const result = await axios.post<IUser>(adminUrl, user)
     thunkAPI.dispatch(getUsersAsAdmin())
@@ -75,7 +73,7 @@ export const updateUser = createAsyncThunk(
 export const deleteUser = createAsyncThunk(
   'userManagement/delete_user',
   async (id: string, thunkAPI) => {
-    const requestUrl = `${adminUrl}/${id}`
+    const requestUrl = `${adminUrl}/delete/${id}`
     const result = await axios.delete<IUser>(requestUrl)
     thunkAPI.dispatch(getUsersAsAdmin())
     return result
