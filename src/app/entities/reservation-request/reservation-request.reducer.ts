@@ -72,7 +72,7 @@ export const deleteEntity = createAsyncThunk(
 )
 
 // slice
-
+// @ts-expect-error inferred type of 'BookingBedsSlice' cannot be named without
 export const ReservationRequestSlice = createEntitySlice({
   name: 'reservationRequest',
   initialState,
