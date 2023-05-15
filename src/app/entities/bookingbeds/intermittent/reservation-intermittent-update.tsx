@@ -5,7 +5,6 @@ import * as O from '@effect/data/Option'
 import * as A from '@effect/data/ReadonlyArray'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getUserCategories } from 'app/entities/user-category/user-category.reducer'
-import type { IntermittentReservation } from 'app/shared/model/intermittentReservation.model'
 import { getSession } from 'app/shared/reducers/authentication'
 import React, { useEffect, useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
@@ -16,73 +15,20 @@ import {
   getReservation
 } from '../../reservation/reservation.reducer'
 import {
-  createIntermittentReservationAndUpdateUser,
+  createOneBedUserReservationUpdateUser,
   reset as resetReservations,
-  updateIntermittentReservation
+  updateOneBedUserReservationReservation
 } from '../booking-beds.reducer'
+import type { Customer, OneBedReservationDatesAndMeal } from '../models'
+import { createUserOneBedReservation } from '../utils'
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
 import { CustomerUpdate } from './customer-update'
 import { DatesAndMealsChoices } from './dates-and-meals-choices-intermittent'
 import { DatesAndMealsSummary } from './dates-and-meals-summary-intermittent'
 
-export interface DatesAndMeals {
-  arrivalDate: string
-  departureDate: string
-  isSpecialDiet: 'false' | 'true'
-  isArrivalLunch: boolean
-  isArrivalDinner: boolean
-  isDepartureLunch: boolean
-  isDepartureDinner: boolean
-  comment: string
-  isArrivalBreakfast: boolean
-  isDepartureBreakfast: boolean
-  commentMeals: string
-}
-
-export interface Customer {
-  id: number
-  firstname: string
-  lastname: string
-  email: string
-  phoneNumber: O.Option<string>
-  age: O.Option<number>
-}
-
-const createIReservation = (
-  customer: Customer,
-  datesAndMeals: DatesAndMeals,
-  bedId: O.Option<number>,
-  userId: number
-): IntermittentReservation => ({
-  id: O.none(),
-  userId,
-  // @ts-expect-error TODO: fix this
-  arrivalDate: datesAndMeals.arrivalDate,
-  // @ts-expect-error TODO: fix this
-  departureDate: datesAndMeals.departureDate,
-  isSpecialDiet: datesAndMeals.isSpecialDiet === 'true',
-  isArrivalLunch: datesAndMeals.isArrivalLunch,
-  isArrivalDiner: datesAndMeals.isArrivalDinner,
-  isDepartureLunch: datesAndMeals.isDepartureLunch,
-  isDepartureDiner: datesAndMeals.isDepartureDinner,
-  comment: datesAndMeals.comment,
-  bedId,
-  customer: {
-    id: customer.id,
-    firstname: customer.firstname,
-    lastname: customer.lastname,
-    email: customer.email,
-    phoneNumber: O.getOrUndefined(customer.phoneNumber),
-    age: O.getOrUndefined(customer.age)
-  },
-  isArrivalBreakfast: datesAndMeals.isArrivalBreakfast,
-  isDepartureBreakfast: datesAndMeals.isDepartureBreakfast,
-  commentMeals: datesAndMeals.commentMeals
-})
-
 export const ReservationIntermittentUpdate = (): JSX.Element => {
-  const [datesAndMeal, setDatesAndMeal] = useState<O.Option<DatesAndMeals>>(O.none)
+  const [datesAndMeal, setDatesAndMeal] = useState<O.Option<OneBedReservationDatesAndMeal>>(O.none)
   const [customer, setCustomer] = useState<O.Option<Customer>>(O.none)
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
@@ -99,23 +45,26 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
   const userId: number = useAppSelector(state => state.authentication.account.id)
 
   const handleSubmitReservation = async (
-    datesAndMeal: DatesAndMeals,
+    datesAndMeal: OneBedReservationDatesAndMeal,
     bedId: O.Option<number>,
     customer: Customer,
     userId: number
   ): Promise<void> => {
-    const reservation = createIReservation(customer, datesAndMeal, bedId, userId)
+    const reservation = createUserOneBedReservation(customer, datesAndMeal, bedId, userId)
 
     setIsLoading(true)
     if (reservationId !== undefined) {
       // FIXME: unsafe
       await dispatch(
-        updateIntermittentReservation({ ...reservation, id: O.some(Number(reservationId)) })
+        updateOneBedUserReservationReservation({
+          ...reservation,
+          id: O.some(Number(reservationId))
+        })
       )
       setIsLoading(false)
     } else {
       await dispatch(
-        createIntermittentReservationAndUpdateUser(reservation)
+        createOneBedUserReservationUpdateUser(reservation)
       )
 
       dispatch(getSession())
@@ -273,7 +222,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
             fontSize={'25'}
             color={'#C4C4C4'}
           >
-            {'Choix des lits'}
+            {'Choix du lit'}
           </Heading>
         )}
       {O.isSome(customer) && O.isSome(datesAndMeal) && O.isNone(bedId) && !updateDatesAndMeals

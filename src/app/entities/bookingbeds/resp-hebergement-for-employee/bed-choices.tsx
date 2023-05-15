@@ -23,11 +23,10 @@ interface DatesAndMealsChoicesProps {
   setSelectedBedId: (bedId: O.Option<number>) => void
   bedId: O.Option<number>
   datesAndMeals: O.Option<OneBedReservationDatesAndMeal>
-  reservationId: O.Option<string>
 }
 
 export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
-  { datesAndMeals, reservationId, setSelectedBedId, bedId }
+  { datesAndMeals, setSelectedBedId, bedId }
   // props
 ): JSX.Element => {
   const [rooms, setRooms] = useState<ReadonlyArray<IRoomWithBeds>>([])
@@ -67,7 +66,7 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
       getPlaceWithFreeAndBookedBedsAsync(
         datesAndMeals.value.arrivalDate,
         datesAndMeals.value.departureDate,
-        reservationId
+        O.none()
       )
     }
     setLoading(false)

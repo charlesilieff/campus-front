@@ -8,10 +8,10 @@ import {
 import React from 'react'
 import { BsPencil } from 'react-icons/bs'
 
-import type { DatesAndMeals } from './reservation-intermittent-update'
+import type { OneBedReservationDatesAndMeal } from '../models'
 
 interface DatesAndMealsSummaryProps {
-  datesAndMeals: DatesAndMeals
+  datesAndMeals: OneBedReservationDatesAndMeal
   setUpdate: (update: boolean) => void
 }
 

@@ -2,7 +2,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
 import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
 import { defaultValue } from 'app/shared/model/bookingBeds.model'
-import type { IntermittentReservation } from 'app/shared/model/intermittentReservation.model'
+import type { OneBedUserReservation } from 'app/shared/model/intermittentReservation.model'
 import type {
   EntityState
 } from 'app/shared/reducers/reducer.utils'
@@ -27,7 +27,7 @@ const initialState: EntityState<IBookingBeds> = {
 
 const apiUrlBookingBeds = 'api/bookingbeds'
 const apiUrlReservations = 'api/reservations'
-const apiUrlIntermittentReservation = 'api/intermittent/bookingbeds'
+const apiUrlIntermittentReservation = 'api/one-bed-with-user/bookingbeds'
 const apiAllPlaces = 'api/all-places-with-rooms-and-beds'
 // Actions
 
@@ -101,11 +101,11 @@ export const createReservationAndUpdateUser = createAsyncThunk(
   { serializeError: serializeAxiosError }
 )
 
-export const createIntermittentReservationAndUpdateUser = createAsyncThunk(
+export const createOneBedUserReservationUpdateUser = createAsyncThunk(
   'bookingBeds/create_entity',
-  async (intermittentReservation: IntermittentReservation) => {
+  async (intermittentReservation: OneBedUserReservation) => {
     const requestUrl = `${apiUrlIntermittentReservation}`
-    const result = await axios.post<IntermittentReservation>(
+    const result = await axios.post<OneBedUserReservation>(
       requestUrl,
       cleanEntity(intermittentReservation)
     )
@@ -144,10 +144,10 @@ export const updateEntity = createAsyncThunk(
   { serializeError: serializeAxiosError }
 )
 
-export const updateIntermittentReservation = createAsyncThunk(
+export const updateOneBedUserReservationReservation = createAsyncThunk(
   'bookingBeds/update_entity',
-  async (entity: IntermittentReservation) => {
-    const result = await axios.put<IntermittentReservation>(
+  async (entity: OneBedUserReservation) => {
+    const result = await axios.put<OneBedUserReservation>(
       `${apiUrlIntermittentReservation}/${entity.id}`,
       cleanEntity(entity)
     )

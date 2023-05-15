@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
+import * as R from '@effect/data/ReadonlyRecord'
 import pick from 'lodash/pick'
 
 /**
@@ -15,7 +18,11 @@ export const cleanEntity = (entity: Record<string, any>) => {
     !(entity[k] instanceof Object) || (entity[k]['id'] !== '' && entity[k]['id'] !== -1)
   )
 
-  return pick(entity, keysToKeep)
+  return pipe(
+    pick(entity, keysToKeep),
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    R.map(value => O.isOption(value) ? O.getOrUndefined(value) : value)
+  )
 }
 
 /**

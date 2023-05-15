@@ -9,24 +9,18 @@ import {
   Stack,
   VStack
 } from '@chakra-ui/react'
+import * as O from '@effect/data/Option'
 import { useAppDispatch } from 'app/config/store'
 import { getUsersAsAdmin } from 'app/modules/administration/user-management/user-management.reducer'
 import React, { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import type { Customer } from './reservation-update'
-
 interface UserUpdateProps {
-  setUserId: (userId: number) => void
+  setUserId: (userId: O.Option<number>) => void
   setUpdateUser: (updateUser: boolean) => void
-  customer: Customer
+  email: string
   setUpdateMeal: (updateMeal: boolean) => void
   setUpdateCustomer: (updateCustomer: boolean) => void
-}
-
-export interface FormUser {
-  id: number
 }
 
 export const UserSummary = (
@@ -42,12 +36,8 @@ export const UserSummary = (
     )
   }
 
-  const {
-    handleSubmit
-  } = useForm<FormUser>()
-
-  const handleValidUserSubmit = () => {
-    props.setUserId(null)
+  const handleChangeUser = () => {
+    props.setUserId(O.none())
     props.setUpdateMeal(true)
     props.setUpdateCustomer(true)
     props.setUpdateUser(true) // todo false if we want to update the user
@@ -70,37 +60,34 @@ export const UserSummary = (
           <BsPencil size={'30px'} color={'black'}></BsPencil>
         </HStack>
         <Box minW={'500px'}>
-          <form
-            onSubmit={handleSubmit(handleValidUserSubmit)}
-          >
-            <VStack spacing={2} alignItems={'left'}>
-              <Stack
-                spacing={2}
-                alignItems={'flex-start'}
-                width="100%"
-                direction={['column', 'row']}
-              >
-                <FormControl>
-                  <FormLabel htmlFor="users" fontWeight={'bold'}>
-                    {'Email :'}
-                  </FormLabel>
-                </FormControl>
-                <FormControl>
-                  <FormLabel htmlFor="users">
-                    {props.customer.email}
-                  </FormLabel>
-                </FormControl>
-              </Stack>
-              <Button
-                rightIcon={<CheckIcon />}
-                colorScheme={'blue'}
-                alignSelf={'flex-start'}
-                type="submit"
-              >
-                Modifier
-              </Button>
-            </VStack>
-          </form>
+          <VStack spacing={2} alignItems={'left'}>
+            <Stack
+              spacing={2}
+              alignItems={'flex-start'}
+              width="100%"
+              direction={['column', 'row']}
+            >
+              <FormControl>
+                <FormLabel htmlFor="users" fontWeight={'bold'}>
+                  {'Email :'}
+                </FormLabel>
+              </FormControl>
+              <FormControl>
+                <FormLabel htmlFor="users">
+                  {props.email}
+                </FormLabel>
+              </FormControl>
+            </Stack>
+            <Button
+              rightIcon={<CheckIcon />}
+              colorScheme={'blue'}
+              alignSelf={'flex-start'}
+              type="submit"
+              onClick={handleChangeUser}
+            >
+              Modifier
+            </Button>
+          </VStack>
         </Box>
       </VStack>
     </VStack>

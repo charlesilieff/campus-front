@@ -21,14 +21,15 @@ import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import type { OneBedReservationDatesAndMeal } from '../models'
+import type {
+  OneBedReservationDatesAndMealAndWeekEndMeals
+} from '../models'
 import { isArrivalDateIsBeforeDepartureDate } from '../utils'
 
 interface DatesAndMealsChoicesProps {
-  setDatesAndMeal: (datesAndMeal: O.Option<OneBedReservationDatesAndMeal>) => void
+  setDatesAndMeal: (datesAndMeal: O.Option<OneBedReservationDatesAndMealAndWeekEndMeals>) => void
   setUpdateDatesAndMeals: (updateDatesAndMeals: boolean) => void
-  datesAndMeals: O.Option<OneBedReservationDatesAndMeal>
-  setBedId: (bedId: O.Option<number>) => void
+  datesAndMeals: O.Option<OneBedReservationDatesAndMealAndWeekEndMeals>
 }
 
 export const DatesAndMealsChoices = (
@@ -40,7 +41,7 @@ export const DatesAndMealsChoices = (
     watch,
     formState: { errors },
     reset: resetForm
-  } = useForm<OneBedReservationDatesAndMeal>()
+  } = useForm<OneBedReservationDatesAndMealAndWeekEndMeals>()
 
   useEffect(() => {
     resetForm(
@@ -52,9 +53,8 @@ export const DatesAndMealsChoices = (
   departureDate.current = watch('departureDate', '')
 
   const handleValidDateAndMealSubmit = (
-    datesAndMeal: OneBedReservationDatesAndMeal
+    datesAndMeal: OneBedReservationDatesAndMealAndWeekEndMeals
   ): void => {
-    props.setBedId(O.none())
     props.setUpdateDatesAndMeals(false)
     props.setDatesAndMeal(O.some(datesAndMeal))
   }
@@ -194,7 +194,22 @@ export const DatesAndMealsChoices = (
                   </HStack>
                 </RadioGroup>
               </FormControl>
+              <FormControl isRequired isInvalid={errors.isWeekEndMeals !== undefined}>
+                <FormLabel htmlFor="selectionRepas" fontWeight={'bold'}>
+                  {'Repas du week-end ?'}
+                </FormLabel>
 
+                <RadioGroup
+                  defaultValue={O.isSome(props.datesAndMeals) ?
+                    props.datesAndMeals.value.isWeekEndMeals :
+                    undefined}
+                >
+                  <HStack spacing="24px">
+                    <Radio {...register('isWeekEndMeals')} value={'true'} mb={0}>Oui</Radio>
+                    <Radio {...register('isWeekEndMeals')} value={'false'}>Non</Radio>
+                  </HStack>
+                </RadioGroup>
+              </FormControl>
               <FormControl
                 isInvalid={errors.commentMeals !== undefined}
                 width={'auto'}

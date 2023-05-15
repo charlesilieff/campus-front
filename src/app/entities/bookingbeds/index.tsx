@@ -7,7 +7,8 @@ import { ReservationInviteUpdate } from './invite/reservation-invite-update'
 import { ReservationDetail } from './reservation-detail'
 import { ReservationUpdate } from './resp-hebergement/reservation-update'
 // import { ReservationUserUpdate } from './resp-hebergement-for-user/reservation-update'
-import { ReservationUserUpdate } from './resp-hebergement-for-habitant/reservation-update'
+import { ReservationEmployeeUpdate } from './resp-hebergement-for-employee/reservation-update'
+import { ReservationHabitantUpdate } from './resp-hebergement-for-habitant/reservation-update'
 
 export const BookingBedsRoutes = (): JSX.Element => (
   <ErrorBoundaryRoutes>
@@ -18,7 +19,11 @@ export const BookingBedsRoutes = (): JSX.Element => (
     />
     <Route
       path={`new/habitant`}
-      element={<ReservationUserUpdate />}
+      element={<ReservationHabitantUpdate />}
+    />
+    <Route
+      path={`new/employee`}
+      element={<ReservationEmployeeUpdate />}
     />
     <Route
       path={`new/invite`}

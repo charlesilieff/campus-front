@@ -1,10 +1,13 @@
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import type { IBedroomKind } from 'app/shared/model/bedroom-kind.model'
+import type { OneBedUserReservation } from 'app/shared/model/intermittentReservation.model'
 import type { ITypeReservation } from 'app/shared/model/typeReservation.model'
 import type { IUserCategory } from 'app/shared/model/userCategory.model'
 import axios from 'axios'
 import dayjs from 'dayjs'
+
+import type { Customer, OneBedReservationDatesAndMeal } from './models'
 
 const apiUrlAllPlaces = 'api/planning/places'
 
@@ -141,3 +144,35 @@ export const isArrivalDateIsEgalDepartureDate = (d1: string, d2: string): boolea
     O.exists(x => x)
   )
 }
+
+export const createUserOneBedReservation = (
+  customer: Customer,
+  datesAndMeals: OneBedReservationDatesAndMeal,
+  bedId: O.Option<number>,
+  userId: number
+): OneBedUserReservation => ({
+  id: O.none(),
+  userId,
+  // @ts-expect-error TODO: fix this
+  arrivalDate: datesAndMeals.arrivalDate,
+  // @ts-expect-error TODO: fix this
+  departureDate: datesAndMeals.departureDate,
+  isSpecialDiet: datesAndMeals.isSpecialDiet === 'true',
+  isArrivalLunch: datesAndMeals.isArrivalLunch,
+  isArrivalDiner: datesAndMeals.isArrivalDinner,
+  isDepartureLunch: datesAndMeals.isDepartureLunch,
+  isDepartureDiner: datesAndMeals.isDepartureDinner,
+  comment: datesAndMeals.comment,
+  bedId,
+  customer: {
+    id: customer.id,
+    firstname: customer.firstname,
+    lastname: customer.lastname,
+    email: customer.email,
+    phoneNumber: O.getOrUndefined(customer.phoneNumber),
+    age: O.getOrUndefined(customer.age)
+  },
+  isArrivalBreakfast: datesAndMeals.isArrivalBreakfast,
+  isDepartureBreakfast: datesAndMeals.isDepartureBreakfast,
+  commentMeals: datesAndMeals.commentMeals
+})

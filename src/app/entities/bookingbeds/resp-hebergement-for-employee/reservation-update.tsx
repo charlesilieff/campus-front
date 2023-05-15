@@ -1,31 +1,28 @@
 import { CheckIcon } from '@chakra-ui/icons'
 import { Button, Heading, HStack, Stack, useToast } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
-import * as A from '@effect/data/ReadonlyArray'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getSession } from 'app/shared/reducers/authentication'
 import React, { useEffect, useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import {
-  getReservation
-} from '../../reservation/reservation.reducer'
-import {
   createOneBedUserReservationUpdateUser,
-  reset as resetReservations,
-  updateOneBedUserReservationReservation
+  reset as resetReservations
 } from '../booking-beds.reducer'
-import type { Customer, OneBedReservationDatesAndMeal } from '../models'
+import type {
+  Customer,
+  OneBedReservationDatesAndMeal,
+  OneBedReservationDatesAndMealAndWeekEndMeals
+} from '../models'
+import { UserSummary } from '../resp-hebergement-for-habitant/user-summary'
 import { createUserOneBedReservation } from '../utils'
-import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
 import { CustomerUpdate } from './customer-update'
 import { DatesAndMealsChoices } from './dates-and-meals-choices-user'
 import { DatesAndMealsSummary } from './dates-and-meals-summary-user'
 import { UserSelect } from './user-select'
-import { UserSummary } from './user-summary'
 
 export interface User {
   id: number
@@ -37,8 +34,10 @@ export interface User {
 
 export type BedIds = ReadonlyArray<{ id: number }>
 
-export const ReservationHabitantUpdate = (): JSX.Element => {
-  const [datesAndMeal, setDatesAndMeal] = useState<O.Option<OneBedReservationDatesAndMeal>>(
+export const ReservationEmployeeUpdate = (): JSX.Element => {
+  const [datesAndMeal, setDatesAndMeal] = useState<
+    O.Option<OneBedReservationDatesAndMealAndWeekEndMeals>
+  >(
     O.none()
   )
   const [customer, setCustomer] = useState<O.Option<Customer>>(O.none())
@@ -46,7 +45,6 @@ export const ReservationHabitantUpdate = (): JSX.Element => {
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
   const [selectUser, setSelectUser] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
-  const { reservationId } = useParams<{ reservationId: string }>()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const toast = useToast()
@@ -57,89 +55,39 @@ export const ReservationHabitantUpdate = (): JSX.Element => {
 
   const handleSubmitReservation = async (
     datesAndMeal: OneBedReservationDatesAndMeal,
-    bedId: number,
     customer: Customer,
     userId: number
   ): Promise<void> => {
     setIsLoading(true)
-    const reservation = createUserOneBedReservation(customer, datesAndMeal, O.some(bedId), userId)
+    const reservation = createUserOneBedReservation(customer, datesAndMeal, O.none(), userId)
 
-    if (reservationId !== undefined) {
-      // FIXME: unsafe
-      await dispatch(
-        updateOneBedUserReservationReservation({
-          ...reservation,
-          id: O.some(Number(reservationId))
-        })
-      )
-      setIsLoading(false)
-    } else {
-      await dispatch(
-        createOneBedUserReservationUpdateUser(reservation)
-      )
-
-      dispatch(getSession())
-      setIsLoading(false)
-    }
-  }
-
-  const backendReservation = useAppSelector(state => state.reservation.entity)
-
-  useEffect(() => {
-    pipe(
-      reservationId,
-      O.fromNullable,
-      O.map(id => dispatch(getReservation(id)))
+    await dispatch(
+      createOneBedUserReservationUpdateUser(reservation)
     )
 
-    if (backendReservation.arrivalDate !== undefined) {
-      setDatesAndMeal(O.some({
-        arrivalDate: backendReservation?.arrivalDate.toString(),
-        departureDate: backendReservation.departureDate.toString(),
-        isSpecialDiet: backendReservation.specialDietNumber === 1 ? 'true' : 'false',
-        isArrivalLunch: backendReservation.isArrivalLunch,
-        isArrivalDinner: backendReservation.isArrivalDiner,
-        isDepartureLunch: backendReservation.isDepartureLunch,
-        isDepartureDinner: backendReservation.isDepartureDiner,
-        comment: backendReservation.comment,
-        isArrivalBreakfast: backendReservation.isArrivalBreakfast,
-        isDepartureBreakfast: backendReservation.isDepartureBreakfast,
-        commentMeals: backendReservation.commentMeals
-      }))
-      setBedId(pipe(backendReservation.beds, A.head, O.map(bed => bed.id)))
-    }
-  }, [backendReservation.id])
+    dispatch(getSession())
+    setIsLoading(false)
+  }
+
   useEffect(() => {
-    if (reservationId === undefined) {
-      dispatch(resetReservations())
-      setDatesAndMeal(O.none)
-      setUpdateDatesAndMeals(false)
-    }
+    dispatch(resetReservations())
+    setDatesAndMeal(O.none)
+    setUpdateDatesAndMeals(false)
   }, [])
-  const [bedId, setBedId] = useState<O.Option<number>>(O.none)
 
   useEffect(() => {
     if (updateSuccess) {
       dispatch(resetReservations())
-      if (reservationId !== undefined) {
-        toast({
-          position: 'top',
-          title: 'Réservation modifiée !',
-          description: 'A bientôt !',
-          status: 'success',
-          duration: 9000,
-          isClosable: true
-        })
-      } else {
-        toast({
-          position: 'top',
-          title: 'Réservation crée !',
-          description: 'A bientôt !',
-          status: 'success',
-          duration: 9000,
-          isClosable: true
-        })
-      }
+
+      toast({
+        position: 'top',
+        title: 'Réservation crée !',
+        description: 'A bientôt !',
+        status: 'success',
+        duration: 9000,
+        isClosable: true
+      })
+
       navigate('/planning')
     }
   }, [updateSuccess])
@@ -147,7 +95,7 @@ export const ReservationHabitantUpdate = (): JSX.Element => {
   return (
     <Stack>
       <Heading size={'lg'} m={4}>
-        Créer une réservation pour un habitant
+        Créer une réservation pour un salarié
       </Heading>
 
       {O.isNone(userId) || O.isNone(customer) ?
@@ -218,7 +166,6 @@ export const ReservationHabitantUpdate = (): JSX.Element => {
             datesAndMeals={datesAndMeal}
             setUpdateDatesAndMeals={setUpdateDatesAndMeals}
             setDatesAndMeal={setDatesAndMeal}
-            setBedId={setBedId}
           />
         ) :
         (
@@ -227,30 +174,7 @@ export const ReservationHabitantUpdate = (): JSX.Element => {
             setUpdate={setUpdateDatesAndMeals}
           />
         )}
-
-      {O.isSome(datesAndMeal) && !updateDatesAndMeals && userId ?
-        (
-          <BedsChoices
-            datesAndMeals={datesAndMeal}
-            bedId={bedId}
-            setSelectedBedId={setBedId}
-            reservationId={O.fromNullable(reservationId)}
-          />
-        ) :
-        (
-          <Heading
-            p={4}
-            borderRadius={8}
-            borderColor={'#D9D9D9'}
-            border={'solid'}
-            fontWeight={'bold'}
-            fontSize={'25'}
-            color={'#C4C4C4'}
-          >
-            {'Choix du lit'}
-          </Heading>
-        )}
-      {O.isSome(customer) && O.isSome(datesAndMeal) && O.isSome(bedId) && O.isSome(userId)
+      {O.isSome(customer) && O.isSome(datesAndMeal) && O.isSome(userId)
           && !updateDatesAndMeals && !updateCustomer ?
         (
           <HStack justifyContent={'end'}>
@@ -269,7 +193,6 @@ export const ReservationHabitantUpdate = (): JSX.Element => {
               onClick={() =>
                 handleSubmitReservation(
                   datesAndMeal.value,
-                  bedId.value,
                   customer.value,
                   userId.value
                 )}

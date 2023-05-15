@@ -2,7 +2,7 @@ import type * as O from '@effect/data/Option'
 
 import type { ICustomer } from './customer.model'
 
-export interface IntermittentReservation {
+export interface OneBedUserReservation {
   id: O.Option<number>
   arrivalDate: Date
   departureDate: Date

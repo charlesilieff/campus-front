@@ -30,6 +30,7 @@ export const Home = (): JSX.Element => {
 
   const reservationCreationIntermittentUrl = `bookingbeds/new/intermittent`
   const reservationCreationHabitantUrl = `bookingbeds/new/habitant`
+  const reservationCreationEmployeeUrl = `bookingbeds/new/employee`
   const reservationCreationCustomerUrl = `bookingbeds/new`
   // const reservationCreationInviteUrl = `bookingbeds/new/invite`
 
@@ -193,36 +194,68 @@ export const Home = (): JSX.Element => {
           ''}
         {isRespHebergement ?
           (
-            <Box
-              py={'10px'}
-              px={'25px'}
-              backgroundColor={'#C6F6D5'}
-              borderLeft={'4px'}
-              borderColor={'#38A169'}
-              minW={{ base: '380px', md: '650px' }}
-            >
-              <Stack justifyContent={'space-between'} direction={{ base: 'column', md: 'row' }}>
-                <VStack alignItems={'flex-start'}>
-                  <HStack>
-                    <BsPlusCircleFill color="#38A169" size={'24px'} />
-                    <Text fontWeight={'bold'}>Nouvelle réservation pour un habitant</Text>
-                  </HStack>
-                </VStack>
-                <Button
-                  as={Link}
-                  to={reservationCreationHabitantUrl}
-                  colorScheme={'green'}
-                  _hover={{
-                    textDecoration: 'none',
-                    color: 'white',
-                    backgroundColor: '#38A169'
-                  }}
-                  size={{ base: 'sm', md: 'md' }}
-                >
-                  Créer une réservation
-                </Button>
-              </Stack>
-            </Box>
+            <>
+              <Box
+                py={'10px'}
+                px={'25px'}
+                backgroundColor={'#C6F6D5'}
+                borderLeft={'4px'}
+                borderColor={'#38A169'}
+                minW={{ base: '380px', md: '650px' }}
+              >
+                <Stack justifyContent={'space-between'} direction={{ base: 'column', md: 'row' }}>
+                  <VStack alignItems={'flex-start'}>
+                    <HStack>
+                      <BsPlusCircleFill color="#38A169" size={'24px'} />
+                      <Text fontWeight={'bold'}>Nouvelle réservation pour un habitant</Text>
+                    </HStack>
+                  </VStack>
+                  <Button
+                    as={Link}
+                    to={reservationCreationHabitantUrl}
+                    colorScheme={'green'}
+                    _hover={{
+                      textDecoration: 'none',
+                      color: 'white',
+                      backgroundColor: '#38A169'
+                    }}
+                    size={{ base: 'sm', md: 'md' }}
+                  >
+                    Créer une réservation
+                  </Button>
+                </Stack>
+              </Box>
+              <Box
+                py={'10px'}
+                px={'25px'}
+                backgroundColor={'#C6F6D5'}
+                borderLeft={'4px'}
+                borderColor={'#38A169'}
+                minW={{ base: '380px', md: '650px' }}
+              >
+                <Stack justifyContent={'space-between'} direction={{ base: 'column', md: 'row' }}>
+                  <VStack alignItems={'flex-start'}>
+                    <HStack>
+                      <BsPlusCircleFill color="#38A169" size={'24px'} />
+                      <Text fontWeight={'bold'}>Nouvelle réservation pour un salarié</Text>
+                    </HStack>
+                  </VStack>
+                  <Button
+                    as={Link}
+                    to={reservationCreationEmployeeUrl}
+                    colorScheme={'green'}
+                    _hover={{
+                      textDecoration: 'none',
+                      color: 'white',
+                      backgroundColor: '#38A169'
+                    }}
+                    size={{ base: 'sm', md: 'md' }}
+                  >
+                    Créer une réservation
+                  </Button>
+                </Stack>
+              </Box>
+            </>
           ) :
           ''}
         {

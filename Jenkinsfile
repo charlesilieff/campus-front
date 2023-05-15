@@ -25,20 +25,20 @@ pipeline {
                          echo "Docker image name is now: ${DOCKER_IMAGE_NAME}"
                          }
                       }
-                echo "Npm install..."
-                sh "npm install"
+                echo "Pnpm install..."
+                sh "pnpm install"
             }
         }
         stage('Lint') {
             steps {
                 echo "Linting..."
-                sh "npm run lint"
+                sh "pnpm lint"
             }
         }
         stage('Package') {
             steps {
                 echo "Compiling with vite..."
-                sh "npm run vite-build"
+                sh "pnpm vite-build"
             }
         }
         stage('Docker push'){
