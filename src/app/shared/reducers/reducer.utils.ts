@@ -12,7 +12,6 @@ import {
   createSlice
 } from '@reduxjs/toolkit'
 import type { AxiosError } from 'axios'
-import type {} from 'immer/dist/internal'
 
 /**
  * Model for redux actions with pagination

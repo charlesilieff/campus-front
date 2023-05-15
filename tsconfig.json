@@ -1,4 +1,5 @@
 {
+  "declaration": false,
   "compilerOptions": {
     "strict": false,
     "composite": true,
