@@ -13,7 +13,7 @@ import type { IBedroomKind } from 'app/shared/model/bedroom-kind.model'
 import type { FunctionComponent } from 'react'
 import React, { useEffect, useState } from 'react'
 
-import type { OneBedReservationDatesAndMeal } from '../models'
+import type { OneBedReservationDatesAndMeals } from '../models'
 import type { IPlace, IRoomWithBeds } from '../utils'
 import { getPlaceWithFreeBedsAndBookedBeds } from '../utils'
 import { getOnePlace } from '../utils'
@@ -22,7 +22,7 @@ import { IntermittentBeds } from './beds-user'
 interface DatesAndMealsChoicesProps {
   setSelectedBedId: (bedId: O.Option<number>) => void
   bedId: O.Option<number>
-  datesAndMeals: O.Option<OneBedReservationDatesAndMeal>
+  datesAndMeals: O.Option<OneBedReservationDatesAndMeals>
 }
 
 export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (

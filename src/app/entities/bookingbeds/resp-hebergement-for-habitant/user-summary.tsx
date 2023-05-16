@@ -4,8 +4,6 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Heading,
-  HStack,
   Stack,
   VStack
 } from '@chakra-ui/react'
@@ -13,7 +11,6 @@ import * as O from '@effect/data/Option'
 import { useAppDispatch } from 'app/config/store'
 import { getUsersAsAdmin } from 'app/modules/administration/user-management/user-management.reducer'
 import React, { useEffect } from 'react'
-import { BsPencil } from 'react-icons/bs'
 
 interface UserUpdateProps {
   setUserId: (userId: O.Option<number>) => void
@@ -53,12 +50,6 @@ export const UserSummary = (
         borderRadius={8}
         borderColor={'green'}
       >
-        <HStack>
-          <Heading size={'md'}>
-            Selectionner l&apos;utilisateur
-          </Heading>
-          <BsPencil size={'30px'} color={'black'}></BsPencil>
-        </HStack>
         <Box minW={'500px'}>
           <VStack spacing={2} alignItems={'left'}>
             <Stack

@@ -17,7 +17,7 @@ import {
   reset as resetReservations,
   updateOneBedUserReservationReservation
 } from '../booking-beds.reducer'
-import type { Customer, OneBedReservationDatesAndMeal } from '../models'
+import type { Customer, OneBedReservationDatesAndMeals } from '../models'
 import { createUserOneBedReservation } from '../utils'
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
@@ -38,7 +38,7 @@ export interface User {
 export type BedIds = ReadonlyArray<{ id: number }>
 
 export const ReservationHabitantUpdate = (): JSX.Element => {
-  const [datesAndMeal, setDatesAndMeal] = useState<O.Option<OneBedReservationDatesAndMeal>>(
+  const [datesAndMeal, setDatesAndMeal] = useState<O.Option<OneBedReservationDatesAndMeals>>(
     O.none()
   )
   const [customer, setCustomer] = useState<O.Option<Customer>>(O.none())
@@ -56,7 +56,7 @@ export const ReservationHabitantUpdate = (): JSX.Element => {
   const [userId, setUserId] = useState<O.Option<number>>(O.none())
 
   const handleSubmitReservation = async (
-    datesAndMeal: OneBedReservationDatesAndMeal,
+    datesAndMeal: OneBedReservationDatesAndMeals,
     bedId: number,
     customer: Customer,
     userId: number

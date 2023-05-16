@@ -1,13 +1,15 @@
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import type { IBedroomKind } from 'app/shared/model/bedroom-kind.model'
-import type { OneBedUserReservation } from 'app/shared/model/intermittentReservation.model'
+import type { MealsOnlyUserReservation } from 'app/shared/model/mealsReservation.model'
+import type { OneBedUserReservation } from 'app/shared/model/onebedReservation.model'
 import type { ITypeReservation } from 'app/shared/model/typeReservation.model'
 import type { IUserCategory } from 'app/shared/model/userCategory.model'
 import axios from 'axios'
 import dayjs from 'dayjs'
 
-import type { Customer, OneBedReservationDatesAndMeal } from './models'
+import type { Customer, MealsOnlyReservationDatesAndMeals,
+  OneBedReservationDatesAndMeals } from './models'
 
 const apiUrlAllPlaces = 'api/planning/places'
 
@@ -147,7 +149,7 @@ export const isArrivalDateIsEgalDepartureDate = (d1: string, d2: string): boolea
 
 export const createUserOneBedReservation = (
   customer: Customer,
-  datesAndMeals: OneBedReservationDatesAndMeal,
+  datesAndMeals: OneBedReservationDatesAndMeals,
   bedId: O.Option<number>,
   userId: number
 ): OneBedUserReservation => ({
@@ -174,5 +176,32 @@ export const createUserOneBedReservation = (
   },
   isArrivalBreakfast: datesAndMeals.isArrivalBreakfast,
   isDepartureBreakfast: datesAndMeals.isDepartureBreakfast,
+  commentMeals: datesAndMeals.commentMeals
+})
+
+export const createUserMealsOnlyReservation = (
+  customer: Customer,
+  datesAndMeals: MealsOnlyReservationDatesAndMeals,
+  bedId: O.Option<number>,
+  userId: number
+): MealsOnlyUserReservation => ({
+  id: O.none(),
+  userId,
+  // @ts-expect-error TODO: fix this
+  arrivalDate: datesAndMeals.arrivalDate,
+  // @ts-expect-error TODO: fix this
+  departureDate: datesAndMeals.departureDate,
+  isSpecialDiet: datesAndMeals.isSpecialDiet === 'true',
+  comment: datesAndMeals.comment,
+  bedId,
+  customer: {
+    id: customer.id,
+    firstname: customer.firstname,
+    lastname: customer.lastname,
+    email: customer.email,
+    phoneNumber: O.getOrUndefined(customer.phoneNumber),
+    age: O.getOrUndefined(customer.age)
+  },
+  weekMeals: datesAndMeals.weekMeals,
   commentMeals: datesAndMeals.commentMeals
 })

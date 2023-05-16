@@ -1,3 +1,4 @@
+import { CheckCircleIcon } from '@chakra-ui/icons'
 import {
   Button,
   Heading,
@@ -9,10 +10,10 @@ import {
 import React from 'react'
 import { BsPencil } from 'react-icons/bs'
 
-import type { OneBedReservationDatesAndMeal } from '../models'
+import type { OneBedReservationDatesAndMeals } from '../models'
 
 interface DatesAndMealsSummaryProps {
-  datesAndMeals: OneBedReservationDatesAndMeal
+  datesAndMeals: OneBedReservationDatesAndMeals
   setUpdate: (update: boolean) => void
 }
 
@@ -28,7 +29,8 @@ export const DatesAndMealsSummary = (
       isDepartureLunch,
       isSpecialDiet,
       isArrivalBreakfast,
-      isDepartureBreakfast
+      isDepartureBreakfast,
+      commentMeals
     },
     setUpdate
   }: DatesAndMealsSummaryProps
@@ -63,7 +65,7 @@ export const DatesAndMealsSummary = (
       borderColor={'green'}
     >
       <Heading size={'lg'} marginBottom={4}>
-        Dates et repas
+        Dates et repas <CheckCircleIcon color={'green'}></CheckCircleIcon>
       </Heading>
 
       <Stack py={2} direction={{ base: 'column', md: 'row' }}>
@@ -90,8 +92,14 @@ export const DatesAndMealsSummary = (
         <Text>{isSpecialDiet === 'true' ? 'Oui' : 'Non'}</Text>
       </HStack>
       <VStack alignItems={'flex-start'} py={2}>
-        <Text fontWeight={'bold'}>Commentaire :</Text>
+        <Text fontWeight={'bold'}>Votre commentaire à propos de la réservation :</Text>
         <Text>{comment}</Text>
+      </VStack>
+      <VStack alignItems={'flex-start'} py={2}>
+        <Text fontWeight={'bold'}>
+          Votre commentaire à propos des repas (ex : allergie, régime, vegan...) :
+        </Text>
+        <Text>{commentMeals}</Text>
       </VStack>
       <Button
         colorScheme="blue"

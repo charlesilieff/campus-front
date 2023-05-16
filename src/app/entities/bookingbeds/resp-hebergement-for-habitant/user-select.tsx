@@ -104,7 +104,7 @@ export const UserSelect = (
       >
         <HStack>
           <Heading size={'md'}>
-            Selectionner l&apos;utilisateur
+            Sélectionner l&apos;email
           </Heading>
           <BsPencil size={'30px'} color={'black'}></BsPencil>
         </HStack>

@@ -2,7 +2,8 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
 import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
 import { defaultValue } from 'app/shared/model/bookingBeds.model'
-import type { OneBedUserReservation } from 'app/shared/model/intermittentReservation.model'
+import type { MealsOnlyUserReservation } from 'app/shared/model/mealsReservation.model'
+import type { OneBedUserReservation } from 'app/shared/model/onebedReservation.model'
 import type {
   EntityState
 } from 'app/shared/reducers/reducer.utils'
@@ -27,7 +28,8 @@ const initialState: EntityState<IBookingBeds> = {
 
 const apiUrlBookingBeds = 'api/bookingbeds'
 const apiUrlReservations = 'api/reservations'
-const apiUrlIntermittentReservation = 'api/one-bed-with-user/bookingbeds'
+const apiUrlOneBedUserReservation = 'api/one-bed-with-user/bookingbeds'
+const apiUrlMealsOnlyUserReservation = 'api/meals-only-with-user/bookingbeds'
 const apiAllPlaces = 'api/all-places-with-rooms-and-beds'
 // Actions
 
@@ -104,10 +106,24 @@ export const createReservationAndUpdateUser = createAsyncThunk(
 export const createOneBedUserReservationUpdateUser = createAsyncThunk(
   'bookingBeds/create_entity',
   async (intermittentReservation: OneBedUserReservation) => {
-    const requestUrl = `${apiUrlIntermittentReservation}`
+    const requestUrl = `${apiUrlOneBedUserReservation}`
     const result = await axios.post<OneBedUserReservation>(
       requestUrl,
       cleanEntity(intermittentReservation)
+    )
+
+    return result
+  },
+  { serializeError: serializeAxiosError }
+)
+
+export const createMealsOnlyReservationReservationUpdateUser = createAsyncThunk(
+  'bookingBeds/create_entity',
+  async (mealsOnlyReservation: MealsOnlyUserReservation) => {
+    const requestUrl = `${apiUrlMealsOnlyUserReservation}`
+    const result = await axios.post<MealsOnlyUserReservation>(
+      requestUrl,
+      cleanEntity(mealsOnlyReservation)
     )
 
     return result
@@ -148,7 +164,7 @@ export const updateOneBedUserReservationReservation = createAsyncThunk(
   'bookingBeds/update_entity',
   async (entity: OneBedUserReservation) => {
     const result = await axios.put<OneBedUserReservation>(
-      `${apiUrlIntermittentReservation}/${entity.id}`,
+      `${apiUrlOneBedUserReservation}/${entity.id}`,
       cleanEntity(entity)
     )
     return result

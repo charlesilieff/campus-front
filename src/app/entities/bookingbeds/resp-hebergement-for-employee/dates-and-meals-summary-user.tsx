@@ -1,3 +1,4 @@
+import { CheckCircleIcon } from '@chakra-ui/icons'
 import {
   Button,
   Heading,
@@ -9,10 +10,10 @@ import {
 import React from 'react'
 import { BsPencil } from 'react-icons/bs'
 
-import type { OneBedReservationDatesAndMeal } from '../models'
+import type { MealsOnlyReservationDatesAndMeals } from '../models'
 
 interface DatesAndMealsSummaryProps {
-  datesAndMeals: OneBedReservationDatesAndMeal
+  datesAndMeals: MealsOnlyReservationDatesAndMeals
   setUpdate: (update: boolean) => void
 }
 
@@ -22,18 +23,20 @@ export const DatesAndMealsSummary = (
       arrivalDate,
       comment,
       departureDate,
-      isArrivalDinner,
-      isArrivalLunch,
-      isDepartureDinner,
-      isDepartureLunch,
+      weekMeals,
       isSpecialDiet,
-      isArrivalBreakfast,
-      isDepartureBreakfast
+      commentMeals
     },
     setUpdate
   }: DatesAndMealsSummaryProps
 ): JSX.Element => {
-  const mealSelected = (isBreakfast: boolean, isDinner: boolean, isLunch: boolean): string => {
+  const mealSelected = (
+    { isBreakfast, isDinner, isLunch }: {
+      isBreakfast: boolean
+      isDinner: boolean
+      isLunch: boolean
+    }
+  ): string => {
     if (isBreakfast && isDinner && isLunch) {
       return 'petit déjeuner, déjeuner et dîner'
     } else if (isBreakfast && isLunch) {
@@ -63,7 +66,7 @@ export const DatesAndMealsSummary = (
       borderColor={'green'}
     >
       <Heading size={'lg'} marginBottom={4}>
-        Dates et repas
+        Dates et repas <CheckCircleIcon color={'green'}></CheckCircleIcon>
       </Heading>
 
       <Stack py={2} direction={{ base: 'column', md: 'row' }}>
@@ -75,14 +78,32 @@ export const DatesAndMealsSummary = (
       <VStack alignItems={'flex-start'} py={2}>
         <Text fontWeight={'bold'}>Repas sélectionnés :</Text>
         <HStack>
-          <Text fontWeight={'bold'}>{"Jour d'arrivée :"}</Text>
-          <Text>{mealSelected(isArrivalBreakfast, isArrivalDinner, isArrivalLunch)}</Text>
+          <Text fontWeight={'bold'}>{'Lundi : '}</Text>
+          <Text>{mealSelected(weekMeals.monday)}</Text>
         </HStack>
         <HStack>
-          <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>
-          <Text>
-            {mealSelected(isDepartureBreakfast, isDepartureDinner, isDepartureLunch)}
-          </Text>
+          <Text fontWeight={'bold'}>{'Mardi : '}</Text>
+          <Text>{mealSelected(weekMeals.tuesday)}</Text>
+        </HStack>
+        <HStack>
+          <Text fontWeight={'bold'}>{'Mercredi : '}</Text>
+          <Text>{mealSelected(weekMeals.wednesday)}</Text>
+        </HStack>
+        <HStack>
+          <Text fontWeight={'bold'}>{'Jeudi : '}</Text>
+          <Text>{mealSelected(weekMeals.thursday)}</Text>
+        </HStack>
+        <HStack>
+          <Text fontWeight={'bold'}>{'Vendredi : '}</Text>
+          <Text>{mealSelected(weekMeals.friday)}</Text>
+        </HStack>
+        <HStack>
+          <Text fontWeight={'bold'}>{'Samedi : '}</Text>
+          <Text>{mealSelected(weekMeals.saturday)}</Text>
+        </HStack>
+        <HStack>
+          <Text fontWeight={'bold'}>{'Dimanche : '}</Text>
+          <Text>{mealSelected(weekMeals.sunday)}</Text>
         </HStack>
       </VStack>
       <HStack py={2}>
@@ -90,8 +111,14 @@ export const DatesAndMealsSummary = (
         <Text>{isSpecialDiet === 'true' ? 'Oui' : 'Non'}</Text>
       </HStack>
       <VStack alignItems={'flex-start'} py={2}>
-        <Text fontWeight={'bold'}>Commentaire :</Text>
+        <Text fontWeight={'bold'}>Votre commentaire à propos de la réservation :</Text>
         <Text>{comment}</Text>
+      </VStack>
+      <VStack alignItems={'flex-start'} py={2}>
+        <Text fontWeight={'bold'}>
+          Votre commentaire à propos des repas (ex : allergie, régime, vegan...) :
+        </Text>
+        <Text>{commentMeals}</Text>
       </VStack>
       <Button
         colorScheme="blue"

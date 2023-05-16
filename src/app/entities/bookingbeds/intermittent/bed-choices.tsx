@@ -8,7 +8,7 @@ import * as O from '@effect/data/Option'
 import type { FunctionComponent } from 'react'
 import React, { useEffect, useState } from 'react'
 
-import type { OneBedReservationDatesAndMeal } from '../models'
+import type { OneBedReservationDatesAndMeals } from '../models'
 import type { IRoomWithBeds } from '../utils'
 import { getIntermittentPlaceWithFreeAndBookedBeds } from '../utils'
 import { IntermittentBeds } from './beds-intermittent'
@@ -16,7 +16,7 @@ import { IntermittentBeds } from './beds-intermittent'
 interface DatesAndMealsChoicesProps {
   setSelectedBedId: (bedId: O.Option<number>) => void
   bedId: O.Option<number>
-  datesAndMeals: O.Option<OneBedReservationDatesAndMeal>
+  datesAndMeals: O.Option<OneBedReservationDatesAndMeals>
   reservationId: O.Option<string>
 }
 

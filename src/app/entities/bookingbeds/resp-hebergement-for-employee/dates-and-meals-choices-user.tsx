@@ -22,14 +22,14 @@ import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
 import type {
-  OneBedReservationDatesAndMealAndWeekEndMeals
+  MealsOnlyReservationDatesAndMeals
 } from '../models'
 import { isArrivalDateIsBeforeDepartureDate } from '../utils'
 
 interface DatesAndMealsChoicesProps {
-  setDatesAndMeal: (datesAndMeal: O.Option<OneBedReservationDatesAndMealAndWeekEndMeals>) => void
+  setDatesAndMeal: (datesAndMeal: O.Option<MealsOnlyReservationDatesAndMeals>) => void
   setUpdateDatesAndMeals: (updateDatesAndMeals: boolean) => void
-  datesAndMeals: O.Option<OneBedReservationDatesAndMealAndWeekEndMeals>
+  datesAndMeals: O.Option<MealsOnlyReservationDatesAndMeals>
 }
 
 export const DatesAndMealsChoices = (
@@ -41,7 +41,7 @@ export const DatesAndMealsChoices = (
     watch,
     formState: { errors },
     reset: resetForm
-  } = useForm<OneBedReservationDatesAndMealAndWeekEndMeals>()
+  } = useForm<MealsOnlyReservationDatesAndMeals>()
 
   useEffect(() => {
     resetForm(
@@ -53,7 +53,7 @@ export const DatesAndMealsChoices = (
   departureDate.current = watch('departureDate', '')
 
   const handleValidDateAndMealSubmit = (
-    datesAndMeal: OneBedReservationDatesAndMealAndWeekEndMeals
+    datesAndMeal: MealsOnlyReservationDatesAndMeals
   ): void => {
     props.setUpdateDatesAndMeals(false)
     props.setDatesAndMeal(O.some(datesAndMeal))
@@ -162,22 +162,79 @@ export const DatesAndMealsChoices = (
                 <FormLabel htmlFor="selectionRepas" fontWeight={'bold'}>
                   {'Sélection des repas :'}
                 </FormLabel>
-                <Stack direction={{ base: 'column', md: 'row' }}>
-                  <Text fontWeight={'bold'}>{"Jour d'arrivée :"}</Text>
-                  <Checkbox {...register('isArrivalBreakfast')}>petit déjeuner</Checkbox>
-                  <Checkbox {...register('isArrivalLunch')}>déjeuner</Checkbox>
-                  <Checkbox defaultChecked {...register('isArrivalDinner')}>dîner</Checkbox>
-                </Stack>
-                <Stack direction={{ base: 'column', md: 'row' }}>
-                  <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>
-                  <Checkbox defaultChecked {...register('isDepartureBreakfast')}>
-                    petit déjeuner
-                  </Checkbox>
-                  <Checkbox {...register('isDepartureLunch')}>déjeuner</Checkbox>
-                  <Checkbox {...register('isDepartureDinner')}>dîner</Checkbox>
-                </Stack>
+                <VStack spacing={'4'} alignItems={'left'}>
+                  <HStack>
+                    <Text fontWeight={'bold'} minW={'90px'}>{'Lundi :'}</Text>
+                    <Checkbox {...register('weekMeals.monday.isBreakfast')}>
+                      petit déjeuner
+                    </Checkbox>
+                    <Checkbox {...register('weekMeals.monday.isLunch')} defaultChecked>
+                      déjeuner
+                    </Checkbox>
+                    <Checkbox {...register('weekMeals.monday.isDinner')}>dîner</Checkbox>
+                  </HStack>
+                  <HStack>
+                    <Text fontWeight={'bold'} minW={'90px'}>{'Mardi :'}</Text>
+                    <Checkbox {...register('weekMeals.tuesday.isBreakfast')}>
+                      petit déjeuner
+                    </Checkbox>
+                    <Checkbox {...register('weekMeals.tuesday.isLunch')} defaultChecked>
+                      déjeuner
+                    </Checkbox>
+                    <Checkbox {...register('weekMeals.tuesday.isDinner')}>dîner</Checkbox>
+                  </HStack>
+                  <HStack>
+                    <Text fontWeight={'bold'} minW={'90px'}>{'Mercredi :'}</Text>
+                    <Checkbox {...register('weekMeals.wednesday.isBreakfast')}>
+                      petit déjeuner
+                    </Checkbox>
+                    <Checkbox {...register('weekMeals.wednesday.isLunch')} defaultChecked>
+                      déjeuner
+                    </Checkbox>
+                    <Checkbox {...register('weekMeals.wednesday.isDinner')}>dîner</Checkbox>
+                  </HStack>
+                  <HStack>
+                    <Text fontWeight={'bold'} minW={'90px'}>{'Jeudi :'}</Text>
+                    <Checkbox {...register('weekMeals.thursday.isBreakfast')}>
+                      petit déjeuner
+                    </Checkbox>
+                    <Checkbox {...register('weekMeals.thursday.isLunch')} defaultChecked>
+                      déjeuner
+                    </Checkbox>
+                    <Checkbox {...register('weekMeals.thursday.isDinner')}>dîner</Checkbox>
+                  </HStack>
+                  <HStack>
+                    <Text fontWeight={'bold'} minW={'90px'}>{'Vendredi :'}</Text>
+                    <Checkbox {...register('weekMeals.friday.isBreakfast')}>
+                      petit déjeuner
+                    </Checkbox>
+                    <Checkbox {...register('weekMeals.friday.isLunch')} defaultChecked>
+                      déjeuner
+                    </Checkbox>
+                    <Checkbox {...register('weekMeals.friday.isDinner')}>dîner</Checkbox>
+                  </HStack>
+                  <HStack>
+                    <Text fontWeight={'bold'} minW={'90px'}>{'Samedi :'}</Text>
+                    <Checkbox {...register('weekMeals.saturday.isBreakfast')}>
+                      petit déjeuner
+                    </Checkbox>
+                    <Checkbox {...register('weekMeals.saturday.isLunch')}>
+                      déjeuner
+                    </Checkbox>
+                    <Checkbox {...register('weekMeals.saturday.isDinner')}>dîner</Checkbox>
+                  </HStack>
+                  <HStack>
+                    <Text fontWeight={'bold'} minW={'90px'}>{'Dimanche :'}</Text>
+                    <Checkbox {...register('weekMeals.sunday.isBreakfast')}>
+                      petit déjeuner
+                    </Checkbox>
+                    <Checkbox {...register('weekMeals.sunday.isLunch')}>
+                      déjeuner
+                    </Checkbox>
+                    <Checkbox {...register('weekMeals.sunday.isDinner')}>dîner</Checkbox>
+                  </HStack>
+                </VStack>
               </FormControl>
-
               <FormControl isRequired isInvalid={errors.isSpecialDiet !== undefined}>
                 <FormLabel htmlFor="selectionRepas" fontWeight={'bold'}>
                   {'Régime sans lactose OU sans gluten ?'}
@@ -194,22 +251,7 @@ export const DatesAndMealsChoices = (
                   </HStack>
                 </RadioGroup>
               </FormControl>
-              <FormControl isRequired isInvalid={errors.isWeekEndMeals !== undefined}>
-                <FormLabel htmlFor="selectionRepas" fontWeight={'bold'}>
-                  {'Repas du week-end ?'}
-                </FormLabel>
 
-                <RadioGroup
-                  defaultValue={O.isSome(props.datesAndMeals) ?
-                    props.datesAndMeals.value.isWeekEndMeals :
-                    undefined}
-                >
-                  <HStack spacing="24px">
-                    <Radio {...register('isWeekEndMeals')} value={'true'} mb={0}>Oui</Radio>
-                    <Radio {...register('isWeekEndMeals')} value={'false'}>Non</Radio>
-                  </HStack>
-                </RadioGroup>
-              </FormControl>
               <FormControl
                 isInvalid={errors.commentMeals !== undefined}
                 width={'auto'}

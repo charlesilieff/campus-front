@@ -8,16 +8,15 @@ import { FaArrowLeft } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
 
 import {
-  createOneBedUserReservationUpdateUser,
+  createMealsOnlyReservationReservationUpdateUser,
   reset as resetReservations
 } from '../booking-beds.reducer'
 import type {
   Customer,
-  OneBedReservationDatesAndMeal,
-  OneBedReservationDatesAndMealAndWeekEndMeals
+  MealsOnlyReservationDatesAndMeals
 } from '../models'
 import { UserSummary } from '../resp-hebergement-for-habitant/user-summary'
-import { createUserOneBedReservation } from '../utils'
+import { createUserMealsOnlyReservation } from '../utils'
 import { CustomerSummary } from './customer-summary'
 import { CustomerUpdate } from './customer-update'
 import { DatesAndMealsChoices } from './dates-and-meals-choices-user'
@@ -36,7 +35,7 @@ export type BedIds = ReadonlyArray<{ id: number }>
 
 export const ReservationEmployeeUpdate = (): JSX.Element => {
   const [datesAndMeal, setDatesAndMeal] = useState<
-    O.Option<OneBedReservationDatesAndMealAndWeekEndMeals>
+    O.Option<MealsOnlyReservationDatesAndMeals>
   >(
     O.none()
   )
@@ -49,20 +48,19 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const toast = useToast()
   const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
-  console.log(customer)
-  console.log(updateCustomer)
+
   const [userId, setUserId] = useState<O.Option<number>>(O.none())
 
   const handleSubmitReservation = async (
-    datesAndMeal: OneBedReservationDatesAndMeal,
+    datesAndMeal: MealsOnlyReservationDatesAndMeals,
     customer: Customer,
     userId: number
   ): Promise<void> => {
     setIsLoading(true)
-    const reservation = createUserOneBedReservation(customer, datesAndMeal, O.none(), userId)
+    const reservation = createUserMealsOnlyReservation(customer, datesAndMeal, O.none(), userId)
 
     await dispatch(
-      createOneBedUserReservationUpdateUser(reservation)
+      createMealsOnlyReservationReservationUpdateUser(reservation)
     )
 
     dispatch(getSession())
