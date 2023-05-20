@@ -56,9 +56,10 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
     customer: Customer,
     userId: number
   ): Promise<void> => {
+    console.log('datesAndMeal', customer)
     setIsLoading(true)
     const reservation = createUserMealsOnlyReservation(customer, datesAndMeal, O.none(), userId)
-
+    console.log('reservation', reservation)
     await dispatch(
       createMealsOnlyReservationReservationUpdateUser(reservation)
     )

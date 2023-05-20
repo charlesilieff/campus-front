@@ -43,6 +43,10 @@ export const App = () => {
   const isHabitant = useAppSelector(state =>
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.HABITANT])
   )
+  const isEmployee = useAppSelector(state =>
+    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.EMPLOYEE])
+  )
+
   const ribbonEnv = useAppSelector(state => state.applicationProfile.ribbonEnv)
   const isInProduction = useAppSelector(state => state.applicationProfile.inProduction)
 
@@ -64,6 +68,7 @@ export const App = () => {
           isUser={isUser}
           isResp={isResp}
           isHabitant={isHabitant}
+          isEmployee={isEmployee}
           main={
             <Box>
               <Card variant="outline" m={4} p={4}>

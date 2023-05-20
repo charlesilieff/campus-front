@@ -82,7 +82,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
 
     if (backendCustomer.id !== undefined) {
       setCustomer(O.some({
-        id: backendCustomer?.id,
+        id: O.fromNullable(backendCustomer?.id),
         firstname: backendCustomer?.firstname,
         lastname: backendCustomer?.lastname,
         email: backendCustomer?.email,

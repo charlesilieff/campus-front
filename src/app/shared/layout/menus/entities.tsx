@@ -11,6 +11,7 @@ interface EntitiesMenuProps {
   isUser: boolean
   isIntermittent: boolean
   isHabitant: boolean
+  isEmployee: boolean
 }
 
 export const EntitiesMenu = (props: EntitiesMenuProps) => (
@@ -66,7 +67,7 @@ export const EntitiesMenu = (props: EntitiesMenuProps) => (
           Mes réservations
         </MenuItem>
       )}
-      {(props.isHabitant) && (
+      {(props.isHabitant || props.isEmployee) && (
         <MenuItem icon={<FaUtensils />} to="/meals/planning">
           Mes repas
         </MenuItem>

@@ -32,7 +32,7 @@ export interface MealsOnlyReservationDatesAndMeals {
 }
 
 export interface Customer {
-  id: number
+  id: O.Option<number>
   firstname: string
   lastname: string
   email: string

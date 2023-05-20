@@ -22,7 +22,7 @@
     "@chakra-ui/icons": "2.0.19",
     "@chakra-ui/react": "2.6.1",
     "@effect/data": "0.12.2",
-    "@effect/io": "0.25.9",
+    "@effect/io": "0.25.12",
     "@reduxjs/toolkit": "1.9.5",
     "@vitejs/plugin-react": "4.0.0",
     "axios": "1.4.0",

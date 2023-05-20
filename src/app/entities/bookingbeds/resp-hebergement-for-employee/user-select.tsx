@@ -68,7 +68,7 @@ export const UserSelect = (
     formUser: FormUser
   ) => {
     props.setUserId(O.some(Number(formUser.id)))
-
+    console.log('customer', users)
     pipe(
       users,
       A.findFirst(user => user.id === Number(formUser.id)),
@@ -76,11 +76,10 @@ export const UserSelect = (
         firstname: x.firstName,
         lastname: x.lastName,
         email: x.email,
-        id: x.id,
+        id: O.fromNullable(x.customerId),
         phoneNumber: O.none(),
-        customerId: O.some(x.customerId),
         age: O.none()
-      } as Customer)),
+      })),
       props.setCustomer
     )
 

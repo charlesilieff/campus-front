@@ -51,8 +51,7 @@ export const ReservationHabitantUpdate = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const toast = useToast()
   const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
-  console.log(customer)
-  console.log(updateCustomer)
+
   const [userId, setUserId] = useState<O.Option<number>>(O.none())
 
   const handleSubmitReservation = async (

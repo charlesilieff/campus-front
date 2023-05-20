@@ -10,6 +10,7 @@ import {
   Input,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -24,7 +25,6 @@ interface CustomerUpdateProps {
 }
 
 export interface FormCustomer {
-  id: number
   firstname: string
   lastname: string
   email: string
@@ -54,6 +54,9 @@ export const CustomerUpdate = (
   }, [props.customer])
 
   const handleValidCustomerSubmit = (
+    customerId: O.Option<number>
+  ) =>
+  (
     customer: FormCustomer
   ): void => {
     // @ts-expect-error react hook form ne gère pas bien le type de age
@@ -61,7 +64,7 @@ export const CustomerUpdate = (
     const phoneNumber = customer.phoneNumber === undefined || customer.phoneNumber === '' ?
       O.none() :
       O.some(customer.phoneNumber)
-    props.setCustomer(O.some({ ...customer, age, phoneNumber }))
+    props.setCustomer(O.some({ ...customer, age, phoneNumber, id: customerId }))
 
     props.setUpdateCustomer(false)
   }
@@ -84,7 +87,9 @@ export const CustomerUpdate = (
         </HStack>
         <Box minW={'500px'}>
           <form
-            onSubmit={handleSubmit(handleValidCustomerSubmit)}
+            onSubmit={handleSubmit(
+              handleValidCustomerSubmit(pipe(props.customer, O.flatMap(c => c.id)))
+            )}
           >
             <VStack spacing={10} alignItems={'left'}>
               <HStack spacing={12} minW={600} my={4}>

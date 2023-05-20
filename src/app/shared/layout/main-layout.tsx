@@ -6,7 +6,7 @@ import { Brand, Help, Home } from './header/header-components'
 import { VFixedLayout } from './header/VFixedLayout'
 import { AccountMenu, AdminMenu, EntitiesMenu } from './menus'
 
-export interface IHeaderProps {
+export interface HeaderProps {
   isAuthenticated: boolean
   isIntermittent: boolean
   isAdmin: boolean
@@ -17,9 +17,10 @@ export interface IHeaderProps {
   isUser: boolean
   main: ReactNode
   isHabitant: boolean
+  isEmployee: boolean
 }
 
-export const MainLayout = (props: IHeaderProps) => (
+export const MainLayout = (props: HeaderProps) => (
   <VFixedLayout
     top={
       <HStack backgroundColor={'#E95420'} justifyContent={'space-between'} px={4}>
@@ -35,6 +36,7 @@ export const MainLayout = (props: IHeaderProps) => (
               isIntermittent={props.isIntermittent}
               isUser={props.isUser}
               isHabitant={props.isHabitant}
+              isEmployee={props.isEmployee}
             />
           )}
           {props.isAuthenticated && props.isAdmin && (

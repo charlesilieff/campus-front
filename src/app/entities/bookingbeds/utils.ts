@@ -167,7 +167,7 @@ export const createUserOneBedReservation = (
   comment: datesAndMeals.comment,
   bedId,
   customer: {
-    id: customer.id,
+    id: O.getOrUndefined(customer.id),
     firstname: customer.firstname,
     lastname: customer.lastname,
     email: customer.email,
@@ -195,7 +195,7 @@ export const createUserMealsOnlyReservation = (
   comment: datesAndMeals.comment,
   bedId,
   customer: {
-    id: customer.id,
+    id: O.getOrUndefined(customer.id),
     firstname: customer.firstname,
     lastname: customer.lastname,
     email: customer.email,
