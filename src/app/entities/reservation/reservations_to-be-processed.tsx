@@ -9,7 +9,7 @@ import { ReservationDeleteDialog } from '../bookingbeds/reservation-delete-dialo
 import { TextFormat } from '../bookingbeds/text-format'
 import { getReservationsToBeProcessed } from './reservation.reducer'
 
-export const ReservationsToBeProcessed = () => {
+export const ReservationsListToBeProcessed = () => {
   const dispatch = useAppDispatch()
 
   const reservationList = useAppSelector(state => state.reservation.entities)

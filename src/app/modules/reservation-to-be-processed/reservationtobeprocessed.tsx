@@ -10,7 +10,7 @@ interface ReservationToBeProcessed {
   urgent: number
 }
 
-export const ReservationsToBeProcessed = () => {
+export const ReservationsToBeProcessedButton = () => {
   const [reservationToBeProcessed, setReservationToBeProcessed] = useState<
     O.Option<ReservationToBeProcessed>
   >(O.none)

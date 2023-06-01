@@ -11,6 +11,8 @@
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "exactOptionalPropertyTypes": true,
+    "strictNullChecks": true,
     "removeComments": false,
     "noImplicitAny": false,
     "outDir": "target/classes/static/app",

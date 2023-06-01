@@ -8,7 +8,7 @@ import axios from 'axios'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
-import { BsFillExclamationCircleFill, BsPlusCircle } from 'react-icons/bs'
+import { BsFillExclamationCircleFill, BsList, BsPlusCircle } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 
 import type { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
@@ -107,7 +107,6 @@ export const IndexPlanning = () => {
                   <Button
                     as={Link}
                     id="new"
-                    data-cy="entityCreatelButton"
                     to="/bookingbeds/new"
                     _hover={{ textDecoration: 'none', color: 'white' }}
                     replace
@@ -124,7 +123,6 @@ export const IndexPlanning = () => {
                     as={Link}
                     id="new"
                     _hover={{ textDecoration: 'none', color: 'white' }}
-                    data-cy="entityCreatelButton"
                     to="/reservation/to-be-processed"
                     replace
                     backgroundColor={'#E53E3E'}
@@ -132,6 +130,20 @@ export const IndexPlanning = () => {
                     leftIcon={<BsFillExclamationCircleFill />}
                   >
                     Réservations à traiter
+                  </Button>
+                </Box>
+                <Box alignSelf={'flex-end'} py={4}>
+                  <Button
+                    as={Link}
+                    id="new"
+                    _hover={{ textDecoration: 'none', color: 'white' }}
+                    to="/reservation/employee"
+                    replace
+                    backgroundColor={'#3182CE'}
+                    color={'white'}
+                    leftIcon={<BsList />}
+                  >
+                    Réservations des salariés
                   </Button>
                 </Box>
               </HStack>

@@ -185,7 +185,7 @@ export const createUserMealsOnlyReservation = (
   bedId: O.Option<number>,
   userId: number
 ): MealsOnlyUserReservation => ({
-  id: O.none(),
+  reservationId: O.none(),
   userId,
   // @ts-expect-error TODO: fix this
   arrivalDate: datesAndMeals.arrivalDate,

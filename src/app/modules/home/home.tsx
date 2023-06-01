@@ -9,7 +9,7 @@ import React from 'react'
 import { BsPlusCircleFill } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 
-import { ReservationsToBeProcessed } from '../reservation-to-be-processed/reservationtobeprocessed'
+import { ReservationsToBeProcessedButton } from '../reservation-to-be-processed/reservationtobeprocessed'
 import { RGPDAnonymizeData } from '../rgpd/rgpdAnonymizeData'
 
 export const Home = (): JSX.Element => {
@@ -301,7 +301,7 @@ export const Home = (): JSX.Element => {
           ''} */
         }
 
-        {isRespHebergement ? <ReservationsToBeProcessed /> : ''}
+        {isRespHebergement ? <ReservationsToBeProcessedButton /> : ''}
         {isAdmin ? <RGPDAnonymizeData /> : ''}
       </VStack>
     </HStack>

@@ -150,10 +150,8 @@ export const IntermittentReservations = () => {
                               size="sm"
                               as={Link}
                               to={`/bookingbeds/intermittent/${reservation.id}`}
-                              _hover={{ textDecoration: 'none', color: 'orange' }}
-                              color="white"
+                              variant={'modify'}
                               borderLeftRadius={0}
-                              backgroundColor={'#17a2b8'}
                               leftIcon={<FaPencilAlt />}
                             >
                               Modifier

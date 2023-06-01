@@ -37,6 +37,10 @@ export const BookingBedsRoutes = (): JSX.Element => (
       path={`intermittent/:reservationId`}
       element={<ReservationIntermittentUpdate />}
     />
+    <Route
+      path={`employee/:reservationId`}
+      element={<ReservationIntermittentUpdate />}
+    />
     <Route path=":reservationId">
       <Route path={`edit`} element={<ReservationUpdate />} />
       <Route index element={<ReservationDetail />} />

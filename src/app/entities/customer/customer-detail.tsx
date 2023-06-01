@@ -2,11 +2,13 @@ import { Button, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { FaArrowLeft, FaPencilAlt } from 'react-icons/fa'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { getCustomer } from './customer.reducer'
 
 export const CustomerDetail = () => {
+  const navigate = useNavigate()
+
   const dispatch = useAppDispatch()
   const { id } = useParams<{ id: string }>()
 
@@ -17,7 +19,7 @@ export const CustomerDetail = () => {
   const customerEntity = useAppSelector(state => state.customer.entity)
   return (
     <VStack alignItems={'flex-start'}>
-      <Heading>Customer</Heading>
+      <Heading>Client</Heading>
 
       <Heading size={'md'}>Prénom</Heading>
 
@@ -43,7 +45,7 @@ export const CustomerDetail = () => {
 
       <Text>{customerEntity.comment}</Text>
       <HStack>
-        <Button as={Link} to="/customer" variant="back" leftIcon={<FaArrowLeft />}>
+        <Button as={Link} onClick={() => navigate(-1)} variant="back" leftIcon={<FaArrowLeft />}>
           Retour
         </Button>
 

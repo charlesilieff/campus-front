@@ -10,8 +10,9 @@ import { CustomerRoutes } from './customer'
 import { PlaceRoutes } from './place'
 import { IndexPlanning } from './planning'
 import { PricingRoutes } from './pricing'
+import { ReservationsListEmployee } from './reservation/reservations_employee'
 // import { ReservationRoutes } from './reservation'
-import { ReservationsToBeProcessed } from './reservation/reservations_to-be-processed'
+import { ReservationsListToBeProcessed } from './reservation/reservations_to-be-processed'
 import { RoomRoutes } from './room'
 import { TypeReservationRoutes } from './type-reservation'
 import { UserCategoryRoutes } from './user-category'
@@ -23,7 +24,8 @@ export const EntitiesRoutes = () => (
         path={`reservation/*`}
         element={
           <ErrorBoundaryRoutes>
-            <Route path={'to-be-processed'} element={<ReservationsToBeProcessed />} />
+            <Route path={'to-be-processed'} element={<ReservationsListToBeProcessed />} />
+            <Route path={'employee'} element={<ReservationsListEmployee />} />
             <Route
               path={'intermittent'}
               element={<IntermittentReservations />}
