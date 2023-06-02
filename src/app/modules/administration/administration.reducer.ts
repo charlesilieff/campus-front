@@ -144,6 +144,7 @@ export const AdministrationSlice = createSlice({
           getEnv
         ),
         (state, action) => {
+          // @ts-expect-error TODO: fix this
           state.errorMessage = action.error.message
           state.loading = false
         }

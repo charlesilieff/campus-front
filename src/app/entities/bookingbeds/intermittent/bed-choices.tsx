@@ -40,7 +40,7 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
       const roomsData = data?.flatMap(place => place.rooms)
 
       setLoading(false)
-
+      // @ts-expect-error TODO: fix this
       setRooms(roomsData)
     }
 

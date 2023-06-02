@@ -11,6 +11,7 @@ export const RoomDetail = () => {
   const { id } = useParams<'id'>()
 
   useEffect(() => {
+    // @ts-expect-error TODO: fix this
     dispatch(getEntity(id))
   }, [])
 

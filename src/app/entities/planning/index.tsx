@@ -25,6 +25,7 @@ export const IndexPlanning = () => {
   )
   const [reservations, setReservations] = useState([] as IReservationsPlanning[])
   const [places, setPlaces] = useState([] as IPlace[])
+  // @ts-expect-error TODO: fix this
   const [place, setPlace] = useState(null as IPlace)
   const [date, setDate] = useState(dayjs())
 
@@ -37,7 +38,7 @@ export const IndexPlanning = () => {
     const { data } = await axios.get<IPlace[]>(requestUrl)
 
     setPlaces(data)
-
+    // @ts-expect-error TODO: fix this
     getOnePlace(data[0].id.toString())
   }
 
@@ -46,6 +47,7 @@ export const IndexPlanning = () => {
     const { data } = await axios.get<IPlace>(requestUrl)
 
     setPlace(data)
+    // @ts-expect-error TODO: fix this
     setReservations(null)
     getReservations(id, date)
   }
@@ -58,6 +60,7 @@ export const IndexPlanning = () => {
 
   const newDatePlanning = (dateStart: React.ChangeEvent<HTMLInputElement>) => {
     setDate(dayjs(dateStart.target.value))
+    // @ts-expect-error TODO: fix this
     getReservations(place.id.toString(), dayjs(dateStart.target.value))
   }
 

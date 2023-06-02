@@ -87,6 +87,7 @@ export const Index = () => {
 
   useEffect(() => {
     if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
+    // @ts-expect-error TODO: fix this
     if (reservationList.length > 0) dispatch(getReservation(reservationList[0].id))
 
     // setReservationId(reservationListFirst.id)
@@ -113,6 +114,7 @@ export const Index = () => {
       setMealsData(data)
       setRefreshing(false)
     }
+    // @ts-expect-error TODO: fix this
     getMealsDateFor31DaysByUser(date, customerId)
   }, [date, refreshing])
   /**
@@ -147,6 +149,7 @@ export const Index = () => {
     mealsDataDays,
     numberOfDays,
     mealsData,
+    // @ts-expect-error TODO: fix this
     resultTotalMeals,
     totalMeals
   ))
@@ -177,7 +180,9 @@ export const Index = () => {
     // TODO check if it's necessarry to load new data (if calendar is showing 7 days)
     setDate(date.add(1, 'day'))
     if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
+    // @ts-expect-error TODO: fix this
     dispatch(getReservation(reservationList[0].id))
+    // @ts-expect-error TODO: fix this
     setReservationId(reservationListFirst.id)
     if (reservationList.length > 0) {
       console.error('erreur plusieurs réservation', reservationList.length)
@@ -443,6 +448,7 @@ export const Index = () => {
               startDate={startDate}
               endDate={endDate}
               // reservationId={reservationId}
+              // @ts-expect-error TODO: fix this
               reservationId={customerId} // TODO tmp to test without reservation id
               setDate={setDate}
             />
@@ -478,19 +484,21 @@ const calculateAccordingToNumberOfDays = (
  */
 const totalMealsCalculation = (mealsData: IMeal[], totalMeals: (table: number[]) => number) => {
   // regularLunch: calculation of total.
-
+  // @ts-expect-error TODO: fix this
   let table: number[] = mealsData.map(meals => meals.regularLunch)
 
   const totalRegularLunch: number = totalMeals(table)
-
+  // @ts-expect-error TODO: fix this
   table = mealsData.map(meals => meals.regularDinner)
   const totalRegularDinner: number = totalMeals(table)
 
   // specialLunch: calculation of total.
+  // @ts-expect-error TODO: fix this
   table = mealsData.map(meals => meals.specialLunch)
   const totalSpecialLunch: number = totalMeals(table)
 
   // specialDinner: calculation of total.
+  // @ts-expect-error TODO: fix this
   table = mealsData.map(meals => meals.specialDinner)
   const totalSpecialDinner: number = totalMeals(table)
 
@@ -499,6 +507,7 @@ const totalMealsCalculation = (mealsData: IMeal[], totalMeals: (table: number[])
   const total: number = totalRegular + totalSpecial
 
   // breakfast: calculation of total .
+  // @ts-expect-error TODO: fix this
   table = mealsData.map(meals => meals.breakfast)
   const totalBreakfast: number = totalMeals(table)
 

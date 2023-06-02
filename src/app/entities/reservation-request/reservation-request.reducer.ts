@@ -78,6 +78,7 @@ export const ReservationRequestSlice = createEntitySlice({
   initialState,
   reducers: {
     setData(state, action: PayloadAction<IReservationRequest>) {
+      // @ts-expect-error TODO: fix this
       state.entity.customer = action.payload.customer
     }
   },
@@ -96,6 +97,7 @@ export const ReservationRequestSlice = createEntitySlice({
         state.updating = false
         state.loading = false
         state.updateSuccess = true
+        // @ts-expect-error TODO: fix this
         state.entity.reservation = action.payload.data.reservation
       })
       .addMatcher(isPending(getReservationRequest), state => {
@@ -113,7 +115,7 @@ export const ReservationRequestSlice = createEntitySlice({
       )
   }
 })
-
+// @ts-expect-error TODO: fix this
 export const { reset, setData } = ReservationRequestSlice.actions
 
 // Reducer

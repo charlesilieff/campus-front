@@ -12,6 +12,7 @@ export const PlaceDetail = () => {
   const { id } = useParams<{ id: string }>()
 
   useEffect(() => {
+    // @ts-expect-error TODO: fix this
     dispatch(findOnePlaceById(id))
   }, [])
 

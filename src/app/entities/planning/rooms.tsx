@@ -11,6 +11,7 @@ interface IProps {
 export const Room: FunctionComponent<IProps> = ({ gridRowEnd, room }) => {
   const style = {
     // On test l'index car la premiére chambre a une postion absolu dans le tableau (de 4).
+    // @ts-expect-error TODO: fix this
     gridRowStart: gridRowEnd - room.beds.length,
     gridRowEnd
   } as React.CSSProperties

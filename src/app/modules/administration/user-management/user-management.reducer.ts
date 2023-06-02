@@ -144,6 +144,7 @@ export const UserManagementSlice = createSlice({
           state.loading = false
           state.updating = false
           state.updateSuccess = false
+          // @ts-expect-error TODO: fix this
           state.errorMessage = action.error.message
         }
       )

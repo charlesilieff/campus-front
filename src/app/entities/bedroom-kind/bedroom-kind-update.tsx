@@ -40,6 +40,7 @@ export const BedroomKindUpdate = () => {
   } = useForm<BedroomKindForm>({})
 
   useEffect(() => {
+    // @ts-expect-error TODO: fix this
     resetForm(defaultValues())
   }, [bedroomKindEntity.id])
   const navigate = useNavigate()

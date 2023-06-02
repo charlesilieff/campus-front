@@ -8,6 +8,7 @@ export const PlaceMenu = () => {
   const apiUrlPlacesWithoutImage = 'api/places/noimage'
   const apiUrlPlaces = 'api/planning/places'
   const [places, setPlaces] = useState([] as IPlace[])
+  // @ts-expect-error TODO: fix this
   const [place, setPlace] = useState(null as IPlace)
 
   const getPlaces = async () => {
@@ -15,7 +16,7 @@ export const PlaceMenu = () => {
     const { data } = await axios.get<IPlace[]>(requestUrl)
 
     setPlaces(data)
-
+    // @ts-expect-error TODO: fix this
     getOnePlace(data[0].id.toString())
   }
 

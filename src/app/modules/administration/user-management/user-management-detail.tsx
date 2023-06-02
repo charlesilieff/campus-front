@@ -12,6 +12,7 @@ export const UserManagementDetail = () => {
   const dispatch = useAppDispatch()
   const { login } = useParams<'login'>()
   useEffect(() => {
+    // @ts-expect-error TODO: fix this
     dispatch(getUser(login))
   }, [])
 

@@ -44,6 +44,7 @@ export const CustomerUpdate = (
   } = useForm<FormCustomer>()
   useEffect(() => {
     resetForm(
+      // @ts-expect-error TODO: fix this
       O.isSome(props.customer) ?
         {
           ...props.customer.value,

@@ -109,7 +109,10 @@ export const Place = () => {
                       >
                         Modifier
                       </Button>
-                      <PlaceDeleteDialog placeId={place.id} />
+                      <PlaceDeleteDialog
+                        // @ts-expect-error TODO: fix this
+                        placeId={place.id}
+                      />
                     </HStack>
                   </Td>
                 </Tr>

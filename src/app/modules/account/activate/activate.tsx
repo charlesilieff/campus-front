@@ -36,7 +36,7 @@ export const Activate = () => {
 
   useEffect(() => {
     const key = searchParams.get('key')
-
+    // @ts-expect-error TODO: fix this
     dispatch(activateAction(key))
     return () => {
       dispatch(reset())

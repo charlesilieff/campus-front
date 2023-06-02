@@ -37,6 +37,7 @@ export const PasswordResetSlice = createSlice({
     }
   },
   extraReducers(builder) {
+    // @ts-expect-error TODO: fix this
     builder
       .addCase(handlePasswordResetInit.fulfilled, () => ({
         ...initialState,

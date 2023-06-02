@@ -48,6 +48,7 @@ export const CustomerUpdate = (
   personNumber.current = watch('personNumber', 0)
   useEffect(() => {
     resetForm(
+      // @ts-expect-error TODO: fix this
       O.isSome(props.customer) ?
         {
           ...props.customer.value,

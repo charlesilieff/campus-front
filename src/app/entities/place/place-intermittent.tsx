@@ -20,6 +20,7 @@ export const PlaceIntermittent = () => {
     setIsLoading(true)
     await axios.post(requestUrl, selectedPlaceIds)
     const placesUpdatedNames = places.filter(place =>
+      // @ts-expect-error TODO: fix this
       selectedPlaceIds.includes(place.id.toString())
     ).map(place => place.name).join(', ')
     const message = placesUpdatedNames.length > 0 ?
@@ -47,6 +48,7 @@ export const PlaceIntermittent = () => {
 
   useEffect(() => {
     const intermittentPlacesIds = places.filter(place => place.intermittentAllowed).map(place =>
+      // @ts-expect-error TODO: fix this
       place.id.toString()
     )
 
@@ -66,6 +68,7 @@ export const PlaceIntermittent = () => {
           {places.map(place => (
             <Checkbox
               key={place.id}
+              // @ts-expect-error TODO: fix this
               value={place.id.toString()}
               alignSelf={'flex-start'}
               pl={12}

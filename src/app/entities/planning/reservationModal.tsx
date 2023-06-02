@@ -53,6 +53,7 @@ export const ReservationModal = ({ reservation, isRespHebergement }: IProps) => 
         leftIcon={<EditIcon />}
         _hover={{ textDecoration: 'none', color: 'black' }}
         _active={{ textDecoration: 'none', color: 'black' }}
+        // @ts-expect-error TODO: fix this
         rightIcon={isRespHebergement ? statusIcon(status) : null}
         px={2}
         py={4}

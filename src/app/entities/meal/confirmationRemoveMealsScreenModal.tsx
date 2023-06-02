@@ -42,6 +42,7 @@ export const ConfirmationRemoveMealsScreenModal: FunctionComponent<
       }
     }).map((value, index) => {
       if (index < numberOfDays) {
+        // @ts-expect-error TODO: fix this
         value = {
           ...value,
           specialLunch: 0,

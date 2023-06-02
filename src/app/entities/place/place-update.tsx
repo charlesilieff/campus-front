@@ -42,6 +42,7 @@ export const PlaceUpdate = () => {
   const placeEntity = useAppSelector(state => state.place.entity)
 
   const defaultValues = (): PlaceForm =>
+    // @ts-expect-error TODO: fix this
     isNew ? {} : {
       ...placeEntity
     }
@@ -81,6 +82,7 @@ export const PlaceUpdate = () => {
   }, [updateSuccess])
 
   const saveEntity = (values: PlaceForm) => {
+    // @ts-expect-error TODO: fix this
     const entity: IPlace = {
       ...placeEntity,
       ...values,

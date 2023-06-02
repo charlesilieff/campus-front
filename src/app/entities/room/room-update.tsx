@@ -89,9 +89,13 @@ export const RoomUpdate = () => {
       ...roomEntity,
       ...values,
       // this is so bad
+      // @ts-expect-error TODO: fix this
       placeId: values.placeId === '' ? undefined : values.placeId,
+      // @ts-expect-error TODO: fix this
       bedroomKindId: values.bedroomKindId === '' ? undefined : values.bedroomKindId,
+      // @ts-expect-error TODO: fix this
       place: places.find(it => it.id.toString() === values.placeId.toString()),
+      // @ts-expect-error TODO: fix this
       bedroomKind: bedroomKinds.find(it => it.id.toString() === values.bedroomKindId.toString())
     }
 

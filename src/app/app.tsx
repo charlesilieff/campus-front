@@ -17,6 +17,7 @@ import { MainLayout } from './shared/layout/main-layout'
 import { getProfile } from './shared/reducers/application-profile'
 import { getSession } from './shared/reducers/authentication'
 
+// @ts-expect-error normal
 const baseHref = document.querySelector('base').getAttribute('href').replace(/\/$/, '')
 
 export const App = () => {

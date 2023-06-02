@@ -4,7 +4,9 @@ import axios from 'axios'
 
 const initialState = {
   loading: false,
+  // @ts-expect-error TODO: fix this
   errorMessage: null as string,
+  // @ts-expect-error TODO: fix this
   successMessage: null as string,
   updateSuccess: false,
   updateFailure: false
@@ -38,6 +40,7 @@ export const PasswordSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(savePassword.pending, state => {
+        // @ts-expect-error TODO: fix this
         state.errorMessage = null
         state.updateSuccess = false
         state.loading = true

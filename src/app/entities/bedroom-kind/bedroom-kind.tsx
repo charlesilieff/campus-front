@@ -107,7 +107,10 @@ export const BedroomKind = () => {
                         Modifier
                       </Button>
 
-                      <BedroomKindDeleteDialog bedroomKindId={bedroomKind.id} />
+                      <BedroomKindDeleteDialog
+                        // @ts-expect-error TODO: fix this
+                        bedroomKindId={bedroomKind.id}
+                      />
                     </HStack>
                   </Td>
                 </Tr>

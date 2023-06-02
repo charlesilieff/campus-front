@@ -108,7 +108,10 @@ export const Room = () => {
                       >
                         Éditer
                       </Button>
-                      <RoomDeleteDialog roomId={room.id} />
+                      <RoomDeleteDialog
+                        // @ts-expect-error TODO: fix this
+                        roomId={room.id}
+                      />
                     </HStack>
                   </Td>
                 </Tr>

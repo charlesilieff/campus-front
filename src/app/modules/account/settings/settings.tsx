@@ -49,7 +49,7 @@ export const Settings = () => {
   )
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment
-  const successMessage: string = useAppSelector(state => state.settings.successMessage)
+  const successMessage: string | null = useAppSelector(state => state.settings.successMessage)
 
   useEffect(() => {
     dispatch(getSession())
@@ -79,6 +79,7 @@ export const Settings = () => {
     <VStack>
       <Heading size={'md'}>Modifier utilisateur {accountModify.login}</Heading>
       <form
+        // @ts-expect-error TODO: fix this
         onSubmit={handleSubmit(handleValidSubmit)}
       >
         <VStack spacing={4}>

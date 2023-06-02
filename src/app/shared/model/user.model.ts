@@ -6,13 +6,13 @@ export interface IUser {
   email?: string
   activated?: boolean
   langKey?: string
-  authorities?: string[]
+  authorities: string[]
   createdBy?: string
   createdDate?: Date | null
   lastModifiedBy?: string
   lastModifiedDate?: Date | null
   password?: string
-  customerId?: number
+  customerId?: number | null
   receiveMailReservation?: boolean
 }
 

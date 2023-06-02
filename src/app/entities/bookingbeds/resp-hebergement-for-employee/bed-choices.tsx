@@ -47,12 +47,15 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
         reservationId
       )
       const roomsData = data?.flatMap(place => place.rooms).sort((a, b) =>
+        // @ts-expect-error TODO: fix this
         a?.name.localeCompare(b?.name) || 0
       )
       setPlaces(data)
+      // @ts-expect-error TODO: fix this
       setRooms(roomsData)
 
       setRoomKinds(
+        // @ts-expect-error TODO: fix this
         roomsData
           .map(room => room?.bedroomKind)
           // Permet de n'afficher que les bedroomKind non null et unique
@@ -75,10 +78,12 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
   const filterBedPlace = (idPlace: O.Option<number>): void => {
     if (O.isNone(idPlace)) {
       setRooms(
+        // @ts-expect-error TODO: fix this
         places?.flatMap(place => place.rooms)
       )
     } else {
       setRooms(
+        // @ts-expect-error TODO: fix this
         places
           ?.filter(place => place.id === idPlace.value)
           ?.flatMap(place => place.rooms)
@@ -89,20 +94,26 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
   const filterBedRoomKind = (idRoomKind: O.Option<number>): void => {
     if (O.isNone(idRoomKind)) {
       setRooms(
+        // @ts-expect-error TODO: fix this
         places?.flatMap(place => place.rooms)
       )
     } else {
       setRooms(
+        // @ts-expect-error TODO: fix this
         places
           ?.flatMap(place => place.rooms)
+          // @ts-expect-error TODO: fix this
           .filter(room => room.bedroomKind?.id === idRoomKind.value)
       )
     }
   }
 
   const placesBooked = places?.reduce((accP, place) => (accP
+    // @ts-expect-error TODO: fix this
     + place.rooms?.reduce((accR, room) => (accR
+      // @ts-expect-error TODO: fix this
       + room.beds?.reduce(
+        // @ts-expect-error TODO: fix this
         (acc, bed) => acc + (O.getOrNull(bedId) === bed.id ? bed.numberOfPlaces : 0),
         0
       )), 0)), 0)
@@ -165,7 +176,7 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
                     onChange={e =>
                       pipe(e.target.value, O.fromNullable, O.map(Number), filterBedRoomKind)}
                   >
-                    <option value={null}>Aucune</option>
+                    <option value={undefined}>Aucune</option>
 
                     {roomKinds.map((p, index) => (
                       <option value={p?.id} key={index}>
@@ -187,6 +198,7 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
                     places
                       ?.flatMap(place =>
                         place.rooms?.flatMap(room =>
+                          // @ts-expect-error TODO: fix this
                           room.beds.filter(bed => bed.id === O.getOrNull(bedId))
                             .map(b => b.number)
                         )

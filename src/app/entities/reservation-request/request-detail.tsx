@@ -14,6 +14,7 @@ export const ReservationRequestDetail = (): JSX.Element => {
   const { uuid } = useParams<'uuid'>()
 
   useEffect(() => {
+    // @ts-expect-error TODO: fix this
     dispatch(getReservationRequest(uuid))
   }, [])
 
@@ -113,6 +114,7 @@ export const ReservationRequestDetail = (): JSX.Element => {
 
           <HStack>
             <ReservationRequestDeleteDialog
+              // @ts-expect-error TODO: fix this
               reservationRequestId={uuid}
             />
 

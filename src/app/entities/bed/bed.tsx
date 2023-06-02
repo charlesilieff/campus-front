@@ -36,7 +36,7 @@ export const Bed = () => {
   const myData = bedList.flatMap(bed => ({
     ...bed
   }))
-
+  // @ts-expect-error TODO: fix this
   const mySort2 = myData.sort((a, b) => a.number.localeCompare(b.number))
 
   return (
@@ -113,7 +113,10 @@ export const Bed = () => {
                       >
                         Modifier
                       </Button>
-                      <BedDeleteDialog bedId={bed.id} />
+                      <BedDeleteDialog
+                        // @ts-expect-error TODO: fix this
+                        bedId={bed.id}
+                      />
                     </HStack>
                   </Td>
                 </Tr>

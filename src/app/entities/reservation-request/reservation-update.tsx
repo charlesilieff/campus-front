@@ -79,6 +79,7 @@ const createReservationRequest = (
       commentMeals: reservation.commentMeals,
       userCategoryId: 3
     },
+    // @ts-expect-error TODO: fix this
     customer: {
       id: O.getOrUndefined(customer.id),
       firstname: customer.firstname,
@@ -97,7 +98,9 @@ export const ReservationRequestUpdate = (): JSX.Element => {
   const [updateReservation, setUpdateReservation] = useState<boolean>(false)
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
+
   const { uuid: uuidParam } = useParams<'uuid'>()
+  // @ts-expect-error TODO: fix this
   const [uuid, setUUID] = useState<string>(uuidParam ?? undefined)
   const dispatch = useAppDispatch()
   const toast = useToast()
@@ -135,31 +138,54 @@ export const ReservationRequestUpdate = (): JSX.Element => {
     )
 
     if (reservationRequest.reservation !== undefined) {
+      // @ts-expect-error TODO: fix this
       setReservation(O.some({
+        // @ts-expect-error TODO: fix this
         id: O.fromNullable(reservationRequest.reservation.id),
+        // @ts-expect-error TODO: fix this
         reservationNumber: reservationRequest.reservation.reservationNumber,
+        // @ts-expect-error TODO: fix this
         arrivalDate: reservationRequest.reservation.arrivalDate.toString(),
+        // @ts-expect-error TODO: fix this
         departureDate: reservationRequest.reservation.departureDate.toString(),
+        // @ts-expect-error TODO: fix this
         personNumber: reservationRequest.reservation.personNumber,
+        // @ts-expect-error TODO: fix this
         specialDietNumber: reservationRequest.reservation.specialDietNumber,
+        // @ts-expect-error TODO: fix this
         isArrivalLunch: reservationRequest.reservation.isArrivalLunch,
+        // @ts-expect-error TODO: fix this
         isArrivalDinner: reservationRequest.reservation.isArrivalDiner,
+        // @ts-expect-error TODO: fix this
         isDepartureDinner: reservationRequest.reservation.isDepartureDiner,
+        // @ts-expect-error TODO: fix this
         isDepartureLunch: reservationRequest.reservation.isDepartureLunch,
+        // @ts-expect-error TODO: fix this
         comment: reservationRequest.reservation.comment,
+        // @ts-expect-error TODO: fix this
         isArrivalBreakfast: reservationRequest.reservation.isArrivalBreakfast,
+        // @ts-expect-error TODO: fix this
         isDepartureBreakfast: reservationRequest.reservation.isDepartureBreakfast,
+        // @ts-expect-error TODO: fix this
         commentMeals: reservationRequest.reservation.commentMeals,
         userCategoryId: 3
       }))
     }
+
     if (reservationRequest.customer !== undefined) {
+      // @ts-expect-error TODO: fix this
       setCustomer(O.some({
+        // @ts-expect-error TODO: fix this
         age: O.fromNullable(reservationRequest.customer.age),
+        // @ts-expect-error TODO: fix this
         email: reservationRequest.customer.email,
+        // @ts-expect-error TODO: fix this
         firstname: reservationRequest.customer.firstname,
+        // @ts-expect-error TODO: fix this
         id: O.fromNullable(reservationRequest.customer.id),
+        // @ts-expect-error TODO: fix this
         lastname: reservationRequest.customer.lastname,
+        // @ts-expect-error TODO: fix this
         phoneNumber: O.fromNullable(reservationRequest.customer.phoneNumber)
       }))
     }

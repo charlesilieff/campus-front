@@ -114,7 +114,10 @@ export const ReservationsListToBeProcessed = () => {
                       reservation.beds.map((val, j) => (
                         <span key={j}>
                           <Link to={`/bed/${val.id}`}>{val.number}</Link>
-                          {j === reservation.beds.length - 1 ? '' : ', '}
+                          {
+                            // @ts-expect-error TODO: fix this
+                            j === reservation.beds.length - 1 ? '' : ', '
+                          }
                         </span>
                       )) :
                       null}
@@ -151,6 +154,7 @@ export const ReservationsListToBeProcessed = () => {
                         Modifier
                       </Button>
                       <ReservationDeleteDialog
+                        // @ts-expect-error TODO: fix this
                         reservationId={reservation.id}
                         buttonProps={{ size: 'sm', variant: 'danger', borderLeftRadius: 0 }}
                         backToPlanning={false}

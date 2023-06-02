@@ -130,7 +130,11 @@ export const InviteReservations = () => {
                         reservation.beds.map((val, j) => (
                           <span key={j}>
                             <Link to={`bed/${val.id}`}>{val.number}</Link>
-                            {j === reservation.beds.length - 1 ? '' : ', '}
+
+                            {
+                              // @ts-expect-error TODO: fix this
+                              j === reservation.beds.length - 1 ? '' : ', '
+                            }
                           </span>
                         )) :
                         null}
@@ -141,6 +145,7 @@ export const InviteReservations = () => {
                         <CancelReservationModal
                           userId={userId}
                           getReservations={getIntermittentReservations}
+                          // @ts-expect-error TODO: fix this
                           reservationId={reservation.id}
                         />
 

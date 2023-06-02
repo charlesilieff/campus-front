@@ -27,10 +27,15 @@ export const Pricing = () => {
 
   // const mySort = pipe(pricingList, A.sort((a, b) =>
   const mySort = myData.sort((a, b) =>
+    // @ts-expect-error TODO: fix this
     a.userCategory.name !== b.userCategory.name ?
+      // @ts-expect-error TODO: fix this
       a.userCategory.name.localeCompare(b.userCategory.name) :
+      // @ts-expect-error TODO: fix this
       a.typeReservation.name !== b.typeReservation.name ?
+      // @ts-expect-error TODO: fix this
       a.typeReservation.name.localeCompare(b.typeReservation.name) :
+      // @ts-expect-error TODO: fix this
       a.price - b.price
   )
 
@@ -195,7 +200,10 @@ export const Pricing = () => {
                             Modifier
                           </Button>
                           <Box>
-                            <PricingDeleteDialog pricingId={pricing.id} />
+                            <PricingDeleteDialog
+                              // @ts-expect-error TODO: fix this
+                              pricingId={pricing.id}
+                            />
                           </Box>
                         </SimpleGrid>
                       </HStack>

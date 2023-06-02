@@ -26,16 +26,23 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
       mealsData[index][mealType] = 0
     }
     const mealsToCookFromDb: IMealsNumber = {
+      // @ts-expect-error TODO: fix this
       id: mealsData[index]?.id,
+      // @ts-expect-error TODO: fix this
       breakfast: mealsData[index].breakfast,
       lunchtime: {
+        // @ts-expect-error TODO: fix this
         specialDiet: mealsData[index]?.specialLunch,
+        // @ts-expect-error TODO: fix this
         regularDiet: mealsData[index]?.regularLunch
       },
       dinner: {
+        // @ts-expect-error TODO: fix this
         specialDiet: mealsData[index]?.specialDinner,
+        // @ts-expect-error TODO: fix this
         regularDiet: mealsData[index]?.regularDinner
       },
+      // @ts-expect-error TODO: fix this
       comment: mealsData[index]?.comment
     }
     setMealsNumber(mealsToCookFromDb)
@@ -45,6 +52,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
   const dayMonth = date.date()
 
   const defaultValue: IMealsNumber = {
+    // @ts-expect-error TODO: fix this
     id: mealsData[index]?.id,
     breakfast: 0,
     lunchtime: { specialDiet: 0, regularDiet: 0 },
@@ -61,16 +69,23 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
 
   useEffect(() => {
     const mealsToCookFromDb: IMealsNumber = {
+      // @ts-expect-error TODO: fix this
       id: mealsData[index]?.id,
+      // @ts-expect-error TODO: fix this
       breakfast: mealsData[index]?.breakfast,
       lunchtime: {
+        // @ts-expect-error TODO: fix this
         specialDiet: mealsData[index]?.specialLunch,
+        // @ts-expect-error TODO: fix this
         regularDiet: mealsData[index]?.regularLunch
       },
       dinner: {
+        // @ts-expect-error TODO: fix this
         specialDiet: mealsData[index]?.specialDinner,
+        // @ts-expect-error TODO: fix this
         regularDiet: mealsData[index]?.regularDinner
       },
+      // @ts-expect-error TODO: fix this
       comment: mealsData[index]?.comment
     }
 
@@ -256,12 +271,14 @@ function commentStyle(positionX: number, date: dayjs.Dayjs, mealsContext: IMeal[
 }
 
 function countRegular(mealsData: IMeal[]) {
+  // @ts-expect-error TODO: fix this
   const regular = mealsData.map(meals => meals.regularDinner + meals.regularLunch)
   const sumRegular = regular.reduce((a, b) => a + b, 0)
   return sumRegular
 }
 
 function countSpecial(mealsData: IMeal[]) {
+  // @ts-expect-error TODO: fix this
   const special = mealsData.map(meals => meals.specialLunch + meals.specialDinner)
   const sumSpecial = special.reduce((a, b) => a + b, 0)
   return sumSpecial

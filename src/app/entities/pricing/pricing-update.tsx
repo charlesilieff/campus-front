@@ -100,17 +100,21 @@ export const PricingUpdate = () => {
       ...values,
       userCategoryId: values.userCategoryId === '' ? undefined : values.userCategoryId,
       userCategory: userCategories.find(userCategory =>
+        // @ts-expect-error TODO: fix this
         userCategory.id.toString() === values.userCategoryId.toString()
       ),
       typeReservationId: values.typeReservationId === '' ? undefined : values.typeReservationId,
       typeReservation: typeReservations.find(typeReservation =>
+        // @ts-expect-error TODO: fix this
         typeReservation.id.toString() === values.typeReservationId.toString()
       )
     }
 
     if (isNew) {
+      // @ts-expect-error TODO: fix this
       dispatch(createEntity(entity))
     } else {
+      // @ts-expect-error TODO: fix this
       dispatch(updateEntity(entity))
     }
   }

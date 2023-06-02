@@ -10,6 +10,7 @@ export const PricingDetail = () => {
   const dispatch = useAppDispatch()
   const { id } = useParams<{ id: string }>()
   useEffect(() => {
+    // @ts-expect-error TODO: fix this
     dispatch(getEntity(id))
   }, [])
 

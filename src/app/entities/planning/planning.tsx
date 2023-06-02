@@ -97,14 +97,18 @@ export const Planning = ({ place, date, totalDays, reservations }: IProps) => {
           // Affichage des chambres
         }
         {place?.rooms?.map(room => {
+          // @ts-expect-error TODO: fix this
           if (room.beds.length > 0) {
             // On incrémente en fonction du nombre de lits de la room précédente.
+            // @ts-expect-error TODO: fix this
             roomRowPosition += room.beds.length
 
             return [
               <Room room={room} gridRowEnd={roomRowPosition} key={room.id} />,
+              // @ts-expect-error TODO: fix this
               room.beds.map((bed, index) => {
                 // On construit l'object qui va permettre de récupérer la bonne position en Y pour afficher les réservations.
+                // @ts-expect-error TODO: fix this
                 positionY[bed.id] = roomRowPosition - index - 1
                 return <Bed key={index} bed={bed} rowPosition={roomRowPosition} index={index} />
               })

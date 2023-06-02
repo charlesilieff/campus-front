@@ -124,6 +124,7 @@ export const AuthenticationSlice = createSlice({
     }
   },
   extraReducers(builder) {
+    // @ts-expect-error TODO: fix this
     builder
       .addCase(authenticate.rejected, (_state, action) => ({
         ...initialState,

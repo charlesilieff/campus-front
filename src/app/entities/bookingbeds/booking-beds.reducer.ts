@@ -269,7 +269,7 @@ export const BookingBedsSlice = createEntitySlice({
       )
   }
 })
-
+// @ts-expect-error TODO: fix this
 export const { reset, setData, backToOne } = BookingBedsSlice.actions
 
 // Reducer

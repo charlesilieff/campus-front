@@ -12,6 +12,7 @@ interface IErrorBoundaryState {
 }
 
 export class ErrorBoundary extends React.Component<IErrorBoundaryProps, IErrorBoundaryState> {
+  // @ts-expect-error TODO: fix this
   readonly state: IErrorBoundaryState = { error: undefined, errorInfo: undefined }
 
   componentDidCatch(error: any, errorInfo: any) {

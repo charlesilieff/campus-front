@@ -174,7 +174,11 @@ export const UserManagement = () => {
                   >
                     Éditer
                   </Button>
-                  <UserManagementDeleteDialog login={user.login} />
+
+                  <UserManagementDeleteDialog
+                    // @ts-expect-error TODO: fix this
+                    login={user.login}
+                  />
                 </HStack>
               </Td>
             </Tr>

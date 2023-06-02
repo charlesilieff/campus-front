@@ -13,6 +13,7 @@ export const CustomerDetail = () => {
   const { id } = useParams<{ id: string }>()
 
   useEffect(() => {
+    // @ts-expect-error TODO: fix this
     dispatch(getCustomer(id))
   }, [])
 

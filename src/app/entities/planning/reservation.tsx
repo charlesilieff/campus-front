@@ -74,7 +74,9 @@ export const Reservation: FunctionComponent<IProps> = (
   const reservationBedIds: number[] = []
   place.rooms?.forEach(room => {
     room.beds?.forEach(bed => {
+      // @ts-expect-error TODO: fix this
       if (reservation.bedsId.includes(bed.id)) {
+        // @ts-expect-error TODO: fix this
         reservationBedIds.push(bed.id)
       }
     })

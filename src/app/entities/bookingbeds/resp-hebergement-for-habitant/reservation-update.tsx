@@ -92,8 +92,10 @@ export const ReservationHabitantUpdate = (): JSX.Element => {
     )
 
     if (backendReservation.arrivalDate !== undefined) {
+      // @ts-expect-error TODO: fix this
       setDatesAndMeal(O.some({
         arrivalDate: backendReservation?.arrivalDate.toString(),
+        // @ts-expect-error TODO: fix this
         departureDate: backendReservation.departureDate.toString(),
         isSpecialDiet: backendReservation.specialDietNumber === 1 ? 'true' : 'false',
         isArrivalLunch: backendReservation.isArrivalLunch,
@@ -105,6 +107,7 @@ export const ReservationHabitantUpdate = (): JSX.Element => {
         isDepartureBreakfast: backendReservation.isDepartureBreakfast,
         commentMeals: backendReservation.commentMeals
       }))
+      // @ts-expect-error TODO: fix this
       setBedId(pipe(backendReservation.beds, A.head, O.map(bed => bed.id)))
     }
   }, [backendReservation.id])

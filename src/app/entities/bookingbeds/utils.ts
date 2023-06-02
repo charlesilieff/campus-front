@@ -30,8 +30,10 @@ export const getPlacesWithoutImage = async (): Promise<ReadonlyArray<IPlace>> =>
 export const filterBedPlace =
   (places: ReadonlyArray<IPlace>) => (idPlace: number): ReadonlyArray<IPlace> => {
     if (isNaN(idPlace) || idPlace === 0) {
+      // @ts-expect-error TODO: fix this
       return places?.flatMap(place => place.rooms)
     } else {
+      // @ts-expect-error TODO: fix this
       return places
         ?.filter(place => place.id === idPlace)
         ?.flatMap(place => place.rooms)
@@ -43,10 +45,13 @@ export const filterBedRoomKind = (
   idRoomKind: number
 ): ReadonlyArray<IPlace> => {
   if (isNaN(idRoomKind)) {
+    // @ts-expect-error TODO: fix this
     return places?.flatMap(place => place.rooms)
   } else {
+    // @ts-expect-error TODO: fix this
     return places
       ?.flatMap(place => place.rooms)
+      // @ts-expect-error TODO: fix this
       .filter(room => room.bedroomKind?.id === idRoomKind)
   }
 }
@@ -57,7 +62,7 @@ export interface IPlace {
   comment?: string | null
   imageContentType?: string | null
   image?: string | null
-  rooms?: IRoomWithBeds[] | null
+  rooms: IRoomWithBeds[] | null
   intermittentAllowed?: boolean
 }
 
@@ -96,7 +101,7 @@ async (
   }${arrivalDate}/${departureDate}${O.isSome(reservationId) ? `/${reservationId.value}` : ''}`
 
   const { data } = await axios.get<IPlace[]>(apiUrlPlaces)
-
+  // @ts-expect-error TODO: fix this
   data.forEach(place => place.rooms.sort((room1, room2) => room1.name.localeCompare(room2.name)))
   return data
 }
@@ -166,6 +171,7 @@ export const createUserOneBedReservation = (
   isDepartureDiner: datesAndMeals.isDepartureDinner,
   comment: datesAndMeals.comment,
   bedId,
+  // @ts-expect-error TODO: fix this
   customer: {
     id: O.getOrUndefined(customer.id),
     firstname: customer.firstname,
@@ -192,8 +198,10 @@ export const createUserMealsOnlyReservation = (
   // @ts-expect-error TODO: fix this
   departureDate: datesAndMeals.departureDate,
   isSpecialDiet: datesAndMeals.isSpecialDiet === 'true',
-  comment: datesAndMeals.comment,
+
+  comment: O.some(datesAndMeals.comment),
   bedId,
+  // @ts-expect-error TODO: fix this
   customer: {
     id: O.getOrUndefined(customer.id),
     firstname: customer.firstname,
@@ -203,5 +211,5 @@ export const createUserMealsOnlyReservation = (
     age: O.getOrUndefined(customer.age)
   },
   weekMeals: datesAndMeals.weekMeals,
-  commentMeals: datesAndMeals.commentMeals
+  commentMeals: O.some(datesAndMeals.commentMeals)
 })

@@ -2,7 +2,9 @@ export const toBase64 = (file: File, cb: (v: string) => void) => {
   const fileReader: FileReader = new FileReader()
   fileReader.readAsDataURL(file)
   fileReader.onload = e => {
+    // @ts-expect-error TODO: fix this
     const base64Data = e.target['result'].toString().substr(
+      // @ts-expect-error TODO: fix this
       e.target['result'].toString().indexOf('base64,') + 'base64,'.length
     )
     cb(base64Data)
@@ -26,6 +28,7 @@ export const setFileData = (
 export const openFile = (contentType: string, data: string) => () => {
   const fileURL = `data:${contentType};base64,${data}`
   const win = window.open()
+  // @ts-expect-error TODO: fix this
   win.document.write(
     '<iframe src="'
       + fileURL

@@ -6,7 +6,9 @@ const initialState = {
   loading: false,
   registrationSuccess: false,
   registrationFailure: false,
+  // @ts-expect-error TODO: fix this
   errorMessage: null as string,
+  // @ts-expect-error TODO: fix this
   successMessage: null as string
 }
 
@@ -50,6 +52,7 @@ export const RegisterSlice = createSlice({
     }
   },
   extraReducers(builder) {
+    // @ts-expect-error TODO: fix this
     builder
       .addCase(handleRegister.pending, state => {
         state.loading = true

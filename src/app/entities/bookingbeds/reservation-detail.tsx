@@ -18,6 +18,7 @@ export const ReservationDetail = () => {
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.ADMIN])
   )
   useEffect(() => {
+    // @ts-expect-error TODO: fix this
     dispatch(getReservation(reservationId))
   }, [])
 
@@ -28,7 +29,10 @@ export const ReservationDetail = () => {
       {isAdmin ?
         (
           <HStack>
-            <ReservationDeleteDialog reservationId={reservationEntity.id} />
+            <ReservationDeleteDialog
+              // @ts-expect-error TODO: fix this
+              reservationId={reservationEntity.id}
+            />
 
             <Button
               as={Link}
@@ -151,7 +155,10 @@ export const ReservationDetail = () => {
       {isAdmin ?
         (
           <HStack>
-            <ReservationDeleteDialog reservationId={reservationEntity.id} />
+            <ReservationDeleteDialog
+              // @ts-expect-error TODO: fix this
+              reservationId={reservationEntity.id}
+            />
 
             <Button
               as={Link}

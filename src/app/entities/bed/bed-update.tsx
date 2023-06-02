@@ -79,15 +79,17 @@ export const BedUpdate = () => {
   }, [updateSuccess])
 
   interface ExtendIBedForTheBAckendToBeDeleted extends IBed {
-    roomId: string
+    roomId: string | undefined
   }
 
   const saveEntity = (values: ExtendIBedForTheBAckendToBeDeleted) => {
+    // @ts-expect-error TODO: fix this
     const entity: ExtendIBedForTheBAckendToBeDeleted = {
       ...bedEntity,
       ...values,
       // this is very important but  very bad, otherwise the backend will not be able to find the room
       roomId: values.roomId === '' ? undefined : values.roomId,
+      // @ts-expect-error TODO: fix this
       room: rooms.find(it => it.id.toString() === values.roomId.toString())
     }
 

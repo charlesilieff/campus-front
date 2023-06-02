@@ -41,7 +41,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
   const customerId = O.fromNullable(
     useAppSelector(state => state.authentication.account.customerId)
   )
-
+  // @ts-expect-error TODO: fix this
   const userId: number = useAppSelector(state => state.authentication.account.id)
 
   const handleSubmitReservation = async (
@@ -81,6 +81,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
     }
 
     if (backendCustomer.id !== undefined) {
+      // @ts-expect-error TODO: fix this
       setCustomer(O.some({
         id: O.fromNullable(backendCustomer?.id),
         firstname: backendCustomer?.firstname,
@@ -100,8 +101,10 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
     )
 
     if (backendReservation.arrivalDate !== undefined) {
+      // @ts-expect-error TODO: fix this
       setDatesAndMeal(O.some({
         arrivalDate: backendReservation.arrivalDate.toString(),
+        // @ts-expect-error TODO: fix this
         departureDate: backendReservation.departureDate.toString(),
         isSpecialDiet: backendReservation.specialDietNumber === 1 ? 'true' : 'false',
         isArrivalLunch: backendReservation.isArrivalLunch,
@@ -113,6 +116,7 @@ export const ReservationIntermittentUpdate = (): JSX.Element => {
         isDepartureBreakfast: backendReservation.isDepartureBreakfast,
         commentMeals: backendReservation.commentMeals
       }))
+      // @ts-expect-error TODO: fix this
       setBedId(pipe(backendReservation.beds, A.head, O.map(bed => bed.id)))
     }
   }, [backendReservation.id])

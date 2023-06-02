@@ -50,6 +50,7 @@ export const UserSelect = (
   const [userSelect, setUserSelect] = useState<O.Option<string>>(O.none())
 
   const userOderByEmail: Order<IUser> = {
+    // @ts-expect-error TODO: fix this
     compare: (self, that) => String.Order.compare(self.email, that.email)
   }
 
@@ -80,10 +81,12 @@ export const UserSelect = (
         phoneNumber: O.none(),
         age: O.none()
       })),
+      // @ts-expect-error TODO: fix this
       props.setCustomer
     )
-
+    // @ts-expect-error TODO: fix this
     users.find(user => user.id === Number(formUser.id)).firstName
+      // @ts-expect-error TODO: fix this
       && users.find(user => user.id === Number(formUser.id)).lastName ?
       props.setUpdateCustomer(false) :
       props.setUpdateCustomer(true)
@@ -119,6 +122,7 @@ export const UserSelect = (
                   </FormLabel>
 
                   <Select
+                    // @ts-expect-error TODO: fix this
                     onChange={e => setUserSelect(O.some(e.target.value))}
                     id="user"
                     {...register('id', {})}
@@ -126,6 +130,7 @@ export const UserSelect = (
                     <option value="" key="0" />
                     {users ?
                       users.map(user => (
+                        // @ts-expect-error TODO: fix this
                         <option value={user.id} key={user.id}>
                           {user.email} {user.firstName ? '; Prénom : ' : null} {user.firstName}
                           {user.firstName ? '; Nom : ' : null}

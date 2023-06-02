@@ -96,7 +96,10 @@ export const Customer = () => {
                       >
                         Modifier
                       </Button>
-                      <CustomerDeleteDialog customerId={customer.id} />
+                      <CustomerDeleteDialog
+                        // @ts-expect-error TODO: fix this
+                        customerId={customer.id}
+                      />
                     </HStack>
                   </Td>
                 </Tr>

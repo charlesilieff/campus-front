@@ -53,6 +53,7 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
     }).map((value, index) => {
       console.log('isSpecialMeal', isSpecialMeal3)
       if (index < numberOfDays && value.id !== undefined && isSpecialMeal3) {
+        // @ts-expect-error TODO: fix this
         value = {
           ...value,
           specialLunch: 1,
@@ -64,6 +65,7 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
         }
       }
       if (index < numberOfDays && value.id !== undefined && !isSpecialMeal3) {
+        // @ts-expect-error TODO: fix this
         value = {
           ...value,
           specialLunch: 0,

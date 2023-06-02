@@ -52,7 +52,7 @@ export default () => next => action => {
 
           case 400: {
             let errorHeader: string | null = null
-            let entityKey: string | null = null
+            let entityKey: string | undefined = undefined
             response?.headers
               && Object.entries<string>(response.headers).forEach(([k, v]) => {
                 if (k.toLowerCase().endsWith('app-error')) {

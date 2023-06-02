@@ -103,6 +103,7 @@ const createIReservationWithBedIds = (
   isPaid: false,
   paymentMode: '',
   personNumber: datesAndMeals.personNumber,
+  // @ts-expect-error TODO: fix this
   customer: {
     id: customer.id,
     firstname: customer.firstname,
@@ -141,6 +142,7 @@ const createIReservationWithoutBedIds = (
   isPaid: false,
   paymentMode: '',
   personNumber: datesAndMeals.personNumber,
+  // @ts-expect-error TODO: fix this
   customer: {
     id: customer.id,
     firstname: customer.firstname,
@@ -176,7 +178,7 @@ export const ReservationInviteUpdate = (): JSX.Element => {
     useAppSelector(state => state.authentication.account.customerId)
   )
   // const getEntity = useAppSelector(state => state.user-category.)
-
+  // @ts-expect-error TODO: fix this
   const userId: number = useAppSelector(state => state.authentication.account.id)
 
   const handleSubmitReservation = async (
@@ -310,6 +312,7 @@ export const ReservationInviteUpdate = (): JSX.Element => {
     }
 
     if (backendCustomer.id !== undefined) {
+      // @ts-expect-error TODO: fix this
       setCustomer(O.some({
         id: backendCustomer?.id,
         firstname: backendCustomer?.firstname,
@@ -329,8 +332,10 @@ export const ReservationInviteUpdate = (): JSX.Element => {
     )
 
     if (backendReservation.arrivalDate !== undefined) {
+      // @ts-expect-error TODO: fix this
       setDatesAndMeal(O.some({
         arrivalDate: backendReservation?.arrivalDate.toString(),
+        // @ts-expect-error TODO: fix this
         departureDate: backendReservation.departureDate.toString(),
         specialDietNumber: backendReservation.specialDietNumber, // === 1 ? 'true' : 'false',
         isArrivalLunch: backendReservation.isArrivalLunch,
@@ -345,6 +350,7 @@ export const ReservationInviteUpdate = (): JSX.Element => {
         // withBeds: backendReservation.withBeds
         withBeds: false
       }))
+      // @ts-expect-error TODO: fix this
       setBedId(pipe(backendReservation.beds, A.head, O.map(bed => bed.id)))
     }
   }, [backendReservation.id])

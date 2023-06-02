@@ -187,7 +187,7 @@ export const UserManagementUpdate = () => {
 
             <Checkbox
               disabled={!user.id}
-              isChecked={user.activated}
+              isChecked={user.activated === undefined ? false : user.activated}
               alignSelf={'flex-start'}
               {...register('activated')}
             >

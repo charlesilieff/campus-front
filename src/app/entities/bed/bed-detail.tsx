@@ -10,7 +10,9 @@ export const BedDetail = () => {
   const dispatch = useAppDispatch()
   const { id } = useParams<'id'>()
   useEffect(() => {
-    dispatch(getEntity(id))
+    if (id) {
+      dispatch(getEntity(id))
+    }
   }, [])
 
   const bedEntity = useAppSelector(state => state.bed.entity)

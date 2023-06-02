@@ -13,9 +13,14 @@ interface IProps {
 export const IntermittentBeds: FunctionComponent<IProps> = (
   { rooms, selectedBedId, bedId }
 ) => (
-  <RadioGroup onChange={e => selectedBedId(O.some(+e))} defaultValue={O.getOrNull(bedId)}>
+  <RadioGroup
+    onChange={e => selectedBedId(O.some(+e))}
+    // @ts-expect-error TODO: fix this
+    defaultValue={O.getOrNull(bedId)}
+  >
     {rooms.map(room => {
       const bedRoomKind = room.bedroomKind ? `(${room.bedroomKind.name})` : ''
+      // @ts-expect-error TODO: fix this
       const isRoomFull = room.beds.length === room.beds.filter(b => b.booked).length
       return (
         <VStack key={room.id} mb={6} alignItems={'flex-start'}>
@@ -23,24 +28,30 @@ export const IntermittentBeds: FunctionComponent<IProps> = (
             {`Chambre ${room.name} ${bedRoomKind}`}
           </Text>
 
-          {room.beds.map(bed => {
-            const bedkind = bed.kind ? `(${bed.kind})` : ''
-            const isDisabled = bed.booked
-              && (!O.exists<string>(b => b === bed.id.toString())(bedId))
+          {
+            // @ts-expect-error TODO: fix this
+            room.beds.map(bed => {
+              const bedkind = bed.kind ? `(${bed.kind})` : ''
+              const isDisabled = bed.booked
+                // @ts-expect-error TODO: fix this
+                && (!O.exists<string>(b => b === bed.id.toString())(bedId))
 
-            return (
-              <Radio
-                key={bed.id}
-                value={bed.id.toString()}
-                isDisabled={isDisabled}
-                isChecked={O.exists<string>(b => b === bed.id.toString())(bedId)}
-              >
-                {`${bed.number} ${bedkind}  (places : ${bed.numberOfPlaces}) ${
-                  isDisabled ? '(réservé)' : ''
-                }`}
-              </Radio>
-            )
-          })}
+              return (
+                <Radio
+                  key={bed.id}
+                  // @ts-expect-error TODO: fix this
+                  value={bed.id.toString()}
+                  isDisabled={isDisabled}
+                  // @ts-expect-error TODO: fix this
+                  isChecked={O.exists<string>(b => b === bed.id.toString())(bedId)}
+                >
+                  {`${bed.number} ${bedkind}  (places : ${bed.numberOfPlaces}) ${
+                    isDisabled ? '(réservé)' : ''
+                  }`}
+                </Radio>
+              )
+            })
+          }
         </VStack>
       )
     })}

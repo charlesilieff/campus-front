@@ -56,6 +56,7 @@ export const SettingsSlice = createSlice({
         state.loading = false
         state.updateSuccess = true
         state.updateFailure = false
+        // @ts-expect-error TODO: fix this
         state.successMessage = 'Settings saved!'
       })
   }

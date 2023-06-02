@@ -70,28 +70,40 @@ export const Day = ({ positionX, date, index }: IProps) => {
 
   useEffect(() => {
     const mealsToCookFromDb: IMealsNumber = {
+      // @ts-expect-error TODO: fix this
       breakfast: mealsContext[index]?.breakfast,
       lunchtime: {
+        // @ts-expect-error TODO: fix this
         specialDiet: mealsContext[index]?.specialLunch,
+        // @ts-expect-error TODO: fix this
         classicDiet: mealsContext[index]?.regularLunch
       },
       dinner: {
+        // @ts-expect-error TODO: fix this
         specialDiet: mealsContext[index]?.specialDinner,
+        // @ts-expect-error TODO: fix this
         classicDiet: mealsContext[index]?.regularDinner
       },
+      // @ts-expect-error TODO: fix this
       comment: mealsContext[index]?.comment
     }
 
     const mealsReferentialFromDb: IMealsNumber = {
+      // @ts-expect-error TODO: fix this
       breakfast: mealsContext[index]?.breakfast,
       lunchtime: {
+        // @ts-expect-error TODO: fix this
         specialDiet: mealsContext[index]?.specialLunch,
+        // @ts-expect-error TODO: fix this
         classicDiet: mealsContext[index]?.regularLunch
       },
       dinner: {
+        // @ts-expect-error TODO: fix this
         specialDiet: mealsContext[index]?.specialDinner,
+        // @ts-expect-error TODO: fix this
         classicDiet: mealsContext[index]?.regularDinner
       },
+      // @ts-expect-error TODO: fix this
       comment: mealsContext[index]?.comment
     }
     // setMealsNumberReferential(mealsReferentialFromDb)
@@ -126,7 +138,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
       },
       comment: mealsContext[index]?.comment
     }
-
+    // @ts-expect-error TODO: fix this
     setMealsNumber(theNewMealsNumber)
   }, [mealsContext])
 
@@ -275,9 +287,12 @@ export const Day = ({ positionX, date, index }: IProps) => {
                             {meals.breakfast ? meals.breakfast : null}
                           </Td>
                           <Td>
-                            {meals.commentMeals?.length > 0 && meals.breakfast ?
-                              meals.commentMeals :
-                              null}
+                            {
+                              // @ts-expect-error TODO: fix this
+                              meals.commentMeals?.length > 0 && meals.breakfast ?
+                                meals.commentMeals :
+                                null
+                            }
                           </Td>
                         </Tr>
                       ))}
@@ -363,9 +378,12 @@ export const Day = ({ positionX, date, index }: IProps) => {
                         </Td>
 
                         <Td>
-                          {meals.commentMeals?.length > 0 && meals.regularLunch ?
-                            meals.commentMeals :
-                            null}
+                          {
+                            // @ts-expect-error TODO: fix this
+                            meals.commentMeals?.length > 0 && meals.regularLunch ?
+                              meals.commentMeals :
+                              null
+                          }
                         </Td>
                       </Tr>
                     ))}
@@ -449,9 +467,12 @@ export const Day = ({ positionX, date, index }: IProps) => {
                             {meals.specialLunch ? meals.specialLunch : null}
                           </Td>
                           <Td>
-                            {meals.commentMeals?.length > 0 && meals.specialLunch ?
-                              meals.commentMeals :
-                              null}
+                            {
+                              // @ts-expect-error TODO: fix this
+                              meals.commentMeals?.length > 0 && meals.specialLunch ?
+                                meals.commentMeals :
+                                null
+                            }
                           </Td>
                         </Tr>
                       ))}
@@ -540,9 +561,12 @@ export const Day = ({ positionX, date, index }: IProps) => {
                         </Td>
 
                         <Td>
-                          {meals.commentMeals?.length > 0 && meals.regularDinner ?
-                            meals.commentMeals :
-                            null}
+                          {
+                            // @ts-expect-error TODO: fix this
+                            meals.commentMeals?.length > 0 && meals.regularDinner ?
+                              meals.commentMeals :
+                              null
+                          }
                         </Td>
                       </Tr>
                     ))}
@@ -626,9 +650,12 @@ export const Day = ({ positionX, date, index }: IProps) => {
                             {meals.specialDinner ? meals.specialDinner : null}
                           </Td>
                           <Td>
-                            {meals.commentMeals?.length > 0 && meals.specialDinner ?
-                              meals.commentMeals :
-                              null}
+                            {
+                              // @ts-expect-error TODO: fix this
+                              meals.commentMeals?.length > 0 && meals.specialDinner ?
+                                meals.commentMeals :
+                                null
+                            }
                           </Td>
                         </Tr>
                       ))}
@@ -671,6 +698,7 @@ function commentStyle(positionX: number, date: dayjs.Dayjs, mealsContext: IMeal[
   if (date.day() === 1) {
     style.borderLeftWidth = '0.2em'
   }
+  // @ts-expect-error TODO: fix this
   if (mealsContext[index]?.comment?.length > 0) {
     style.backgroundColor = '#B8D8BA'
   }

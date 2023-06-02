@@ -25,7 +25,7 @@ export interface IBookingBeds {
   userCategory?: IUserCategory
   isPaid?: boolean
   isConfirmed?: boolean
-  paymentMode?: string
+  paymentMode?: string | null
   bedIds: number[]
   comment?: string
   isArrivalBreakfast?: boolean

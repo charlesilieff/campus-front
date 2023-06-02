@@ -103,6 +103,7 @@ export const Index = () => {
     mealsDataDays,
     numberOfDays,
     mealsData,
+    // @ts-expect-error TODO: fix this
     resultTotalMeals,
     totalMeals
   ))
@@ -423,19 +424,21 @@ function displayTotalMeals(resultTotalMeals: number[]) {
  */
 function totalMealsCalculation(mealsData: IMeal[], totalMeals: (table: number[]) => number) {
   // regularLunch: calculation of total.
-
+  // @ts-expect-error TODO: fix this
   let table: number[] = mealsData.map(meals => meals.regularLunch)
 
   const totalRegularLunch: number = totalMeals(table)
-
+  // @ts-expect-error TODO: fix this
   table = mealsData.map(meals => meals.regularDinner)
   const totalRegularDinner: number = totalMeals(table)
 
   // specialLunch: calculation of total.
+  // @ts-expect-error TODO: fix this
   table = mealsData.map(meals => meals.specialLunch)
   const totalSpecialLunch: number = totalMeals(table)
 
   // specialDinner: calculation of total.
+  // @ts-expect-error TODO: fix this
   table = mealsData.map(meals => meals.specialDinner)
   const totalSpecialDinner: number = totalMeals(table)
 
@@ -444,6 +447,7 @@ function totalMealsCalculation(mealsData: IMeal[], totalMeals: (table: number[])
   const total: number = totalRegular + totalSpecial
 
   // breakfast: calculation of total .
+  // @ts-expect-error TODO: fix this
   table = mealsData.map(meals => meals.breakfast)
   const totalBreakfast: number = totalMeals(table)
 

@@ -32,7 +32,7 @@ export const PasswordResetInit = () => {
   const handleValidSubmit = ({ email }: { email: string }) => {
     dispatch(handlePasswordResetInit(email))
   }
-
+  // @ts-expect-error TODO: fix this
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment
   const successMessage: string = useAppSelector(state => state.passwordReset.successMessage)
 
