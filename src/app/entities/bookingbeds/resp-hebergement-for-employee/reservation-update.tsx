@@ -1,11 +1,17 @@
 import { CheckIcon } from '@chakra-ui/icons'
 import { Button, Heading, HStack, Stack, useToast } from '@chakra-ui/react'
+import { flow, pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
+import * as T from '@effect/io/Effect'
+import type { ParseError } from '@effect/schema/ParseResult'
+import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { MealsOnlyUserReservation } from 'app/shared/model/mealsReservation.model'
 import { getSession } from 'app/shared/reducers/authentication'
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import {
   createMealsOnlyReservationReservationUpdateUser,
@@ -33,13 +39,26 @@ export interface User {
 
 export type BedIds = ReadonlyArray<{ id: number }>
 
+const apiReservation = 'api/reservations/employee'
+// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+const getReservation = (id: string): T.Effect<never, ParseError, MealsOnlyUserReservation> =>
+  pipe(
+    T.promise(() => axios.get(`${apiReservation}/${id}`)),
+    T.flatMap(d => S.parseEffect(MealsOnlyUserReservation)(d.data))
+  )
+
 export const ReservationEmployeeUpdate = (): JSX.Element => {
+  const reservationId = pipe(
+    useParams<{ reservationId: string }>(),
+    param => O.fromNullable(param.reservationId)
+  )
   const [datesAndMeal, setDatesAndMeal] = useState<
     O.Option<MealsOnlyReservationDatesAndMeals>
   >(
     O.none()
   )
   const [customer, setCustomer] = useState<O.Option<Customer>>(O.none())
+  const [userSelect, setUserSelect] = useState<O.Option<string>>(O.none())
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
   const [selectUser, setSelectUser] = useState<boolean>(false)
@@ -68,9 +87,53 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
   }
 
   useEffect(() => {
-    dispatch(resetReservations())
-    setDatesAndMeal(O.none)
-    setUpdateDatesAndMeals(false)
+    console.log('reservationId', reservationId)
+    pipe(
+      reservationId,
+      O.map(flow(
+        getReservation,
+        T.map(reservation => {
+          setCustomer(
+            O.some({
+              age: O.fromNullable(reservation.customer.age),
+              firstname: pipe(
+                O.fromNullable(reservation.customer.firstname),
+                O.getOrElse(() => '')
+              ),
+              lastname: pipe(O.fromNullable(reservation.customer.lastname), O.getOrElse(() => '')),
+              email: pipe(O.fromNullable(reservation.customer.email), O.getOrElse(() => '')),
+              phoneNumber: O.fromNullable(reservation.customer.phoneNumber),
+              id: O.fromNullable(reservation.customer.id)
+            })
+          )
+
+          setDatesAndMeal(
+            O.some({
+              arrivalDate: reservation.arrivalDate,
+              departureDate: reservation.departureDate,
+              isSpecialDiet: reservation.isSpecialDiet ? 'true' : 'false',
+              weekMeals: {
+                friday: { isLunch: true, isDinner: false, isBreakfast: false },
+                saturday: { isLunch: true, isDinner: false, isBreakfast: false },
+                sunday: { isLunch: true, isDinner: false, isBreakfast: false },
+                monday: { isLunch: true, isDinner: false, isBreakfast: false },
+                tuesday: { isLunch: true, isDinner: false, isBreakfast: false },
+                wednesday: { isLunch: true, isDinner: false, isBreakfast: false },
+                thursday: { isLunch: true, isDinner: false, isBreakfast: false }
+              },
+              comment: O.getOrElse(reservation.comment, () => ''),
+              commentMeals: O.getOrElse(reservation.commentMeals, () => '')
+            })
+          )
+
+          setSelectUser(false)
+          setUserSelect(O.fromNullable(reservation.customer.email))
+          setUserId(O.some(reservation.userId))
+          setUpdateCustomer(false)
+        }),
+        T.runPromise
+      ))
+    )
   }, [])
 
   useEffect(() => {
@@ -99,6 +162,8 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
       {O.isNone(userId) || O.isNone(customer) ?
         (
           <UserSelect
+            userSelect={userSelect}
+            setUserSelect={setUserSelect}
             setUserId={setUserId}
             setCustomer={setCustomer}
             setUpdateUser={setSelectUser}

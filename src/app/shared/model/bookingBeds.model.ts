@@ -1,4 +1,7 @@
+import * as S from '@effect/schema/Schema'
+
 import type { ICustomer } from './customer.model'
+import { CustomerSchema } from './customer.model'
 import type { IUserCategory } from './userCategory.model'
 
 export interface IBookingBeds {
@@ -39,3 +42,26 @@ export const defaultValue: Readonly<IBookingBeds> = {
   paymentMode: null,
   bedIds: []
 }
+
+export const ReservationSchema = S.struct({
+  id: S.positive()(S.number),
+  arrivalDate: S.Date,
+  departureDate: S.Date,
+  isArrivalDiner: S.boolean,
+  isArrivalLunch: S.boolean,
+  isDepartureDiner: S.boolean,
+  isDepartureLunch: S.boolean,
+  personNumber: S.number,
+  specialDietNumber: S.number,
+  customer: CustomerSchema,
+  // pricing: IPricing
+  // userCategoryId: S.number,
+  isPaid: S.boolean,
+  isConfirmed: S.boolean,
+  comment: S.string,
+  isArrivalBreakfast: S.boolean,
+  isDepartureBreakfast: S.boolean,
+  commentMeals: S.string
+})
+
+export type ReservationSchema = S.To<typeof ReservationSchema>

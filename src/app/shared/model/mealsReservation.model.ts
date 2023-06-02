@@ -1,33 +1,11 @@
-import type * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 
-import type { ICustomer } from './customer.model'
 import { CustomerSchema } from './customer.model'
-
-export interface MealsOnlyUserReservation {
-  reservationId: O.Option<number>
-  arrivalDate: Date
-  departureDate: Date
-  weekMeals: {
-    monday: { isBreakfast: boolean; isLunch: boolean; isDinner: boolean }
-    tuesday: { isBreakfast: boolean; isLunch: boolean; isDinner: boolean }
-    wednesday: { isBreakfast: boolean; isLunch: boolean; isDinner: boolean }
-    thursday: { isBreakfast: boolean; isLunch: boolean; isDinner: boolean }
-    friday: { isBreakfast: boolean; isLunch: boolean; isDinner: boolean }
-    saturday: { isBreakfast: boolean; isLunch: boolean; isDinner: boolean }
-    sunday: { isBreakfast: boolean; isLunch: boolean; isDinner: boolean }
-  }
-  customer: ICustomer
-  comment: O.Option<string>
-  commentMeals: O.Option<string>
-  userId: number
-  isSpecialDiet: boolean
-}
 
 export const MealsOnlyUserReservation = S.struct({
   reservationId: S.optional(S.number).toOption(),
-  arrivalDate: S.Date,
-  departureDate: S.Date,
+  arrivalDate: S.string,
+  departureDate: S.string,
   weekMeals: S.struct({
     monday: S.struct({
       isBreakfast: S.boolean,
@@ -71,3 +49,5 @@ export const MealsOnlyUserReservation = S.struct({
   userId: S.positive()(S.number),
   isSpecialDiet: S.boolean
 })
+
+export type MealsOnlyUserReservation = S.To<typeof MealsOnlyUserReservation>

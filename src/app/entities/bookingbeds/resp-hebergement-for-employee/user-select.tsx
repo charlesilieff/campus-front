@@ -17,7 +17,7 @@ import type { Order } from '@effect/data/typeclass/Order'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getUsersAsAdmin } from 'app/modules/administration/user-management/user-management.reducer'
 import type { IUser } from 'app/shared/model/user.model'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
@@ -28,6 +28,8 @@ interface UserUpdateProps {
   setUserId: (userId: O.Option<number>) => void
   setUpdateUser: (updateUser: boolean) => void
   setUpdateCustomer: (updateUser: boolean) => void
+  userSelect: O.Option<string>
+  setUserSelect: (userSelect: O.Option<string>) => void
 }
 
 export interface FormUser {
@@ -46,8 +48,6 @@ export const UserSelect = (
       getUsersAsAdmin()
     )
   }
-
-  const [userSelect, setUserSelect] = useState<O.Option<string>>(O.none())
 
   const userOderByEmail: Order<IUser> = {
     // @ts-expect-error TODO: fix this
@@ -123,8 +123,9 @@ export const UserSelect = (
 
                   <Select
                     // @ts-expect-error TODO: fix this
-                    onChange={e => setUserSelect(O.some(e.target.value))}
+                    onChange={e => props.setUserSelect(O.some(e.target.value))}
                     id="user"
+                    defaultValue={O.getOrElse(props.userSelect, () => '')}
                     {...register('id', {})}
                   >
                     <option value="" key="0" />
@@ -144,7 +145,7 @@ export const UserSelect = (
 
               <Button
                 rightIcon={<CheckIcon />}
-                colorScheme={userSelect ? 'green' : 'red'}
+                colorScheme={props.userSelect ? 'green' : 'red'}
                 alignSelf={'flex-start'}
                 type="submit"
               >

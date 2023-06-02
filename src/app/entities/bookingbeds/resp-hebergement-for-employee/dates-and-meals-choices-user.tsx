@@ -42,7 +42,7 @@ export const DatesAndMealsChoices = (
     formState: { errors },
     reset: resetForm
   } = useForm<MealsOnlyReservationDatesAndMeals>()
-
+  console.log('reservation', props.datesAndMeals)
   useEffect(() => {
     resetForm(
       O.isSome(props.datesAndMeals) ? props.datesAndMeals.value : {}
@@ -132,7 +132,6 @@ export const DatesAndMealsChoices = (
               </FormControl>
             </Stack>
             <VStack spacing={10} alignItems={'flex-start'}>
-              {/* </Stack> */}
               <FormControl
                 isInvalid={errors.comment !== undefined}
                 width={'auto'}

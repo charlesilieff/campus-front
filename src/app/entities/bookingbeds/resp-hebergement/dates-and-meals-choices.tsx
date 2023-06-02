@@ -55,7 +55,7 @@ export const DatesAndMealsChoices = (
     props.setUpdateDatesAndMeals(false)
     props.setDatesAndMeal(O.some(datesAndMeal))
   }
-
+  console.log(props.datesAndMeals)
   return (
     <VStack alignItems={'flex-start'}>
       <VStack
