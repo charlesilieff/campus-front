@@ -124,26 +124,27 @@ export const ReservationsListEmployee = () => {
                       ''}
                   </Td>
                   <Td px={2} py={1}>
-                    <HStack spacing={0}>
-                      {O.isSome(reservation.reservationId) ?
-                        (
+                    {O.isSome(reservation.reservationId) ?
+                      (
+                        <HStack spacing={0}>
                           <CancelReservationModal
                             getReservations={handleSyncList}
                             reservationId={reservation.reservationId.value}
                           />
-                        ) :
-                        null}
-                      <Button
-                        as={Link}
-                        to={`/bookingbeds/employee/${reservation.reservationId}`}
-                        variant={'modify'}
-                        size="sm"
-                        borderLeftRadius={0}
-                        leftIcon={<FaPencilAlt />}
-                      >
-                        Modifier
-                      </Button>
-                    </HStack>
+
+                          <Button
+                            as={Link}
+                            to={`/bookingbeds/employee/${reservation.reservationId.value}`}
+                            variant={'modify'}
+                            size="sm"
+                            borderLeftRadius={0}
+                            leftIcon={<FaPencilAlt />}
+                          >
+                            Modifier
+                          </Button>
+                        </HStack>
+                      ) :
+                      null}
                   </Td>
                 </Tr>
               ))}

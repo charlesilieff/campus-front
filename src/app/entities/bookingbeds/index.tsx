@@ -2,7 +2,7 @@ import { ErrorBoundaryRoutes } from 'app/shared/error/error-boundary-routes'
 import React from 'react'
 import { Route } from 'react-router-dom'
 
-import { ReservationIntermittentUpdate } from './intermittent/reservation-intermittent-update'
+import { OneBedReservationUpdate } from './intermittent/reservation-intermittent-update'
 import { ReservationInviteUpdate } from './invite/reservation-invite-update'
 import { ReservationDetail } from './reservation-detail'
 import { ReservationUpdate } from './resp-hebergement/reservation-update'
@@ -15,7 +15,7 @@ export const BookingBedsRoutes = (): JSX.Element => (
     <Route path={`new`} element={<ReservationUpdate />} />
     <Route
       path={`new/intermittent`}
-      element={<ReservationIntermittentUpdate />}
+      element={<OneBedReservationUpdate />}
     />
     <Route
       path={`new/habitant`}
@@ -35,11 +35,11 @@ export const BookingBedsRoutes = (): JSX.Element => (
     />
     <Route
       path={`intermittent/:reservationId`}
-      element={<ReservationIntermittentUpdate />}
+      element={<OneBedReservationUpdate />}
     />
     <Route
       path={`employee/:reservationId`}
-      element={<ReservationIntermittentUpdate />}
+      element={<ReservationEmployeeUpdate />}
     />
     <Route path=":reservationId">
       <Route path={`edit`} element={<ReservationUpdate />} />

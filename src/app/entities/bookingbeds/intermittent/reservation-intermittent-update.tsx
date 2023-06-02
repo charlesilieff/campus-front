@@ -27,7 +27,7 @@ import { CustomerUpdate } from './customer-update'
 import { DatesAndMealsChoices } from './dates-and-meals-choices-intermittent'
 import { DatesAndMealsSummary } from './dates-and-meals-summary-intermittent'
 
-export const ReservationIntermittentUpdate = (): JSX.Element => {
+export const OneBedReservationUpdate = (): JSX.Element => {
   const [datesAndMeal, setDatesAndMeal] = useState<O.Option<OneBedReservationDatesAndMeals>>(O.none)
   const [customer, setCustomer] = useState<O.Option<Customer>>(O.none)
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)

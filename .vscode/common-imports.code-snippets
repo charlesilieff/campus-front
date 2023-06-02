@@ -119,9 +119,9 @@
     "description": "Queue as Q"
   },
   "Schema": {
-    "prefix": "+Sc",
+    "prefix": "+S",
     "body": [
-      "import * as Sc from '@effect/schema/Schema'"
+      "import * as S from '@effect/schema/Schema'"
     ],
     "description": "Schema as Sc "
   },
