@@ -193,9 +193,7 @@ export const createUserMealsOnlyReservation = (
 ): MealsOnlyUserReservation => ({
   reservationId: O.none(),
   userId,
-  // @ts-expect-error TODO: fix this
   arrivalDate: datesAndMeals.arrivalDate,
-  // @ts-expect-error TODO: fix this
   departureDate: datesAndMeals.departureDate,
   isSpecialDiet: datesAndMeals.isSpecialDiet === 'true',
 
