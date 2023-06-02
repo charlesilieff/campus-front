@@ -4,7 +4,7 @@ import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 // import { isArrivalDateIsBeforeDepartureDate, isDateBeforeNow } from 'app/entities/bookingbeds/utils'
-import { getIntermittentReservations,
+import { getOneBedUserReservationsByUserId,
   getReservation } from 'app/entities/reservation/reservation.reducer'
 import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
@@ -86,7 +86,7 @@ export const Index = () => {
   // // console.log('reservationListFirstId', reservationListFirstId)
 
   useEffect(() => {
-    if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
+    if (O.isSome(userId)) dispatch(getOneBedUserReservationsByUserId(userId.value))
     // @ts-expect-error TODO: fix this
     if (reservationList.length > 0) dispatch(getReservation(reservationList[0].id))
 
@@ -179,7 +179,7 @@ export const Index = () => {
   const toggleAddDays = () => {
     // TODO check if it's necessarry to load new data (if calendar is showing 7 days)
     setDate(date.add(1, 'day'))
-    if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
+    if (O.isSome(userId)) dispatch(getOneBedUserReservationsByUserId(userId.value))
     // @ts-expect-error TODO: fix this
     dispatch(getReservation(reservationList[0].id))
     // @ts-expect-error TODO: fix this
@@ -190,7 +190,7 @@ export const Index = () => {
   }
   const toggleSubtractDays = () => {
     setDate(date.subtract(1, 'day'))
-    if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
+    if (O.isSome(userId)) dispatch(getOneBedUserReservationsByUserId(userId.value))
     // reservationList[0]
   }
 

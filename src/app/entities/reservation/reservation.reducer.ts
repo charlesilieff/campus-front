@@ -22,7 +22,7 @@ const initialState: EntityState<IReservation> = {
 
 const apiUrl = 'api/reservations'
 const apiUrlReservationsToBeProcessed = 'api/reservations-to-be-processed'
-const apiUrlIntermittentReservations = 'api/reservations/user-id'
+const apiUrlOneBedUserReservations = 'api/reservations/user-id'
 
 // Actions
 
@@ -42,10 +42,10 @@ export const getReservationsToBeProcessed = createAsyncThunk(
   }
 )
 
-export const getIntermittentReservations = createAsyncThunk(
+export const getOneBedUserReservationsByUserId = createAsyncThunk(
   'reservation/fetch_entity_list',
   async (id: number) => {
-    const requestUrl = `${apiUrlIntermittentReservations}/${id}`
+    const requestUrl = `${apiUrlOneBedUserReservations}/${id}`
     return axios.get<IReservation[]>(requestUrl)
   }
 )

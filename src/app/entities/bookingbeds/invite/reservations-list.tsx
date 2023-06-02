@@ -19,7 +19,7 @@ import React, { useEffect } from 'react'
 import { FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
-import { getIntermittentReservations } from '../../reservation/reservation.reducer'
+import { getOneBedUserReservationsByUserId } from '../../reservation/reservation.reducer'
 import { TextFormat } from '../text-format'
 import { CancelReservationModal } from './cancel-modal'
 
@@ -42,11 +42,11 @@ export const InviteReservations = () => {
   const loading = useAppSelector(state => state.reservation.loading)
 
   useEffect(() => {
-    if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
+    if (O.isSome(userId)) dispatch(getOneBedUserReservationsByUserId(userId.value))
   }, [])
 
   const handleSyncList = () => {
-    if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
+    if (O.isSome(userId)) dispatch(getOneBedUserReservationsByUserId(userId.value))
   }
 
   return (
@@ -144,7 +144,7 @@ export const InviteReservations = () => {
                       <HStack spacing={0}>
                         <CancelReservationModal
                           userId={userId}
-                          getReservations={getIntermittentReservations}
+                          getReservations={getOneBedUserReservationsByUserId}
                           // @ts-expect-error TODO: fix this
                           reservationId={reservation.id}
                         />

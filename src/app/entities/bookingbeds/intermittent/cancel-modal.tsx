@@ -15,7 +15,7 @@ import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import { useAppDispatch } from 'app/config/store'
 import { deleteEntity } from 'app/entities/bookingbeds/booking-beds.reducer'
-import type { getIntermittentReservations } from 'app/entities/reservation/reservation.reducer'
+import type { getOneBedUserReservationsByUserId } from 'app/entities/reservation/reservation.reducer'
 import React, { useState } from 'react'
 import { FaTrash } from 'react-icons/fa'
 
@@ -23,7 +23,7 @@ export const CancelReservationModal = (
   { reservationId, userId, getReservations }: {
     userId: O.Option<number>
     reservationId: number
-    getReservations: typeof getIntermittentReservations
+    getReservations: typeof getOneBedUserReservationsByUserId
   }
 ): JSX.Element => {
   const toast = useToast()
