@@ -21,18 +21,18 @@ export const ReservationsListEmployee = () => {
   const [reservationList, setReservations] = useState([] as readonly MealsOnlyUserReservation[])
   const [loading, setLoading] = useState(false)
 
-  const handleSyncList = () => {
+  const handleSyncList = async () => {
     setLoading(true)
-    pipe(
+    await pipe(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       getEmployeeReservations,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       T.flatMap(d => S.decodeEffect(S.array(MealsOnlyUserReservation))(d.data)),
       T.mapError(e => formatErrors(e.errors)),
       T.map(setReservations),
+      T.tap(() => T.succeed(setLoading(false))),
       T.runPromise
     )
-    setLoading(false)
   }
 
   useEffect(() => {
