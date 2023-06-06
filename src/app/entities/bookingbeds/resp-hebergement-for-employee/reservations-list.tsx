@@ -13,17 +13,22 @@ import {
 } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
+import * as T from '@effect/io/Effect'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+import axios from 'axios'
 import React, { useEffect } from 'react'
 import { FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
-import { getOneBedUserReservationsByUserId } from '../../reservation/reservation.reducer'
 import { TextFormat } from '../text-format'
 import { CancelReservationModal } from './cancel-modal'
 
-export const IntermittentReservations = () => {
+const apiEmployeeReservations = 'api/reservations/employee'
+const getOnlyMealsReservationsByUserId = (userId: number) =>
+  T.promise(() => axios.get(`${apiEmployeeReservations}${userId}`))
+
+export const EmployeeReservations = () => {
   const dispatch = useAppDispatch()
 
   const account = useAppSelector(state => state.authentication.account)
@@ -42,11 +47,11 @@ export const IntermittentReservations = () => {
   const loading = useAppSelector(state => state.reservation.loading)
 
   useEffect(() => {
-    if (O.isSome(userId)) dispatch(getOneBedUserReservationsByUserId(userId.value))
+    pipe(userId, O.map(getOnlyMealsReservationsByUserId), O.map(T.runPromise))
   }, [])
 
   const handleSyncList = () => {
-    if (O.isSome(userId)) dispatch(getOneBedUserReservationsByUserId(userId.value))
+    if (O.isSome(userId)) dispatch(getOnlyMealsReservationsByUserId(userId.value))
   }
 
   return (

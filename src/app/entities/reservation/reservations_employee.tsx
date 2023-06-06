@@ -22,16 +22,16 @@ export const ReservationsListEmployee = () => {
   const [loading, setLoading] = useState(false)
 
   const handleSyncList = () => {
-    setLoading(true),
-      pipe(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        getEmployeeReservations,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        T.flatMap(d => S.decodeEffect(S.array(MealsOnlyUserReservation))(d.data)),
-        T.mapError(e => formatErrors(e.errors)),
-        T.map(setReservations),
-        T.runPromise
-      )
+    setLoading(true)
+    pipe(
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      getEmployeeReservations,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      T.flatMap(d => S.decodeEffect(S.array(MealsOnlyUserReservation))(d.data)),
+      T.mapError(e => formatErrors(e.errors)),
+      T.map(setReservations),
+      T.runPromise
+    )
     setLoading(false)
   }
 
