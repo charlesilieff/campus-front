@@ -1,5 +1,5 @@
 import { CheckIcon } from '@chakra-ui/icons'
-import { Button, Heading, HStack, Stack, useToast } from '@chakra-ui/react'
+import { Button, Heading, HStack, Stack, Text, useToast } from '@chakra-ui/react'
 import { flow, pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import * as T from '@effect/io/Effect'
@@ -15,7 +15,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import {
   createMealsOnlyReservationReservationUpdateUser,
-  reset as resetReservations
+  reset as resetReservations,
+  updateMealsOnlyReservationReservationUpdateUser
 } from '../booking-beds.reducer'
 import type {
   Customer,
@@ -77,9 +78,18 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
   ): Promise<void> => {
     setIsLoading(true)
     const reservation = createUserMealsOnlyReservation(customer, datesAndMeal, O.none(), userId)
-
-    await dispatch(
-      createMealsOnlyReservationReservationUpdateUser(reservation)
+    await pipe(
+      reservationId,
+      O.match(() =>
+        dispatch(
+          createMealsOnlyReservationReservationUpdateUser(reservation)
+        ), reservationId =>
+        dispatch(
+          updateMealsOnlyReservationReservationUpdateUser({
+            mealsOnlyReservation: reservation,
+            reservationId
+          })
+        ))
     )
 
     dispatch(getSession())
@@ -87,7 +97,6 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
   }
 
   useEffect(() => {
-    console.log('reservationId', reservationId)
     pipe(
       reservationId,
       O.map(flow(
@@ -156,7 +165,7 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
   return (
     <Stack>
       <Heading size={'lg'} m={4}>
-        Créer une réservation pour un salarié
+        {O.isSome(reservationId) ? 'Modifier' : `Créer`} une réservation pour un salarié
       </Heading>
 
       {O.isNone(userId) || O.isNone(customer) ?
@@ -237,6 +246,11 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
             setUpdate={setUpdateDatesAndMeals}
           />
         )}
+      <Text color={'red'} px={4} fontWeight={'bold'}>
+        {O.isSome(reservationId) ?
+          'Les modifications des repas seront effectuées uniquement pour les dates ajoutés à la réservation.' :
+          null}
+      </Text>
       {O.isSome(customer) && O.isSome(datesAndMeal) && O.isSome(userId)
           && !updateDatesAndMeals && !updateCustomer ?
         (

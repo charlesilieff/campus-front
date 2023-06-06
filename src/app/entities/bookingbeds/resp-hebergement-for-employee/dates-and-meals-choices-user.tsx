@@ -42,7 +42,7 @@ export const DatesAndMealsChoices = (
     formState: { errors },
     reset: resetForm
   } = useForm<MealsOnlyReservationDatesAndMeals>()
-  console.log('reservation', props.datesAndMeals)
+
   useEffect(() => {
     resetForm(
       O.isSome(props.datesAndMeals) ? props.datesAndMeals.value : {}

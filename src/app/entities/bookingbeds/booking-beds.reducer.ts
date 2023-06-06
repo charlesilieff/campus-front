@@ -131,6 +131,25 @@ export const createMealsOnlyReservationReservationUpdateUser = createAsyncThunk(
   { serializeError: serializeAxiosError }
 )
 
+export const updateMealsOnlyReservationReservationUpdateUser = createAsyncThunk(
+  'bookingBeds/update_entity',
+  async (
+    { mealsOnlyReservation, reservationId }: {
+      mealsOnlyReservation: MealsOnlyUserReservation
+      reservationId: string
+    }
+  ) => {
+    const requestUrl = `${apiUrlMealsOnlyUserReservation}/${reservationId}`
+    const result = await axios.put<MealsOnlyUserReservation>(
+      requestUrl,
+      cleanEntity({ ...mealsOnlyReservation, reservationId })
+    )
+
+    return result
+  },
+  { serializeError: serializeAxiosError }
+)
+
 export const createReservationWithoutMealsAndUpdateUser = createAsyncThunk(
   'bookingBeds/create_entity',
   async (reservationAndSendMailAndUpdateUser: ReservationAndSendMailAndUpdateUser) => {
