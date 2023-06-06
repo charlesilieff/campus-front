@@ -13,22 +13,17 @@ import {
 } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
-import * as T from '@effect/io/Effect'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import axios from 'axios'
 import React, { useEffect } from 'react'
 import { FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
+import { getOneBedUserReservationsByUserId } from '../../reservation/reservation.reducer'
 import { TextFormat } from '../text-format'
 import { CancelReservationModal } from './cancel-modal'
 
-const apiEmployeeReservations = 'api/reservations/employee'
-const getOnlyMealsReservationsByUserId = (userId: number) =>
-  T.promise(() => axios.get(`${apiEmployeeReservations}${userId}`))
-
-export const EmployeeReservations = () => {
+export const MyIntermittentReservations = () => {
   const dispatch = useAppDispatch()
 
   const account = useAppSelector(state => state.authentication.account)
@@ -47,11 +42,11 @@ export const EmployeeReservations = () => {
   const loading = useAppSelector(state => state.reservation.loading)
 
   useEffect(() => {
-    pipe(userId, O.map(getOnlyMealsReservationsByUserId), O.map(T.runPromise))
+    if (O.isSome(userId)) dispatch(getOneBedUserReservationsByUserId(userId.value))
   }, [])
 
   const handleSyncList = () => {
-    if (O.isSome(userId)) dispatch(getOnlyMealsReservationsByUserId(userId.value))
+    if (O.isSome(userId)) dispatch(getOneBedUserReservationsByUserId(userId.value))
   }
 
   return (
@@ -135,7 +130,10 @@ export const EmployeeReservations = () => {
                         reservation.beds.map((val, j) => (
                           <span key={j}>
                             <Link to={`bed/${val.id}`}>{val.number}</Link>
-                            {j === reservation.beds.length - 1 ? '' : ', '}
+                            {
+                              // @ts-expect-error TODO: fix this
+                              j === reservation.beds.length - 1 ? '' : ', '
+                            }
                           </span>
                         )) :
                         null}
@@ -146,6 +144,7 @@ export const EmployeeReservations = () => {
                         <CancelReservationModal
                           userId={userId}
                           getReservations={getOneBedUserReservationsByUserId}
+                          // @ts-expect-error TODO: fix this
                           reservationId={reservation.id}
                         />
 
@@ -155,10 +154,8 @@ export const EmployeeReservations = () => {
                               size="sm"
                               as={Link}
                               to={`/bookingbeds/intermittent/${reservation.id}`}
-                              _hover={{ textDecoration: 'none', color: 'orange' }}
-                              color="white"
+                              variant={'modify'}
                               borderLeftRadius={0}
-                              backgroundColor={'#17a2b8'}
                               leftIcon={<FaPencilAlt />}
                             >
                               Modifier

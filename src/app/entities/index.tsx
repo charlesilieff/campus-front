@@ -5,7 +5,8 @@ import { Route } from 'react-router-dom'
 import { BedRoutes } from './bed'
 import { BedroomKindRoutes } from './bedroom-kind'
 import { BookingBedsRoutes } from './bookingbeds'
-import { IntermittentReservations } from './bookingbeds/intermittent/reservations-list'
+import { MyIntermittentReservations } from './bookingbeds/intermittent/my-reservations'
+import { MyEmployeeReservations } from './bookingbeds/resp-hebergement-for-employee/my-reservations'
 import { CustomerRoutes } from './customer'
 import { PlaceRoutes } from './place'
 import { IndexPlanning } from './planning'
@@ -26,9 +27,10 @@ export const EntitiesRoutes = () => (
           <ErrorBoundaryRoutes>
             <Route path={'to-be-processed'} element={<ReservationsListToBeProcessed />} />
             <Route path={'employee'} element={<ReservationsListEmployee />} />
+            <Route path={'my-employee-reservations'} element={<MyEmployeeReservations />} />
             <Route
-              path={'intermittent'}
-              element={<IntermittentReservations />}
+              path={'my-intermittent-reservations'}
+              element={<MyIntermittentReservations />}
             />
           </ErrorBoundaryRoutes>
         }

@@ -1,63 +1,92 @@
-import { Button, Heading, HStack, Table, Tbody, Td, Th, Thead, Tr, VStack } from '@chakra-ui/react'
+import {
+  Button,
+  Heading,
+  HStack,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  VStack
+} from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import * as T from '@effect/io/Effect'
+import type { ParseError } from '@effect/schema/ParseResult'
 import * as S from '@effect/schema/Schema'
-import { formatErrors } from '@effect/schema/TreeFormatter'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
+import { useAppSelector } from 'app/config/store'
 import { MealsOnlyUserReservation } from 'app/shared/model/mealsReservation.model'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
-import { CancelReservationModal } from '../bookingbeds/resp-hebergement-for-employee/cancel-modal'
-import { TextFormat } from '../bookingbeds/text-format'
+import { TextFormat } from '../text-format'
+import { CancelReservationModal } from './cancel-modal'
 
-const apiEmployeeReservations = 'api/reservations/employee'
-const getEmployeeReservations = T.promise(() => axios.get(apiEmployeeReservations))
+const apiEmployeeReservations = 'api/reservations/my/employee'
+const getOnlyMealsReservationsByUserId = (
+  userId: number
+): T.Effect<never, ParseError, readonly MealsOnlyUserReservation[]> =>
+  pipe(
+    T.promise(() => axios.get(`${apiEmployeeReservations}/${userId}`)),
+    T.flatMap(d => S.parseEffect(S.array(MealsOnlyUserReservation))(d.data))
+  )
 
-export const ReservationsListEmployee = () => {
+export const MyEmployeeReservations = () => {
   const [reservationList, setReservations] = useState([] as readonly MealsOnlyUserReservation[])
   const [loading, setLoading] = useState(false)
+
+  const account = useAppSelector(state => state.authentication.account)
+
+  const userId = pipe(
+    account.id,
+    O.fromNullable
+  )
+
+  useEffect(() => {
+    handleSyncList()
+  }, [])
 
   const handleSyncList = async () => {
     setLoading(true)
     await pipe(
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      getEmployeeReservations,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      T.flatMap(d => S.parseEffect(S.array(MealsOnlyUserReservation))(d.data)),
-      T.mapError(e => formatErrors(e.errors)),
+      userId,
+      T.flatMap(
+        getOnlyMealsReservationsByUserId
+      ),
       T.map(setReservations),
       T.tap(() => T.succeed(setLoading(false))),
       T.runPromise
     )
   }
 
-  useEffect(() => {
-    handleSyncList()
-  }, [])
-
   return (
     <VStack>
-      <Heading>Réservations des salariés</Heading>
+      <Heading alignSelf={'flex-start'}>Mes réservations</Heading>
       <HStack alignSelf={'flex-end'}>
-        <Button variant={'see'} onClick={handleSyncList} isLoading={loading} leftIcon={<FaSync />}>
+        <Button
+          backgroundColor={'#17a2b8'}
+          color={'white'}
+          onClick={handleSyncList}
+          isLoading={loading}
+          leftIcon={<FaSync />}
+        >
           Rafraîchir la liste
         </Button>
         <Button
-          as={Link}
-          to="/bookingbeds/new/employee"
           color={'white'}
-          backgroundColor={'#e95420'}
-          _hover={{ textDecoration: 'none', color: 'orange' }}
+          backgroundColor={'#E95420'}
+          as={Link}
+          to="/bookingbeds/new/intermittent"
           leftIcon={<FaPlus />}
+          _hover={{ textDecoration: 'none', color: 'orange' }}
         >
           Nouvelle réservation
         </Button>
       </HStack>
-
       {reservationList.length > 0 ?
         (
           <Table size={'sm'}>
@@ -69,8 +98,6 @@ export const ReservationsListEmployee = () => {
                 <Th px={2} py={1}>Date de départ</Th>
                 <Th px={2} py={1}>Commentaire</Th>
                 <Th px={2} py={1}>Commentaire repas</Th>
-                <Th px={2} py={1}>Nom et Prénom</Th>
-                <Th px={2} py={1}>Email</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -104,25 +131,6 @@ export const ReservationsListEmployee = () => {
                   </Td>
                   <Td px={2} py={1}>{pipe(reservation.comment, O.getOrNull)}</Td>
                   <Td px={2} py={1}>{pipe(reservation.commentMeals, O.getOrNull)}</Td>
-
-                  <Td px={2} py={1}>
-                    {reservation.customer ?
-                      (
-                        <Link to={`/customer/${reservation.customer.id}`}>
-                          {reservation.customer.firstname} {reservation.customer.lastname}
-                        </Link>
-                      ) :
-                      ''}
-                  </Td>
-                  <Td px={2} py={1}>
-                    {reservation.customer ?
-                      (
-                        <Link to={`/customer/${reservation.customer.id}`}>
-                          {reservation.customer.email}
-                        </Link>
-                      ) :
-                      ''}
-                  </Td>
                   <Td px={2} py={1}>
                     {O.isSome(reservation.reservationId) ?
                       (
