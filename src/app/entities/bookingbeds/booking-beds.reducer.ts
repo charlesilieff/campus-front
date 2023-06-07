@@ -1,3 +1,5 @@
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
 import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
@@ -149,7 +151,7 @@ export const updateOneBedUserReservationReservation = createAsyncThunk(
   'bookingBeds/update_entity',
   async (entity: OneBedUserReservation) => {
     const result = await axios.put<OneBedUserReservation>(
-      `${apiUrlOneBedUserReservation}/${entity.id}`,
+      `${apiUrlOneBedUserReservation}/${pipe(entity.id, O.getOrElse(() => 'error'))}`,
       cleanEntity(entity)
     )
     return result
