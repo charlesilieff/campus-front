@@ -154,7 +154,7 @@ export const InviteReservations = () => {
                             <Button
                               size="sm"
                               as={Link}
-                              to={`/bookingbeds/intermittent/${reservation.id}`}
+                              to={`/bookingbeds/one-bed-user/${reservation.id}`}
                               borderLeftRadius={0}
                               variant={'modify'}
                               leftIcon={<FaPencilAlt />}

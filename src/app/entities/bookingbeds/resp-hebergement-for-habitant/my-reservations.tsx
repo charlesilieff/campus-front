@@ -134,7 +134,7 @@ export const MyHabitantReservations = () => {
                           <Button
                             size="sm"
                             as={Link}
-                            to={`/bookingbeds/intermittent/${reservation.id}`}
+                            to={`/bookingbeds/one-bed-user/${reservation.id}`}
                             variant={'modify'}
                             borderLeftRadius={0}
                             leftIcon={<FaPencilAlt />}
