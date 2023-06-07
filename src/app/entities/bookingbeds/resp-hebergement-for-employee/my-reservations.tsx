@@ -82,7 +82,7 @@ export const MyEmployeeReservations = () => {
           <Table size={'sm'}>
             <Thead>
               <Tr>
-                <Th px={2} py={1}>Régime spécial ?</Th>
+                <Th px={2} py={1}>Régime sans gluten/lactose</Th>
 
                 <Th px={2} py={1}>Date d&apos;arrivée</Th>
                 <Th px={2} py={1}>Date de départ</Th>

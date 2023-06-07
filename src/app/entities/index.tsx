@@ -7,6 +7,7 @@ import { BedroomKindRoutes } from './bedroom-kind'
 import { BookingBedsRoutes } from './bookingbeds'
 import { MyIntermittentReservations } from './bookingbeds/intermittent/my-reservations'
 import { MyEmployeeReservations } from './bookingbeds/resp-hebergement-for-employee/my-reservations'
+import { MyHabitantReservations } from './bookingbeds/resp-hebergement-for-habitant/my-reservations'
 import { CustomerRoutes } from './customer'
 import { PlaceRoutes } from './place'
 import { IndexPlanning } from './planning'
@@ -31,6 +32,10 @@ export const EntitiesRoutes = () => (
             <Route
               path={'my-intermittent-reservations'}
               element={<MyIntermittentReservations />}
+            />
+            <Route
+              path={'my-habitant-reservations'}
+              element={<MyHabitantReservations />}
             />
           </ErrorBoundaryRoutes>
         }

@@ -64,7 +64,12 @@ export const EntitiesMenu = (props: EntitiesMenuProps) => (
       )}
       {(props.isIntermittent) && (
         <MenuItem icon={<FaCalendar />} to="/reservation/my-intermittent-reservations">
-          Mes réservations
+          Mes réservations (intermittent)
+        </MenuItem>
+      )}
+      {(props.isHabitant) && (
+        <MenuItem icon={<FaCalendar />} to="/reservation/my-habitant-reservations">
+          Mes réservations (habitant)
         </MenuItem>
       )}
       {(props.isEmployee) && (
