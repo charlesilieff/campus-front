@@ -20,7 +20,7 @@ import { useAppSelector } from 'app/config/store'
 import { MealsOnlyUserReservation } from 'app/shared/model/mealsReservation.model'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
+import { FaPencilAlt, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
 import { TextFormat } from '../text-format'
@@ -75,16 +75,6 @@ export const MyEmployeeReservations = () => {
           leftIcon={<FaSync />}
         >
           Rafraîchir la liste
-        </Button>
-        <Button
-          color={'white'}
-          backgroundColor={'#E95420'}
-          as={Link}
-          to="/bookingbeds/new/intermittent"
-          leftIcon={<FaPlus />}
-          _hover={{ textDecoration: 'none', color: 'orange' }}
-        >
-          Nouvelle réservation
         </Button>
       </HStack>
       {reservationList.length > 0 ?

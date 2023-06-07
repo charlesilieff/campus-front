@@ -2,7 +2,6 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
 import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
 import { defaultValue } from 'app/shared/model/bookingBeds.model'
-import type { MealsOnlyUserReservation } from 'app/shared/model/mealsReservation.model'
 import type { OneBedUserReservation } from 'app/shared/model/onebedReservation.model'
 import type {
   EntityState
@@ -29,7 +28,7 @@ const initialState: EntityState<IBookingBeds> = {
 const apiUrlBookingBeds = 'api/bookingbeds'
 const apiUrlReservations = 'api/reservations'
 const apiUrlOneBedUserReservation = 'api/one-bed-with-user/bookingbeds'
-const apiUrlMealsOnlyUserReservation = 'api/meals-only-with-user/bookingbeds'
+
 const apiAllPlaces = 'api/all-places-with-rooms-and-beds'
 // Actions
 
@@ -110,39 +109,6 @@ export const createOneBedUserReservationUpdateUser = createAsyncThunk(
     const result = await axios.post<OneBedUserReservation>(
       requestUrl,
       cleanEntity(intermittentReservation)
-    )
-
-    return result
-  },
-  { serializeError: serializeAxiosError }
-)
-
-export const createMealsOnlyReservationReservationUpdateUser = createAsyncThunk(
-  'bookingBeds/create_entity',
-  async (mealsOnlyReservation: MealsOnlyUserReservation) => {
-    const requestUrl = `${apiUrlMealsOnlyUserReservation}`
-    const result = await axios.post<MealsOnlyUserReservation>(
-      requestUrl,
-      cleanEntity(mealsOnlyReservation)
-    )
-
-    return result
-  },
-  { serializeError: serializeAxiosError }
-)
-
-export const updateMealsOnlyReservationReservationUpdateUser = createAsyncThunk(
-  'bookingBeds/update_entity',
-  async (
-    { mealsOnlyReservation, reservationId }: {
-      mealsOnlyReservation: MealsOnlyUserReservation
-      reservationId: string
-    }
-  ) => {
-    const requestUrl = `${apiUrlMealsOnlyUserReservation}/${reservationId}`
-    const result = await axios.put<MealsOnlyUserReservation>(
-      requestUrl,
-      cleanEntity({ ...mealsOnlyReservation, reservationId })
     )
 
     return result

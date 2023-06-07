@@ -1,23 +1,18 @@
 import { CheckIcon } from '@chakra-ui/icons'
 import { Button, Heading, HStack, Stack, Text, useToast } from '@chakra-ui/react'
-import { flow, pipe } from '@effect/data/Function'
+import { flow, identity, pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import * as T from '@effect/io/Effect'
 import type { ParseError } from '@effect/schema/ParseResult'
 import * as S from '@effect/schema/Schema'
-import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { MealsOnlyUserReservation } from 'app/shared/model/mealsReservation.model'
-import { getSession } from 'app/shared/reducers/authentication'
+import { cleanEntity } from 'app/shared/util/entity-utils'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
-import {
-  createMealsOnlyReservationReservationUpdateUser,
-  reset as resetReservations,
-  updateMealsOnlyReservationReservationUpdateUser
-} from '../booking-beds.reducer'
+import { AxiosError } from '../AxiosError'
 import type {
   Customer,
   MealsOnlyReservationDatesAndMeals
@@ -41,10 +36,53 @@ export interface User {
 export type BedIds = ReadonlyArray<{ id: number }>
 
 const apiReservation = 'api/reservations/employee'
-// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-const getReservation = (id: string): T.Effect<never, ParseError, MealsOnlyUserReservation> =>
+const apiUrlMealsOnlyUserReservation = 'api/meals-only-with-user/bookingbeds'
+
+export const createMealsOnlyReservationReservationUpdateUser = (
+  mealsOnlyReservation: MealsOnlyUserReservation
+) => {
+  const requestUrl = `${apiUrlMealsOnlyUserReservation}`
+  return pipe(
+    T.tryCatchPromise(
+      () =>
+        axios.post<MealsOnlyUserReservation>(
+          requestUrl,
+          cleanEntity(mealsOnlyReservation)
+        ),
+      identity
+    ),
+    T.catchAll(e =>
+      pipe(e, S.decodeEffect(AxiosError), T.flatMap(e => T.fail(console.log(e.code))))
+    )
+  )
+}
+
+export const updateMealsOnlyReservationReservationUpdateUser = (
+  { mealsOnlyReservation, reservationId }: {
+    mealsOnlyReservation: MealsOnlyUserReservation
+    reservationId: string
+  }
+) => {
+  const requestUrl = `${apiUrlMealsOnlyUserReservation}/${reservationId}`
+  return pipe(
+    T.tryCatchPromise(
+      () =>
+        axios.put<MealsOnlyUserReservation>(
+          requestUrl,
+          cleanEntity({ ...mealsOnlyReservation, reservationId })
+        ),
+      T.catchAll(e =>
+        pipe(e, S.decodeEffect(AxiosError), T.flatMap(e => T.fail(console.log(e.code))))
+      )
+    )
+  )
+}
+
+const getReservation = (id: string): T.Effect<never, void | ParseError, MealsOnlyUserReservation> =>
   pipe(
-    T.promise(() => axios.get(`${apiReservation}/${id}`)),
+    T.promise(
+      () => axios.get(`${apiReservation}/${id}`)
+    ),
     T.flatMap(d => S.parseEffect(MealsOnlyUserReservation)(d.data))
   )
 
@@ -65,9 +103,8 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
   const [selectUser, setSelectUser] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
+
   const toast = useToast()
-  const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
 
   const [userId, setUserId] = useState<O.Option<number>>(O.none())
 
@@ -80,20 +117,36 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
     const reservation = createUserMealsOnlyReservation(customer, datesAndMeal, O.none(), userId)
     await pipe(
       reservationId,
-      O.match(() =>
-        dispatch(
-          createMealsOnlyReservationReservationUpdateUser(reservation)
-        ), reservationId =>
-        dispatch(
+      O.match(
+        () => createMealsOnlyReservationReservationUpdateUser(reservation),
+        reservationId =>
           updateMealsOnlyReservationReservationUpdateUser({
             mealsOnlyReservation: reservation,
             reservationId
           })
-        ))
+      ),
+      T.mapBoth(_ =>
+        toast({
+          position: 'top',
+          title: 'Réservation non crée !',
+          description: 'Le salarié a déjà une réservation pour cette période',
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        }), _ => {
+        toast({
+          position: 'top',
+          title: 'Réservation crée !',
+          description: 'A bientôt !',
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        })
+        navigate('/planning')
+      }),
+      T.as(setIsLoading(false)),
+      T.runPromise
     )
-
-    dispatch(getSession())
-    setIsLoading(false)
   }
 
   useEffect(() => {
@@ -144,23 +197,6 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
       ))
     )
   }, [])
-
-  useEffect(() => {
-    if (updateSuccess) {
-      dispatch(resetReservations())
-
-      toast({
-        position: 'top',
-        title: 'Réservation crée !',
-        description: 'A bientôt !',
-        status: 'success',
-        duration: 9000,
-        isClosable: true
-      })
-
-      navigate('/planning')
-    }
-  }, [updateSuccess])
 
   return (
     <Stack>
