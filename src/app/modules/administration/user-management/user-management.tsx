@@ -69,12 +69,9 @@ export const UserManagement = () => {
         </Button>
       </HStack>
 
-      <Table>
+      <Table size="sm">
         <Thead>
           <Tr>
-            <Th>
-              ID
-            </Th>
             <Th>
               Login
             </Th>
@@ -99,11 +96,8 @@ export const UserManagement = () => {
           {users.map((user, i) => (
             <Tr id={user.login} key={`user-${i}`}>
               <Td>
-                <Button as={Link} to={user.login} variant="see" size="sm">
-                  {user.id}
-                </Button>
+                <Button as={Link} to={user.login} variant="see" size="sm">{user.login}</Button>
               </Td>
-              <Td>{user.login}</Td>
               <Td>{user.email}</Td>
               <Td>
                 {user.activated ?
