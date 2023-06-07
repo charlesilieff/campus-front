@@ -6,6 +6,7 @@ import {
   FormLabel,
   Heading,
   Input,
+  useToast,
   VStack
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
@@ -14,7 +15,6 @@ import { getSession } from 'app/shared/reducers/authentication'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaSave } from 'react-icons/fa'
-import { toast } from 'react-toastify'
 
 import { reset, savePassword } from './password.reducer'
 
@@ -25,6 +25,7 @@ interface PasswordForm {
 }
 
 export const Password = () => {
+  const toast = useToast()
   const {
     handleSubmit,
     register,
@@ -57,9 +58,21 @@ export const Password = () => {
 
   useEffect(() => {
     if (successMessage) {
-      toast.success(successMessage)
+      toast({
+        position: 'top',
+        title: successMessage,
+        status: 'success',
+        duration: 4000,
+        isClosable: true
+      })
     } else if (errorMessage) {
-      toast.success(errorMessage)
+      toast({
+        position: 'top',
+        title: errorMessage,
+        status: 'error',
+        duration: 4000,
+        isClosable: true
+      })
     }
   }, [successMessage, errorMessage])
 

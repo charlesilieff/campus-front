@@ -6,16 +6,17 @@ import {
   FormLabel,
   Heading,
   Input,
+  useToast,
   VStack
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
 
 import { handlePasswordResetInit, reset } from '../password-reset.reducer'
 
 export const PasswordResetInit = () => {
+  const toast = useToast()
   const dispatch = useAppDispatch()
   const {
     handleSubmit,
@@ -38,7 +39,13 @@ export const PasswordResetInit = () => {
 
   useEffect(() => {
     if (successMessage) {
-      toast.success(successMessage)
+      toast({
+        position: 'top',
+        title: successMessage,
+        status: 'success',
+        duration: 4000,
+        isClosable: true
+      })
     }
   }, [successMessage])
 

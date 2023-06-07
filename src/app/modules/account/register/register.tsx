@@ -6,6 +6,7 @@ import {
   FormLabel,
   Heading,
   Input,
+  useToast,
   VStack
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
@@ -13,7 +14,6 @@ import { PasswordStrengthBar } from 'app/shared/layout/password/password-strengt
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
 
 import { handleRegister, reset } from './register.reducer'
 
@@ -25,6 +25,7 @@ interface FormValues {
 }
 
 export const RegisterPage = () => {
+  const toast = useToast()
   const dispatch = useAppDispatch()
   const [isLoading, setIsLoading] = React.useState(false)
   const navigate = useNavigate()
@@ -60,7 +61,13 @@ export const RegisterPage = () => {
 
   useEffect(() => {
     if (successMessage) {
-      toast.success(successMessage)
+      toast({
+        position: 'top',
+        title: successMessage,
+        status: 'success',
+        duration: 4000,
+        isClosable: true
+      })
     }
   }, [successMessage])
 

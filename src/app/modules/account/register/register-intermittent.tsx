@@ -7,6 +7,7 @@ import {
   FormLabel,
   Heading,
   Input,
+  useToast,
   VStack
 } from '@chakra-ui/react'
 import * as O from '@effect/data/Option'
@@ -15,7 +16,6 @@ import { PasswordStrengthBar } from 'app/shared/layout/password/password-strengt
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
 
 import { handleIntermittentRegister, reset } from './register.reducer'
 
@@ -31,6 +31,7 @@ interface FormValues {
 }
 
 export const RegisterIntermittentPage = (): JSX.Element => {
+  const toast = useToast()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = React.useState(false)
   const dispatch = useAppDispatch()
@@ -75,7 +76,13 @@ export const RegisterIntermittentPage = (): JSX.Element => {
 
   useEffect(() => {
     if (successMessage) {
-      toast.success(successMessage)
+      toast({
+        position: 'top',
+        title: successMessage,
+        status: 'success',
+        duration: 4000,
+        isClosable: true
+      })
     }
   }, [successMessage])
 

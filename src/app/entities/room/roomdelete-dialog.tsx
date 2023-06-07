@@ -43,7 +43,7 @@ export const RoomDeleteDialog: FunctionComponent<{ roomId: number }> = (
             Confirmer l&apos;opération de suppression
           </ModalHeader>
           <ModalBody>
-            Êtes-vous sûr de vouloir supprimer ce tarif ?
+            Êtes-vous sûr de vouloir supprimer cette chambre ?
           </ModalBody>
           <ModalFooter justifyContent={'space-between'}>
             <Button onClick={onClose} leftIcon={<FaBan />} variant="back">

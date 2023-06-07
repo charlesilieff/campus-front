@@ -5,6 +5,7 @@ import {
   FormLabel,
   Heading,
   Input,
+  useToast,
   VStack
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
@@ -12,11 +13,11 @@ import { PasswordStrengthBar } from 'app/shared/layout/password/password-strengt
 import React, { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
-import { toast } from 'react-toastify'
 
 import { handlePasswordResetFinish, reset } from '../password-reset.reducer'
 
 export const PasswordResetFinish = () => {
+  const toast = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const {
     handleSubmit,
@@ -112,7 +113,13 @@ export const PasswordResetFinish = () => {
 
   useEffect(() => {
     if (successMessage) {
-      toast.success(successMessage)
+      toast({
+        position: 'top',
+        title: successMessage,
+        status: 'success',
+        duration: 4000,
+        isClosable: true
+      })
     }
   }, [successMessage])
 

@@ -22,6 +22,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       plugins: [visualizer({ emitFile: true, filename: 'stats.html', open: true })]
-    }
+    },
+    chunkSizeWarningLimit: 1500
   }
 })

@@ -7,6 +7,7 @@ import {
   Heading,
   HStack,
   Input,
+  useToast,
   VStack
 } from '@chakra-ui/react'
 import { AUTHORITIES } from 'app/config/constants'
@@ -17,7 +18,6 @@ import { getSession } from 'app/shared/reducers/authentication'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaSave } from 'react-icons/fa'
-import { toast } from 'react-toastify'
 
 import { reset, saveAccountSettings } from './settings.reducer'
 
@@ -29,6 +29,7 @@ interface UserForm {
 }
 
 export const Settings = () => {
+  const toast = useToast()
   const {
     handleSubmit,
     register,
@@ -60,7 +61,13 @@ export const Settings = () => {
 
   useEffect(() => {
     if (successMessage) {
-      toast.success(successMessage)
+      toast({
+        position: 'top',
+        title: successMessage,
+        status: 'success',
+        duration: 4000,
+        isClosable: true
+      })
     }
   }, [successMessage])
 

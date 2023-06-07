@@ -2,17 +2,23 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { toast } from 'react-toastify'
+
+import { createStandaloneToast } from '@chakra-ui/react'
 
 import { isFulfilledAction, isRejectedAction } from '../shared/reducers/reducer.utils'
 
-const addErrorAlert = (message: string, key?: string, data?: string) => {
-  console.log(key, data)
-  toast.error(message)
-}
-
-// eslint-disable-next-line import/no-default-export
-export default () => next => action => {
+const { toast } = createStandaloneToast()
+export const handleError = () => next => action => {
+  const addErrorAlert = (message: string, key?: string, data?: string) => {
+    console.log(key, data)
+    toast({
+      position: 'top',
+      title: message,
+      status: 'error',
+      duration: 4000,
+      isClosable: true
+    })
+  }
   const { error, payload } = action
 
   /**
@@ -28,7 +34,13 @@ export default () => next => action => {
         }
       })
     if (alert) {
-      toast.success(alert)
+      toast({
+        position: 'top',
+        title: alert,
+        status: 'success',
+        duration: 4000,
+        isClosable: true
+      })
     }
   }
 
@@ -84,7 +96,13 @@ export default () => next => action => {
             } else if (typeof data === 'string' && data !== '') {
               addErrorAlert(data)
             } else {
-              toast.error(data?.message || data?.error || data?.title || 'Unknown error!')
+              toast({
+                position: 'top',
+                title: data?.message || data?.error || data?.title || 'Unknown error!',
+                status: 'error',
+                duration: 4000,
+                isClosable: true
+              })
             }
             break
           }
@@ -96,7 +114,13 @@ export default () => next => action => {
             if (typeof data === 'string' && data !== '') {
               addErrorAlert(data)
             } else {
-              toast.error(data?.message || data?.error || data?.title || 'Unknown error!')
+              toast({
+                position: 'top',
+                title: data?.message || data?.error || data?.title || 'Unknown error!',
+                status: 'error',
+                duration: 4000,
+                isClosable: true
+              })
             }
         }
       }
@@ -106,10 +130,22 @@ export default () => next => action => {
       /* eslint-disable no-console */
       console.log('Authentication Error: Trying to access url api/account with GET.')
     } else {
-      toast.error(error.message || 'Unknown error!')
+      toast({
+        position: 'top',
+        title: error.message || 'Unknown error!',
+        status: 'error',
+        duration: 4000,
+        isClosable: true
+      })
     }
   } else if (error) {
-    toast.error(error.message || 'Unknown error!')
+    toast({
+      position: 'top',
+      title: error.message || 'Unknown error!',
+      status: 'error',
+      duration: 4000,
+      isClosable: true
+    })
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return

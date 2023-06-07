@@ -1,11 +1,9 @@
-import 'react-toastify/dist/ReactToastify.css'
 import './app.scss'
 import './config/dayjs'
 
 import { Box, Card } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { toast, ToastContainer } from 'react-toastify'
 
 import { AUTHORITIES } from './config/constants'
 import { useAppDispatch, useAppSelector } from './config/store'
@@ -53,11 +51,6 @@ export const App = () => {
 
   return (
     <Router basename={baseHref}>
-      <ToastContainer
-        position={toast.POSITION.TOP_LEFT}
-        className="toastify-container"
-        toastClassName="toastify-toast"
-      />
       <ErrorBoundary>
         <MainLayout
           isAuthenticated={isAuthenticated}

@@ -7,7 +7,7 @@ import { loadingBarMiddleware } from 'react-redux-loading-bar'
 import { rootReducer } from '../shared/reducers'
 import errorMiddleware from './error-middleware'
 import loggerMiddleware from './logger-middleware'
-import notificationMiddleware from './notification-middleware'
+import { handleError } from './notification-middleware'
 
 const store = configureStore({
   reducer: rootReducer,
@@ -23,7 +23,7 @@ const store = configureStore({
           'payload.headers'
         ]
       }
-    }).concat(errorMiddleware, notificationMiddleware, loadingBarMiddleware(), loggerMiddleware)
+    }).concat(errorMiddleware, handleError, loadingBarMiddleware(), loggerMiddleware)
 })
 
 export const getStore = () => store
