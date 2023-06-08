@@ -55,7 +55,6 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
         departureDate,
         reservationId
       )
-      console.log('data', data)
       const roomsData = data?.flatMap(place => place.rooms).sort((a, b) =>
         // @ts-expect-error TODO: fix this
         a?.name.localeCompare(b?.name) || 0

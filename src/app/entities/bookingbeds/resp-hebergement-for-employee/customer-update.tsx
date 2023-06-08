@@ -67,7 +67,6 @@ export const CustomerUpdate = (
       O.none() :
       O.some(customer.phoneNumber)
 
-    console.log('customer 2', { ...customer, age, phoneNumber })
     props.setCustomer(
       O.some({ ...customer, age, phoneNumber, id: customerId })
     )

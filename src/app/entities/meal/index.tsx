@@ -48,7 +48,6 @@ export const Index = () => {
   const [mealsData, setMealsData] = useState([] as IMeal[])
   const [numberOfDays, setNumberOfDays] = useState(31)
 
-  const [reservationId, setReservationId] = useState<number>(0)
   /**
    * Get Reservations by user.
    */
@@ -72,10 +71,9 @@ export const Index = () => {
       'day'
     )
   ) // .filter(x => x.beds?.length > 0)
-  console.log('reservationList :', reservationId)
+
   // reservationList
 
-  const reservationListFirst = reservationList[0]
   // if (reservationList.length > 1) {
   //   setReservationId(reservationListFirst.id)
 
@@ -182,8 +180,7 @@ export const Index = () => {
     if (O.isSome(userId)) dispatch(getOneBedUserReservationsByUserId(userId.value))
     // @ts-expect-error TODO: fix this
     dispatch(getReservation(reservationList[0].id))
-    // @ts-expect-error TODO: fix this
-    setReservationId(reservationListFirst.id)
+
     if (reservationList.length > 0) {
       console.error('erreur plusieurs réservation', reservationList.length)
     }

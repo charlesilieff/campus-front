@@ -42,16 +42,11 @@ export const ConfirmationAddMealsScreenModal: FunctionComponent<
     numberOfDays: number,
     isSpecialMeal3: boolean
   ) => {
-    console.log('entity', entity)
-    console.log('date', date)
-    console.log('isSpecialMeal', isSpecialMeal3)
-
     entity = entity.filter((value, index) => {
       if (index < (numberOfDays)) {
         return value
       }
     }).map((value, index) => {
-      console.log('isSpecialMeal', isSpecialMeal3)
       if (index < numberOfDays && value.id !== undefined && isSpecialMeal3) {
         // @ts-expect-error TODO: fix this
         value = {
