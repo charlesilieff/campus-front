@@ -128,7 +128,7 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
       T.mapBoth(_ =>
         toast({
           position: 'top',
-          title: 'Réservation non crée !',
+          title: 'Réservation non crée/modifié" !',
           description: 'Le salarié a déjà une réservation pour cette période',
           status: 'error',
           duration: 9000,

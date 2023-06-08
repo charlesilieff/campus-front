@@ -8,6 +8,7 @@ import { createStandaloneToast } from '@chakra-ui/react'
 import { isFulfilledAction, isRejectedAction } from '../shared/reducers/reducer.utils'
 
 const { toast } = createStandaloneToast()
+// eslint-disable-next-line complexity
 export const handleError = () => next => action => {
   const addErrorAlert = (message: string, key?: string, data?: string) => {
     console.log(key, data)
@@ -61,7 +62,31 @@ export const handleError = () => next => action => {
           case 0:
             addErrorAlert('Server not reachable', 'error.server.not.reachable')
             break
-
+          case 406:
+            if (
+              typeof data.raison === 'string'
+              && data.raison.includes('ReservationDatesNotAvailableError')
+            ) {
+              toast({
+                position: 'top',
+                title: 'Réservation non crée/modifié !',
+                description: "L'utilisateur a déjà une réservation pour cette période.",
+                status: 'error',
+                duration: 9000,
+                isClosable: true
+              })
+            } else if (typeof data === 'string' && data !== '') {
+              addErrorAlert(data)
+            } else {
+              toast({
+                position: 'top',
+                title: data?.message || data?.error || data?.title || 'Unknown error!',
+                status: 'error',
+                duration: 4000,
+                isClosable: true
+              })
+            }
+            break
           case 400: {
             let errorHeader: string | null = null
             let entityKey: string | undefined = undefined
