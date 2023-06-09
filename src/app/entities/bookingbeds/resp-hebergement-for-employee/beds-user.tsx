@@ -15,8 +15,7 @@ export const IntermittentBeds: FunctionComponent<IProps> = (
 ) => (
   <RadioGroup
     onChange={e => selectedBedId(O.some(+e))}
-    // @ts-expect-error TODO: fix this
-    defaultValue={O.getOrNull(bedId)}
+    defaultValue={O.getOrElse(bedId, () => 'noBed')}
   >
     {rooms.map(room => {
       const bedRoomKind = room.bedroomKind ? `(${room.bedroomKind.name})` : ''

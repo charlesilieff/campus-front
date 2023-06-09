@@ -21,8 +21,7 @@ export const IntermittentBeds: FunctionComponent<IProps> = (
         selectedBedId(O.some(+e))
       }
     }}
-    // @ts-expect-error TODO: fix this
-    defaultValue={O.getOrNull(bedId)}
+    defaultValue={O.getOrElse(bedId, () => 'noBed')}
   >
     <Radio
       value={'noBed'}

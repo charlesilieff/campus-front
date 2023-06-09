@@ -239,20 +239,16 @@ export const DatesAndMealsChoices = (
                   {'Régime sans lactose OU sans gluten ?'}
                 </FormLabel>
                 {
-                  // @ts-expect-error TODO: fix this
-
-
-                    <RadioGroup
-                      defaultValue={O.isSome(props.datesAndMeals) ?
-                        props.datesAndMeals.value.isSpecialDiet :
-                        undefined}
-                    >
-                      <HStack spacing="24px">
-                        <Radio {...register('isSpecialDiet')} value={'true'} mb={0}>Oui</Radio>
-                        <Radio {...register('isSpecialDiet')} value={'false'}>Non</Radio>
-                      </HStack>
-                    </RadioGroup>
-
+                  <RadioGroup
+                    defaultValue={O.isSome(props.datesAndMeals) ?
+                      props.datesAndMeals.value.isSpecialDiet :
+                      ''}
+                  >
+                    <HStack spacing="24px">
+                      <Radio {...register('isSpecialDiet')} value={'true'} mb={0}>Oui</Radio>
+                      <Radio {...register('isSpecialDiet')} value={'false'}>Non</Radio>
+                    </HStack>
+                  </RadioGroup>
                 }
               </FormControl>
 
