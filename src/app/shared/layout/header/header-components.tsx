@@ -12,7 +12,7 @@ export const Brand = () => (
       <Image src={logo} alt="Logo" w="130px" h="50px" objectFit="contain" />
 
       <Heading color={'white'} px={{ base: 2, md: 8 }} size={{ base: 'sm', lg: 'lg' }}>
-        Gestion de l&apos;hébergement
+        {"Gestion de l'hébergement et de la restauration"}
       </Heading>
     </Stack>
   </Box>

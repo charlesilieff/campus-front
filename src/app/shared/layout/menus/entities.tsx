@@ -24,7 +24,7 @@ export const EntitiesMenu = (props: EntitiesMenuProps) => (
       rightIcon={<GoTriangleDown />}
       size={{ base: 'sm', md: 'md' }}
     >
-      {"Gestion de l'hébergement"}
+      {'Menu'}
     </MenuButton>
     <MenuList>
       {props.isResp && (

@@ -8,9 +8,9 @@ import { activateAction, reset } from './activate.reducer'
 const successAlert = (
   <Alert status="success">
     <AlertIcon />
-    <Text fontWeight={'bold'} pr={2}>Votre compte utilisateur a été activé. {' '}</Text>
+    <Text fontWeight={'bold'} pr={2}>Le compte utilisateur a été activé. {' '}</Text>
     <Text>
-      Merci de vous
+      {"L'utilisateur peut maintenant se"}{'   '}
       <Link to="/login" className="alert-link">
         connecter
       </Link>
@@ -23,7 +23,7 @@ const failureAlert = (
   <Alert status="error">
     <AlertIcon />
     <Text fontWeight={'bold'} pr={2}>
-      Votre compte utilisateur n&apos;a pas pu être activé. {' '}
+      Le compte utilisateur n&apos;a pas pu être activé. {' '}
     </Text>
     <Text>Utilisez le formulaire d&apos;enregistrement pour en créer un nouveau.</Text>
   </Alert>
