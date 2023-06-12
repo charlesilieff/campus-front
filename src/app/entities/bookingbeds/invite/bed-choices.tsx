@@ -10,7 +10,7 @@ import {
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import { PlaceModal } from 'app/entities/place/placeModal'
-import type { IBedroomKind } from 'app/shared/model/bedroom-kind.model'
+import type { BedroomKind } from 'app/shared/model/bedroom-kind.model'
 import type { FunctionComponent } from 'react'
 import React, { useEffect, useState } from 'react'
 
@@ -40,7 +40,7 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
 ): JSX.Element => {
   const [rooms, setRooms] = useState<ReadonlyArray<IRoomWithBeds>>([])
   const [places, setPlaces] = useState([] as readonly IPlace[])
-  const [roomKinds, setRoomKinds] = useState([] as IBedroomKind[])
+  const [roomKinds, setRoomKinds] = useState([] as BedroomKind[])
   const [loading, setLoading] = useState(false)
   const [placeImage, setPlace] = useState(O.none<IPlace>())
   useEffect(() => {

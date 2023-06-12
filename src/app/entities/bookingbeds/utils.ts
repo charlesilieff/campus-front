@@ -1,6 +1,6 @@
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
-import type { IBedroomKind } from 'app/shared/model/bedroom-kind.model'
+import type { BedroomKind } from 'app/shared/model/bedroom-kind.model'
 import type { MealsOnlyUserReservation } from 'app/shared/model/mealsReservation.model'
 import type { OneBedUserReservation } from 'app/shared/model/onebedReservation.model'
 import type { ITypeReservation } from 'app/shared/model/typeReservation.model'
@@ -71,7 +71,7 @@ export interface IRoomWithBeds {
   name?: string
   comment?: string | null
   beds?: IBedWithStatus[] | null
-  bedroomKind?: IBedroomKind | null
+  bedroomKind?: BedroomKind | null
   place?: IPlace | null
 }
 

@@ -1,5 +1,5 @@
 import type { IBed } from 'app/shared/model/bed.model'
-import type { IBedroomKind } from 'app/shared/model/bedroom-kind.model'
+import type { BedroomKind } from 'app/shared/model/bedroom-kind.model'
 
 import type { IPlace } from './place.model'
 
@@ -8,7 +8,7 @@ export interface IRoom {
   name?: string
   comment?: string | null
   beds?: IBed[] | null
-  bedroomKind?: IBedroomKind | null
+  bedroomKind?: BedroomKind | null
   place?: IPlace | null
 }
 

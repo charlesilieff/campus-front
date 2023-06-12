@@ -8,8 +8,10 @@ import {
   Input,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import type { IBedroomKind } from 'app/shared/model/bedroom-kind.model'
+import type { BedroomKind } from 'app/shared/model/bedroom-kind.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
@@ -18,7 +20,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { createEntity, getEntity, reset, updateEntity } from './bedroom-kind.reducer'
 
 interface BedroomKindForm {
-  bedroomKindId: string
+  bedroomKindId: number
   name: string
   description: string
 }
@@ -29,9 +31,15 @@ export const BedroomKindUpdate = () => {
   const bedroomKindEntity = useAppSelector(state => state.bedroomKind.entity)
   const isNew = id === undefined
   const defaultValues = () =>
-    isNew ? {} : {
-      ...bedroomKindEntity
-    }
+    pipe(
+      bedroomKindEntity,
+      O.map(b => ({
+        bedroomKindId: O.getOrElse(() => 0)(b.id),
+        name: b.name,
+        description: O.getOrElse(b.description, () => '')
+      })),
+      O.getOrElse(() => ({}))
+    )
   const {
     handleSubmit,
     register,
@@ -40,9 +48,8 @@ export const BedroomKindUpdate = () => {
   } = useForm<BedroomKindForm>({})
 
   useEffect(() => {
-    // @ts-expect-error TODO: fix this
     resetForm(defaultValues())
-  }, [bedroomKindEntity.id])
+  }, [bedroomKindEntity])
   const navigate = useNavigate()
 
   const loading = useAppSelector(state => state.bedroomKind.loading)
@@ -67,7 +74,7 @@ export const BedroomKindUpdate = () => {
     }
   }, [updateSuccess])
 
-  const saveEntity = (values: IBedroomKind) => {
+  const saveEntity = (values: BedroomKind) => {
     const entity = {
       ...bedroomKindEntity,
       ...values
@@ -87,7 +94,15 @@ export const BedroomKindUpdate = () => {
       </Heading>
 
       {loading ? <p>Chargement...</p> : (
-        <form onSubmit={handleSubmit(saveEntity)}>
+        <form
+          onSubmit={handleSubmit(d =>
+            saveEntity({
+              description: O.some(d.description),
+              id: O.some(d.bedroomKindId),
+              name: d.name
+            })
+          )}
+        >
           <VStack minW={'300px'}>
             <FormControl isRequired isInvalid={errors.name !== undefined}>
               <FormLabel htmlFor="name" fontWeight={'bold'}>

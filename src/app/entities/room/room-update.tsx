@@ -10,6 +10,8 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
+import * as O from '@effect/data/Option'
+import * as A from '@effect/data/ReadonlyArray'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getBedroomKinds } from 'app/entities/bedroom-kind/bedroom-kind.reducer'
 import { findAllPlaces } from 'app/entities/place/place.reducer'
@@ -95,7 +97,7 @@ export const RoomUpdate = () => {
       bedroomKindId: values.bedroomKindId === '' ? undefined : values.bedroomKindId,
       // @ts-expect-error TODO: fix this
       place: places.find(it => it.id.toString() === values.placeId.toString()),
-      // @ts-expect-error TODO: fix this
+
       bedroomKind: bedroomKinds.find(it => it.id.toString() === values.bedroomKindId.toString())
     }
 
@@ -182,7 +184,10 @@ export const RoomUpdate = () => {
                 <option value="" key="0" />
                 {bedroomKinds ?
                   bedroomKinds.map(bedroomKind => (
-                    <option value={bedroomKind.id} key={bedroomKind.id}>
+                    <option
+                      value={O.getOrUndefined(bedroomKind.id)}
+                      key={O.getOrUndefined(bedroomKind.id)}
+                    >
                       {bedroomKind.name}
                     </option>
                   )) :

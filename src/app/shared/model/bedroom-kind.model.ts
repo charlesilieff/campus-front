@@ -1,10 +1,9 @@
-import type { IRoom } from 'app/shared/model/room.model'
+import * as S from '@effect/schema/Schema'
 
-export interface IBedroomKind {
-  id?: number
-  name?: string
-  description?: string | null
-  rooms?: IRoom[] | null
-}
+export const BedroomKind = S.struct({
+  id: S.optional(S.number).toOption(),
+  name: S.string,
+  description: S.optional(S.string).toOption()
+})
 
-export const defaultValue: Readonly<IBedroomKind> = {}
+export type BedroomKind = S.To<typeof BedroomKind>

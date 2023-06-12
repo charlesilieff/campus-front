@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type * as O from '@effect/data/Option'
 import type {
   ActionReducerMapBuilder,
   AsyncThunk,
@@ -77,11 +78,12 @@ export interface EntityState<T,> {
   loading: boolean
   errorMessage: string | null
   entities: readonly T[]
-  entity: T
+  entity: O.Option<T>
   links?: any
   updating: boolean
   totalItems?: number
   updateSuccess: boolean
+  // FIXME: remove this
   stepOne?: boolean
   creating?: boolean
 }
