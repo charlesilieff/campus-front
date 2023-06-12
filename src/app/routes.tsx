@@ -98,7 +98,8 @@ export const Routes = () => (
           hasAnyAuthorities={[
             AUTHORITIES.RESPHEBERGEMENT,
             AUTHORITIES.ADMIN,
-            AUTHORITIES.HABITANT
+            AUTHORITIES.HABITANT,
+            AUTHORITIES.EMPLOYEE
           ]}
         >
           <IndexMealUser />
@@ -121,7 +122,15 @@ export const Routes = () => (
     <Route
       path="*"
       element={
-        <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.RESPHEBERGEMENT]}>
+        <PrivateRoute
+          hasAnyAuthorities={[
+            AUTHORITIES.USER,
+            AUTHORITIES.RESPHEBERGEMENT,
+            AUTHORITIES.EMPLOYEE,
+            AUTHORITIES.HABITANT,
+            AUTHORITIES.ADMIN
+          ]}
+        >
           <EntitiesRoutes />
         </PrivateRoute>
       }
