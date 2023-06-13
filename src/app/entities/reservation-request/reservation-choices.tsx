@@ -18,7 +18,8 @@ import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import { isArrivalDateIsBeforeDepartureDate, isDateBeforeNow } from '../bookingbeds/utils'
+import { isArrivalDateEqualDepartureDate, isArrivalDateIsBeforeDepartureDate,
+  isDateBeforeNow } from '../bookingbeds/utils'
 import type { Reservation } from './reservation-update'
 
 interface ReservationChoicesProps {
@@ -48,12 +49,35 @@ export const ReservationChoices = (
 
   const departureDate = useRef({})
   departureDate.current = watch('departureDate', '')
-
+  const arrivalDate = useRef({})
+  arrivalDate.current = watch('arrivalDate', '')
   const handleValidDateAndMealSubmit = (
     reservation: Reservation
   ): void => {
     props.setUpdateReservation(false)
-    props.setReservation(O.some(reservation))
+    if (
+      isArrivalDateEqualDepartureDate(
+        arrivalDate.current.toString(),
+        departureDate.current.toString()
+      )
+    ) {
+      console.log('couou', {
+        ...reservation,
+        isDepartureBreakfast: false,
+        isDepartureDinner: false,
+        isDepartureLunch: false
+      })
+      props.setReservation(
+        O.some({
+          ...reservation,
+          isDepartureBreakfast: false,
+          isDepartureDinner: false,
+          isDepartureLunch: false
+        })
+      )
+    } else {
+      props.setReservation(O.some(reservation))
+    }
   }
 
   return (
@@ -91,6 +115,7 @@ export const ReservationChoices = (
                       validate(v) {
                         if (
                           !isArrivalDateIsBeforeDepartureDate(v, departureDate.current.toString())
+                          && !isArrivalDateEqualDepartureDate(v, departureDate.current.toString())
                         ) {
                           return "La date d'arrivée doit être avant la date de départ"
                         }
@@ -151,12 +176,19 @@ export const ReservationChoices = (
                   <Checkbox {...register('isArrivalLunch')} defaultChecked>déjeuner</Checkbox>
                   <Checkbox {...register('isArrivalDinner')} defaultChecked>dîner</Checkbox>
                 </HStack>
-                <HStack>
-                  <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>
-                  <Checkbox {...register('isDepartureBreakfast')}>petit déjeuner</Checkbox>
-                  <Checkbox {...register('isDepartureLunch')}>déjeuner</Checkbox>
-                  <Checkbox {...register('isDepartureDinner')} defaultChecked>dîner</Checkbox>
-                </HStack>
+                {!isArrivalDateEqualDepartureDate(
+                    arrivalDate.current.toString(),
+                    departureDate.current.toString()
+                  ) ?
+                  (
+                    <HStack>
+                      <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>
+                      <Checkbox {...register('isDepartureBreakfast')}>petit déjeuner</Checkbox>
+                      <Checkbox {...register('isDepartureLunch')}>déjeuner</Checkbox>
+                      <Checkbox {...register('isDepartureDinner')}>dîner</Checkbox>
+                    </HStack>
+                  ) :
+                  null}
               </FormControl>
               <FormControl isRequired isInvalid={errors.personNumber !== undefined}>
                 <FormLabel htmlFor="personNumber" fontWeight={'bold'}>

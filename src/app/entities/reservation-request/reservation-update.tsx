@@ -6,9 +6,11 @@ import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { IReservationRequest } from 'app/shared/model/reservation-request.model'
+import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { FaSave } from 'react-icons/fa'
 import { Link, useParams } from 'react-router-dom'
+import { isArrivalDateEqualDepartureDate } from '../bookingbeds/utils'
 
 import { CustomerSummary } from './customer-summary'
 import { CustomerUpdate } from './customer-update'
@@ -114,7 +116,14 @@ export const ReservationRequestUpdate = (): JSX.Element => {
     reservation: Reservation,
     customer: Customer
   ): Promise<void> => {
-    const reservationRequest = createReservationRequest(customer, reservation, uuid)
+    const reservationRequest = createReservationRequest(customer, {
+      ...reservation,
+      departureDate:
+        isArrivalDateEqualDepartureDate(reservation.arrivalDate, reservation.departureDate) ?
+          dayjs(reservation.arrivalDate, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD')
+            .toString() :
+          reservation.departureDate
+    }, uuid)
 
     setIsLoading(true)
     if (uuid !== undefined) {
@@ -126,7 +135,7 @@ export const ReservationRequestUpdate = (): JSX.Element => {
       setIsLoading(false)
       setUpdateSuccess(true)
       // @ts-expect-error dddd
-      setUUID(payload.data.reservation.reservationNumber)
+      setUUID(payload.data)
     }
   }
 

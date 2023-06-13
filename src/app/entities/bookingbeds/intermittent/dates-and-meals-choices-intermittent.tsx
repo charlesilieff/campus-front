@@ -16,7 +16,6 @@ import {
   VStack
 } from '@chakra-ui/react'
 import * as O from '@effect/data/Option'
-import dayjs from 'dayjs'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
@@ -67,9 +66,6 @@ export const DatesAndMealsChoices = (
         departureDate.current.toString()
       )
     ) {
-      console.log(
-        dayjs(datesAndMeal.arrivalDate, 'YYYY-MM-DD').add(2, 'day').format('YYYY-MM-DD').toString()
-      )
       props.setDatesAndMeal(
         O.some({
           ...datesAndMeal,
