@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react'
 
 import type { OneBedReservationDatesAndMeals } from '../models'
 import type { IRoomWithBeds } from '../utils'
+import { isArrivalDateEqualDepartureDate } from '../utils'
 import { getIntermittentPlaceWithFreeAndBookedBeds } from '../utils'
 import { IntermittentBeds } from './beds-intermittent'
 
@@ -44,12 +45,19 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
       setRooms(roomsData)
     }
 
-    if (O.isSome(props.datesAndMeals)) {
+    if (
+      O.isSome(props.datesAndMeals) && !isArrivalDateEqualDepartureDate(
+        props.datesAndMeals.value.arrivalDate,
+        props.datesAndMeals.value.departureDate
+      )
+    ) {
       getIntermittentPlaceWithFreeAndBookedBedsAsync(
         props.datesAndMeals.value.arrivalDate,
         props.datesAndMeals.value.departureDate,
         props.reservationId
       )
+    } else {
+      setLoading(false)
     }
   }, [])
 

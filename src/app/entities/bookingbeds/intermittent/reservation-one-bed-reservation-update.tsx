@@ -6,6 +6,7 @@ import * as A from '@effect/data/ReadonlyArray'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getUserCategories } from 'app/entities/user-category/user-category.reducer'
 import { getSession } from 'app/shared/reducers/authentication'
+import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -20,7 +21,7 @@ import {
   updateOneBedUserReservationReservation
 } from '../booking-beds.reducer'
 import type { Customer, OneBedReservationDatesAndMeals } from '../models'
-import { createUserOneBedReservation } from '../utils'
+import { createUserOneBedReservation, isArrivalDateEqualDepartureDate } from '../utils'
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
 import { CustomerUpdate } from './customer-update'
@@ -50,7 +51,19 @@ export const OneBedReservationUpdate = (): JSX.Element => {
     customer: Customer,
     userId: number
   ): Promise<void> => {
-    const reservation = createUserOneBedReservation(customer, datesAndMeal, bedId, userId)
+    const reservation = createUserOneBedReservation(
+      customer,
+      {
+        ...datesAndMeal,
+        departureDate:
+          isArrivalDateEqualDepartureDate(datesAndMeal.arrivalDate, datesAndMeal.departureDate) ?
+            dayjs(datesAndMeal.arrivalDate, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD')
+              .toString() :
+            datesAndMeal.departureDate
+      },
+      bedId,
+      userId
+    )
 
     setIsLoading(true)
     if (reservationId !== undefined) {

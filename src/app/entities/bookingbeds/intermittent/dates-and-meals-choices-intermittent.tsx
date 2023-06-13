@@ -16,12 +16,17 @@ import {
   VStack
 } from '@chakra-ui/react'
 import * as O from '@effect/data/Option'
+import dayjs from 'dayjs'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
 import type { OneBedReservationDatesAndMeals } from '../models'
-import { isArrivalDateIsBeforeDepartureDate, isDateBeforeNow } from '../utils'
+import {
+  isArrivalDateEqualDepartureDate,
+  isArrivalDateIsBeforeDepartureDate,
+  isDateBeforeNow
+} from '../utils'
 
 interface DatesAndMealsChoicesProps {
   setDatesAndMeal: (datesAndMeal: O.Option<OneBedReservationDatesAndMeals>) => void
@@ -49,13 +54,33 @@ export const DatesAndMealsChoices = (
 
   const departureDate = useRef({})
   departureDate.current = watch('departureDate', '')
-
+  const arrivalDate = useRef({})
+  arrivalDate.current = watch('arrivalDate', '')
   const handleValidDateAndMealSubmit = (
     datesAndMeal: OneBedReservationDatesAndMeals
   ): void => {
     props.setBedId(O.none())
     props.setUpdateDatesAndMeals(false)
-    props.setDatesAndMeal(O.some(datesAndMeal))
+    if (
+      isArrivalDateEqualDepartureDate(
+        arrivalDate.current.toString(),
+        departureDate.current.toString()
+      )
+    ) {
+      console.log(
+        dayjs(datesAndMeal.arrivalDate, 'YYYY-MM-DD').add(2, 'day').format('YYYY-MM-DD').toString()
+      )
+      props.setDatesAndMeal(
+        O.some({
+          ...datesAndMeal,
+          isDepartureBreakfast: false,
+          isDepartureDinner: false,
+          isDepartureLunch: false
+        })
+      )
+    } else {
+      props.setDatesAndMeal(O.some(datesAndMeal))
+    }
   }
 
   return (
@@ -93,6 +118,7 @@ export const DatesAndMealsChoices = (
                       validate(v) {
                         if (
                           !isArrivalDateIsBeforeDepartureDate(v, departureDate.current.toString())
+                          && !isArrivalDateEqualDepartureDate(v, departureDate.current.toString())
                         ) {
                           return "La date d'arrivée doit être avant la date de départ"
                         }
@@ -119,7 +145,7 @@ export const DatesAndMealsChoices = (
                     type="date"
                     placeholder="Date de départ"
                     {...register('departureDate', {
-                      required: 'la date de départ est obligatoire'
+                      required: 'La date de départ est obligatoire'
                     })}
                   />
 
@@ -153,30 +179,35 @@ export const DatesAndMealsChoices = (
                   <Checkbox {...register('isArrivalLunch')}>déjeuner</Checkbox>
                   <Checkbox {...register('isArrivalDinner')}>dîner</Checkbox>
                 </HStack>
-                <HStack>
-                  <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>
-                  <Checkbox {...register('isDepartureBreakfast')}>petit déjeuner</Checkbox>
-                  <Checkbox {...register('isDepartureLunch')}>déjeuner</Checkbox>
-                  <Checkbox {...register('isDepartureDinner')}>dîner</Checkbox>
-                </HStack>
+                {!isArrivalDateEqualDepartureDate(
+                    arrivalDate.current.toString(),
+                    departureDate.current.toString()
+                  ) ?
+                  (
+                    <HStack>
+                      <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>
+                      <Checkbox {...register('isDepartureBreakfast')}>petit déjeuner</Checkbox>
+                      <Checkbox {...register('isDepartureLunch')}>déjeuner</Checkbox>
+                      <Checkbox {...register('isDepartureDinner')}>dîner</Checkbox>
+                    </HStack>
+                  ) :
+                  null}
               </FormControl>
               <FormControl isRequired isInvalid={errors.isSpecialDiet !== undefined}>
                 <FormLabel htmlFor="selectionRepas" fontWeight={'bold'}>
                   {'Régime sans lactose OU sans gluten ?'}
                 </FormLabel>
 
-                {
-                  <RadioGroup
-                    defaultValue={O.isSome(props.datesAndMeals) ?
-                      props.datesAndMeals.value.isSpecialDiet :
-                      ''}
-                  >
-                    <HStack spacing="24px">
-                      <Radio {...register('isSpecialDiet')} value={'true'} mb={0}>Oui</Radio>
-                      <Radio {...register('isSpecialDiet')} value={'false'}>Non</Radio>
-                    </HStack>
-                  </RadioGroup>
-                }
+                <RadioGroup
+                  defaultValue={O.isSome(props.datesAndMeals) ?
+                    props.datesAndMeals.value.isSpecialDiet :
+                    ''}
+                >
+                  <HStack spacing="24px">
+                    <Radio {...register('isSpecialDiet')} value={'true'} mb={0}>Oui</Radio>
+                    <Radio {...register('isSpecialDiet')} value={'false'}>Non</Radio>
+                  </HStack>
+                </RadioGroup>
               </FormControl>
               <FormControl isInvalid={errors.commentMeals !== undefined}>
                 <FormLabel htmlFor="comment" fontWeight={'bold'}>
