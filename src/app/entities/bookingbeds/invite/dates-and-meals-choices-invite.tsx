@@ -20,7 +20,7 @@ import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import { isArrivalDateIsBeforeDepartureDate, isArrivalDateIsEgalDepartureDate,
+import { isArrivalDateEqualDepartureDate, isArrivalDateIsBeforeDepartureDate,
   isDateBeforeNow } from '../utils'
 import type { DatesAndMeals } from './reservation-invite-update'
 
@@ -62,7 +62,7 @@ export const DatesAndMealsChoices = (
     datesAndMeal: DatesAndMeals
   ): void => {
     if (
-      !isArrivalDateIsEgalDepartureDate(datesAndMeal.arrivalDate, datesAndMeal.departureDate)
+      !isArrivalDateEqualDepartureDate(datesAndMeal.arrivalDate, datesAndMeal.departureDate)
       && (datesAndMeal.isArrivalDinner !== datesAndMeal.isDepartureDinner
         || datesAndMeal.isArrivalLunch !== datesAndMeal.isDepartureLunch
         || datesAndMeal.isArrivalBreakfast !== datesAndMeal.isDepartureBreakfast)
@@ -143,7 +143,7 @@ export const DatesAndMealsChoices = (
                     required: "la date d'arrivée' est obligatoire",
                     validate(v) {
                       if (
-                        isArrivalDateIsEgalDepartureDate(
+                        isArrivalDateEqualDepartureDate(
                           v,
                           departureDate.current.toString()
                         )

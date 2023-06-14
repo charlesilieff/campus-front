@@ -110,7 +110,7 @@ export const DatesAndMealsChoices = (
                     type="date"
                     placeholder="Date d'arrivée'"
                     {...register('arrivalDate', {
-                      required: "la date d'arrivée' est obligatoire",
+                      required: "La date d'arrivée' est obligatoire",
                       validate(v) {
                         if (
                           !isArrivalDateIsBeforeDepartureDate(v, departureDate.current.toString())

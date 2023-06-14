@@ -18,6 +18,7 @@ import * as O from '@effect/data/Option'
 import * as A from '@effect/data/ReadonlyArray'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
+import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
 import { FaSave } from 'react-icons/fa'
@@ -31,6 +32,7 @@ import {
   reset as resetReservations,
   updateEntity as updateReservation
 } from '../booking-beds.reducer'
+import { isArrivalDateEqualDepartureDate } from '../utils'
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
 import { CustomerUpdate } from './customer-update'
@@ -72,7 +74,11 @@ const createIReservationWithBedIds = (
   // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
   arrivalDate: datesAndMeals.arrivalDate,
   // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
-  departureDate: datesAndMeals.departureDate,
+  departureDate:
+    isArrivalDateEqualDepartureDate(datesAndMeals.arrivalDate, datesAndMeals.departureDate) ?
+      dayjs(datesAndMeals.arrivalDate, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD')
+        .toString() :
+      datesAndMeals.departureDate,
   specialDietNumber: customer.specialDietNumber,
   isArrivalLunch: datesAndMeals.isArrivalLunch,
   isArrivalDiner: datesAndMeals.isArrivalDinner,
@@ -264,7 +270,10 @@ export const ReservationUpdate = (): JSX.Element => {
             setUpdate={setUpdateDatesAndMeals}
           />
         )}
-      {O.isSome(datesAndMeal) && !updateDatesAndMeals ?
+      {(O.isSome(datesAndMeal) && !isArrivalDateEqualDepartureDate(
+          datesAndMeal.value.arrivalDate,
+          datesAndMeal.value.departureDate
+        )) && !updateDatesAndMeals ?
         (
           <BedsChoices
             datesAndMeals={datesAndMeal}
@@ -297,7 +306,11 @@ export const ReservationUpdate = (): JSX.Element => {
             {'Choix des lits'}
           </Heading>
         )}
-      {O.isSome(customer) && O.isSome(datesAndMeal) && !updateDatesAndMeals && !updateCustomer ?
+      {O.isSome(customer) && O.isSome(datesAndMeal)
+          && (!updateDatesAndMeals || isArrivalDateEqualDepartureDate(
+            datesAndMeal.value.arrivalDate,
+            datesAndMeal.value.departureDate
+          )) && !updateCustomer ?
         (
           <HStack justifyContent={'end'}>
             <Button

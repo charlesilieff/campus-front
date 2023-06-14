@@ -61,12 +61,6 @@ export const ReservationChoices = (
         departureDate.current.toString()
       )
     ) {
-      console.log('couou', {
-        ...reservation,
-        isDepartureBreakfast: false,
-        isDepartureDinner: false,
-        isDepartureLunch: false
-      })
       props.setReservation(
         O.some({
           ...reservation,

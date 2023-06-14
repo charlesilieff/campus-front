@@ -152,22 +152,6 @@ export const isDateBeforeNow = (date: string): boolean => {
   )
 }
 
-export const isArrivalDateIsEgalDepartureDate = (d1: string, d2: string): boolean => {
-  const arrivalDate = pipe(
-    d1 === '' ? O.none() : O.some(d1),
-    O.map(d => dayjs(d))
-  )
-  const departureDate = pipe(
-    d2 === '' ? O.none() : O.some(d2),
-    O.map(d => dayjs(d).subtract(1, 'day'))
-  )
-  return pipe(
-    O.struct({ arrivalDate, departureDate }),
-    O.map(d => d.arrivalDate.isSame(d.departureDate)),
-    O.exists(x => x)
-  )
-}
-
 export const createUserOneBedReservation = (
   customer: Customer,
   datesAndMeals: OneBedReservationDatesAndMeals,
