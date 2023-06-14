@@ -110,7 +110,7 @@ export const ReservationUpdate = (): JSX.Element => {
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
-
+  const [selectedBeds, setSelectedBeds] = useState<readonly number[]>([])
   const { reservationId } = useParams<{ reservationId: string | undefined }>()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -181,7 +181,7 @@ export const ReservationUpdate = (): JSX.Element => {
       setSelectedBeds(pipe(backendReservation.value.beds, A.map(bed => bed.id)))
     }
   }, [pipe(backendReservation, O.map(reservation => reservation.arrivalDate), O.getOrUndefined)])
-  const [selectedBeds, setSelectedBeds] = useState<readonly number[]>([])
+
   useEffect(() => {
     pipe(
       reservationId,
@@ -345,7 +345,7 @@ export const ReservationUpdate = (): JSX.Element => {
                 rightIcon={<CheckIcon />}
                 onClick={onOpen}
               >
-                Finaliser la réservation
+                Finaliser la réservation {selectedBeds.length === 0 ? `sans lits` : ''}
               </Button>
               <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
