@@ -8,15 +8,22 @@ export interface BedroomKindDecoded {
 }
 
 export interface BedroomKindEncoded {
-  id: number | null
+  id?: number
   name: string
-  description: string | null
+  description?: string
 }
 
 export const BedroomKind: S.Schema<BedroomKindEncoded, BedroomKindDecoded> = S.struct({
-  id: S.optionFromNullable(S.number),
+  id: S.optional(S.number).toOption(),
   name: S.string,
-  description: S.optionFromNullable(S.string)
+  description: S.optional(S.string).toOption()
 })
+
+export const BedroomKindDecodedToDecoded = S
+  .struct({
+    id: S.option(S.number),
+    name: S.string,
+    description: S.option(S.string)
+  })
 
 export type BedroomKind = S.To<typeof BedroomKind>

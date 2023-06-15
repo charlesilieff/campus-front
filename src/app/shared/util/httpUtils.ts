@@ -31,13 +31,16 @@ export const getHttpEntities = <A, B,>(
 
 export const putHttpEntity = <A, B, C, D,>(
   url: string,
-  schema: S.Schema<B, A>,
-  entity: A,
+  schema: S.Schema<A, B>,
+  entity: B,
   responseType: S.Schema<C, D>
 ): Promise<WritableDraft<O.Option<D>>> =>
   pipe(
-    S.encodeEffect(schema)(entity),
-    T.mapError(e => formatErrors(e.errors)),
+    S.encodeEffect(schema)(entity, { errors: 'all' }),
+    T.mapError(e => {
+      console.log('putHttpEntity', e)
+      return formatErrors(e.errors)
+    }),
     T.flatMap(b => T.promise(() => axios.put(url, b))),
     T.map(d => S.parseOption(responseType)(d.data)),
     T.map(d => castDraft(d)),
@@ -46,8 +49,8 @@ export const putHttpEntity = <A, B, C, D,>(
 
 export const postHttpEntity = <A, B, C, D,>(
   url: string,
-  schema: S.Schema<B, A>,
-  entity: A,
+  schema: S.Schema<A, B>,
+  entity: B,
   responseType: S.Schema<C, D>
 ): Promise<WritableDraft<O.Option<D>>> =>
   pipe(

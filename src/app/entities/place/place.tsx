@@ -1,4 +1,5 @@
 import { Button, Heading, HStack, Table, Tbody, Td, Th, Thead, Tr, VStack } from '@chakra-ui/react'
+import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { FaEye, FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
@@ -60,28 +61,25 @@ export const Place = () => {
               {placeList.map((place, i) => (
                 <Tr key={`entity-${i}`} data-cy="entityTable">
                   <Td>
-                    <Button as={Link} to={`${place.id}`} color="link" size="sm">
+                    <Button as={Link} to={`${O.getOrUndefined(place.id)}`} color="link" size="sm">
                       {place.name}
                     </Button>
                   </Td>
-                  <Td>{place.comment}</Td>
+                  <Td>{O.getOrUndefined(place.comment)}</Td>
                   <Td>
-                    {place.image ?
+                    {O.isSome(place.image) && O.isSome(place.imageContentType) ?
                       (
                         <div>
-                          {place.imageContentType ?
-                            (
-                              <a onClick={openFile(place.imageContentType, place.image)}>
-                                <img
-                                  src={`data:${place.imageContentType};base64,${place.image}`}
-                                  style={{ maxHeight: '30px' }}
-                                />
-                                &nbsp;
-                              </a>
-                            ) :
-                            null}
+                          <a onClick={openFile(place.imageContentType.value, place.image.value)}>
+                            <img
+                              src={`data:${place.imageContentType.value};base64,${place.image.value}`}
+                              style={{ maxHeight: '30px' }}
+                            />
+                            &nbsp;
+                          </a>
+
                           <span>
-                            {place.imageContentType}, {byteSize(place.image)}
+                            {place.imageContentType.value}, {byteSize(place.image.value)}
                           </span>
                         </div>
                       ) :
@@ -89,30 +87,36 @@ export const Place = () => {
                   </Td>
                   <Td className="text-right">
                     <HStack justifyContent={'flex-end'} spacing={0}>
-                      <Button
-                        as={Link}
-                        to={`${place.id}`}
-                        variant="see"
-                        size="sm"
-                        leftIcon={<FaEye />}
-                        borderRightRadius={0}
-                      >
-                        Voir
-                      </Button>
-                      <Button
-                        as={Link}
-                        to={`${place.id}/edit`}
-                        size="sm"
-                        variant={'modify'}
-                        borderRadius={0}
-                        leftIcon={<FaPencilAlt />}
-                      >
-                        Modifier
-                      </Button>
-                      <PlaceDeleteDialog
-                        // @ts-expect-error TODO: fix this
-                        placeId={place.id}
-                      />
+                      {O.isSome(place.id) ?
+                        (
+                          <>
+                            <Button
+                              as={Link}
+                              to={`${place.id.value}`}
+                              variant="see"
+                              size="sm"
+                              leftIcon={<FaEye />}
+                              borderRightRadius={0}
+                            >
+                              Voir
+                            </Button>
+                            <Button
+                              as={Link}
+                              to={`${place.id.value}/edit`}
+                              size="sm"
+                              variant={'modify'}
+                              borderRadius={0}
+                              leftIcon={<FaPencilAlt />}
+                            >
+                              Modifier
+                            </Button>
+
+                            <PlaceDeleteDialog
+                              placeId={place.id.value}
+                            />
+                          </>
+                        ) :
+                        null}
                     </HStack>
                   </Td>
                 </Tr>

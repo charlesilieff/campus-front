@@ -10,10 +10,11 @@ import {
 } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import { getParamId } from 'app/lib/util/utils'
-import type { BedroomKindEncoded } from 'app/shared/model/bedroom-kind.model'
+import type { BedroomKindDecoded, BedroomKindEncoded } from 'app/shared/model/bedroom-kind.model'
 import { BedroomKind } from 'app/shared/model/bedroom-kind.model'
+import { getParamId } from 'app/shared/util/utils'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
@@ -28,15 +29,7 @@ export const BedroomKindUpdate = () => {
   const bedroomKindEntity = useAppSelector(state => state.bedroomKind.entity)
   const isNew = O.isNone(id)
   const defaultValues = () =>
-    isNew ? {} : pipe(
-      bedroomKindEntity,
-      O.map(b => ({
-        bedroomKindId: O.getOrElse(() => 0)(b.id),
-        name: b.name,
-        description: O.getOrElse(b.description, () => '')
-      })),
-      O.getOrElse(() => ({}))
-    )
+    isNew || O.isNone(bedroomKindEntity) ? {} : S.encode(BedroomKind)(bedroomKindEntity.value)
   const {
     handleSubmit,
     register,
@@ -73,19 +66,31 @@ export const BedroomKindUpdate = () => {
     }
   }, [updateSuccess])
 
-  const saveEntity = (values: BedroomKindEncoded) => {
-    const entity: BedroomKind = {
-      description: O.fromNullable(values.description),
-      id: O.fromNullable(values.id),
-      name: values.name
-    }
-
+  const saveEntity = (values: BedroomKindDecoded) => {
     if (isNew) {
-      dispatch(createEntity(entity))
+      dispatch(createEntity(values))
     } else {
-      dispatch(updateEntity(entity))
+      dispatch(updateEntity(values))
     }
   }
+
+  const toto = S.struct({
+    name: S.string,
+    description: S.optional(S.string).toOption()
+  })
+
+  const totoToEncode = {
+    name: 'toto',
+    description: O.some('toto')
+  }
+  const totoToDecode = {
+    name: 'toto'
+  }
+
+  const test = S.encode(toto)(totoToEncode)
+  const test2 = S.decode(toto)(totoToDecode)
+  console.log(test)
+  console.log(test2)
 
   return (
     <VStack>
@@ -95,9 +100,7 @@ export const BedroomKindUpdate = () => {
 
       {loading ? <p>Chargement...</p> : (
         <form
-          onSubmit={handleSubmit(
-            saveEntity
-          )}
+          onSubmit={handleSubmit(data => saveEntity(data as unknown as BedroomKindDecoded))}
         >
           <VStack minW={'300px'}>
             <FormControl isRequired isInvalid={errors.name !== undefined}>

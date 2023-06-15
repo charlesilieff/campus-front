@@ -41,19 +41,19 @@ export const ordBedByNumber = Ord.contramap((b: Bed) => b.number)(string.Ord)
 export const bedDefaultValue: Readonly<O.Option<Bed>> = O.none()
 
 export interface BedCreateEncoded {
-  id: number | null
+  id?: number
   kind: string
   number: string
   numberOfPlaces: number
-  roomId: number | null
+  roomId?: number
 }
 
 export const BedCreate = S.struct({
-  id: S.optionFromNullable(S.number),
+  id: S.optional(S.number).toOption(),
   kind: S.string,
   number: S.string,
   numberOfPlaces: S.number,
-  roomId: S.optionFromNullable(S.number)
+  roomId: S.optional(S.number).toOption()
 })
 export type BedCreate = S.To<typeof BedCreate>
 

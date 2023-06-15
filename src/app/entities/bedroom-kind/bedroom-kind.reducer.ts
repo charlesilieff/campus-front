@@ -1,6 +1,6 @@
 import * as O from '@effect/data/Option'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
-import { getHttpEntities, getHttpEntity } from 'app/lib/util/httpUtils'
+import type { BedroomKindDecoded } from 'app/shared/model/bedroom-kind.model'
 import { BedroomKind } from 'app/shared/model/bedroom-kind.model'
 import type {
   EntityState
@@ -9,7 +9,12 @@ import {
   createEntitySlice,
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
-import { cleanEntity } from 'app/shared/util/entity-utils'
+import {
+  getHttpEntities,
+  getHttpEntity,
+  postHttpEntity,
+  putHttpEntity
+} from 'app/shared/util/httpUtils'
 import axios from 'axios'
 
 const initialState: EntityState<BedroomKind> = {
@@ -28,7 +33,7 @@ const apiUrl = 'api/bedroom-kinds'
 export const getEntities = createAsyncThunk(
   'bedroomKind/fetch_entity_list',
   async () => {
-    const requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`
+    const requestUrl = `${apiUrl}`
     return getHttpEntities(requestUrl, BedroomKind)
   }
 )
@@ -44,8 +49,14 @@ export const getEntity = createAsyncThunk(
 
 export const createEntity = createAsyncThunk(
   'bedroomKind/create_entity',
-  async (entity: BedroomKind, thunkAPI) => {
-    const result = await axios.post<BedroomKind>(apiUrl, cleanEntity(entity))
+  async (entity: BedroomKindDecoded, thunkAPI) => {
+    const result = postHttpEntity(
+      apiUrl,
+      BedroomKind,
+      entity,
+      BedroomKind
+    )
+
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -55,9 +66,11 @@ export const createEntity = createAsyncThunk(
 export const updateEntity = createAsyncThunk(
   'bedroomKind/update_entity',
   async (entity: BedroomKind, thunkAPI) => {
-    const result = await axios.put<BedroomKind>(
-      `${apiUrl}/${O.getOrElse(entity.id, () => 'null')}`,
-      cleanEntity(entity)
+    const result = putHttpEntity(
+      `${apiUrl}/${O.getOrUndefined(entity.id)}`,
+      BedroomKind,
+      entity,
+      BedroomKind
     )
     thunkAPI.dispatch(getEntities())
     return result
@@ -101,7 +114,7 @@ export const BedroomKindSlice = createEntitySlice({
         state.updating = false
         state.loading = false
         state.updateSuccess = true
-        state.entity = O.some(action.payload.data)
+        state.entity = action.payload
       })
       .addMatcher(isPending(getEntities, getEntity), state => {
         state.errorMessage = null

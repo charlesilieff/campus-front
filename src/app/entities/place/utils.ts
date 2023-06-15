@@ -2,9 +2,9 @@ export const toBase64 = (file: File, cb: (v: string) => void) => {
   const fileReader: FileReader = new FileReader()
   fileReader.readAsDataURL(file)
   fileReader.onload = e => {
-    // @ts-expect-error TODO: fix this
+    // @ts-expect-error normal
     const base64Data = e.target['result'].toString().substr(
-      // @ts-expect-error TODO: fix this
+      // @ts-expect-error normal
       e.target['result'].toString().indexOf('base64,') + 'base64,'.length
     )
     cb(base64Data)
@@ -28,12 +28,13 @@ export const setFileData = (
 export const openFile = (contentType: string, data: string) => () => {
   const fileURL = `data:${contentType};base64,${data}`
   const win = window.open()
-  // @ts-expect-error TODO: fix this
-  win.document.write(
-    '<iframe src="'
-      + fileURL
-      + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>'
-  )
+  if (win) {
+    win.document.write(
+      '<iframe src="'
+        + fileURL
+        + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>'
+    )
+  }
 }
 const paddingSize = (value: string): number => {
   if (value.endsWith('==')) {

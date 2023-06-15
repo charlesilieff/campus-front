@@ -10,23 +10,20 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import type { IPlace } from 'app/shared/model/place.model'
+import type { PlaceEncoded } from 'app/shared/model/place.model'
+import { Place } from 'app/shared/model/place.model'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
+import { schemaResolver } from '../bed/resolver'
 import { findOnePlaceById, reset, savePlace, updateEntity } from './place.reducer'
 import { openFile, setFileData } from './utils'
-
-interface PlaceForm {
-  name?: string
-  comment?: string
-  image?: string
-  imageContentType?: string
-}
 
 export const PlaceUpdate = () => {
   const [image, setImage] = useState<O.Option<string>>(O.none)
@@ -41,23 +38,22 @@ export const PlaceUpdate = () => {
   }
   const placeEntity = useAppSelector(state => state.place.entity)
 
-  const defaultValues = (): PlaceForm =>
-    // @ts-expect-error TODO: fix this
-    isNew ? {} : {
-      ...placeEntity
-    }
+  const defaultValues = () =>
+    isNew || O.isNone(placeEntity) ? {} : S.encode(Place)(placeEntity.value)
   const {
     handleSubmit,
     register,
     formState: { errors },
     reset: resetForm
-  } = useForm<PlaceForm>({})
+  } = useForm<PlaceEncoded>({
+    resolver: schemaResolver(Place)
+  })
 
   useEffect(() => {
     resetForm(defaultValues())
-    setImage(O.fromNullable(placeEntity.image))
-    setImageContentType(O.fromNullable(placeEntity.imageContentType))
-  }, [placeEntity.id])
+    setImage(O.flatMap(placeEntity, p => p.image))
+    setImageContentType(O.flatMap(placeEntity, p => p.imageContentType))
+  }, [pipe(placeEntity, O.map(b => b.id), O.getOrNull)])
 
   const loading = useAppSelector(state => state.place.loading)
   const updating = useAppSelector(state => state.place.updating)
@@ -81,19 +77,11 @@ export const PlaceUpdate = () => {
     }
   }, [updateSuccess])
 
-  const saveEntity = (values: PlaceForm) => {
-    // @ts-expect-error TODO: fix this
-    const entity: IPlace = {
-      ...placeEntity,
-      ...values,
-      image: O.getOrUndefined(image),
-      imageContentType: O.getOrUndefined(imageContentType)
-    }
-
+  const saveEntity = (values: Place) => {
     if (isNew) {
-      dispatch(savePlace(entity))
+      dispatch(savePlace(values))
     } else {
-      dispatch(updateEntity(entity))
+      dispatch(updateEntity(values))
     }
   }
 

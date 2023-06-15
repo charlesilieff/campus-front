@@ -12,10 +12,11 @@ import {
 } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getRooms } from 'app/entities/room/room.reducer'
-import type { Bed, BedCreateEncoded } from 'app/shared/model/bed.model'
-import { BedCreate } from 'app/shared/model/bed.model'
+import type { BedCreateEncoded } from 'app/shared/model/bed.model'
+import { Bed, BedCreate } from 'app/shared/model/bed.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
@@ -30,12 +31,7 @@ export const BedUpdate = () => {
   const id = pipe(useParams<'id'>(), ({ id }) => O.fromNullable(id), O.map(Number))
   const isNew = O.isNone(id)
   const defaultValues = (bed: O.Option<Bed>) =>
-    isNew || !O.isSome(bed) ? {} : {
-      kind: bed.value.kind,
-      number: bed.value.number,
-      numberOfPlaces: bed.value.numberOfPlaces,
-      roomId: O.isSome(bed.value.room) ? bed.value.room.value.id : null
-    }
+    isNew || !O.isSome(bed) ? {} : S.encode(Bed)(bed.value)
 
   const {
     handleSubmit,
@@ -81,7 +77,6 @@ export const BedUpdate = () => {
 
   const saveEntity = (values: BedCreateEncoded) => {
     const entity: BedCreate = {
-      ...bedEntity,
       id,
       kind: values.kind,
       number: values.number,

@@ -9,10 +9,10 @@ import {
   createEntitySlice,
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
+import { getHttpEntities, getHttpEntity, postHttpEntity,
+  putHttpEntity } from 'app/shared/util/httpUtils'
 import axios from 'axios'
 import { castDraft } from 'immer'
-
-import { getHttpEntities, getHttpEntity, putHttpEntity } from '../../lib/util/httpUtils'
 
 const initialState: EntityState<BedDecoded> = {
   loading: false,
@@ -48,7 +48,7 @@ export const getEntity = createAsyncThunk(
 export const createEntity = createAsyncThunk(
   'bed/create_entity',
   async (entity: BedCreate, thunkAPI) => {
-    const result = await putHttpEntity(apiUrl, BedCreate, entity, Bed)
+    const result = await postHttpEntity(apiUrl, BedCreate, entity, Bed)
     thunkAPI.dispatch(getEntities())
     return result
   },

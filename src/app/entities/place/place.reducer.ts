@@ -1,6 +1,6 @@
+import * as O from '@effect/data/Option'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
-import type { IPlace } from 'app/shared/model/place.model'
-import { defaultValue } from 'app/shared/model/place.model'
+import { defaultValue, Place } from 'app/shared/model/place.model'
 import type {
   EntityState
 } from 'app/shared/reducers/reducer.utils'
@@ -8,10 +8,16 @@ import {
   createEntitySlice,
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
-import { cleanEntity } from 'app/shared/util/entity-utils'
+import {
+  getHttpEntities,
+  getHttpEntity,
+  postHttpEntity,
+  putHttpEntity
+} from 'app/shared/util/httpUtils'
 import axios from 'axios'
+import { castDraft } from 'immer'
 
-const initialState: EntityState<IPlace> = {
+const initialState: EntityState<Place> = {
   loading: false,
   errorMessage: null,
   entities: [],
@@ -28,7 +34,7 @@ export const findAllPlaces = createAsyncThunk(
   'place/fetch_entity_list',
   async () => {
     const requestUrl = `${apiUrl}`
-    return axios.get<IPlace[]>(requestUrl)
+    return await getHttpEntities(requestUrl, Place)
   }
 )
 
@@ -36,15 +42,15 @@ export const findOnePlaceById = createAsyncThunk(
   'place/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`
-    return axios.get<IPlace>(requestUrl)
+    return await getHttpEntity(requestUrl, Place)
   },
   { serializeError: serializeAxiosError }
 )
 
 export const savePlace = createAsyncThunk(
   'place/create_entity',
-  async (entity: IPlace, thunkAPI) => {
-    const result = await axios.post<IPlace>(apiUrl, cleanEntity(entity))
+  async (entity: Place, thunkAPI) => {
+    const result = await postHttpEntity(`${apiUrl}/${entity.id}`, Place, entity, Place)
     thunkAPI.dispatch(findAllPlaces())
     return result
   },
@@ -53,18 +59,9 @@ export const savePlace = createAsyncThunk(
 
 export const updateEntity = createAsyncThunk(
   'place/update_entity',
-  async (entity: IPlace, thunkAPI) => {
-    const result = await axios.put<IPlace>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
-    thunkAPI.dispatch(findAllPlaces())
-    return result
-  },
-  { serializeError: serializeAxiosError }
-)
+  async (entity: Place, thunkAPI) => {
+    const result = await putHttpEntity(`${apiUrl}/${entity.id}`, Place, entity, Place)
 
-export const partialUpdateEntity = createAsyncThunk(
-  'place/partial_update_entity',
-  async (entity: IPlace, thunkAPI) => {
-    const result = await axios.patch<IPlace>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
     thunkAPI.dispatch(findAllPlaces())
     return result
   },
@@ -75,7 +72,7 @@ export const deleteEntity = createAsyncThunk(
   'place/delete_entity',
   async (id: string | number, thunkAPI) => {
     const requestUrl = `${apiUrl}/${id}`
-    const result = await axios.delete<IPlace>(requestUrl)
+    const result = await axios.delete<Place>(requestUrl)
     thunkAPI.dispatch(findAllPlaces())
     return result
   },
@@ -91,23 +88,23 @@ export const PlaceSlice = createEntitySlice({
     builder
       .addCase(findOnePlaceById.fulfilled, (state, action) => {
         state.loading = false
-        state.entity = action.payload.data
+        state.entity = action.payload
       })
       .addCase(deleteEntity.fulfilled, state => {
         state.updating = false
         state.updateSuccess = true
-        state.entity = {}
+        state.entity = castDraft(O.none())
       })
       .addMatcher(isFulfilled(findAllPlaces), (state, action) => ({
         ...state,
         loading: false,
-        entities: action.payload.data
+        entities: action.payload
       }))
-      .addMatcher(isFulfilled(savePlace, updateEntity, partialUpdateEntity), (state, action) => {
+      .addMatcher(isFulfilled(savePlace, updateEntity), (state, action) => {
         state.updating = false
         state.loading = false
         state.updateSuccess = true
-        state.entity = action.payload.data
+        state.entity = action.payload
       })
       .addMatcher(isPending(findAllPlaces, findOnePlaceById), state => {
         state.errorMessage = null
@@ -115,7 +112,7 @@ export const PlaceSlice = createEntitySlice({
         state.loading = true
       })
       .addMatcher(
-        isPending(savePlace, updateEntity, partialUpdateEntity, deleteEntity),
+        isPending(savePlace, updateEntity, deleteEntity),
         state => {
           state.errorMessage = null
           state.updateSuccess = false
