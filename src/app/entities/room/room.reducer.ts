@@ -1,5 +1,5 @@
 import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit'
-import type { IRoom } from 'app/shared/model/room.model'
+import type { Room } from 'app/shared/model/room.model'
 import { defaultValue } from 'app/shared/model/room.model'
 import type {
   EntityState
@@ -11,7 +11,7 @@ import {
 import { cleanEntity } from 'app/shared/util/entity-utils'
 import axios from 'axios'
 
-const initialState: EntityState<IRoom> = {
+const initialState: EntityState<Room> = {
   loading: false,
   errorMessage: null,
   entities: [],
@@ -28,7 +28,7 @@ export const getEntities = createAsyncThunk(
   'room/fetch_entity_list',
   async () => {
     const requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`
-    return axios.get<IRoom[]>(requestUrl)
+    return axios.get<Room[]>(requestUrl)
   }
 )
 
@@ -36,15 +36,15 @@ export const getEntity = createAsyncThunk(
   'room/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`
-    return axios.get<IRoom>(requestUrl)
+    return axios.get<Room>(requestUrl)
   },
   { serializeError: serializeAxiosError }
 )
 
 export const createEntity = createAsyncThunk(
   'room/create_entity',
-  async (entity: IRoom, thunkAPI) => {
-    const result = await axios.post<IRoom>(apiUrl, cleanEntity(entity))
+  async (entity: Room, thunkAPI) => {
+    const result = await axios.post<Room>(apiUrl, cleanEntity(entity))
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -53,8 +53,8 @@ export const createEntity = createAsyncThunk(
 
 export const updateEntity = createAsyncThunk(
   'room/update_entity',
-  async (entity: IRoom, thunkAPI) => {
-    const result = await axios.put<IRoom>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
+  async (entity: Room, thunkAPI) => {
+    const result = await axios.put<Room>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -63,8 +63,8 @@ export const updateEntity = createAsyncThunk(
 
 export const partialUpdateEntity = createAsyncThunk(
   'room/partial_update_entity',
-  async (entity: IRoom, thunkAPI) => {
-    const result = await axios.patch<IRoom>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
+  async (entity: Room, thunkAPI) => {
+    const result = await axios.patch<Room>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -76,7 +76,7 @@ export const deleteEntity = createAsyncThunk(
   async (id: string | number, thunkAPI) => {
     try {
       const requestUrl = `${apiUrl}/${id}`
-      const result = await axios.delete<IRoom>(requestUrl)
+      const result = await axios.delete<Room>(requestUrl)
       thunkAPI.dispatch(getEntities())
       return result
     } catch (error) {

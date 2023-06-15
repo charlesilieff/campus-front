@@ -1,6 +1,6 @@
+import * as O from '@effect/data/Option'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
-import type { IBed } from 'app/shared/model/bed.model'
-import { defaultValue } from 'app/shared/model/bed.model'
+import { Bed, BedCreate, bedDefaultValue } from 'app/shared/model/bed.model'
 import type {
   EntityState
 } from 'app/shared/reducers/reducer.utils'
@@ -8,14 +8,15 @@ import {
   createEntitySlice,
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
-import { cleanEntity } from 'app/shared/util/entity-utils'
 import axios from 'axios'
 
-const initialState: EntityState<IBed> = {
+import { getHttpEntities, getHttpEntity, putHttpEntity } from '../../lib/util/httpUtils'
+
+const initialState: EntityState<Bed> = {
   loading: false,
   errorMessage: null,
   entities: [],
-  entity: defaultValue,
+  entity: bedDefaultValue,
   updating: false,
   updateSuccess: false
 }
@@ -28,7 +29,7 @@ export const getEntities = createAsyncThunk(
   'bed/fetch_entity_list',
   async () => {
     const requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`
-    return axios.get<IBed[]>(requestUrl)
+    return getHttpEntities(requestUrl, Bed)
   }
 )
 
@@ -37,15 +38,15 @@ export const getEntity = createAsyncThunk(
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`
 
-    return axios.get<IBed>(requestUrl)
+    return await getHttpEntity(requestUrl, Bed)
   },
   { serializeError: serializeAxiosError }
 )
 
 export const createEntity = createAsyncThunk(
   'bed/create_entity',
-  async (entity: IBed, thunkAPI) => {
-    const result = await axios.post<IBed>(apiUrl, cleanEntity(entity))
+  async (entity: BedCreate, thunkAPI) => {
+    const result = await putHttpEntity(apiUrl, BedCreate, entity, Bed)
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -54,18 +55,13 @@ export const createEntity = createAsyncThunk(
 
 export const updateEntity = createAsyncThunk(
   'bed/update_entity',
-  async (entity: IBed, thunkAPI) => {
-    const result = await axios.put<IBed>(`${apiUrl}/${entity.id}`, cleanEntity({ ...entity }))
-    thunkAPI.dispatch(getEntities())
-    return result
-  },
-  { serializeError: serializeAxiosError }
-)
-
-export const partialUpdateEntity = createAsyncThunk(
-  'bed/partial_update_entity',
-  async (entity: IBed, thunkAPI) => {
-    const result = await axios.patch<IBed>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
+  async (entity: BedCreate, thunkAPI) => {
+    const result = await putHttpEntity(
+      `${apiUrl}/${O.getOrNull(entity.id)}`,
+      BedCreate,
+      entity,
+      Bed
+    )
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -76,7 +72,7 @@ export const deleteEntity = createAsyncThunk(
   'bed/delete_entity',
   async (id: string | number, thunkAPI) => {
     const requestUrl = `${apiUrl}/${id}`
-    const result = await axios.delete<IBed>(requestUrl)
+    const result = await axios.delete<Bed>(requestUrl)
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -92,23 +88,23 @@ export const BedSlice = createEntitySlice({
     builder
       .addCase(getEntity.fulfilled, (state, action) => {
         state.loading = false
-        state.entity = action.payload.data
+        state.entity = action.payload
       })
       .addCase(deleteEntity.fulfilled, state => {
         state.updating = false
         state.updateSuccess = true
-        state.entity = {}
+        state.entity = O.none()
       })
       .addMatcher(isFulfilled(getEntities), (state, action) => ({
         ...state,
         loading: false,
-        entities: action.payload.data
+        entities: action.payload
       }))
-      .addMatcher(isFulfilled(createEntity, updateEntity, partialUpdateEntity), (state, action) => {
+      .addMatcher(isFulfilled(createEntity, updateEntity), (state, action) => {
         state.updating = false
         state.loading = false
         state.updateSuccess = true
-        state.entity = action.payload.data
+        state.entity = action.payload
       })
       .addMatcher(isPending(getEntities, getEntity), state => {
         state.errorMessage = null
@@ -116,7 +112,7 @@ export const BedSlice = createEntitySlice({
         state.loading = true
       })
       .addMatcher(
-        isPending(createEntity, updateEntity, partialUpdateEntity, deleteEntity),
+        isPending(createEntity, updateEntity, deleteEntity),
         state => {
           state.errorMessage = null
           state.updateSuccess = false

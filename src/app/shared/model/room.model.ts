@@ -1,15 +1,18 @@
-import type { IBed } from 'app/shared/model/bed.model'
-import type { BedroomKind } from 'app/shared/model/bedroom-kind.model'
+import * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
+import { BedroomKind } from 'app/shared/model/bedroom-kind.model'
 
-import type { IPlace } from './place.model'
+import { Bed } from './bed.model'
 
-export interface IRoom {
-  id?: number
-  name?: string
-  comment?: string | null
-  beds?: IBed[] | null
-  bedroomKind?: BedroomKind | null
-  place?: IPlace | null
-}
+export const Room = S.struct({
+  id: S.number,
+  name: S.string,
+  comment: S.optional(S.string).toOption(),
+  beds: S.array(Bed),
+  bedroomKind: S.optional(BedroomKind).toOption()
+  // place: S.optional(Place).toOption()
+})
 
-export const defaultValue: Readonly<IRoom> = {}
+export type Room = S.To<typeof Room>
+
+export const defaultValue: Readonly<O.Option<Room>> = O.none()

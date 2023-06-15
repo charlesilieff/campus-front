@@ -1,23 +1,31 @@
-import type { IReservation } from 'app/shared/model/reservation.model'
-import type { IRoom } from 'app/shared/model/room.model'
+import * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
+import { string } from 'fp-ts'
+import * as Ord from 'fp-ts/Ord'
 
-// export const BedSchema = S.struct({
-//   id: S.number,
-//   kind: S.string,
-//   number: S.string,
-//   numberOfPlaces: S.number,
-//   room: S.option(RoomSchema),
-//   archive: S.option(S.boolean),
-// })
+const Room = S.struct({
+  id: S.number,
+  name: S.string,
+  comment: S.optional(S.string).toOption()
+})
 
-export interface IBed {
-  id?: number
-  kind?: string
-  number?: string
-  numberOfPlaces?: number
-  room?: IRoom | null
-  reservations?: IReservation[] | null
-  archive?: boolean
-}
+export const Bed = S.struct({
+  id: S.number,
+  kind: S.string,
+  number: S.string,
+  numberOfPlaces: S.number,
+  room: S.optional(Room).toOption(),
+  archive: S.optional(S.boolean).toOption()
+})
+export type Bed = S.To<typeof Bed>
+export const ordBedByNumber = Ord.contramap((b: Bed) => b.number)(string.Ord)
+export const bedDefaultValue: Readonly<O.Option<Bed>> = O.none()
 
-export const defaultValue: Readonly<IBed> = {}
+export const BedCreate = S.struct({
+  id: S.optional(S.number).toOption(),
+  kind: S.string,
+  number: S.string,
+  numberOfPlaces: S.number,
+  roomId: S.optional(S.number).toOption()
+})
+export type BedCreate = S.To<typeof BedCreate>

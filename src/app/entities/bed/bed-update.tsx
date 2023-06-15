@@ -10,9 +10,11 @@ import {
   Tooltip,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getRooms } from 'app/entities/room/room.reducer'
-import type { IBed } from 'app/shared/model/bed.model'
+import type { Bed, BedCreate } from 'app/shared/model/bed.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
@@ -24,18 +26,21 @@ interface BedForm {
   number: string
   numberOfPlaces: number
   kind: string
-  roomId: string
+  roomId: string | undefined
 }
 
 export const BedUpdate = () => {
   const bedEntity = useAppSelector(state => state.bed.entity)
-  const { id } = useParams<'id'>()
-  const isNew = id === undefined
-  const defaultValues = () =>
-    isNew ? {} : {
-      ...bedEntity,
-      // @ts-expect-error TODO: fix this
-      roomId: bedEntity?.room?.id === '' ? undefined : bedEntity?.room?.id
+
+  const id = pipe(useParams<'id'>(), ({ id }) => O.fromNullable(id), O.map(Number))
+  const isNew = O.isNone(id)
+  const defaultValues = (bed: O.Option<Bed>): BedForm | undefined =>
+    isNew || !O.isSome(bed) ? undefined : {
+      kind: bed.value.kind,
+      number: bed.value.number,
+      numberOfPlaces: bed.value.numberOfPlaces,
+
+      roomId: O.isSome(bed.value.room) ? bed.value.room.value.id.toString() : undefined
     }
 
   const {
@@ -45,8 +50,8 @@ export const BedUpdate = () => {
     reset: resetForm
   } = useForm<BedForm>()
   useEffect(() => {
-    resetForm(defaultValues())
-  }, [bedEntity.id])
+    resetForm(defaultValues(bedEntity))
+  }, [pipe(bedEntity, O.map(b => b.id), O.getOrNull)])
 
   const dispatch = useAppDispatch()
 
@@ -63,10 +68,10 @@ export const BedUpdate = () => {
   }
 
   useEffect(() => {
-    if (isNew) {
+    if (isNew || !O.isSome(id)) {
       dispatch(reset())
     } else {
-      dispatch(getEntity(id))
+      dispatch(getEntity(id.value))
     }
 
     dispatch(getRooms())
@@ -78,19 +83,14 @@ export const BedUpdate = () => {
     }
   }, [updateSuccess])
 
-  interface ExtendIBedForTheBAckendToBeDeleted extends IBed {
-    roomId: string | undefined
-  }
-
-  const saveEntity = (values: ExtendIBedForTheBAckendToBeDeleted) => {
-    // @ts-expect-error TODO: fix this
-    const entity: ExtendIBedForTheBAckendToBeDeleted = {
+  const saveEntity = (values: BedForm) => {
+    const entity: BedCreate = {
       ...bedEntity,
-      ...values,
-      // this is very important but  very bad, otherwise the backend will not be able to find the room
-      roomId: values.roomId === '' ? undefined : values.roomId,
-      // @ts-expect-error TODO: fix this
-      room: rooms.find(it => it.id.toString() === values.roomId.toString())
+      id,
+      kind: values.kind,
+      number: values.number,
+      numberOfPlaces: values.numberOfPlaces,
+      roomId: O.fromNullable(Number(values.roomId))
     }
 
     if (isNew) {
@@ -187,7 +187,7 @@ export const BedUpdate = () => {
                 id="room"
                 {...register('roomId', {})}
               >
-                <option value="" key="0" />
+                <option value={undefined} key={0} />
                 {rooms ?
                   rooms.map(room => (
                     <option value={room.id} key={room.id}>

@@ -8,14 +8,17 @@ dependencies:
     specifier: 2.6.1
     version: 2.6.1(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@types/react@18.2.6)(framer-motion@10.12.11)(react-dom@18.2.0)(react@18.2.0)
   '@effect/data':
-    specifier: 0.12.4
-    version: 0.12.4
+    specifier: 0.12.6
+    version: 0.12.6
   '@effect/io':
-    specifier: 0.25.13
-    version: 0.25.13
+    specifier: 0.26.0
+    version: 0.26.0
+  '@effect/match':
+    specifier: 0.24.1
+    version: 0.24.1
   '@effect/schema':
-    specifier: 0.19.3
-    version: 0.19.3
+    specifier: 0.20.1
+    version: 0.20.1
   '@reduxjs/toolkit':
     specifier: 1.9.5
     version: 1.9.5(react-redux@8.0.5)(react@18.2.0)
@@ -28,6 +31,9 @@ dependencies:
   dayjs:
     specifier: 1.11.7
     version: 1.11.7
+  fp-ts:
+    specifier: 2.16.0
+    version: 2.16.0
   immer:
     specifier: 9.0.21
     version: 9.0.21
@@ -1619,21 +1625,28 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@effect/data@0.12.4:
-    resolution: {integrity: sha512-QawuBkTEib4JetN6dmCURbjW9OK1dHdRLekNfuiPZefQdxQnnoFFTKBxPK5z60xmTjY4ZNawfKvcSpsuEzKiiQ==}
+  /@effect/data@0.12.6:
+    resolution: {integrity: sha512-XRhB7dnIpAOwAy7xKbjEvcG9E0+R7+yfwA6mcSpPja8zu6hYvIAbLtmiuKSRQ+QmjGRv4NzIJ6GwuHHpYHkoIg==}
     dev: false
 
-  /@effect/io@0.25.13:
-    resolution: {integrity: sha512-NdZFSaNbG6AN8bzSAPdmi95AXgHWr4dH58R8viqbFBb0zmfQ/PQq+5XEsC++qy/qpT/ZLzpvJJWhW9jf1atq2g==}
+  /@effect/io@0.26.0:
+    resolution: {integrity: sha512-umwZ/sRoV7zb/8WwoiK7xWoypqvY6C1EXWEGORpViAFUTx3/bXc9i7JtdttTWVokXb3qogrxGX2SHopB20I4vQ==}
     dependencies:
-      '@effect/data': 0.12.4
+      '@effect/data': 0.12.6
     dev: false
 
-  /@effect/schema@0.19.3:
-    resolution: {integrity: sha512-jR7o19HBX7PBYRLV1G6ZlM90giRe+lZkA6BqVNamkhNfVsHU4MnGr2lqM2H4fy4MgR744GGXuxCDjVdydkMvAw==}
+  /@effect/match@0.24.1:
+    resolution: {integrity: sha512-fr9nqpujDbmVEZEfGRmvsjvp11NGgUSFOCH9QP8p09TFBeZP0UXgcvR1pNhUUkwx1Fk6hRYLJeXlVSuqlQboyg==}
     dependencies:
-      '@effect/data': 0.12.4
-      '@effect/io': 0.25.13
+      '@effect/data': 0.12.6
+      '@effect/schema': 0.20.1
+    dev: false
+
+  /@effect/schema@0.20.1:
+    resolution: {integrity: sha512-wp3qYMIC/NyVbUhJ7W52JQcPN56AsagTYJsXVmYyK24QEtTuEGbVqCelihY8RwjJZLPEt230bqssFb2+Q/EsHQ==}
+    dependencies:
+      '@effect/data': 0.12.6
+      '@effect/io': 0.26.0
       fast-check: 3.10.0
     dev: false
 
@@ -5073,6 +5086,10 @@ packages:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.35
+    dev: false
+
+  /fp-ts@2.16.0:
+    resolution: {integrity: sha512-bLq+KgbiXdTEoT1zcARrWEpa5z6A/8b7PcDW7Gef3NSisQ+VS7ll2Xbf1E+xsgik0rWub/8u0qP/iTTjj+PhxQ==}
     dev: false
 
   /framer-motion@10.12.11(react-dom@18.2.0)(react@18.2.0):

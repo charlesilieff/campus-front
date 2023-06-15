@@ -10,8 +10,12 @@ import {
   Tr,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
+import * as A from '@effect/data/ReadonlyArray'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { PlaceMenu } from 'app/shared/layout/menus/placeMenu'
+import { ordBedByNumber } from 'app/shared/model/bed.model'
 import React, { useEffect } from 'react'
 import { FaEye, FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
@@ -22,7 +26,11 @@ import { BedDeleteDialog } from './beddelete-dialog'
 export const Bed = () => {
   const dispatch = useAppDispatch()
 
-  const bedList = useAppSelector(state => state.bed.entities)
+  const bedListSortByName = pipe(
+    useAppSelector(state => state.bed.entities),
+    A.sort(ordBedByNumber)
+  )
+  console.log('bedListSortByName', bedListSortByName)
   const loading = useAppSelector(state => state.bed.loading)
 
   useEffect(() => {
@@ -32,12 +40,6 @@ export const Bed = () => {
   const handleSyncList = () => {
     dispatch(getEntities())
   }
-
-  const myData = bedList.flatMap(bed => ({
-    ...bed
-  }))
-  // @ts-expect-error TODO: fix this
-  const mySort2 = myData.sort((a, b) => a.number.localeCompare(b.number))
 
   return (
     <VStack>
@@ -66,7 +68,7 @@ export const Bed = () => {
         </HStack>
       </HStack>
 
-      {mySort2 && bedList.length > 0 ?
+      {bedListSortByName && bedListSortByName.length > 0 ?
         (
           <Table>
             <Thead>
@@ -78,7 +80,7 @@ export const Bed = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {mySort2.map((bed, i) => (
+              {bedListSortByName.map((bed, i) => (
                 <Tr key={`entity-${i}`}>
                   <Td>{bed.kind}</Td>
                   <Td>
@@ -89,7 +91,9 @@ export const Bed = () => {
 
                   <Td>{bed.numberOfPlaces}</Td>
                   <Td>
-                    {bed.room ? <Link to={`/room/${bed.room.id}`}>{bed.room.name}</Link> : ''}
+                    {bed.room && O.isSome(bed.room) ?
+                      <Link to={`/room/${bed.room.value.id}`}>{bed.room.value.name}</Link> :
+                      ''}
                   </Td>
                   <Td className="text-right">
                     <HStack justifyContent={'flex-end'} spacing={0}>
@@ -114,7 +118,6 @@ export const Bed = () => {
                         Modifier
                       </Button>
                       <BedDeleteDialog
-                        // @ts-expect-error TODO: fix this
                         bedId={bed.id}
                       />
                     </HStack>
