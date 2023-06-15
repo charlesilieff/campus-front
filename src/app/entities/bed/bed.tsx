@@ -30,7 +30,7 @@ export const Bed = () => {
     useAppSelector(state => state.bed.entities),
     A.sort(ordBedByNumber)
   )
-  console.log('bedListSortByName', bedListSortByName)
+
   const loading = useAppSelector(state => state.bed.loading)
 
   useEffect(() => {

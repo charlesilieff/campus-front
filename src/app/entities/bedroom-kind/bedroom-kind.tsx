@@ -10,6 +10,7 @@ import {
   Tr,
   VStack
 } from '@chakra-ui/react'
+import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { PlaceMenu } from 'app/shared/layout/menus/placeMenu'
 import React, { useEffect } from 'react'
@@ -83,35 +84,42 @@ export const BedroomKind = () => {
                     </Button>
                   </Td>
 
-                  <Td>{bedroomKind.description}</Td>
                   <Td>
-                    <HStack justifyContent={'flex-end'} spacing={0}>
-                      <Button
-                        as={Link}
-                        to={`${bedroomKind.id}`}
-                        variant="see"
-                        size="sm"
-                        borderRightRadius={0}
-                        leftIcon={<FaEye />}
-                      >
-                        Voir
-                      </Button>
-                      <Button
-                        as={Link}
-                        to={`${bedroomKind.id}/edit`}
-                        variant={'modify'}
-                        borderRadius={0}
-                        size="sm"
-                        leftIcon={<FaPencilAlt />}
-                      >
-                        Modifier
-                      </Button>
+                    {O.getOrNull(bedroomKind.description)}
+                  </Td>
+                  <Td>
+                    {O.isSome(bedroomKind.id) ?
+                      (
+                        <HStack justifyContent={'flex-end'} spacing={0}>
+                          <Button
+                            as={Link}
+                            to={`${bedroomKind.id.value}`}
+                            variant="see"
+                            size="sm"
+                            borderRightRadius={0}
+                            leftIcon={<FaEye />}
+                          >
+                            Voir
+                          </Button>
+                          <Button
+                            as={Link}
+                            to={`${bedroomKind.id.value}/edit`}
+                            variant={'modify'}
+                            borderRadius={0}
+                            size="sm"
+                            leftIcon={<FaPencilAlt />}
+                          >
+                            Modifier
+                          </Button>
 
-                      <BedroomKindDeleteDialog
-                        // @ts-expect-error TODO: fix this
-                        bedroomKindId={bedroomKind.id}
-                      />
-                    </HStack>
+                          (
+                          <BedroomKindDeleteDialog
+                            bedroomKindId={bedroomKind.id.value}
+                          />
+                          )
+                        </HStack>
+                      ) :
+                      null}
                   </Td>
                 </Tr>
               ))}

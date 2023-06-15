@@ -42,7 +42,7 @@ export const BedroomKindDetail = () => {
           <Button
             variant={'modify'}
             as={Link}
-            to={`/bedroom-kind/${bedroomKindEntity.value.id}/edit`}
+            to={`/bedroom-kind/${O.getOrNull(bedroomKindEntity.value.id)}/edit`}
             leftIcon={<FaPencilAlt />}
           >
             Modifier

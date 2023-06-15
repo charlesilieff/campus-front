@@ -1,8 +1,6 @@
-import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
-import * as T from '@effect/io/Effect'
-import * as S from '@effect/schema/Schema'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
+import { getHttpEntities, getHttpEntity } from 'app/lib/util/httpUtils'
 import { BedroomKind } from 'app/shared/model/bedroom-kind.model'
 import type {
   EntityState
@@ -31,7 +29,7 @@ export const getEntities = createAsyncThunk(
   'bedroomKind/fetch_entity_list',
   async () => {
     const requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`
-    return axios.get<BedroomKind[]>(requestUrl)
+    return getHttpEntities(requestUrl, BedroomKind)
   }
 )
 
@@ -39,12 +37,7 @@ export const getEntity = createAsyncThunk(
   'bedroomKind/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`
-    return pipe(
-      T.promise(() => axios.get(requestUrl)),
-      T.flatMap(({ data }) => S.parseResult(BedroomKind)(data)),
-      T.map(O.some),
-      T.runPromise
-    )
+    return await getHttpEntity(requestUrl, BedroomKind)
   },
   { serializeError: serializeAxiosError }
 )
@@ -66,16 +59,6 @@ export const updateEntity = createAsyncThunk(
       `${apiUrl}/${O.getOrElse(entity.id, () => 'null')}`,
       cleanEntity(entity)
     )
-    thunkAPI.dispatch(getEntities())
-    return result
-  },
-  { serializeError: serializeAxiosError }
-)
-
-export const partialUpdateEntity = createAsyncThunk(
-  'bedroomKind/partial_update_entity',
-  async (entity: BedroomKind, thunkAPI) => {
-    const result = await axios.patch<BedroomKind>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -112,9 +95,9 @@ export const BedroomKindSlice = createEntitySlice({
       .addMatcher(isFulfilled(getEntities), (state, action) => ({
         ...state,
         loading: false,
-        entities: action.payload.data
+        entities: action.payload
       }))
-      .addMatcher(isFulfilled(createEntity, updateEntity, partialUpdateEntity), (state, action) => {
+      .addMatcher(isFulfilled(createEntity, updateEntity), (state, action) => {
         state.updating = false
         state.loading = false
         state.updateSuccess = true
@@ -126,7 +109,7 @@ export const BedroomKindSlice = createEntitySlice({
         state.loading = true
       })
       .addMatcher(
-        isPending(createEntity, updateEntity, partialUpdateEntity, deleteEntity),
+        isPending(createEntity, updateEntity, deleteEntity),
         state => {
           state.errorMessage = null
           state.updateSuccess = false

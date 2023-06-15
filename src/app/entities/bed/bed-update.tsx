@@ -36,7 +36,7 @@ export const BedUpdate = () => {
       numberOfPlaces: bed.value.numberOfPlaces,
       roomId: O.isSome(bed.value.room) ? bed.value.room.value.id : null
     }
-  console.log('defaultValues', defaultValues(bedEntity))
+
   const {
     handleSubmit,
     register,

@@ -11,27 +11,24 @@ import {
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import type { BedroomKind } from 'app/shared/model/bedroom-kind.model'
+import { getParamId } from 'app/lib/util/utils'
+import type { BedroomKindEncoded } from 'app/shared/model/bedroom-kind.model'
+import { BedroomKind } from 'app/shared/model/bedroom-kind.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
+import { schemaResolver } from '../bed/resolver'
 import { createEntity, getEntity, reset, updateEntity } from './bedroom-kind.reducer'
-
-interface BedroomKindForm {
-  bedroomKindId: number
-  name: string
-  description: string
-}
 
 export const BedroomKindUpdate = () => {
   const dispatch = useAppDispatch()
-  const { id } = useParams<'id'>()
+  const id = pipe(useParams<'id'>(), ({ id }) => getParamId(id))
   const bedroomKindEntity = useAppSelector(state => state.bedroomKind.entity)
-  const isNew = id === undefined
+  const isNew = O.isNone(id)
   const defaultValues = () =>
-    pipe(
+    isNew ? {} : pipe(
       bedroomKindEntity,
       O.map(b => ({
         bedroomKindId: O.getOrElse(() => 0)(b.id),
@@ -45,11 +42,13 @@ export const BedroomKindUpdate = () => {
     register,
     formState: { errors },
     reset: resetForm
-  } = useForm<BedroomKindForm>({})
+  } = useForm<BedroomKindEncoded>({
+    resolver: schemaResolver(BedroomKind)
+  })
 
   useEffect(() => {
     resetForm(defaultValues())
-  }, [bedroomKindEntity])
+  }, [pipe(bedroomKindEntity, O.map(b => b.id), O.getOrNull)])
   const navigate = useNavigate()
 
   const loading = useAppSelector(state => state.bedroomKind.loading)
@@ -61,10 +60,10 @@ export const BedroomKindUpdate = () => {
   }
 
   useEffect(() => {
-    if (isNew) {
+    if (isNew && O.isNone(id)) {
       dispatch(reset())
     } else {
-      dispatch(getEntity(id))
+      dispatch(getEntity(id.value))
     }
   }, [])
 
@@ -74,10 +73,11 @@ export const BedroomKindUpdate = () => {
     }
   }, [updateSuccess])
 
-  const saveEntity = (values: BedroomKind) => {
-    const entity = {
-      ...bedroomKindEntity,
-      ...values
+  const saveEntity = (values: BedroomKindEncoded) => {
+    const entity: BedroomKind = {
+      description: O.fromNullable(values.description),
+      id: O.fromNullable(values.id),
+      name: values.name
     }
 
     if (isNew) {
@@ -95,12 +95,8 @@ export const BedroomKindUpdate = () => {
 
       {loading ? <p>Chargement...</p> : (
         <form
-          onSubmit={handleSubmit(d =>
-            saveEntity({
-              description: O.some(d.description),
-              id: O.some(d.bedroomKindId),
-              name: d.name
-            })
+          onSubmit={handleSubmit(
+            saveEntity
           )}
         >
           <VStack minW={'300px'}>
