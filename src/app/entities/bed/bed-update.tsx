@@ -14,41 +14,37 @@ import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getRooms } from 'app/entities/room/room.reducer'
-import type { Bed, BedCreate } from 'app/shared/model/bed.model'
+import type { Bed, BedCreateEncoded } from 'app/shared/model/bed.model'
+import { BedCreate } from 'app/shared/model/bed.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { createEntity, getEntity, reset, updateEntity } from './bed.reducer'
-
-interface BedForm {
-  number: string
-  numberOfPlaces: number
-  kind: string
-  roomId: string | undefined
-}
+import { schemaResolver } from './resolver'
 
 export const BedUpdate = () => {
   const bedEntity = useAppSelector(state => state.bed.entity)
 
   const id = pipe(useParams<'id'>(), ({ id }) => O.fromNullable(id), O.map(Number))
   const isNew = O.isNone(id)
-  const defaultValues = (bed: O.Option<Bed>): BedForm | undefined =>
-    isNew || !O.isSome(bed) ? undefined : {
+  const defaultValues = (bed: O.Option<Bed>) =>
+    isNew || !O.isSome(bed) ? {} : {
       kind: bed.value.kind,
       number: bed.value.number,
       numberOfPlaces: bed.value.numberOfPlaces,
-
-      roomId: O.isSome(bed.value.room) ? bed.value.room.value.id.toString() : undefined
+      roomId: O.isSome(bed.value.room) ? bed.value.room.value.id : null
     }
-
+  console.log('defaultValues', defaultValues(bedEntity))
   const {
     handleSubmit,
     register,
     formState: { errors },
     reset: resetForm
-  } = useForm<BedForm>()
+  } = useForm<BedCreateEncoded>({
+    resolver: schemaResolver(BedCreate)
+  })
   useEffect(() => {
     resetForm(defaultValues(bedEntity))
   }, [pipe(bedEntity, O.map(b => b.id), O.getOrNull)])
@@ -83,7 +79,7 @@ export const BedUpdate = () => {
     }
   }, [updateSuccess])
 
-  const saveEntity = (values: BedForm) => {
+  const saveEntity = (values: BedCreateEncoded) => {
     const entity: BedCreate = {
       ...bedEntity,
       id,

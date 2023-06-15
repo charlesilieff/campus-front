@@ -1,5 +1,6 @@
 import * as O from '@effect/data/Option'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
+import type { BedDecoded } from 'app/shared/model/bed.model'
 import { Bed, BedCreate, bedDefaultValue } from 'app/shared/model/bed.model'
 import type {
   EntityState
@@ -12,7 +13,7 @@ import axios from 'axios'
 
 import { getHttpEntities, getHttpEntity, putHttpEntity } from '../../lib/util/httpUtils'
 
-const initialState: EntityState<Bed> = {
+const initialState: EntityState<BedDecoded> = {
   loading: false,
   errorMessage: null,
   entities: [],

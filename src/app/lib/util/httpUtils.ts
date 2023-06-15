@@ -18,8 +18,11 @@ export const getHttpEntities = <A, B,>(
 ): Promise<readonly A[]> =>
   pipe(
     T.promise(() => axios.get(url)),
-    T.flatMap(d => S.parseEffect(S.array(schema))(d.data)),
-    T.mapError(e => formatErrors(e.errors)),
+    T.flatMap(d => S.parseEffect(S.array(schema))(d.data, { errors: 'all' })),
+    T.mapError(e => {
+      console.log(formatErrors(e.errors))
+      return formatErrors(e.errors)
+    }),
     T.runPromise
   )
 
