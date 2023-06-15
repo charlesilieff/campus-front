@@ -10,6 +10,7 @@ import {
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
 import axios from 'axios'
+import { castDraft } from 'immer'
 
 import { getHttpEntities, getHttpEntity, putHttpEntity } from '../../lib/util/httpUtils'
 
@@ -94,7 +95,7 @@ export const BedSlice = createEntitySlice({
       .addCase(deleteEntity.fulfilled, state => {
         state.updating = false
         state.updateSuccess = true
-        state.entity = O.none()
+        state.entity = castDraft(O.none())
       })
       .addMatcher(isFulfilled(getEntities), (state, action) => ({
         ...state,

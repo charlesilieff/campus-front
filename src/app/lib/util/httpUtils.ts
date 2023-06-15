@@ -4,11 +4,17 @@ import * as T from '@effect/io/Effect'
 import * as S from '@effect/schema/Schema'
 import { formatErrors } from '@effect/schema/TreeFormatter'
 import axios from 'axios'
+import { castDraft } from 'immer'
+import type { WritableDraft } from 'immer/dist/internal'
 
-export const getHttpEntity = <A, B,>(url: string, schema: S.Schema<B, A>): Promise<O.Option<A>> =>
+export const getHttpEntity = <A, B,>(
+  url: string,
+  schema: S.Schema<B, A>
+): Promise<WritableDraft<O.Option<A>>> =>
   pipe(
     T.promise(() => axios.get(url)),
     T.map(d => S.parseOption(schema)(d.data)),
+    T.map(d => castDraft(d)),
     T.runPromise
   )
 
@@ -19,10 +25,7 @@ export const getHttpEntities = <A, B,>(
   pipe(
     T.promise(() => axios.get(url)),
     T.flatMap(d => S.parseEffect(S.array(schema))(d.data, { errors: 'all' })),
-    T.mapError(e => {
-      console.log(formatErrors(e.errors))
-      return formatErrors(e.errors)
-    }),
+    T.mapError(e => formatErrors(e.errors)),
     T.runPromise
   )
 
@@ -31,12 +34,13 @@ export const putHttpEntity = <A, B, C, D,>(
   schema: S.Schema<B, A>,
   entity: A,
   responseType: S.Schema<C, D>
-): Promise<O.Option<D>> =>
+): Promise<WritableDraft<O.Option<D>>> =>
   pipe(
     S.encodeEffect(schema)(entity),
     T.mapError(e => formatErrors(e.errors)),
     T.flatMap(b => T.promise(() => axios.put(url, b))),
     T.map(d => S.parseOption(responseType)(d.data)),
+    T.map(d => castDraft(d)),
     T.runPromise
   )
 
@@ -45,11 +49,12 @@ export const postHttpEntity = <A, B, C, D,>(
   schema: S.Schema<B, A>,
   entity: A,
   responseType: S.Schema<C, D>
-): Promise<O.Option<D>> =>
+): Promise<WritableDraft<O.Option<D>>> =>
   pipe(
     S.encodeEffect(schema)(entity),
     T.mapError(e => formatErrors(e.errors)),
     T.flatMap(b => T.promise(() => axios.post(url, b))),
     T.map(d => S.parseOption(responseType)(d.data)),
+    T.map(d => castDraft(d)),
     T.runPromise
   )
