@@ -15,8 +15,8 @@ import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getRooms } from 'app/entities/room/room.reducer'
-import type { BedCreateEncoded } from 'app/shared/model/bed.model'
-import { Bed, BedCreate } from 'app/shared/model/bed.model'
+import type { Bed, BedCreateDecoded, BedCreateEncoded } from 'app/shared/model/bed.model'
+import { BedCreate } from 'app/shared/model/bed.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
@@ -31,25 +31,34 @@ export const BedUpdate = () => {
   const id = pipe(useParams<'id'>(), ({ id }) => O.fromNullable(id), O.map(Number))
   const isNew = O.isNone(id)
   const defaultValues = (bed: O.Option<Bed>) =>
-    isNew || !O.isSome(bed) ? {} : S.encode(Bed)(bed.value)
-
+    isNew || !O.isSome(bed) ? {} : S.encode(BedCreate)({
+      id: O.some(bed.value.id),
+      kind: bed.value.kind,
+      number: bed.value.number,
+      numberOfPlaces: +bed.value.numberOfPlaces,
+      roomId: O.isSome(bed.value.room) ? O.some(bed.value.room.value.id) : O.none()
+    })
+  const rooms = useAppSelector(state => state.room.entities)
   const {
     handleSubmit,
     register,
     formState: { errors },
-    reset: resetForm
+    reset: resetForm,
+    setValue
   } = useForm<BedCreateEncoded>({
     resolver: schemaResolver(BedCreate)
   })
   useEffect(() => {
     resetForm(defaultValues(bedEntity))
-  }, [pipe(bedEntity, O.map(b => b.id), O.getOrNull)])
+    setValue(
+      'roomId',
+      pipe(bedEntity, O.flatMap(b => b.room), O.map(r => r.id), O.getOrUndefined)
+    )
+  }, [pipe(bedEntity, O.map(b => b.id), O.getOrNull), rooms])
 
   const dispatch = useAppDispatch()
 
   const navigate = useNavigate()
-
-  const rooms = useAppSelector(state => state.room.entities)
 
   const loading = useAppSelector(state => state.bed.loading)
   const updating = useAppSelector(state => state.bed.updating)
@@ -75,19 +84,11 @@ export const BedUpdate = () => {
     }
   }, [updateSuccess])
 
-  const saveEntity = (values: BedCreateEncoded) => {
-    const entity: BedCreate = {
-      id,
-      kind: values.kind,
-      number: values.number,
-      numberOfPlaces: values.numberOfPlaces,
-      roomId: O.fromNullable(Number(values.roomId))
-    }
-
+  const saveEntity = (values: BedCreateDecoded) => {
     if (isNew) {
-      dispatch(createEntity(entity))
+      dispatch(createEntity(values))
     } else {
-      dispatch(updateEntity(entity))
+      dispatch(updateEntity(values))
     }
   }
 
@@ -99,7 +100,7 @@ export const BedUpdate = () => {
 
       {loading ? <p>Chargement...</p> : (
         <form
-          onSubmit={handleSubmit(saveEntity)}
+          onSubmit={handleSubmit(v => saveEntity(v as unknown as BedCreateDecoded))}
         >
           <VStack spacing={4}>
             <FormControl isRequired isInvalid={errors.kind !== undefined}>
@@ -178,15 +179,18 @@ export const BedUpdate = () => {
                 id="room"
                 {...register('roomId', {})}
               >
-                <option value={undefined} key={0} />
+                {/* <option value={0} key={0}>Pas de chambre</option> */}
                 {rooms ?
                   rooms.map(room => (
-                    <option value={room.id} key={room.id}>
+                    <option value={room.id.toString()} key={room.id}>
                       {room.name}
                     </option>
                   )) :
                   null}
               </Select>
+              <FormErrorMessage>
+                {errors.roomId && errors.roomId.message}
+              </FormErrorMessage>
             </FormControl>
             <HStack>
               <Button

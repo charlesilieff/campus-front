@@ -44,15 +44,23 @@ export interface BedCreateEncoded {
   id?: number
   kind: string
   number: string
-  numberOfPlaces: number
-  roomId?: number
+  numberOfPlaces: string | number | undefined
+  roomId?: string | number | undefined
 }
 
-export const BedCreate = S.struct({
+export interface BedCreateDecoded {
+  id: O.Option<number>
+  kind: string
+  number: string
+  numberOfPlaces: number
+  roomId: O.Option<number>
+}
+
+export const BedCreate: S.Schema<BedCreateEncoded, BedCreateDecoded> = S.struct({
   id: S.optional(S.number).toOption(),
   kind: S.string,
   number: S.string,
-  numberOfPlaces: S.number,
+  numberOfPlaces: S.NumberFromString,
   roomId: S.optional(S.number).toOption()
 })
 export type BedCreate = S.To<typeof BedCreate>
