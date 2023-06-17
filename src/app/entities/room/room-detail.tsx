@@ -1,4 +1,6 @@
 import { Button, Heading, HStack, Text, VStack } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { FaArrowLeft, FaPencilAlt } from 'react-icons/fa'
@@ -11,39 +13,46 @@ export const RoomDetail = () => {
   const { id } = useParams<'id'>()
 
   useEffect(() => {
-    // @ts-expect-error TODO: fix this
-    dispatch(getEntity(id))
+    if (id) {
+      dispatch(getEntity(id))
+    }
   }, [])
 
   const roomEntity = useAppSelector(state => state.room.entity)
   return (
-    <VStack alignItems={'flex-start'}>
-      <Heading>Chambre</Heading>
+    <>
+      {O.isSome(roomEntity) ?
+        (
+          <VStack alignItems={'flex-start'}>
+            <Heading>Chambre</Heading>
 
-      <Heading size={'md'}>Nom / Numéro</Heading>
+            <Heading size={'md'}>Nom / Numéro</Heading>
 
-      <Text>{roomEntity.name}</Text>
+            <Text>{roomEntity.value.name}</Text>
 
-      <Heading size={'md'}>Commentaire</Heading>
+            <Heading size={'md'}>Commentaire</Heading>
 
-      <Text>{roomEntity.comment}</Text>
-      <Heading size={'md'}>Type de chambre</Heading>
-      <Text>{roomEntity.bedroomKind ? roomEntity.bedroomKind.name : ''}</Text>
+            <Text>{O.getOrNull(roomEntity.value.comment)}</Text>
+            <Heading size={'md'}>Type de chambre</Heading>
+            <Text>{pipe(roomEntity.value.bedroomKind, O.map(b => b.name), O.getOrNull)}</Text>
 
-      <HStack>
-        <Button as={Link} to="/room" leftIcon={<FaArrowLeft />} variant="back">
-          Retour
-        </Button>
+            <HStack>
+              <Button as={Link} to="/room" leftIcon={<FaArrowLeft />} variant="back">
+                Retour
+              </Button>
 
-        <Button
-          as={Link}
-          to={`/room/${roomEntity.id}/edit`}
-          leftIcon={<FaPencilAlt />}
-          variant="modify"
-        >
-          Modifier
-        </Button>
-      </HStack>
-    </VStack>
+              <Button
+                as={Link}
+                to={`/room/${roomEntity.value.id}/edit`}
+                leftIcon={<FaPencilAlt />}
+                variant="modify"
+              >
+                Modifier
+              </Button>
+            </HStack>
+          </VStack>
+        ) :
+        null}
+    </>
   )
 }

@@ -10,25 +10,22 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import * as A from '@effect/data/ReadonlyArray'
+import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getBedroomKinds } from 'app/entities/bedroom-kind/bedroom-kind.reducer'
 import { findAllPlaces } from 'app/entities/place/place.reducer'
-import type { IRoom } from 'app/shared/model/room.model'
+import type { Room, RoomCreateDecoded, RoomCreateEncoded } from 'app/shared/model/room.model'
+import { RoomCreate } from 'app/shared/model/room.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
+import { schemaResolver } from '../bed/resolver'
 import { createEntity, getEntity, reset, updateEntity } from './room.reducer'
-
-interface RoomForm {
-  name: string
-  comment: string
-  placeId: number
-  bedroomKindId: number
-}
 
 export const RoomUpdate = () => {
   const dispatch = useAppDispatch()
@@ -37,24 +34,32 @@ export const RoomUpdate = () => {
   const { id } = useParams<'id'>()
   const isNew = id === undefined
   const places = useAppSelector(state => state.place.entities)
-  const bedroomKinds = useAppSelector(state => state.bedroomKind.entities)
+  const bedroomKinds = pipe(
+    useAppSelector(state => state.bedroomKind.entities),
+    A.filterMap(b => O.struct({ id: b.id, name: O.some(b.name) }))
+  )
   const roomEntity = useAppSelector(state => state.room.entity)
-  const defaultValues = () =>
-    isNew ? {} : {
-      ...roomEntity,
-      placeId: roomEntity?.place?.id,
-      bedroomKindId: roomEntity?.bedroomKind?.id
-    }
+
+  const defaultValues = (room: O.Option<Room>) =>
+    isNew || !O.isSome(room) ? {} : S.encode(RoomCreate)({
+      id: O.some(room.value.id),
+      bedroomKindId: O.isSome(room.value.bedroomKind) ? room.value.bedroomKind.value.id : O.none(),
+      comment: room.value.comment,
+      name: room.value.name,
+      placeId: O.isSome(room.value.place) ? O.some(room.value.place.value.id) : O.none()
+    })
   const {
     handleSubmit,
     register,
     formState: { errors },
     reset: resetForm
-  } = useForm<RoomForm>({})
+  } = useForm<RoomCreateEncoded>({
+    resolver: schemaResolver(RoomCreate)
+  })
 
   useEffect(() => {
-    resetForm(defaultValues())
-  }, [roomEntity.id])
+    resetForm(defaultValues(roomEntity))
+  }, [pipe(roomEntity, O.map(b => b.id), O.getOrNull)])
 
   const loading = useAppSelector(state => state.room.loading)
   const updating = useAppSelector(state => state.room.updating)
@@ -81,30 +86,12 @@ export const RoomUpdate = () => {
     }
   }, [updateSuccess])
 
-  interface ExtendIRoomForTheBAckendToBeDeleted extends IRoom {
-    placeId: string | number
-    bedroomKindId: string | number
-  }
-
-  const saveEntity = (values: ExtendIRoomForTheBAckendToBeDeleted) => {
-    const entity: ExtendIRoomForTheBAckendToBeDeleted = {
-      ...roomEntity,
-      ...values,
-      // this is so bad
-      // @ts-expect-error TODO: fix this
-      placeId: values.placeId === '' ? undefined : values.placeId,
-      // @ts-expect-error TODO: fix this
-      bedroomKindId: values.bedroomKindId === '' ? undefined : values.bedroomKindId,
-      // @ts-expect-error TODO: fix this
-      place: places.find(it => it.id.toString() === values.placeId.toString()),
-
-      bedroomKind: bedroomKinds.find(it => it.id.toString() === values.bedroomKindId.toString())
-    }
-
+  const saveEntity = (values: RoomCreateDecoded) => {
+    console.log(values)
     if (isNew) {
-      dispatch(createEntity(entity))
+      dispatch(createEntity(values))
     } else {
-      dispatch(updateEntity(entity))
+      dispatch(updateEntity(values))
     }
   }
 
@@ -115,7 +102,12 @@ export const RoomUpdate = () => {
       </Heading>
 
       {loading ? <p>Chargement...</p> : (
-        <form onSubmit={handleSubmit(saveEntity)}>
+        <form
+          onSubmit={handleSubmit(v => {
+            console.log(v)
+            return saveEntity(v as unknown as RoomCreateDecoded)
+          })}
+        >
           <VStack minW={'300px'}>
             <FormControl isRequired isInvalid={errors.name !== undefined}>
               <FormLabel htmlFor="name" fontWeight={'bold'}>
@@ -153,47 +145,56 @@ export const RoomUpdate = () => {
                 {...register('comment', {})}
               />
             </FormControl>
+
             <FormControl>
-              <FormLabel htmlFor="room" fontWeight={'bold'}>
+              <FormLabel htmlFor="place" fontWeight={'bold'}>
                 {'Lieu'}
               </FormLabel>
 
               <Select
-                id="room"
-                {...register('placeId', {})}
+                id="placeId"
+                {...register('placeId', { valueAsNumber: true })}
               >
-                <option value="" key="0" />
+                <option value={undefined}>Aucun lieu</option>
                 {places ?
-                  places.map(place => (
-                    <option value={place.id} key={place.id}>
-                      {place.name}
-                    </option>
-                  )) :
+                  pipe(
+                    places,
+                    A.map(place => (
+                      <option value={place.id.toString()} key={place.id}>
+                        {place.name}
+                      </option>
+                    ))
+                  ) :
                   null}
               </Select>
             </FormControl>
+
             <FormControl>
               <FormLabel htmlFor="bedroomKind" fontWeight={'bold'}>
                 {'Type de chambre'}
               </FormLabel>
 
               <Select
-                id="bedroomKind"
-                {...register('bedroomKindId', {})}
+                id="bedroomKindId"
+                {...register('bedroomKindId', { valueAsNumber: true })}
               >
-                <option value="" key="0" />
+                <option value={undefined}>Aucune type de chambre</option>
                 {bedroomKinds ?
-                  bedroomKinds.map(bedroomKind => (
-                    <option
-                      value={O.getOrUndefined(bedroomKind.id)}
-                      key={O.getOrUndefined(bedroomKind.id)}
-                    >
-                      {bedroomKind.name}
-                    </option>
-                  )) :
+                  pipe(
+                    bedroomKinds,
+                    A.map(bedroomKind => (
+                      <option
+                        value={bedroomKind.id.toString()}
+                        key={bedroomKind.id}
+                      >
+                        {bedroomKind.name}
+                      </option>
+                    ))
+                  ) :
                   null}
               </Select>
             </FormControl>
+
             <HStack>
               <Button
                 as={Link}

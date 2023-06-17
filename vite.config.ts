@@ -8,7 +8,7 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 // https://vitejs.dev/config/
 // eslint-disable-next-line import/no-default-export
 export default defineConfig({
-  plugins: [react(), tsconfigPaths({ projects: ['./tsconfig.json'] })],
+  plugins: [react({ babel: { babelrc: true } }), tsconfigPaths({ projects: ['./tsconfig.json'] })],
   server: { port: 1234 },
   define: {
     'process.env': process.env

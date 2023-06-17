@@ -1,4 +1,5 @@
 import { Button, Heading, HStack, Table, Tbody, Td, Th, Thead, Tr, VStack } from '@chakra-ui/react'
+import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { PlaceMenu } from 'app/shared/layout/menus/placeMenu'
 import React, { useEffect } from 'react'
@@ -70,19 +71,19 @@ export const Room = () => {
                       {room.name}
                     </Button>
                   </Td>
-                  <Td>{room.comment}</Td>
+                  <Td>{O.getOrNull(room.comment)}</Td>
                   <Td>
-                    {room.bedroomKind ?
+                    {O.isSome(room.bedroomKind) ?
                       (
-                        <Link to={`/bedroom-kind/${room.bedroomKind.id}`}>
-                          {room.bedroomKind.name}
+                        <Link to={`/bedroom-kind/${O.getOrNull(room.bedroomKind.value.id)}`}>
+                          {room.bedroomKind.value.name}
                         </Link>
                       ) :
                       ''}
                   </Td>
                   <Td>
-                    {room.place ?
-                      <Link to={`/place/${room.place.id}`}>{room.place.name}</Link> :
+                    {O.isSome(room.place) ?
+                      <Link to={`/place/${room.place.value.id}`}>{room.place.value.name}</Link> :
                       ''}
                   </Td>
                   <Td>{room.beds?.length}</Td>
@@ -109,7 +110,6 @@ export const Room = () => {
                         Éditer
                       </Button>
                       <RoomDeleteDialog
-                        // @ts-expect-error TODO: fix this
                         roomId={room.id}
                       />
                     </HStack>

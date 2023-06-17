@@ -1,0 +1,5 @@
+{
+  "plugins": [
+    "@effect/babel-plugin"
+  ]
+}

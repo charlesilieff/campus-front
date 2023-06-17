@@ -2,22 +2,24 @@ import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 
 export interface PlaceEncoded {
-  id?: number
+  id: number
   name: string
   comment?: string
   imageContentType?: string
   image?: string
 }
 
-export const Place: S.Schema<PlaceEncoded, {
-  readonly id: O.Option<number>
-  readonly name: string
-  readonly comment: O.Option<string>
-  readonly imageContentType: O.Option<string>
-  readonly image: O.Option<string>
-}> = S.lazy(() =>
+export interface PlaceDecoded {
+  id: number
+  name: string
+  comment: O.Option<string>
+  imageContentType: O.Option<string>
+  image: O.Option<string>
+}
+
+export const Place: S.Schema<PlaceEncoded, PlaceDecoded> = S.lazy(() =>
   S.struct({
-    id: S.optional(S.number).toOption(),
+    id: S.number,
     name: S.string,
     comment: S.optional(S.string).toOption(),
     imageContentType: S.optional(S.string).toOption(),

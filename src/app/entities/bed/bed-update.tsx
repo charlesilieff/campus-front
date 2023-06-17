@@ -18,6 +18,7 @@ import { getEntities as getRooms } from 'app/entities/room/room.reducer'
 import type { Bed, BedCreateDecoded, BedCreateEncoded } from 'app/shared/model/bed.model'
 import { BedCreate } from 'app/shared/model/bed.model'
 import React, { useEffect } from 'react'
+import type { UseFormHandleSubmit } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -43,19 +44,14 @@ export const BedUpdate = () => {
     handleSubmit,
     register,
     formState: { errors },
-    reset: resetForm,
-    setValue
+    reset: resetForm
   } = useForm<BedCreateEncoded>({
     resolver: schemaResolver(BedCreate)
   })
   useEffect(() => {
     resetForm(defaultValues(bedEntity))
-    setValue(
-      'roomId',
-      pipe(bedEntity, O.flatMap(b => b.room), O.map(r => r.id), O.getOrUndefined)
-    )
   }, [pipe(bedEntity, O.map(b => b.id), O.getOrNull), rooms])
-
+  const handleSubmit2 = handleSubmit as unknown as UseFormHandleSubmit<BedCreateDecoded>
   const dispatch = useAppDispatch()
 
   const navigate = useNavigate()
@@ -100,7 +96,7 @@ export const BedUpdate = () => {
 
       {loading ? <p>Chargement...</p> : (
         <form
-          onSubmit={handleSubmit(v => saveEntity(v as unknown as BedCreateDecoded))}
+          onSubmit={handleSubmit2(saveEntity)}
         >
           <VStack spacing={4}>
             <FormControl isRequired isInvalid={errors.kind !== undefined}>
@@ -162,6 +158,7 @@ export const BedUpdate = () => {
                 type="number"
                 placeholder="Nombre de places"
                 {...register('numberOfPlaces', {
+                  valueAsNumber: true,
                   required: 'Le nombre de places est obligatoire'
                 })}
               />
@@ -176,10 +173,12 @@ export const BedUpdate = () => {
               </FormLabel>
 
               <Select
-                id="room"
-                {...register('roomId', {})}
+                id="roomId"
+                {...register('roomId', {
+                  valueAsNumber: true
+                })}
               >
-                {/* <option value={0} key={0}>Pas de chambre</option> */}
+                <option value={undefined}>Pas de chambre</option>
                 {rooms ?
                   rooms.map(room => (
                     <option value={room.id.toString()} key={room.id}>

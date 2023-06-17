@@ -60,41 +60,7 @@ export const BedCreate: S.Schema<BedCreateEncoded, BedCreateDecoded> = S.struct(
   id: S.optional(S.number).toOption(),
   kind: S.string,
   number: S.string,
-  numberOfPlaces: S.NumberFromString,
+  numberOfPlaces: S.number,
   roomId: S.optional(S.number).toOption()
 })
 export type BedCreate = S.To<typeof BedCreate>
-
-// interface BedDecoded {
-//   name: string
-//   room: O.Option<RoomDecoded>
-// }
-
-// interface BedEncoded {
-//   name: string
-//   room: RoomEncoded | null
-// }
-
-// const Bed: S.Schema<BedEncoded,BedDecoded> = S.lazy(() =>
-//   S.struct({
-//     name: S.string,
-//     room: S.optionFromNullable(Room)
-//   })
-// )
-// // type Bed = S.To<typeof Bed>
-// interface RoomEncoded {
-//   name: string
-//   beds: readonly BedEncoded[]
-// }
-
-// interface RoomDecoded {
-//   name: string
-//   beds: readonly BedDecoded[]
-// }
-
-// const Room: S.Schema<RoomEncoded,RoomDecoded> = S.lazy(() =>
-//   S.struct({
-//     name: S.string,
-//     beds: S.array(Bed)
-//   })
-// )
