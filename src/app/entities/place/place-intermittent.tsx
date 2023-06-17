@@ -1,28 +1,28 @@
 import { Button, Checkbox, CheckboxGroup, Heading, useToast, VStack } from '@chakra-ui/react'
+import * as O from '@effect/data/Option'
 import * as A from '@effect/data/ReadonlyArray'
-import type { IPlace } from 'app/shared/model/place.model'
+import { Place } from 'app/shared/model/place.model'
+import { getHttpEntities } from 'app/shared/util/httpUtils'
 import axios from 'axios'
+import { identity } from 'fp-ts/lib/function'
 import React, { useEffect, useState } from 'react'
 import { FaSave } from 'react-icons/fa'
 
 export const PlaceIntermittent = () => {
-  const [places, setPlaces] = useState<ReadonlyArray<IPlace>>(A.empty)
-  const [selectedPlaceIds, setSelectedPlaceIds] = useState<ReadonlyArray<string>>(A.empty)
+  const [places, setPlaces] = useState<ReadonlyArray<Place>>(A.empty)
+  const [selectedPlaceIds, setSelectedPlaceIds] = useState<ReadonlyArray<number>>(A.empty)
   const apiUrl = 'api/places/noimage'
   const [isLoading, setIsLoading] = useState(false)
-  const getPlaces = async () => {
-    const requestUrl = `${apiUrl}`
-    return axios.get<ReadonlyArray<IPlace>>(requestUrl)
-  }
+
   const toast = useToast()
-  const saveIntermittentPlaces = async (selectedPlaceIds: ReadonlyArray<string>) => {
+
+  const saveIntermittentPlaces = async (selectedPlaceIds: ReadonlyArray<number>) => {
     const requestUrl = `api/places/intermittent`
     setIsLoading(true)
     await axios.post(requestUrl, selectedPlaceIds)
-    const placesUpdatedNames = places.filter(place =>
-      // @ts-expect-error TODO: fix this
-      selectedPlaceIds.includes(place.id.toString())
-    ).map(place => place.name).join(', ')
+    const placesUpdatedNames = places.filter(place => selectedPlaceIds.includes(place.id)).map(
+      place => place.name
+    ).join(', ')
     const message = placesUpdatedNames.length > 0 ?
       `Les intermittents peuvent réserver ces lieux : ${placesUpdatedNames}` :
       "Aucun lieu n'est disponible pour les intermittents"
@@ -40,17 +40,16 @@ export const PlaceIntermittent = () => {
 
   useEffect(() => {
     const getPlacesAync = async () => {
-      const { data } = await getPlaces()
+      const data = await getHttpEntities(apiUrl, Place)
       setPlaces(data)
     }
     getPlacesAync()
   }, [])
 
   useEffect(() => {
-    const intermittentPlacesIds = places.filter(place => place.intermittentAllowed).map(place =>
-      // @ts-expect-error TODO: fix this
-      place.id.toString()
-    )
+    const intermittentPlacesIds = places.filter(place =>
+      O.exists(place.intermittentAllowed, identity)
+    ).map(place => place.id)
 
     setSelectedPlaceIds(intermittentPlacesIds)
   }, [places])
@@ -61,15 +60,14 @@ export const PlaceIntermittent = () => {
         Choisissez les lieux pour les intermittents
       </Heading>
       <CheckboxGroup
-        onChange={e => setSelectedPlaceIds(e.map(e => e.toString()))}
+        onChange={e => setSelectedPlaceIds(e.map(e => Number(e)))}
         value={[...selectedPlaceIds]}
       >
         <VStack>
           {places.map(place => (
             <Checkbox
               key={place.id}
-              // @ts-expect-error TODO: fix this
-              value={place.id.toString()}
+              value={place.id}
               alignSelf={'flex-start'}
               pl={12}
             >

@@ -18,8 +18,8 @@ dependencies:
     specifier: 0.26.0
     version: 0.26.0
   '@effect/match':
-    specifier: 0.24.3
-    version: 0.24.3
+    specifier: ^0.24.4
+    version: 0.24.4
   '@effect/schema':
     specifier: 0.20.1
     version: 0.20.1
@@ -1668,8 +1668,8 @@ packages:
       '@effect/data': 0.12.7
     dev: false
 
-  /@effect/match@0.24.3:
-    resolution: {integrity: sha512-fyf2o4U3z5hTEsf+vImAz6jLXA9+c2u0sjcq73PiZS5oufZaISLWD63BBw0oTR+GT+Bp4etZH2WUGN5/zeQ0QQ==}
+  /@effect/match@0.24.4:
+    resolution: {integrity: sha512-oo0uzazHhlDm4shxiMQep5osHsEZmBX6uhB9GM2RXseDahwsKrOp5Q3cMr/J4ZfhruH/0/o7GEhLLHxpwhEtuA==}
     dependencies:
       '@effect/data': 0.12.7
       '@effect/schema': 0.20.1

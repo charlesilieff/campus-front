@@ -1,29 +1,31 @@
 import { HStack, Select } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
 import { PlaceModal } from 'app/entities/place/placeModal'
-import type { IPlace } from 'app/shared/model/place.model'
+import type { Place } from 'app/shared/model/place.model'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
 export const PlaceMenu = () => {
   const apiUrlPlacesWithoutImage = 'api/places/noimage'
   const apiUrlPlaces = 'api/planning/places'
-  const [places, setPlaces] = useState([] as IPlace[])
-  // @ts-expect-error TODO: fix this
-  const [place, setPlace] = useState(null as IPlace)
+  const [places, setPlaces] = useState([] as Place[])
+
+  const [place, setPlace] = useState(O.none<Place>())
 
   const getPlaces = async () => {
     const requestUrl = `${apiUrlPlacesWithoutImage}?cacheBuster=${new Date().getTime()}`
-    const { data } = await axios.get<IPlace[]>(requestUrl)
+    const { data } = await axios.get<Place[]>(requestUrl)
 
     setPlaces(data)
-    // @ts-expect-error TODO: fix this
+
     getOnePlace(data[0].id.toString())
   }
 
   const getOnePlace = async (id: string) => {
     const requestUrl = `${apiUrlPlaces}/${id}?cacheBuster=${new Date().getTime()}`
-    const { data } = await axios.get<IPlace>(requestUrl)
-    setPlace(data)
+    const { data } = await axios.get<Place>(requestUrl)
+    setPlace(O.some(data))
   }
 
   useEffect(() => {
@@ -51,7 +53,7 @@ export const PlaceMenu = () => {
           <option value="" key="0" />}
       </Select>
 
-      <PlaceModal {...place} />
+      {pipe(place, O.map(place => <PlaceModal key={0} {...place} />), O.getOrNull)}
     </HStack>
   )
 }

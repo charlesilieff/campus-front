@@ -67,7 +67,7 @@ export const PlaceDetail = () => {
 
               <Button
                 as={Link}
-                to={`/place/${O.getOrUndefined(placeEntity.value.id)}/edit`}
+                to={`/place/${placeEntity.value.id}/edit`}
                 variant={'modify'}
                 leftIcon={<FaPencilAlt />}
               >

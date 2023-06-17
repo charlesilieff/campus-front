@@ -7,6 +7,7 @@ export interface PlaceEncoded {
   comment?: string
   imageContentType?: string
   image?: string
+  intermittentAllowed?: boolean
 }
 
 export interface PlaceDecoded {
@@ -15,6 +16,7 @@ export interface PlaceDecoded {
   comment: O.Option<string>
   imageContentType: O.Option<string>
   image: O.Option<string>
+  intermittentAllowed: O.Option<boolean>
 }
 
 export const Place: S.Schema<PlaceEncoded, PlaceDecoded> = S.lazy(() =>
@@ -23,19 +25,10 @@ export const Place: S.Schema<PlaceEncoded, PlaceDecoded> = S.lazy(() =>
     name: S.string,
     comment: S.optional(S.string).toOption(),
     imageContentType: S.optional(S.string).toOption(),
-    image: S.optional(S.string).toOption()
+    image: S.optional(S.string).toOption(),
+    intermittentAllowed: S.optional(S.boolean).toOption()
   })
 )
-
-// export interface IPlace {
-//   id?: number
-//   name?: string
-//   comment?: string | null
-//   imageContentType?: string | null
-//   image?: string | null
-//   rooms?: IRoom[] | null
-//   intermittentAllowed?: boolean
-// }
 
 export type Place = S.To<typeof Place>
 

@@ -1,10 +1,10 @@
 import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay,
   useDisclosure } from '@chakra-ui/react'
-import type { IPlace } from 'app/shared/model/place.model'
+import type { Place } from 'app/shared/model/place.model'
 import React from 'react'
 import { BsMap } from 'react-icons/bs'
 
-export const PlaceModal = (place: IPlace) => {
+export const PlaceModal = (place: Place) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
@@ -25,7 +25,7 @@ export const PlaceModal = (place: IPlace) => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            {place.name} {place.comment}
+            {`${place.name} ${place.comment}`}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>

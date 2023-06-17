@@ -1,6 +1,9 @@
 import { Button, HStack, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay,
   useDisclosure } from '@chakra-ui/react'
-import type { Customer } from 'app/shared/model/customer.model'
+import * as O from '@effect/data/Option'
+import type { CustomerDecoded, CustomerEncoded } from 'app/shared/model/customer.model'
+import { Customer } from 'app/shared/model/customer.model'
+import { getHttpEntities } from 'app/shared/util/httpUtils'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { FaBan, FaTrash } from 'react-icons/fa'
@@ -9,11 +12,11 @@ export const RGPDAnonymizeData = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isCustomersToAnonymize, setIsCustomersToAnonymize] = useState(false)
 
-  const [customers, setCustomers] = useState([] as Customer[])
+  const [customers, setCustomers] = useState([] as CustomerDecoded[])
   const requestUrl = `/api/anonymizecustomers`
 
   const getIsCustomersToAnonymize = async () => {
-    const { data } = await axios.get<Customer[]>(requestUrl)
+    const data = await getHttpEntities(requestUrl, Customer)
 
     if (data.length !== 0) {
       setIsCustomersToAnonymize(true)
@@ -23,8 +26,8 @@ export const RGPDAnonymizeData = () => {
           ...c,
           firstname: 'anonyme',
           lastname: 'anonyme',
-          age: 1,
-          phoneNumber: '0000000000',
+          age: O.none(),
+          phoneNumber: O.none(),
           email: `anonyme${c.id}@anonyme.fr`
         }))
       )
@@ -33,7 +36,7 @@ export const RGPDAnonymizeData = () => {
 
   const anonymizeCustomers = async () => {
     try {
-      await axios.put<Customer[]>(requestUrl, customers)
+      await axios.put<CustomerEncoded[]>(requestUrl, customers)
 
       alert('Les données ont bien été anonymisées')
       onClose()
