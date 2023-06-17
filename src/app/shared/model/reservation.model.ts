@@ -1,5 +1,5 @@
-import type { IBed } from 'app/shared/model/bed.model'
-import type { Customer } from 'app/shared/model/customer.model'
+import type { BedEncoded } from 'app/shared/model/bed.model'
+import type { CustomerEncoded } from 'app/shared/model/customer.model'
 import type { IPricing } from 'app/shared/model/pricing.model'
 
 // import type { IUserCategory } from './userCategory.model'
@@ -20,8 +20,8 @@ export interface IReservation {
   departureDate?: Date
   comment?: string | null
   pricing?: IPricing | null
-  beds?: IBed[] | null
-  customer?: Customer | null
+  beds?: BedEncoded[] | null
+  customer?: CustomerEncoded | null
   rooms?: string[]
   // userCategory?: IUserCategory | null
   userCategoryId?: number
