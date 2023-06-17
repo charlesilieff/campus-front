@@ -1,4 +1,5 @@
 import { Button, Heading, HStack, Text, VStack } from '@chakra-ui/react'
+import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { FaArrowLeft, FaPencilAlt } from 'react-icons/fa'
@@ -13,52 +14,64 @@ export const CustomerDetail = () => {
   const { id } = useParams<{ id: string }>()
 
   useEffect(() => {
-    // @ts-expect-error TODO: fix this
-    dispatch(getCustomer(id))
+    if (id) {
+      dispatch(getCustomer(id))
+    }
   }, [])
 
   const customerEntity = useAppSelector(state => state.customer.entity)
   return (
-    <VStack alignItems={'flex-start'}>
-      <Heading>Client</Heading>
+    <>
+      {O.isSome(customerEntity) ?
+        (
+          <VStack alignItems={'flex-start'}>
+            <Heading>Client</Heading>
 
-      <Heading size={'md'}>Prénom</Heading>
+            <Heading size={'md'}>Prénom</Heading>
 
-      <Text>{customerEntity.firstname}</Text>
+            <Text>{customerEntity.value.firstname}</Text>
 
-      <Heading size={'md'}>Nom</Heading>
+            <Heading size={'md'}>Nom</Heading>
 
-      <Text>{customerEntity.lastname}</Text>
+            <Text>{customerEntity.value.lastname}</Text>
 
-      <Heading size={'md'}>Age</Heading>
+            <Heading size={'md'}>Age</Heading>
 
-      <Text>{customerEntity.age}</Text>
+            <Text>{O.getOrUndefined(customerEntity.value.age)}</Text>
 
-      <Heading size={'md'}>Téléphone</Heading>
+            <Heading size={'md'}>Téléphone</Heading>
 
-      <Text>{customerEntity.phoneNumber}</Text>
+            <Text>{O.getOrUndefined(customerEntity.value.phoneNumber)}</Text>
 
-      <Heading size={'md'}>Email</Heading>
+            <Heading size={'md'}>Email</Heading>
 
-      <Text>{customerEntity.email}</Text>
+            <Text>{customerEntity.value.email}</Text>
 
-      <Heading size={'md'}>Comment</Heading>
+            <Heading size={'md'}>Comment</Heading>
 
-      <Text>{customerEntity.comment}</Text>
-      <HStack>
-        <Button as={Link} onClick={() => navigate(-1)} variant="back" leftIcon={<FaArrowLeft />}>
-          Retour
-        </Button>
+            <Text>{O.getOrUndefined(customerEntity.value.comment)}</Text>
+            <HStack>
+              <Button
+                as={Link}
+                onClick={() => navigate(-1)}
+                variant="back"
+                leftIcon={<FaArrowLeft />}
+              >
+                Retour
+              </Button>
 
-        <Button
-          as={Link}
-          to={`/customer/${customerEntity.id}/edit`}
-          variant="modify"
-          leftIcon={<FaPencilAlt />}
-        >
-          Modifier
-        </Button>
-      </HStack>
-    </VStack>
+              <Button
+                as={Link}
+                to={`/customer/${O.getOrUndefined(customerEntity.value.id)}/edit`}
+                variant="modify"
+                leftIcon={<FaPencilAlt />}
+              >
+                Modifier
+              </Button>
+            </HStack>
+          </VStack>
+        ) :
+        null}
+    </>
   )
 }

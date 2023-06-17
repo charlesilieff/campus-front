@@ -1,7 +1,7 @@
 import * as S from '@effect/schema/Schema'
 
-import type { ICustomer } from './customer.model'
-import { CustomerSchema } from './customer.model'
+import type { CustomerEncoded } from './customer.model'
+import { Customer } from './customer.model'
 import type { IUserCategory } from './userCategory.model'
 
 export interface IBookingBeds {
@@ -22,7 +22,7 @@ export interface IBookingBeds {
   reservationComment?: string
   personNumber?: number
   specialDietNumber?: number
-  customer?: ICustomer
+  customer?: CustomerEncoded
   // pricing?: IPricing
   // userCategoryId?: number
   userCategory?: IUserCategory
@@ -53,7 +53,7 @@ export const ReservationSchema = S.struct({
   isDepartureLunch: S.boolean,
   personNumber: S.number,
   specialDietNumber: S.number,
-  customer: CustomerSchema,
+  customer: Customer,
   // pricing: IPricing
   // userCategoryId: S.number,
   isPaid: S.boolean,

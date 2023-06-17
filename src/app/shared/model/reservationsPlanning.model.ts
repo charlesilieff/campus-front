@@ -1,4 +1,4 @@
-import type { ICustomer } from 'app/shared/model/customer.model'
+import type { Customer } from 'app/shared/model/customer.model'
 
 export type ReservationStatus = 'pending' | 'processed' | 'urgent'
 
@@ -7,7 +7,7 @@ export interface IReservationsPlanning {
   isPaid: boolean
   isConfirmed: boolean
   personNumber: number
-  customer: ICustomer
+  customer: Customer
   firstname: string
   lastname: string
   age: number

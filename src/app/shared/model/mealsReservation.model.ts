@@ -1,6 +1,6 @@
 import * as S from '@effect/schema/Schema'
 
-import { CustomerSchema } from './customer.model'
+import { Customer } from './customer.model'
 
 const MealsDay = S.struct({
   isBreakfast: S.boolean,
@@ -26,7 +26,7 @@ export const MealsOnlyUserReservation = S.struct({
     WeekDaysName,
     MealsDay
   ),
-  customer: CustomerSchema,
+  customer: Customer,
   comment: S.optional(S.string).toOption(),
   commentMeals: S.optional(S.string).toOption(),
   userId: S.positive()(S.number),

@@ -9,43 +9,42 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import type { ICustomer } from 'app/shared/model/customer.model'
+import type { CustomerDecoded, CustomerEncoded } from 'app/shared/model/customer.model'
+import { Customer } from 'app/shared/model/customer.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
+import { schemaResolver } from '../bed/resolver'
 import { createEntity, getCustomer, reset, updateEntity } from './customer.reducer'
 
-interface CustomerForm {
-  firstname: string
-  lastname: string
-  age: number
-  phoneNumber: string
-  email: string
-  comment: string
-}
 export const CustomerUpdate = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const { id } = useParams<'id'>()
   const navigate = useNavigate()
   const isNew = id === undefined
   const customerEntity = useAppSelector(state => state.customer.entity)
-  const defaultValues = () =>
-    isNew ? {} : {
-      ...customerEntity
-    }
+  const defaultValues = (customer: O.Option<CustomerDecoded>) =>
+    isNew || !O.isSome(customer) ? {} : S.encode(Customer)(customer.value)
   const {
     handleSubmit,
     register,
     formState: { errors },
     reset: resetForm
-  } = useForm<CustomerForm>()
+  } = useForm<CustomerEncoded>(
+    {
+      resolver: schemaResolver(Customer)
+    }
+  )
 
   useEffect(() => {
-    resetForm(defaultValues())
-  }, [customerEntity.id])
+    resetForm(defaultValues(customerEntity))
+  }, [pipe(customerEntity, O.map(b => b.id), O.getOrNull)])
 
   const loading = useAppSelector(state => state.customer.loading)
   const updating = useAppSelector(state => state.customer.updating)
@@ -69,18 +68,11 @@ export const CustomerUpdate = (): JSX.Element => {
     }
   }, [updateSuccess])
 
-  const saveEntity = (values: CustomerForm) => {
-    const entity: ICustomer = {
-      ...customerEntity,
-      ...values,
-      // @ts-expect-error : age is a number
-      age: values.age === '' ? 0 : values.age
-    }
-
+  const saveEntity = (values: CustomerDecoded) => {
     if (isNew) {
-      dispatch(createEntity(entity))
+      dispatch(createEntity(values))
     } else {
-      dispatch(updateEntity(entity))
+      dispatch(updateEntity(values))
     }
   }
 
@@ -92,7 +84,7 @@ export const CustomerUpdate = (): JSX.Element => {
 
       {loading ? <p>Chargement...</p> : (
         <form
-          onSubmit={handleSubmit(saveEntity)}
+          onSubmit={handleSubmit(c => saveEntity(c as unknown as CustomerDecoded))}
         >
           <VStack spacing={4}>
             <FormControl isRequired isInvalid={errors.firstname !== undefined}>
@@ -147,13 +139,15 @@ export const CustomerUpdate = (): JSX.Element => {
             </FormControl>
             <FormControl isInvalid={errors.age !== undefined}>
               <FormLabel htmlFor="age" fontWeight={'bold'}>
-                {'Age'}
+                {'Âge'}
               </FormLabel>
               <Input
                 id="age"
                 type="number"
                 placeholder="Age"
-                {...register('age', {})}
+                {...register('age', {
+                  valueAsNumber: true
+                })}
               />
 
               <FormErrorMessage>

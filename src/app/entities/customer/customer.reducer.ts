@@ -1,6 +1,7 @@
+import * as O from '@effect/data/Option'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
-import type { ICustomer } from 'app/shared/model/customer.model'
-import { defaultValue } from 'app/shared/model/customer.model'
+import type { CustomerDecoded } from 'app/shared/model/customer.model'
+import { Customer } from 'app/shared/model/customer.model'
 import type {
   EntityState
 } from 'app/shared/reducers/reducer.utils'
@@ -8,14 +9,20 @@ import {
   createEntitySlice,
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
-import { cleanEntity } from 'app/shared/util/entity-utils'
+import {
+  getHttpEntities,
+  getHttpEntity,
+  postHttpEntity,
+  putHttpEntity
+} from 'app/shared/util/httpUtils'
 import axios from 'axios'
+import { castDraft } from 'immer'
 
-const initialState: EntityState<ICustomer> = {
+const initialState: EntityState<CustomerDecoded> = {
   loading: false,
   errorMessage: null,
   entities: [],
-  entity: defaultValue,
+  entity: O.none(),
   updating: false,
   updateSuccess: false
 }
@@ -27,8 +34,8 @@ const apiUrl = 'api/customers'
 export const getEntities = createAsyncThunk(
   'customer/fetch_entity_list',
   async () => {
-    const requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`
-    return axios.get<ICustomer[]>(requestUrl)
+    const requestUrl = `${apiUrl}`
+    return getHttpEntities(requestUrl, Customer)
   }
 )
 
@@ -36,15 +43,15 @@ export const getCustomer = createAsyncThunk(
   'customer/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`
-    return axios.get<ICustomer>(requestUrl)
+    return getHttpEntity(requestUrl, Customer)
   },
   { serializeError: serializeAxiosError }
 )
 
 export const createEntity = createAsyncThunk(
   'customer/create_entity',
-  async (entity: ICustomer, thunkAPI) => {
-    const result = await axios.post<ICustomer>(apiUrl, cleanEntity(entity))
+  async (entity: CustomerDecoded, thunkAPI) => {
+    const result = postHttpEntity(apiUrl, Customer, entity, Customer)
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -53,18 +60,8 @@ export const createEntity = createAsyncThunk(
 
 export const updateEntity = createAsyncThunk(
   'customer/update_entity',
-  async (entity: ICustomer, thunkAPI) => {
-    const result = await axios.put<ICustomer>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
-    thunkAPI.dispatch(getEntities())
-    return result
-  },
-  { serializeError: serializeAxiosError }
-)
-
-export const partialUpdateEntity = createAsyncThunk(
-  'customer/partial_update_entity',
-  async (entity: ICustomer, thunkAPI) => {
-    const result = await axios.patch<ICustomer>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
+  async (entity: CustomerDecoded, thunkAPI) => {
+    const result = putHttpEntity(`${apiUrl}/${O.getOrNull(entity.id)}`, Customer, entity, Customer)
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -75,7 +72,7 @@ export const deleteEntity = createAsyncThunk(
   'customer/delete_entity',
   async (id: string | number, thunkAPI) => {
     const requestUrl = `${apiUrl}/${id}`
-    const result = await axios.delete<ICustomer>(requestUrl)
+    const result = await axios.delete<CustomerDecoded>(requestUrl)
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -91,23 +88,23 @@ export const CustomerSlice = createEntitySlice({
     builder
       .addCase(getCustomer.fulfilled, (state, action) => {
         state.loading = false
-        state.entity = action.payload.data
+        state.entity = action.payload
       })
       .addCase(deleteEntity.fulfilled, state => {
         state.updating = false
         state.updateSuccess = true
-        state.entity = {}
+        state.entity = castDraft(O.none())
       })
       .addMatcher(isFulfilled(getEntities), (state, action) => ({
         ...state,
         loading: false,
-        entities: action.payload.data
+        entities: action.payload
       }))
-      .addMatcher(isFulfilled(createEntity, updateEntity, partialUpdateEntity), (state, action) => {
+      .addMatcher(isFulfilled(createEntity, updateEntity), (state, action) => {
         state.updating = false
         state.loading = false
         state.updateSuccess = true
-        state.entity = action.payload.data
+        state.entity = action.payload
       })
       .addMatcher(isPending(getEntities, getCustomer), state => {
         state.errorMessage = null
@@ -115,7 +112,7 @@ export const CustomerSlice = createEntitySlice({
         state.loading = true
       })
       .addMatcher(
-        isPending(createEntity, updateEntity, partialUpdateEntity, deleteEntity),
+        isPending(createEntity, updateEntity, deleteEntity),
         state => {
           state.errorMessage = null
           state.updateSuccess = false

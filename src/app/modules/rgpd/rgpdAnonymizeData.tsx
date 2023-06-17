@@ -1,6 +1,6 @@
 import { Button, HStack, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay,
   useDisclosure } from '@chakra-ui/react'
-import type { ICustomer } from 'app/shared/model/customer.model'
+import type { Customer } from 'app/shared/model/customer.model'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { FaBan, FaTrash } from 'react-icons/fa'
@@ -9,11 +9,11 @@ export const RGPDAnonymizeData = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isCustomersToAnonymize, setIsCustomersToAnonymize] = useState(false)
 
-  const [customers, setCustomers] = useState([] as ICustomer[])
+  const [customers, setCustomers] = useState([] as Customer[])
   const requestUrl = `/api/anonymizecustomers`
 
   const getIsCustomersToAnonymize = async () => {
-    const { data } = await axios.get<ICustomer[]>(requestUrl)
+    const { data } = await axios.get<Customer[]>(requestUrl)
 
     if (data.length !== 0) {
       setIsCustomersToAnonymize(true)
@@ -33,7 +33,7 @@ export const RGPDAnonymizeData = () => {
 
   const anonymizeCustomers = async () => {
     try {
-      await axios.put<ICustomer[]>(requestUrl, customers)
+      await axios.put<Customer[]>(requestUrl, customers)
 
       alert('Les données ont bien été anonymisées')
       onClose()

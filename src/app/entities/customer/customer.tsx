@@ -1,4 +1,5 @@
 import { Button, Heading, HStack, Table, Tbody, Td, Th, Thead, Tr, VStack } from '@chakra-ui/react'
+import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { FaEye, FaPencilAlt, FaPlus } from 'react-icons/fa'
@@ -66,42 +67,47 @@ export const Customer = () => {
                 <Tr key={`entity-${i}`} data-cy="entityTable">
                   <Td>{customer.firstname}</Td>
                   <Td>{customer.lastname}</Td>
-                  <Td>{customer.age}</Td>
-                  <Td>{customer.phoneNumber}</Td>
-                  <Td>
-                    <Button as={Link} to={`${customer.id}`} variant={'see'} size="sm">
-                      {customer.email}
-                    </Button>
-                  </Td>
-                  <Td>{customer.comment}</Td>
-                  <Td className="text-right">
-                    <HStack spacing={0}>
-                      <Button
-                        as={Link}
-                        variant="see"
-                        to={`${customer.id}`}
-                        size="sm"
-                        leftIcon={<FaEye />}
-                        borderRightRadius={0}
-                      >
-                        Voir
-                      </Button>
-                      <Button
-                        as={Link}
-                        variant="modify"
-                        to={`${customer.id}/edit`}
-                        size="sm"
-                        borderRadius={0}
-                        leftIcon={<FaPencilAlt />}
-                      >
-                        Modifier
-                      </Button>
-                      <CustomerDeleteDialog
-                        // @ts-expect-error TODO: fix this
-                        customerId={customer.id}
-                      />
-                    </HStack>
-                  </Td>
+                  <Td>{O.getOrUndefined(customer.age)}</Td>
+                  <Td>{O.getOrUndefined(customer.phoneNumber)}</Td>
+                  {O.isSome(customer.id) ?
+                    (
+                      <>
+                        <Td>
+                          <Button as={Link} to={`${customer.id}`} variant={'see'} size="sm">
+                            {customer.email}
+                          </Button>
+                        </Td>
+                        <Td>{O.getOrUndefined(customer.comment)}</Td>
+                        <Td className="text-right">
+                          <HStack spacing={0}>
+                            <Button
+                              as={Link}
+                              variant="see"
+                              to={`${customer.id.value}`}
+                              size="sm"
+                              leftIcon={<FaEye />}
+                              borderRightRadius={0}
+                            >
+                              Voir
+                            </Button>
+                            <Button
+                              as={Link}
+                              variant="modify"
+                              to={`${customer.id.value}/edit`}
+                              size="sm"
+                              borderRadius={0}
+                              leftIcon={<FaPencilAlt />}
+                            >
+                              Modifier
+                            </Button>
+                            <CustomerDeleteDialog
+                              customerId={customer.id.value}
+                            />
+                          </HStack>
+                        </Td>
+                      </>
+                    ) :
+                    null}
                 </Tr>
               ))}
             </Tbody>

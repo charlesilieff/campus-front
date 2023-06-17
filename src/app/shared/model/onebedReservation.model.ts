@@ -1,6 +1,6 @@
 import type * as O from '@effect/data/Option'
 
-import type { ICustomer } from './customer.model'
+import type { Customer } from './customer.model'
 
 export interface OneBedUserReservation {
   id: O.Option<number>
@@ -11,7 +11,7 @@ export interface OneBedUserReservation {
   isDepartureDiner: boolean
   isDepartureLunch: boolean
   isSpecialDiet: boolean
-  customer: ICustomer
+  customer: Customer
   bedId: O.Option<number>
   comment: string
   isArrivalBreakfast: boolean
