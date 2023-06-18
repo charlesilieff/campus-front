@@ -61,7 +61,7 @@ export const Place = () => {
               {placeList.map((place, i) => (
                 <Tr key={`entity-${i}`} data-cy="entityTable">
                   <Td>
-                    <Button as={Link} to={`${O.getOrUndefined(place.id)}`} color="link" size="sm">
+                    <Button as={Link} to={`${place.id}`} color="link" size="sm">
                       {place.name}
                     </Button>
                   </Td>
@@ -87,36 +87,32 @@ export const Place = () => {
                   </Td>
                   <Td className="text-right">
                     <HStack justifyContent={'flex-end'} spacing={0}>
-                      {O.isSome(place.id) ?
-                        (
-                          <>
-                            <Button
-                              as={Link}
-                              to={`${place.id.value}`}
-                              variant="see"
-                              size="sm"
-                              leftIcon={<FaEye />}
-                              borderRightRadius={0}
-                            >
-                              Voir
-                            </Button>
-                            <Button
-                              as={Link}
-                              to={`${place.id.value}/edit`}
-                              size="sm"
-                              variant={'modify'}
-                              borderRadius={0}
-                              leftIcon={<FaPencilAlt />}
-                            >
-                              Modifier
-                            </Button>
+                      <>
+                        <Button
+                          as={Link}
+                          to={`${place.id}`}
+                          variant="see"
+                          size="sm"
+                          leftIcon={<FaEye />}
+                          borderRightRadius={0}
+                        >
+                          Voir
+                        </Button>
+                        <Button
+                          as={Link}
+                          to={`${place.id}/edit`}
+                          size="sm"
+                          variant={'modify'}
+                          borderRadius={0}
+                          leftIcon={<FaPencilAlt />}
+                        >
+                          Modifier
+                        </Button>
 
-                            <PlaceDeleteDialog
-                              placeId={place.id.value}
-                            />
-                          </>
-                        ) :
-                        null}
+                        <PlaceDeleteDialog
+                          placeId={place.id}
+                        />
+                      </>
                     </HStack>
                   </Td>
                 </Tr>

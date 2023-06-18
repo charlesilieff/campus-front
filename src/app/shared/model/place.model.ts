@@ -33,3 +33,16 @@ export const Place: S.Schema<PlaceEncoded, PlaceDecoded> = S.lazy(() =>
 export type Place = S.To<typeof Place>
 
 export const defaultValue: Readonly<O.Option<Place>> = O.none()
+
+export const PlaceNoImage = S.struct({
+  id: S.number,
+  name: S.string,
+  comment: S.optional(S.string).toOption(),
+  intermittentAllowed: S.optional(S.boolean).toOption()
+})
+export interface PlaceNoImage {
+  id: number
+  name: string
+  comment: O.Option<string>
+  intermittentAllowed: O.Option<boolean>
+}
