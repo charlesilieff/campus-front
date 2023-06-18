@@ -96,7 +96,7 @@ export const ReservationDetail = () => {
 
       <Text fontWeight={'bold'}>Repas du soir, jour d&apos;arrivée</Text>
 
-      <Text>{reservationEntity?.isArrivalDiner ? 'Oui' : 'Non'}</Text>
+      <Text>{reservationEntity?.isArrivalDinner ? 'Oui' : 'Non'}</Text>
 
       <Text fontWeight={'bold'}>Repas du midi, jour de départ</Text>
 
@@ -104,7 +104,7 @@ export const ReservationDetail = () => {
 
       <Text fontWeight={'bold'}>Repas du soir, jour de départ</Text>
 
-      <Text>{reservationEntity?.isDepartureDiner ? 'Oui' : 'Non'}</Text>
+      <Text>{reservationEntity?.isDepartureDinner ? 'Oui' : 'Non'}</Text>
 
       <Text fontWeight={'bold'}>Date d&apos;arrivée</Text>
 

@@ -1,6 +1,6 @@
+import * as O from '@effect/data/Option'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
-import type { IReservation } from 'app/shared/model/reservation.model'
-import { defaultValue } from 'app/shared/model/reservation.model'
+import type { Reservation } from 'app/shared/model/reservation.model'
 import type {
   EntityState
 } from 'app/shared/reducers/reducer.utils'
@@ -11,11 +11,11 @@ import {
 import { cleanEntity } from 'app/shared/util/entity-utils'
 import axios from 'axios'
 
-const initialState: EntityState<IReservation> = {
+const initialState: EntityState<Reservation> = {
   loading: false,
   errorMessage: null,
   entities: [],
-  entity: defaultValue,
+  entity: O.none(),
   updating: false,
   updateSuccess: false
 }
@@ -30,7 +30,7 @@ export const getEntities = createAsyncThunk(
   'reservation/fetch_entity_list',
   async () => {
     const requestUrl = `${apiUrl}`
-    return axios.get<IReservation[]>(requestUrl)
+    return axios.get<Reservation[]>(requestUrl)
   }
 )
 
@@ -38,7 +38,7 @@ export const getReservationsToBeProcessed = createAsyncThunk(
   'reservation/fetch_entity_list',
   async () => {
     const requestUrl = `${apiUrlReservationsToBeProcessed}`
-    return axios.get<IReservation[]>(requestUrl)
+    return axios.get<Reservation[]>(requestUrl)
   }
 )
 
@@ -46,7 +46,7 @@ export const getOneBedUserReservationsByUserId = createAsyncThunk(
   'reservation/fetch_entity_list',
   async (id: number) => {
     const requestUrl = `${apiUrlOneBedUserReservations}/${id}`
-    return axios.get<IReservation[]>(requestUrl)
+    return axios.get<Reservation[]>(requestUrl)
   }
 )
 
@@ -54,15 +54,15 @@ export const getReservation = createAsyncThunk(
   'reservation/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`
-    return axios.get<IReservation>(requestUrl)
+    return axios.get<Reservation>(requestUrl)
   },
   { serializeError: serializeAxiosError }
 )
 
 export const createEntity = createAsyncThunk(
   'reservation/create_entity',
-  async (entity: IReservation, thunkAPI) => {
-    const result = await axios.post<IReservation>(apiUrl, cleanEntity(entity))
+  async (entity: Reservation, thunkAPI) => {
+    const result = await axios.post<Reservation>(apiUrl, cleanEntity(entity))
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -71,8 +71,8 @@ export const createEntity = createAsyncThunk(
 
 export const updateEntity = createAsyncThunk(
   'reservation/update_entity',
-  async (entity: IReservation, thunkAPI) => {
-    const result = await axios.put<IReservation>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
+  async (entity: Reservation, thunkAPI) => {
+    const result = await axios.put<Reservation>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -81,8 +81,8 @@ export const updateEntity = createAsyncThunk(
 
 export const partialUpdateEntity = createAsyncThunk(
   'reservation/partial_update_entity',
-  async (entity: IReservation, thunkAPI) => {
-    const result = await axios.patch<IReservation>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
+  async (entity: Reservation, thunkAPI) => {
+    const result = await axios.patch<Reservation>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -93,7 +93,7 @@ export const deleteEntity = createAsyncThunk(
   'reservation/delete_entity',
   async (id: string | number, thunkAPI) => {
     const requestUrl = `${apiUrl}/${id}`
-    const result = await axios.delete<IReservation>(requestUrl)
+    const result = await axios.delete<Reservation>(requestUrl)
     thunkAPI.dispatch(getEntities())
     return result
   },

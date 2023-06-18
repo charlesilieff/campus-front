@@ -81,8 +81,8 @@ export const ReservationsListToBeProcessed = () => {
                   </Td>
                   <Td px={2} py={1} textAlign={'center'}>{reservation.specialDietNumber}</Td>
 
-                  <Td px={2} py={1}>{reservation.isArrivalDiner ? 'Oui' : 'Non'}</Td>
-                  <Td px={2} py={1}>{reservation.isDepartureDiner ? 'Oui' : 'Non'}</Td>
+                  <Td px={2} py={1}>{reservation.isArrivalDinner ? 'Oui' : 'Non'}</Td>
+                  <Td px={2} py={1}>{reservation.isDepartureDinner ? 'Oui' : 'Non'}</Td>
                   <Td px={2} py={1}>{reservation.isArrivalLunch ? 'Oui' : 'Non'}</Td>
                   <Td px={2} py={1}>{reservation.isDepartureLunch ? 'Oui' : 'Non'}</Td>
                   <Td px={2} py={1}>

@@ -1,5 +1,3 @@
-import type * as O from '@effect/data/Option'
-
 export interface OneBedReservationDatesAndMeals {
   arrivalDate: string
   departureDate: string
@@ -29,13 +27,4 @@ export interface MealsOnlyReservationDatesAndMeals {
   }
   comment: string
   commentMeals: string
-}
-
-export interface Customer {
-  id: O.Option<number>
-  firstname: string
-  lastname: string
-  email: string
-  phoneNumber: O.Option<string>
-  age: O.Option<number>
 }

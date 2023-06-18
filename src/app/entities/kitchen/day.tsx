@@ -42,10 +42,16 @@ export const Day = ({ positionX, date, index }: IProps) => {
     useDisclosure()
   const { isOpen: isOpenRegularLunch, onOpen: onOpenRegularLunch, onClose: onCloseRegularLunch } =
     useDisclosure()
-  const { isOpen: isOpenRegularDiner, onOpen: onOpenRegularDiner, onClose: onCloseRegularDiner } =
-    useDisclosure()
-  const { isOpen: isOpenSpecialDiner, onOpen: onOpenSpecialDiner, onClose: onCloseSpecialDiner } =
-    useDisclosure()
+  const {
+    isOpen: isOpenRegularDinner,
+    onOpen: onOpenRegularDinner,
+    onClose: onCloseRegularDinner
+  } = useDisclosure()
+  const {
+    isOpen: isOpenSpecialDinner,
+    onOpen: onOpenSpecialDinner,
+    onClose: onCloseSpecialDinner
+  } = useDisclosure()
   const [mealsWithCustomerData, setMealsWithCustomerData] = useState([] as IMealWithCustomer[])
 
   const dayWeek = date.day()
@@ -513,7 +519,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
         <Button
           onClick={() => {
             getMeals(date)
-            onOpenRegularDiner()
+            onOpenRegularDinner()
           }}
           size={'sm'}
           colorScheme="orange"
@@ -524,8 +530,8 @@ export const Day = ({ positionX, date, index }: IProps) => {
           <Modal
             size={'xxl'}
             scrollBehavior={'inside'}
-            isOpen={isOpenRegularDiner}
-            onClose={onCloseRegularDiner}
+            isOpen={isOpenRegularDinner}
+            onClose={onCloseRegularDinner}
             isCentered
           >
             <ModalOverlay />
@@ -574,7 +580,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
                 }
               </ModalBody>
               <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={onCloseRegularDiner}>
+                <Button colorScheme="blue" mr={3} onClick={onCloseRegularDinner}>
                   Fermer
                 </Button>
                 <Button variant="ghost" onClick={print}>Imprimer</Button>
@@ -603,7 +609,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
         <Button
           onClick={() => {
             getMeals(date)
-            onOpenSpecialDiner()
+            onOpenSpecialDinner()
           }}
           size={'sm'}
           colorScheme="orange"
@@ -615,8 +621,8 @@ export const Day = ({ positionX, date, index }: IProps) => {
             <Modal
               size={'xxl'}
               scrollBehavior={'inside'}
-              isOpen={isOpenSpecialDiner}
-              onClose={onCloseSpecialDiner}
+              isOpen={isOpenSpecialDinner}
+              onClose={onCloseSpecialDinner}
               isCentered
             >
               <ModalOverlay />
@@ -663,7 +669,7 @@ export const Day = ({ positionX, date, index }: IProps) => {
                   }
                 </ModalBody>
                 <ModalFooter>
-                  <Button colorScheme="blue" mr={3} onClick={onCloseSpecialDiner}>
+                  <Button colorScheme="blue" mr={3} onClick={onCloseSpecialDinner}>
                     Fermer
                   </Button>
                   <Button variant="ghost" onClick={print}>Imprimer</Button>

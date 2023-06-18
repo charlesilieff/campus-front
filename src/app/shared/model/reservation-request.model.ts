@@ -1,9 +1,26 @@
-import type { CustomerEncoded } from './customer.model'
-import type { IReservation } from './reservation.model'
+import * as S from '@effect/schema/Schema'
 
-export interface IReservationRequest {
-  reservation?: IReservation | null
-  customer?: CustomerEncoded | null
+import type { CustomerDecoded, CustomerEncoded } from './customer.model'
+import { Customer } from './customer.model'
+import type { ReservationDecoded, ReservationEncoded } from './reservation.model'
+import { Reservation } from './reservation.model'
+
+export interface ReservationRequestEncoded {
+  reservation: ReservationEncoded
+  customer: CustomerEncoded
 }
 
-export const defaultValue: Readonly<IReservationRequest> = {}
+export interface ReservationRequestDecoded {
+  reservation: ReservationDecoded
+  customer: CustomerDecoded
+}
+
+export const ReservationRequest: S.Schema<ReservationRequestEncoded, ReservationRequestDecoded> = S
+  .lazy(() =>
+    S.struct({
+      reservation: Reservation,
+      customer: Customer
+    })
+  )
+
+export type ReservationRequest = S.To<typeof ReservationRequest>

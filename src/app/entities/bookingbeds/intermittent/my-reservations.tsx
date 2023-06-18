@@ -97,8 +97,8 @@ export const MyIntermittentReservations = () => {
                   <Tr key={`entity-${i}`} data-cy="entityTable">
                     <Td>{reservation.specialDietNumber === 1 ? 'Oui' : 'Non'}</Td>
 
-                    <Td>{reservation.isArrivalDiner ? 'Oui' : 'Non'}</Td>
-                    <Td>{reservation.isDepartureDiner ? 'Oui' : 'Non'}</Td>
+                    <Td>{reservation.isArrivalDinner ? 'Oui' : 'Non'}</Td>
+                    <Td>{reservation.isDepartureDinner ? 'Oui' : 'Non'}</Td>
                     <Td>{reservation.isArrivalLunch ? 'Oui' : 'Non'}</Td>
                     <Td>{reservation.isDepartureLunch ? 'Oui' : 'Non'}</Td>
                     <Td>

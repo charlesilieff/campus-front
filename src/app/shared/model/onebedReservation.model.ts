@@ -6,9 +6,9 @@ export interface OneBedUserReservation {
   id: O.Option<number>
   arrivalDate: Date
   departureDate: Date
-  isArrivalDiner: boolean
+  isArrivalDinner: boolean
   isArrivalLunch: boolean
-  isDepartureDiner: boolean
+  isDepartureDinner: boolean
   isDepartureLunch: boolean
   isSpecialDiet: boolean
   customer: CustomerEncoded

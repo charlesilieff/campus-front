@@ -1,6 +1,6 @@
-import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import type { BedroomKind } from 'app/shared/model/bedroom-kind.model'
+import type { Customer } from 'app/shared/model/customer.model'
 import type { MealsOnlyUserReservation } from 'app/shared/model/mealsReservation.model'
 import type { OneBedUserReservation } from 'app/shared/model/onebedReservation.model'
 import type { ITypeReservation } from 'app/shared/model/typeReservation.model'
@@ -8,8 +8,7 @@ import type { IUserCategory } from 'app/shared/model/userCategory.model'
 import axios from 'axios'
 import dayjs from 'dayjs'
 
-import type { Customer, MealsOnlyReservationDatesAndMeals,
-  OneBedReservationDatesAndMeals } from './models'
+import type { MealsOnlyReservationDatesAndMeals, OneBedReservationDatesAndMeals } from './models'
 
 const apiUrlAllPlaces = 'api/planning/places'
 
@@ -108,49 +107,15 @@ async (
 
 export const getIntermittentPlaceWithFreeAndBookedBeds = getPlaceWithFreeBedsAndBookedBeds(true)
 
-export const isArrivalDateIsBeforeDepartureDate = (d1: string, d2: string): boolean => {
-  const arrivalDate = pipe(
-    d1 === '' ? O.none() : O.some(d1),
-    O.map(d => dayjs(d))
-  )
-  const departureDate = pipe(
-    d2 === '' ? O.none() : O.some(d2),
-    O.map(d => dayjs(d))
-  )
-  return pipe(
-    O.struct({ arrivalDate, departureDate }),
-    O.map(d => d.arrivalDate.isBefore(d.departureDate)),
-    O.exists(x => x)
-  )
-}
+export const isArrivalDateIsBeforeDepartureDate = (
+  arrivalDate: Date,
+  departureDate: Date
+): boolean => dayjs(arrivalDate).isBefore(dayjs(departureDate))
 
-export const isArrivalDateEqualDepartureDate = (d1: string, d2: string): boolean => {
-  const arrivalDate = pipe(
-    d1 === '' ? O.none() : O.some(d1),
-    O.map(d => dayjs(d))
-  )
-  const departureDate = pipe(
-    d2 === '' ? O.none() : O.some(d2),
-    O.map(d => dayjs(d))
-  )
-  return pipe(
-    O.struct({ arrivalDate, departureDate }),
-    O.map(d => d.arrivalDate.isSame(d.departureDate)),
-    O.exists(x => x)
-  )
-}
+export const isArrivalDateEqualDepartureDate = (arrivalDate: Date, departureDate: Date): boolean =>
+  dayjs(arrivalDate).isSame(dayjs(departureDate))
 
-export const isDateBeforeNow = (date: string): boolean => {
-  const dateToCheck = pipe(
-    date === '' ? O.none() : O.some(date),
-    O.map(d => dayjs(d))
-  )
-  return pipe(
-    dateToCheck,
-    O.map(d => d.isBefore(dayjs())),
-    O.exists(x => x)
-  )
-}
+export const isDateBeforeNow = (date: Date): boolean => dayjs(date).isBefore(dayjs())
 
 export const createUserOneBedReservation = (
   customer: Customer,
@@ -166,9 +131,9 @@ export const createUserOneBedReservation = (
   departureDate: datesAndMeals.departureDate,
   isSpecialDiet: datesAndMeals.isSpecialDiet === 'true',
   isArrivalLunch: datesAndMeals.isArrivalLunch,
-  isArrivalDiner: datesAndMeals.isArrivalDinner,
+  isArrivalDinner: datesAndMeals.isArrivalDinner,
   isDepartureLunch: datesAndMeals.isDepartureLunch,
-  isDepartureDiner: datesAndMeals.isDepartureDinner,
+  isDepartureDinner: datesAndMeals.isDepartureDinner,
   comment: datesAndMeals.comment,
   bedId,
   // @ts-expect-error TODO: fix this
@@ -188,7 +153,6 @@ export const createUserOneBedReservation = (
 export const createUserMealsOnlyReservation = (
   customer: Customer,
   datesAndMeals: MealsOnlyReservationDatesAndMeals,
-  bedId: O.Option<number>,
   userId: number
 ): MealsOnlyUserReservation => ({
   reservationId: O.none(),
@@ -198,15 +162,15 @@ export const createUserMealsOnlyReservation = (
   isSpecialDiet: datesAndMeals.isSpecialDiet === 'true',
 
   comment: O.some(datesAndMeals.comment),
-  bedId,
-  // @ts-expect-error TODO: fix this
+
   customer: {
-    id: O.getOrUndefined(customer.id),
+    id: customer.id,
     firstname: customer.firstname,
     lastname: customer.lastname,
     email: customer.email,
-    phoneNumber: O.getOrUndefined(customer.phoneNumber),
-    age: O.getOrUndefined(customer.age)
+    phoneNumber: customer.phoneNumber,
+    age: customer.age,
+    comment: customer.comment
   },
   weekMeals: datesAndMeals.weekMeals,
   commentMeals: O.some(datesAndMeals.commentMeals)

@@ -15,9 +15,9 @@ export interface IBookingBeds {
   arrivalDate?: Date
   departureDate?: Date
   customerComment?: string
-  isArrivalDiner?: boolean
+  isArrivalDinner?: boolean
   isArrivalLunch?: boolean
-  isDepartureDiner?: boolean
+  isDepartureDinner?: boolean
   isDepartureLunch?: boolean
   reservationComment?: string
   personNumber?: number
@@ -47,9 +47,9 @@ export const ReservationSchema = S.struct({
   id: S.positive()(S.number),
   arrivalDate: S.Date,
   departureDate: S.Date,
-  isArrivalDiner: S.boolean,
+  isArrivalDinner: S.boolean,
   isArrivalLunch: S.boolean,
-  isDepartureDiner: S.boolean,
+  isDepartureDinner: S.boolean,
   isDepartureLunch: S.boolean,
   personNumber: S.number,
   specialDietNumber: S.number,

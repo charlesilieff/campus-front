@@ -1,21 +1,21 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable simple-import-sort/imports */
+// eslint-disable-next-line simple-import-sort/imports
 import { Button, Heading, HStack, Stack, Text, useToast, VStack } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import type { IReservationRequest } from 'app/shared/model/reservation-request.model'
+import type { Customer } from 'app/shared/model/customer.model'
+import type { ReservationRequest } from 'app/shared/model/reservation-request.model'
+import type { Reservation } from 'app/shared/model/reservation.model'
+import { FormatLocalDate } from 'app/shared/model/reservation.model'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { FaSave } from 'react-icons/fa'
 import { Link, useParams } from 'react-router-dom'
 import { isArrivalDateEqualDepartureDate } from '../bookingbeds/utils'
-
 import { CustomerSummary } from './customer-summary'
 import { CustomerUpdate } from './customer-update'
 import { ReservationChoices } from './reservation-choices'
-
 import {
   createEntity,
   getReservationRequest,
@@ -24,74 +24,45 @@ import {
 } from './reservation-request.reducer'
 import { DatesAndMealsSummary as ReservationSummary } from './reservation-summary'
 
-export interface Reservation {
-  id: O.Option<number>
-  reservationNumber: string
-  personNumber: number
-  arrivalDate: string
-  departureDate: string
-  specialDietNumber: number
-  isArrivalLunch: boolean
-  isArrivalDinner: boolean
-  isDepartureLunch: boolean
-  isDepartureDinner: boolean
-  comment: string
-  isArrivalBreakfast: boolean
-  isDepartureBreakfast: boolean
-  commentMeals: string
-  userCategoryId: number
-}
-
-export interface Customer {
-  id: O.Option<number>
-  firstname: string
-  lastname: string
-  email: string
-  phoneNumber: O.Option<string>
-  age: O.Option<number>
-}
-
 export type BedIds = ReadonlyArray<{ id: number }>
 
 const createReservationRequest = (
   customer: Customer,
   reservation: Reservation,
-  UUID: string
-): { ReservationRequest: IReservationRequest; UUID: string } => ({
-  ReservationRequest: {
-    reservation: {
-      id: O.getOrUndefined(reservation.id),
-      // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
-      arrivalDate: reservation.arrivalDate,
-      // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
-      departureDate: reservation.departureDate,
-      specialDietNumber: reservation.specialDietNumber,
-      isArrivalLunch: reservation.isArrivalLunch,
-      isArrivalDiner: reservation.isArrivalDinner,
-      isDepartureLunch: reservation.isDepartureLunch,
-      isDepartureDiner: reservation.isDepartureDinner,
-      comment: reservation.comment,
-      isConfirmed: false,
-      isPaid: false,
-      paymentMode: '',
-      personNumber: reservation.personNumber,
-      reservationNumber: UUID,
-      isArrivalBreakfast: reservation.isArrivalBreakfast,
-      isDepartureBreakfast: reservation.isDepartureBreakfast,
-      commentMeals: reservation.commentMeals,
-      userCategoryId: 3
-    },
-    // @ts-expect-error TODO: fix this
-    customer: {
-      id: O.getOrUndefined(customer.id),
-      firstname: customer.firstname,
-      lastname: customer.lastname,
-      email: customer.email,
-      phoneNumber: O.getOrUndefined(customer.phoneNumber),
-      age: O.getOrUndefined(customer.age)
-    }
+  UUID: O.Option<string>
+): ReservationRequest => ({
+  reservation: {
+    id: reservation.id,
+    beds: reservation.beds,
+    arrivalDate: reservation.arrivalDate,
+    customer: O.none(),
+    departureDate: reservation.departureDate,
+    specialDietNumber: reservation.specialDietNumber,
+    isArrivalLunch: reservation.isArrivalLunch,
+    isArrivalDinner: reservation.isArrivalDinner,
+    isDepartureLunch: reservation.isDepartureLunch,
+    isDepartureDinner: reservation.isDepartureDinner,
+    comment: reservation.comment,
+    isConfirmed: false,
+    isPaid: false,
+    paymentMode: O.none(),
+    personNumber: reservation.personNumber,
+    reservationNumber: UUID,
+    isArrivalBreakfast: reservation.isArrivalBreakfast,
+    isDepartureBreakfast: reservation.isDepartureBreakfast,
+    commentMeals: reservation.commentMeals,
+    userCategoryId: O.some(3)
   },
-  UUID
+
+  customer: {
+    comment: customer.comment,
+    id: customer.id,
+    firstname: customer.firstname,
+    lastname: customer.lastname,
+    email: customer.email,
+    phoneNumber: customer.phoneNumber,
+    age: customer.age
+  }
 })
 
 export const ReservationRequestUpdate = (): JSX.Element => {
@@ -102,8 +73,8 @@ export const ReservationRequestUpdate = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false)
 
   const { uuid: uuidParam } = useParams<'uuid'>()
-  // @ts-expect-error TODO: fix this
-  const [uuid, setUUID] = useState<string>(uuidParam ?? undefined)
+
+  const [uuid, setUUID] = useState<O.Option<string>>(O.fromNullable(uuidParam))
   const dispatch = useAppDispatch()
   const toast = useToast()
   const [updateSuccess, setUpdateSuccess] = useState(false)
@@ -111,7 +82,15 @@ export const ReservationRequestUpdate = (): JSX.Element => {
   const [isCustomerSaved, setIsCustomerSaved] = useState(true)
   const [isReservationSaved, setIsReservationSaved] = useState(true)
   const reservationRequest = useAppSelector(state => state.requestReservation.entity)
-
+  console.log(new Date().toISOString())
+  console.log(
+    pipe(
+      new Date('6/06/2023').toLocaleDateString(),
+      S.decode(FormatLocalDate),
+      S.encode(FormatLocalDate),
+      x => x
+    )
+  )
   const handleSubmitReservation = async (
     reservation: Reservation,
     customer: Customer
@@ -120,21 +99,24 @@ export const ReservationRequestUpdate = (): JSX.Element => {
       ...reservation,
       departureDate:
         isArrivalDateEqualDepartureDate(reservation.arrivalDate, reservation.departureDate) ?
-          dayjs(reservation.arrivalDate, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD')
-            .toString() :
+          new Date(
+            dayjs(reservation.arrivalDate, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD')
+          ) :
           reservation.departureDate
     }, uuid)
 
     setIsLoading(true)
-    if (uuid !== undefined) {
+
+    if (O.isSome(uuid)) {
       await dispatch(updateEntity(reservationRequest))
       setIsLoading(false)
       setUpdateSuccess(true)
     } else {
-      const { payload } = await dispatch(createEntity(reservationRequest.ReservationRequest))
+      const { payload } = await dispatch(createEntity(reservationRequest))
       setIsLoading(false)
       setUpdateSuccess(true)
       // @ts-expect-error dddd
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       setUUID(payload.data)
     }
   }
@@ -142,63 +124,57 @@ export const ReservationRequestUpdate = (): JSX.Element => {
   useEffect(() => {
     pipe(
       uuid,
-      O.fromNullable,
-      O.map(id => dispatch(getReservationRequest(id)))
+      O.map(uuid => dispatch(getReservationRequest(uuid)))
     )
 
-    if (reservationRequest.reservation !== undefined) {
-      // @ts-expect-error TODO: fix this
+    if (O.isSome(reservationRequest)) {
       setReservation(O.some({
-        // @ts-expect-error TODO: fix this
-        id: O.fromNullable(reservationRequest.reservation.id),
-        // @ts-expect-error TODO: fix this
-        reservationNumber: reservationRequest.reservation.reservationNumber,
-        // @ts-expect-error TODO: fix this
-        arrivalDate: reservationRequest.reservation.arrivalDate.toString(),
-        // @ts-expect-error TODO: fix this
-        departureDate: reservationRequest.reservation.departureDate.toString(),
-        // @ts-expect-error TODO: fix this
-        personNumber: reservationRequest.reservation.personNumber,
-        // @ts-expect-error TODO: fix this
-        specialDietNumber: reservationRequest.reservation.specialDietNumber,
-        // @ts-expect-error TODO: fix this
-        isArrivalLunch: reservationRequest.reservation.isArrivalLunch,
-        // @ts-expect-error TODO: fix this
-        isArrivalDinner: reservationRequest.reservation.isArrivalDiner,
-        // @ts-expect-error TODO: fix this
-        isDepartureDinner: reservationRequest.reservation.isDepartureDiner,
-        // @ts-expect-error TODO: fix this
-        isDepartureLunch: reservationRequest.reservation.isDepartureLunch,
-        // @ts-expect-error TODO: fix this
-        comment: reservationRequest.reservation.comment,
-        // @ts-expect-error TODO: fix this
-        isArrivalBreakfast: reservationRequest.reservation.isArrivalBreakfast,
-        // @ts-expect-error TODO: fix this
-        isDepartureBreakfast: reservationRequest.reservation.isDepartureBreakfast,
-        // @ts-expect-error TODO: fix this
-        commentMeals: reservationRequest.reservation.commentMeals,
-        userCategoryId: 3
-      }))
-    }
+        paymentMode: O.none(),
+        beds: reservationRequest.value.reservation.beds,
+        customer: O.none(),
+        isConfirmed: reservationRequest.value.reservation.isConfirmed,
+        isPaid: reservationRequest.value.reservation.isPaid,
+        id: reservationRequest.value.reservation.id,
 
-    if (reservationRequest.customer !== undefined) {
-      // @ts-expect-error TODO: fix this
+        reservationNumber: reservationRequest.value.reservation.reservationNumber,
+
+        arrivalDate: reservationRequest.value.reservation.arrivalDate,
+
+        departureDate: reservationRequest.value.reservation.departureDate,
+
+        personNumber: reservationRequest.value.reservation.personNumber,
+
+        specialDietNumber: reservationRequest.value.reservation.specialDietNumber,
+
+        isArrivalLunch: reservationRequest.value.reservation.isArrivalLunch,
+
+        isArrivalDinner: reservationRequest.value.reservation.isArrivalDinner,
+
+        isDepartureDinner: reservationRequest.value.reservation.isDepartureDinner,
+
+        isDepartureLunch: reservationRequest.value.reservation.isDepartureLunch,
+
+        comment: reservationRequest.value.reservation.comment,
+
+        isArrivalBreakfast: reservationRequest.value.reservation.isArrivalBreakfast,
+
+        isDepartureBreakfast: reservationRequest.value.reservation.isDepartureBreakfast,
+
+        commentMeals: reservationRequest.value.reservation.commentMeals,
+        userCategoryId: O.some(3)
+      }))
+
       setCustomer(O.some({
-        // @ts-expect-error TODO: fix this
-        age: O.fromNullable(reservationRequest.customer.age),
-        // @ts-expect-error TODO: fix this
-        email: reservationRequest.customer.email,
-        // @ts-expect-error TODO: fix this
-        firstname: reservationRequest.customer.firstname,
-        // @ts-expect-error TODO: fix this
-        id: O.fromNullable(reservationRequest.customer.id),
-        // @ts-expect-error TODO: fix this
-        lastname: reservationRequest.customer.lastname,
-        // @ts-expect-error TODO: fix this
-        phoneNumber: O.fromNullable(reservationRequest.customer.phoneNumber)
+        age: reservationRequest.value.customer.age,
+        email: reservationRequest.value.customer.email,
+        firstname: reservationRequest.value.customer.firstname,
+        id: reservationRequest.value.customer.id,
+        lastname: reservationRequest.value.customer.lastname,
+        phoneNumber: reservationRequest.value.customer.phoneNumber,
+        comment: reservationRequest.value.customer.comment
       }))
     }
-  }, [reservationRequest?.reservation?.reservationNumber])
+  }, [pipe(reservationRequest, O.flatMap(r => r.reservation.reservationNumber), O.getOrNull)])
   useEffect(() => {
     if (uuid === undefined) {
       dispatch(resetReservations())
@@ -210,7 +186,7 @@ export const ReservationRequestUpdate = (): JSX.Element => {
   useEffect(() => {
     if (updateSuccess) {
       dispatch(resetReservations())
-      if (uuid !== undefined) {
+      if (O.isSome(uuid)) {
         toast({
           position: 'top',
           title: 'Demande de réservation modifiée !',

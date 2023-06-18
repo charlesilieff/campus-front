@@ -1,30 +1,23 @@
-import { pipe } from '@effect/data/Function'
 import type * as O from '@effect/data/Option'
-import * as PR from '@effect/schema/ParseResult'
 import * as S from '@effect/schema/Schema'
-import type { BedDecoded, BedEncoded } from 'app/shared/model/bed.model'
-import { Bed } from 'app/shared/model/bed.model'
 import type { CustomerDecoded, CustomerEncoded } from 'app/shared/model/customer.model'
 import { Customer } from 'app/shared/model/customer.model'
 import type { IPricing } from 'app/shared/model/pricing.model'
 
-export interface ReservationEncoded {
+export interface DatesAndMealsEncoded {
   id?: number
   personNumber: number
   paymentMode?: string
-  isPaid: boolean
-  isConfirmed: boolean
   reservationNumber?: string
   specialDietNumber: number
   isArrivalDinner: boolean
   isDepartureDinner: boolean
   isArrivalLunch: boolean
   isDepartureLunch: boolean
-  arrivalDate: string
-  departureDate: string
+  arrivalDate: Date
+  departureDate: Date
   comment?: string
   pricing?: IPricing
-  beds: readonly BedEncoded[]
   customer?: CustomerEncoded
   // userCategory?: IUserCategory
   userCategoryId?: number
@@ -33,12 +26,10 @@ export interface ReservationEncoded {
   commentMeals?: string
 }
 
-export interface ReservationDecoded {
+export interface DatesAndMealsDecoded {
   id: O.Option<number>
   personNumber: number
   paymentMode: O.Option<string>
-  isPaid: boolean
-  isConfirmed: boolean
   reservationNumber: O.Option<string>
   specialDietNumber: number
   isArrivalDinner: boolean
@@ -49,7 +40,6 @@ export interface ReservationDecoded {
   departureDate: Date
   comment: O.Option<string>
   // pricing: O.Option<IPricing>
-  beds: readonly BedDecoded[]
   customer: O.Option<CustomerDecoded>
 
   // userCategory: O.Option<IUserCategory>
@@ -59,34 +49,22 @@ export interface ReservationDecoded {
   commentMeals: O.Option<string>
 }
 
-export const FormatLocalDate: S.Schema<string, Date> = S.transform(
-  S.string,
-  S.ValidDateFromSelf,
-  // define a function that converts a string into a Date
-  s => new Date(s) instanceof Date ? new Date(s) : PR.failure(PR.type(S.Date.ast, s)),
-  // define a function that converts a Date into a string
-  b => pipe(b, S.encode(S.ValidDateFromSelf), b => b.toLocaleDateString())
-)
-
-export const Reservation: S.Schema<ReservationEncoded, ReservationDecoded> = S.lazy(() =>
+export const DatesAndMeals: S.Schema<DatesAndMealsEncoded, DatesAndMealsDecoded> = S.lazy(() =>
   S.struct({
     id: S.optional(S.number).toOption(),
     personNumber: S.number,
     paymentMode: S.optional(S.string).toOption(),
-    isPaid: S.boolean,
-    isConfirmed: S.boolean,
     reservationNumber: S.optional(S.UUID).toOption(),
     specialDietNumber: S.number,
     isArrivalDinner: S.boolean,
     isDepartureDinner: S.boolean,
     isArrivalLunch: S.boolean,
     isDepartureLunch: S.boolean,
-    arrivalDate: FormatLocalDate,
+    arrivalDate: S.DateFromSelf,
 
-    departureDate: FormatLocalDate,
+    departureDate: S.DateFromSelf,
     comment: S.optional(S.string).toOption(),
     // pricing: S.optional(S.lazy(() => Pricing)).toOption(),
-    beds: S.array(S.lazy(() => Bed)),
     customer: S.optional(S.lazy(() => Customer)).toOption(),
     // userCategory: S.optional(S.lazy(() => UserCategory)).toOption(),
     userCategoryId: S.optional(S.number).toOption(),
@@ -96,4 +74,4 @@ export const Reservation: S.Schema<ReservationEncoded, ReservationDecoded> = S.l
   })
 )
 
-export type Reservation = S.To<typeof Reservation>
+export type DatesAndMeals = S.To<typeof DatesAndMeals>

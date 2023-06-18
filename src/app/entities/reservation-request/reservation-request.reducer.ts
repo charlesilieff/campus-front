@@ -1,17 +1,18 @@
+import * as O from '@effect/data/Option'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
-import type { IReservationRequest } from 'app/shared/model/reservation-request.model'
-import { defaultValue } from 'app/shared/model/reservation-request.model'
+import { ReservationRequest } from 'app/shared/model/reservation-request.model'
 import type { EntityState } from 'app/shared/reducers/reducer.utils'
 import { createEntitySlice, serializeAxiosError } from 'app/shared/reducers/reducer.utils'
-import { cleanEntity } from 'app/shared/util/entity-utils'
+import { getHttpEntity, postHttpEntity, putHttpEntity } from 'app/shared/util/httpUtils'
 import axios from 'axios'
+import { castDraft } from 'immer'
 
-const initialState: EntityState<IReservationRequest> = {
+const initialState: EntityState<ReservationRequest> = {
   loading: false,
   errorMessage: null,
   entities: [],
-  entity: defaultValue,
+  entity: O.none(),
   updating: false,
   updateSuccess: false
 }
@@ -24,39 +25,26 @@ export const getReservationRequest = createAsyncThunk(
   'reservationRequest/fetch_entity',
   async (uuid: string | number) => {
     const requestUrl = `${apiUrl}/${uuid}`
-    return axios.get<IReservationRequest>(requestUrl)
+    return getHttpEntity(requestUrl, ReservationRequest)
   },
   { serializeError: serializeAxiosError }
 )
 
 export const createEntity = createAsyncThunk(
   'reservationRequest/create_entity',
-  async (entity: IReservationRequest) => axios.post<IReservationRequest>(apiUrl, entity),
+  async (entity: ReservationRequest) =>
+    postHttpEntity(apiUrl, ReservationRequest, entity, ReservationRequest),
   { serializeError: serializeAxiosError }
 )
 
 export const updateEntity = createAsyncThunk(
   'reservationRequest/update_entity',
-  async (entity: { ReservationRequest: IReservationRequest; UUID: string }) =>
-    axios.put<IReservationRequest>(
-      `${apiUrl}/${entity.UUID}`,
-      cleanEntity(entity.ReservationRequest)
-    ),
-  { serializeError: serializeAxiosError }
-)
-
-export const partialUpdateEntity = createAsyncThunk(
-  'reservationRequest/partial_update_entity',
-  async (entity: { ReservationRequest: IReservationRequest; UUID: string }) =>
-    axios.patch<IReservationRequest>(
-      `${apiUrl}/${entity.UUID}`,
-      cleanEntity(entity.ReservationRequest),
-      {
-        headers: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          'Content-Type': 'application/merge-patch+json'
-        }
-      }
+  async (reservationRequest: ReservationRequest) =>
+    putHttpEntity(
+      `${apiUrl}/${O.getOrNull(reservationRequest.reservation.reservationNumber)}`,
+      ReservationRequest,
+      reservationRequest,
+      ReservationRequest
     ),
   { serializeError: serializeAxiosError }
 )
@@ -66,7 +54,7 @@ export const deleteEntity = createAsyncThunk(
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`
 
-    return axios.delete<IReservationRequest>(requestUrl)
+    return axios.delete<ReservationRequest>(requestUrl)
   },
   { serializeError: serializeAxiosError }
 )
@@ -77,28 +65,26 @@ export const ReservationRequestSlice = createEntitySlice({
   name: 'reservationRequest',
   initialState,
   reducers: {
-    setData(state, action: PayloadAction<IReservationRequest>) {
-      // @ts-expect-error TODO: fix this
-      state.entity.customer = action.payload.customer
+    setData(state, action: PayloadAction<ReservationRequest>) {
+      state.entity = castDraft(O.some(action.payload))
     }
   },
   extraReducers(builder) {
     builder
       .addCase(getReservationRequest.fulfilled, (state, action) => {
         state.loading = false
-        state.entity = action.payload.data
+        state.entity = action.payload
       })
       .addCase(deleteEntity.fulfilled, state => {
         state.updating = false
         state.updateSuccess = true
-        state.entity = {}
+        state.entity = castDraft(O.none())
       })
-      .addMatcher(isFulfilled(createEntity, updateEntity, partialUpdateEntity), (state, action) => {
+      .addMatcher(isFulfilled(createEntity, updateEntity), (state, action) => {
         state.updating = false
         state.loading = false
         state.updateSuccess = true
-        // @ts-expect-error TODO: fix this
-        state.entity.reservation = action.payload.data.reservation
+        state.entity = action.payload
       })
       .addMatcher(isPending(getReservationRequest), state => {
         state.errorMessage = null
@@ -106,7 +92,7 @@ export const ReservationRequestSlice = createEntitySlice({
         state.loading = true
       })
       .addMatcher(
-        isPending(createEntity, updateEntity, partialUpdateEntity, deleteEntity),
+        isPending(createEntity, updateEntity, deleteEntity),
         state => {
           state.errorMessage = null
           state.updateSuccess = false

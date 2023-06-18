@@ -10,12 +10,15 @@ import {
   Input,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
+import type { Customer, CustomerDecoded } from 'app/shared/model/customer.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import type { Customer } from './reservation-update'
+import { schemaResolver } from '../bed/resolver'
 
 interface CustomerUpdateProps {
   setCustomer: (customer: O.Option<Customer>) => void
@@ -33,6 +36,24 @@ export interface FormCustomer {
   age?: number
 }
 
+interface FormCustomerDecoded {
+  id: O.Option<number>
+  firstname: string
+  lastname: string
+  email: string
+  phoneNumber: O.Option<string>
+  age: O.Option<number>
+}
+
+const CustomerForm: S.Schema<FormCustomer, FormCustomerDecoded> = S.struct({
+  id: S.optional(S.number).toOption(),
+  firstname: S.string,
+  lastname: S.string,
+  email: S.string,
+  phoneNumber: S.optional(S.string).toOption(),
+  age: S.optional(S.number).toOption()
+})
+
 export const CustomerUpdate = (
   props: CustomerUpdateProps
 ): JSX.Element => {
@@ -41,33 +62,25 @@ export const CustomerUpdate = (
     register,
     formState: { errors },
     reset: resetForm
-  } = useForm<FormCustomer>()
+  } = useForm<FormCustomer>({
+    resolver: schemaResolver(CustomerForm)
+  })
   useEffect(() => {
     resetForm(
-      // @ts-expect-error TODO: fix this
-      O.isSome(props.customer) ?
-        {
-          ...props.customer.value,
-          age: O.getOrUndefined(props.customer.value.age),
-          phoneNumber: O.getOrUndefined(props.customer.value.phoneNumber),
-          id: O.getOrUndefined(props.customer.value.id)
-        } :
-        {}
+      pipe(
+        props.customer,
+        O.map(S.encode(CustomerForm)),
+        O.getOrElse(() => ({}))
+      )
     )
   }, [props.customer])
 
   const handleValidCustomerSubmit = (
-    customer: FormCustomer
+    customer: FormCustomerDecoded
   ): void => {
-    // @ts-expect-error react hook form ne gère pas bien le type de age
-    const age = customer.age === undefined || customer.age === '' ? O.none() : O.some(customer.age)
-    const phoneNumber = customer.phoneNumber === undefined || customer.phoneNumber === '' ?
-      O.none() :
-      O.some(customer.phoneNumber)
-
-    const id = customer.id === undefined ? O.none() : O.some(customer.id)
-    props.setCustomer(O.some({ ...customer, age, phoneNumber, id }))
-
+    props.setCustomer(
+      O.some({ ...customer, comment: pipe(props.customer, O.flatMap(c => c.comment)) })
+    )
     props.setUpdateCustomer(false)
   }
 
@@ -90,7 +103,7 @@ export const CustomerUpdate = (
         </HStack>
         <Box minW={'500px'}>
           <form
-            onSubmit={handleSubmit(handleValidCustomerSubmit)}
+            onSubmit={handleSubmit(v => handleValidCustomerSubmit(v as unknown as CustomerDecoded))}
           >
             <VStack spacing={10} alignItems={'left'}>
               <HStack spacing={12} minW={600} my={4}>
@@ -170,7 +183,7 @@ export const CustomerUpdate = (
                     id="age"
                     type="number"
                     placeholder="Age"
-                    {...register('age')}
+                    {...register('age', { valueAsNumber: true })}
                   />
 
                   <FormErrorMessage>

@@ -6,14 +6,15 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
+import * as O from '@effect/data/Option'
 import React from 'react'
 import { BsPencil } from 'react-icons/bs'
 import { MdPending } from 'react-icons/md'
 
-import type { Reservation } from './reservation-update'
+import type { DatesAndMeals } from './model'
 
 interface ReservationSummaryProps {
-  datesAndMeals: Reservation
+  datesAndMeals: DatesAndMeals
   setUpdate: (update: boolean) => void
   isReservationSaved: boolean
 }
@@ -84,7 +85,7 @@ export const DatesAndMealsSummary = (
       </HStack>
       <VStack alignItems={'flex-start'} py={2}>
         <Text fontWeight={'bold'}>Commentaire :</Text>
-        <Text>{comment}</Text>
+        <Text>{O.getOrNull(comment)}</Text>
       </VStack>
       <VStack alignItems={'flex-start'} py={2}>
         <Text fontWeight={'bold'}>Repas sélectionnés :</Text>
@@ -109,7 +110,7 @@ export const DatesAndMealsSummary = (
       </HStack>
       <VStack alignItems={'flex-start'} py={2}>
         <Text fontWeight={'bold'}>Commentaire des repas :</Text>
-        <Text>{commentMeals}</Text>
+        <Text>{O.getOrNull(commentMeals)}</Text>
       </VStack>
       <Button
         colorScheme="blue"

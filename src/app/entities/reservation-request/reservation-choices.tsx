@@ -13,14 +13,22 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
+import { Reservation } from 'app/shared/model/reservation.model'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import { isArrivalDateEqualDepartureDate, isArrivalDateIsBeforeDepartureDate,
-  isDateBeforeNow } from '../bookingbeds/utils'
-import type { Reservation } from './reservation-update'
+import { schemaResolver } from '../bed/resolver'
+import {
+  isArrivalDateEqualDepartureDate,
+  isArrivalDateIsBeforeDepartureDate,
+  isDateBeforeNow
+} from '../bookingbeds/utils'
+import type { DatesAndMealsDecoded, DatesAndMealsEncoded } from './model'
+import { DatesAndMeals } from './model'
 
 interface ReservationChoicesProps {
   setReservation: (reservation: O.Option<Reservation>) => void
@@ -38,39 +46,54 @@ export const ReservationChoices = (
     watch,
     formState: { errors },
     reset: resetForm
-  } = useForm<Reservation>()
+  } = useForm<DatesAndMealsEncoded>({
+    resolver: schemaResolver(DatesAndMeals)
+  })
+
+  console.log('error', errors)
   const personNumber = useRef({})
   personNumber.current = watch('personNumber', 0)
   useEffect(() => {
     resetForm(
-      O.isSome(props.reservation) ? props.reservation.value : {}
+      pipe(props.reservation, O.map(S.encode(Reservation)), O.getOrElse(() => ({})))
     )
   }, [props.reservation])
 
-  const departureDate = useRef({})
-  departureDate.current = watch('departureDate', '')
-  const arrivalDate = useRef({})
-  arrivalDate.current = watch('arrivalDate', '')
+  const departureDate = useRef(O.none<Date>())
+  departureDate.current = pipe(watch('departureDate'), O.fromNullable, O.map(d => new Date(d)))
+  const arrivalDate = useRef(O.none<Date>())
+  arrivalDate.current = pipe(watch('arrivalDate'), O.fromNullable, O.map(d => new Date(d)))
+
   const handleValidDateAndMealSubmit = (
-    reservation: Reservation
+    reservation: DatesAndMealsDecoded
   ): void => {
     props.setUpdateReservation(false)
     if (
       isArrivalDateEqualDepartureDate(
-        arrivalDate.current.toString(),
-        departureDate.current.toString()
+        new Date(arrivalDate.current.toString()),
+        new Date(departureDate.current.toString())
       )
     ) {
       props.setReservation(
         O.some({
           ...reservation,
+          id: pipe(props.reservation, O.flatMap(r => r.id)),
           isDepartureBreakfast: false,
           isDepartureDinner: false,
-          isDepartureLunch: false
+          isDepartureLunch: false,
+          isPaid: pipe(props.reservation, O.map(r => r.isPaid), O.getOrElse(() => false)),
+          beds: pipe(props.reservation, O.map(r => r.beds), O.getOrElse(() => [])),
+          isConfirmed: pipe(props.reservation, O.map(r => r.isConfirmed), O.getOrElse(() => false))
         })
       )
     } else {
-      props.setReservation(O.some(reservation))
+      props.setReservation(O.some({
+        ...reservation,
+        id: pipe(props.reservation, O.flatMap(r => r.id)),
+        isPaid: pipe(props.reservation, O.map(r => r.isPaid), O.getOrElse(() => false)),
+        beds: pipe(props.reservation, O.map(r => r.beds), O.getOrElse(() => [])),
+        isConfirmed: pipe(props.reservation, O.map(r => r.isConfirmed), O.getOrElse(() => false))
+      }))
     }
   }
 
@@ -92,7 +115,9 @@ export const ReservationChoices = (
         </HStack>
         <Box minW={'500px'}>
           <form
-            onSubmit={handleSubmit(handleValidDateAndMealSubmit)}
+            onSubmit={handleSubmit(v =>
+              handleValidDateAndMealSubmit(v as unknown as DatesAndMealsDecoded)
+            )}
           >
             <VStack spacing={5}>
               <HStack spacing={12} minW={600} my={4}>
@@ -105,11 +130,19 @@ export const ReservationChoices = (
                     type="date"
                     placeholder="Date d'arrivée'"
                     {...register('arrivalDate', {
+                      valueAsDate: true,
                       required: "la date d'arrivée' est obligatoire",
                       validate(v) {
                         if (
-                          !isArrivalDateIsBeforeDepartureDate(v, departureDate.current.toString())
-                          && !isArrivalDateEqualDepartureDate(v, departureDate.current.toString())
+                          O.isSome(departureDate.current)
+                          && !isArrivalDateIsBeforeDepartureDate(
+                            new Date(v),
+                            departureDate.current.value
+                          )
+                          && !isArrivalDateEqualDepartureDate(
+                            new Date(v),
+                            departureDate.current.value
+                          )
                         ) {
                           return "La date d'arrivée doit être avant la date de départ"
                         }
@@ -136,7 +169,8 @@ export const ReservationChoices = (
                     type="date"
                     placeholder="Date de départ"
                     {...register('departureDate', {
-                      required: 'la date de départ est obligatoire'
+                      required: 'la date de départ est obligatoire',
+                      valueAsDate: true
                     })}
                   />
 
@@ -170,10 +204,11 @@ export const ReservationChoices = (
                   <Checkbox {...register('isArrivalLunch')} defaultChecked>déjeuner</Checkbox>
                   <Checkbox {...register('isArrivalDinner')} defaultChecked>dîner</Checkbox>
                 </HStack>
-                {!isArrivalDateEqualDepartureDate(
-                    arrivalDate.current.toString(),
-                    departureDate.current.toString()
-                  ) ?
+                {O.isSome(departureDate.current) && O.isSome(arrivalDate.current)
+                    && !isArrivalDateEqualDepartureDate(
+                      arrivalDate.current.value,
+                      departureDate.current.value
+                    ) ?
                   (
                     <HStack>
                       <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>
@@ -190,7 +225,7 @@ export const ReservationChoices = (
                 </FormLabel>
                 <Input
                   type="number"
-                  {...register('personNumber', {})}
+                  {...register('personNumber', { valueAsNumber: true })}
                 />
 
                 <FormErrorMessage>
@@ -205,6 +240,7 @@ export const ReservationChoices = (
                 <Input
                   type="number"
                   {...register('specialDietNumber', {
+                    valueAsNumber: true,
                     required: 'Le nombre de régimes spéciaux est obligatoire',
                     validate(v) {
                       if (v > +personNumber.current) {
