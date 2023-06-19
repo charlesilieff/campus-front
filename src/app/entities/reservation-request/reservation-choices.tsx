@@ -13,10 +13,11 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
+import { identity, pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
-import { Reservation } from 'app/shared/model/reservation.model'
+import type { Reservation } from 'app/shared/model/reservation.model'
+import dayjs from 'dayjs'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
@@ -50,12 +51,11 @@ export const ReservationChoices = (
     resolver: schemaResolver(DatesAndMeals)
   })
 
-  console.log('error', errors)
   const personNumber = useRef({})
   personNumber.current = watch('personNumber', 0)
   useEffect(() => {
     resetForm(
-      pipe(props.reservation, O.map(S.encode(Reservation)), O.getOrElse(() => ({})))
+      pipe(props.reservation, O.map(S.encode(DatesAndMeals)), O.getOrElse(() => ({})))
     )
   }, [props.reservation])
 
@@ -69,9 +69,15 @@ export const ReservationChoices = (
   ): void => {
     props.setUpdateReservation(false)
     if (
-      isArrivalDateEqualDepartureDate(
-        new Date(arrivalDate.current.toString()),
-        new Date(departureDate.current.toString())
+      pipe(
+        O.struct({ arrival: arrivalDate.current, departureDate: departureDate.current }),
+        O.map(({ arrival, departureDate }) =>
+          isArrivalDateEqualDepartureDate(
+            arrival,
+            departureDate
+          )
+        ),
+        O.exists(identity)
       )
     ) {
       props.setReservation(
@@ -83,7 +89,12 @@ export const ReservationChoices = (
           isDepartureLunch: false,
           isPaid: pipe(props.reservation, O.map(r => r.isPaid), O.getOrElse(() => false)),
           beds: pipe(props.reservation, O.map(r => r.beds), O.getOrElse(() => [])),
-          isConfirmed: pipe(props.reservation, O.map(r => r.isConfirmed), O.getOrElse(() => false))
+          isConfirmed: pipe(props.reservation, O.map(r => r.isConfirmed), O.getOrElse(() => false)),
+          departureDate: pipe(
+            reservation.departureDate,
+            dayjs,
+            d => d.add(1, 'day').toDate()
+          )
         })
       )
     } else {

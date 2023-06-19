@@ -2,12 +2,12 @@
 import { Button, Heading, HStack, Stack, Text, useToast, VStack } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
+import * as T from '@effect/io/Effect'
 import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { Customer } from 'app/shared/model/customer.model'
 import type { ReservationRequest } from 'app/shared/model/reservation-request.model'
 import type { Reservation } from 'app/shared/model/reservation.model'
-import { FormatLocalDate } from 'app/shared/model/reservation.model'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { FaSave } from 'react-icons/fa'
@@ -82,15 +82,7 @@ export const ReservationRequestUpdate = (): JSX.Element => {
   const [isCustomerSaved, setIsCustomerSaved] = useState(true)
   const [isReservationSaved, setIsReservationSaved] = useState(true)
   const reservationRequest = useAppSelector(state => state.requestReservation.entity)
-  console.log(new Date().toISOString())
-  console.log(
-    pipe(
-      new Date('6/06/2023').toLocaleDateString(),
-      S.decode(FormatLocalDate),
-      S.encode(FormatLocalDate),
-      x => x
-    )
-  )
+
   const handleSubmitReservation = async (
     reservation: Reservation,
     customer: Customer
@@ -112,12 +104,16 @@ export const ReservationRequestUpdate = (): JSX.Element => {
       setIsLoading(false)
       setUpdateSuccess(true)
     } else {
-      const { payload } = await dispatch(createEntity(reservationRequest))
+      const payload = await pipe(
+        T.promise(() => dispatch(createEntity(reservationRequest))),
+        T.map(d => d.payload),
+        T.map(S.parse(S.optionFromSelf(S.string))),
+        T.runPromise
+      )
       setIsLoading(false)
       setUpdateSuccess(true)
-      // @ts-expect-error dddd
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      setUUID(payload.data)
+
+      setUUID(payload)
     }
   }
 
@@ -225,7 +221,7 @@ export const ReservationRequestUpdate = (): JSX.Element => {
             <Text>
               Vous pouvez aussi cliquez&nbsp;
               <Link
-                to={`/reservation-request/${uuid}`}
+                to={`/reservation-request/${O.getOrNull(uuid)}`}
               >
                 ici
               </Link>

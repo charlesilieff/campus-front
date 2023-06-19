@@ -65,7 +65,7 @@ export const FormatLocalDate: S.Schema<string, Date> = S.transform(
   // define a function that converts a string into a Date
   s => new Date(s) instanceof Date ? new Date(s) : PR.failure(PR.type(S.Date.ast, s)),
   // define a function that converts a Date into a string
-  b => pipe(b, S.encode(S.ValidDateFromSelf), b => b.toLocaleDateString())
+  b => pipe(b, S.encode(S.ValidDateFromSelf), b => b.toISOString().slice(0, 10))
 )
 
 export const Reservation: S.Schema<ReservationEncoded, ReservationDecoded> = S.lazy(() =>

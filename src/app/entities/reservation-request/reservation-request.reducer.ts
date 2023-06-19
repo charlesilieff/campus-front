@@ -1,4 +1,5 @@
 import * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
 import { ReservationRequest } from 'app/shared/model/reservation-request.model'
@@ -33,7 +34,7 @@ export const getReservationRequest = createAsyncThunk(
 export const createEntity = createAsyncThunk(
   'reservationRequest/create_entity',
   async (entity: ReservationRequest) =>
-    postHttpEntity(apiUrl, ReservationRequest, entity, ReservationRequest),
+    postHttpEntity(apiUrl, ReservationRequest, entity, S.string),
   { serializeError: serializeAxiosError }
 )
 
@@ -80,11 +81,11 @@ export const ReservationRequestSlice = createEntitySlice({
         state.updateSuccess = true
         state.entity = castDraft(O.none())
       })
-      .addMatcher(isFulfilled(createEntity, updateEntity), (state, action) => {
+      .addMatcher(isFulfilled(createEntity, updateEntity), (state, _) => {
         state.updating = false
         state.loading = false
         state.updateSuccess = true
-        state.entity = action.payload
+        state.entity = castDraft(O.none())
       })
       .addMatcher(isPending(getReservationRequest), state => {
         state.errorMessage = null
