@@ -60,20 +60,16 @@ export const Home = (): JSX.Element => {
       </Box>
       <VStack alignItems={'flex-start'}>
         <Text
-          // width={screen.availWidth > 300 ? 'auto' : '400px'}
           width={'auto'}
         >
           Bienvenue dans l&apos;outil de gestion d&apos;hebergement du Campus de la Transition.
         </Text>
         <Box
-          // width={'auto'}
           m={5}
-          // spacing={'5px'}
         >
           <Box
             alignItems={'flex-start'}
             minW={{ base: '380px', md: '650px' }}
-            // maxW={'600px'}
             backgroundColor={'blue.100'}
             p={5}
             width={'auto'}
@@ -83,19 +79,13 @@ export const Home = (): JSX.Element => {
               direction={{ base: 'column', md: 'row' }}
             >
               <Box>
-                Vous vous voulez voir la page de demande de réservation publique ? {
-                  /* <Link target="_blank" data-cy="reservation-request" to={reservationRequestUrl}>
-                  Cliquez ici.
-                </Link> */
-                }
+                Vous vous voulez voir la page de demande de réservation publique ?
               </Box>
               <Button
                 id="jhi-link-request-reservation"
-                // data-cy="entityCopyLink"
                 colorScheme={'blue'}
                 as={Link}
                 to={reservationRequestUrl}
-                // minWidth={'340px'}
                 width={'100px'}
                 px={1}
                 size={{ base: 'sm', md: 'md' }}
