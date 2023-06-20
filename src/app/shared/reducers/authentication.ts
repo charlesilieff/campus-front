@@ -1,10 +1,13 @@
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
 import type { Dispatch } from '@reduxjs/toolkit'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { AppThunk } from 'app/config/store'
 import type { AxiosResponse } from 'axios'
-import axios from 'axios'
 
-import type { IUser } from '../model/user.model'
+import { User } from '../model/user.model'
+import { getHttpEntity, postHttpEntity } from '../util/httpUtils'
 import { Storage } from '../util/storage-util'
 import { serializeAxiosError } from './reducer.utils'
 
@@ -16,7 +19,7 @@ export const initialState = {
   loginSuccess: false,
   loginError: false, // Errors returned from server side
   showModalLogin: false,
-  account: {} as IUser,
+  account: O.none<User>(),
   errorMessage: null as unknown as string, // Errors returned from server side
   redirectMessage: null as unknown as string,
   sessionHasBeenFetched: false,
@@ -34,30 +37,41 @@ export const getSession = (): AppThunk => dispatch => {
 
 export const getAccount = createAsyncThunk(
   'authentication/get_account',
-  async () => axios.get<IUser>('api/account'),
+  async () => getHttpEntity('api/account', User),
   {
     serializeError: serializeAxiosError
   }
 )
 
-interface IAuthParams {
-  username: string
-  password: string
-  rememberMe?: boolean
-}
+const AuthParams = S.struct({
+  username: S.string,
+  password: S.string,
+  rememberMe: S.optional(S.boolean).toOption()
+})
+type AuthParams = S.To<typeof AuthParams>
+
+const IdToken = S.struct({
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  id_token: S.string
+})
+type IdToken = S.To<typeof AuthParams>
 
 export const authenticate = createAsyncThunk(
   'authentication/login',
-  async (auth: IAuthParams) => axios.post<IAuthParams>('api/authenticate', auth),
+  async (auth: AuthParams) => postHttpEntity('api/authenticate', AuthParams, auth, IdToken),
   {
     serializeError: serializeAxiosError
   }
 )
 
-export const login: (username: string, password: string, rememberMe?: boolean) => AppThunk = (
+export const login: (
+  username: string,
+  password: string,
+  rememberMe: O.Option<boolean>
+) => AppThunk = (
   username,
   password,
-  rememberMe = false
+  rememberMe = O.some(false)
 ) =>
 async dispatch => {
   const result = await dispatch(authenticate({ username, password, rememberMe }))
@@ -70,7 +84,7 @@ async dispatch => {
     if (rememberMe) {
       Storage.local.set(AUTH_TOKEN_KEY, jwt)
     } else {
-      Storage.session.set(AUTH_TOKEN_KEY, jwt)
+      Storage.local.set(AUTH_TOKEN_KEY, jwt)
     }
   }
   dispatch(getSession())
@@ -148,14 +162,18 @@ export const AuthenticationSlice = createSlice({
         errorMessage: action.error.message
       }))
       .addCase(getAccount.fulfilled, (state, action) => {
-        const isAuthenticated = action.payload && action.payload.data
-          && action.payload.data.activated
+        const isAuthenticated = pipe(
+          action.payload,
+          O.map(a => a.activated),
+          O.getOrElse(() => false)
+        )
+
         return {
           ...state,
           isAuthenticated,
           loading: false,
           sessionHasBeenFetched: true,
-          account: action.payload.data
+          account: action.payload
         }
       })
       .addCase(authenticate.pending, state => {

@@ -16,15 +16,20 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
+import * as S from '@effect/schema/Schema'
+import { schemaResolver } from 'app/entities/bed/resolver'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-interface UserForm {
-  username: string
-  password: string
-  rememberMe: boolean
-}
+const UserForm = S.struct({
+  username: S.string,
+  password: S.string,
+  rememberMe: S.boolean
+})
+
+type UserForm = S.To<typeof UserForm>
+type UserFormEncoded = S.From<typeof UserForm>
 
 export interface ILoginModalProps {
   showModal: boolean
@@ -35,7 +40,7 @@ export interface ILoginModalProps {
 
 export const LoginModal = (props: ILoginModalProps) => {
   const login = (
-    { username, password, rememberMe }: { username: string; password: string; rememberMe: boolean }
+    { username, password, rememberMe }: UserForm
   ) => {
     props.handleLogin(username, password, rememberMe)
   }
@@ -44,7 +49,7 @@ export const LoginModal = (props: ILoginModalProps) => {
     handleSubmit,
     register,
     formState: { errors }
-  } = useForm<UserForm>({ mode: 'onTouched' })
+  } = useForm<UserFormEncoded>({ mode: 'onTouched', resolver: schemaResolver(UserForm) })
 
   const { loginError, handleClose } = props
 
@@ -58,7 +63,7 @@ export const LoginModal = (props: ILoginModalProps) => {
       <ModalOverlay />
       <ModalContent>
         <form
-          onSubmit={handleSubmit(login)}
+          onSubmit={handleSubmit(v => login(v as unknown as UserForm))}
         >
           <ModalHeader id="login-title" data-cy="loginTitle">
             Connexion

@@ -1,3 +1,4 @@
+import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { login } from 'app/shared/reducers/authentication'
 import React, { useEffect, useState } from 'react'
@@ -19,7 +20,7 @@ export const Login = () => {
   }, [])
 
   const handleLogin = (username: string, password: string, rememberMe = false) =>
-    dispatch(login(username, password, rememberMe))
+    dispatch(login(username, password, O.some(rememberMe)))
 
   const handleClose = () => {
     setShowModal(false)
