@@ -11,11 +11,10 @@ import {
   Tr,
   VStack
 } from '@chakra-ui/react'
-import * as O from '@effect/data/Option'
 import { APP_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { TextFormat } from 'app/entities/bookingbeds/text-format'
-import type { UserDecoded } from 'app/shared/model/user.model'
+import type { User } from 'app/shared/model/user.model'
 import React, { useEffect } from 'react'
 import { FaEye, FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
@@ -38,7 +37,7 @@ export const UserManagement = () => {
     getUsersFromProps()
   }
 
-  const toggleActive = (user: UserDecoded) => () => {
+  const toggleActive = (user: User) => () => {
     dispatch(
       updateUser({
         ...user,
@@ -50,12 +49,18 @@ export const UserManagement = () => {
   const users = useAppSelector(state => state.userManagement.users)
 
   const loading = useAppSelector(state => state.userManagement.loading)
+  const updating = useAppSelector(state => state.userManagement.updating)
 
   return (
     <VStack alignItems={'flex-start'}>
       <Heading size={'lg'}>Utilisateurs</Heading>
       <HStack alignSelf={'flex-end'}>
-        <Button onClick={handleSyncList} isLoading={loading} variant="see" leftIcon={<FaSync />}>
+        <Button
+          onClick={handleSyncList}
+          isLoading={loading || updating}
+          variant="see"
+          leftIcon={<FaSync />}
+        >
           Actualiser la liste
         </Button>
         <Button
@@ -103,12 +108,20 @@ export const UserManagement = () => {
               <Td>
                 {user.activated ?
                   (
-                    <Button variant={'save'} onClick={toggleActive(user)}>
+                    <Button
+                      variant={'save'}
+                      onClick={toggleActive(user)}
+                      isLoading={loading || updating}
+                    >
                       Activé
                     </Button>
                   ) :
                   (
-                    <Button variant="danger" onClick={toggleActive(user)}>
+                    <Button
+                      variant="danger"
+                      onClick={toggleActive(user)}
+                      isLoading={loading || updating}
+                    >
                       Désactivé
                     </Button>
                   )}
@@ -124,7 +137,7 @@ export const UserManagement = () => {
               </Td>
               <Td>
                 <TextFormat
-                  value={O.getOrUndefined(user.createdDate)}
+                  value={user.createdDate}
                   type="date"
                   format={APP_DATE_FORMAT}
                   blankOnInvalid
@@ -133,7 +146,7 @@ export const UserManagement = () => {
               <Td>{user.lastModifiedBy}</Td>
               <Td>
                 <TextFormat
-                  value={O.getOrUndefined(user.lastModifiedDate)}
+                  value={user.lastModifiedDate}
                   type="date"
                   format={APP_DATE_FORMAT}
                   blankOnInvalid

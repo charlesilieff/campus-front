@@ -10,10 +10,14 @@ import {
   VStack
 } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
 import * as A from '@effect/data/ReadonlyArray'
 import * as String from '@effect/data/String'
+import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import type { IUser } from 'app/shared/model/user.model'
+import { schemaResolver } from 'app/entities/bed/resolver'
+import type { Authorities } from 'app/shared/model/user.model'
+import { User, type UserEncoded } from 'app/shared/model/user.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
@@ -21,16 +25,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { createUser, getRoles, getUser, reset, updateUser } from './user-management.reducer'
 
-interface UserForm {
-  login: string
-  firstName: string
-  lastName: string
-  email: string
-  activated: boolean
-  authorities: string[]
-}
 export const UserManagementUpdate = () => {
-  const [authoritiesSelected, setAuthoritiesSelected] = React.useState<string[]>([])
+  const [authoritiesSelected, setAuthoritiesSelected] = React.useState<readonly Authorities[]>([])
 
   const dispatch = useAppDispatch()
 
@@ -39,10 +35,8 @@ export const UserManagementUpdate = () => {
   const { login } = useParams<'login'>()
   const isNew = login === undefined
   const user = useAppSelector(state => state.userManagement.user)
-  const defaultValues = () =>
-    isNew ? {} : {
-      ...user
-    }
+  const defaultValues = (user: O.Option<User>) =>
+    isNew || !O.isSome(user) ? {} : S.encode(User)(user.value)
   useEffect(() => {
     if (isNew) {
       dispatch(reset())
@@ -60,19 +54,21 @@ export const UserManagementUpdate = () => {
     register,
     formState: { errors },
     reset: resetForm
-  } = useForm<UserForm>({})
+  } = useForm<UserEncoded>({
+    resolver: schemaResolver(User)
+  })
 
   useEffect(() => {
-    resetForm(defaultValues())
-  }, [user.id])
+    resetForm(defaultValues(user))
+  }, [pipe(user, O.map(u => u.id), O.getOrNull)])
   useEffect(() => {
-    setAuthoritiesSelected(user.authorities)
-  }, [user.authorities])
+    pipe(user, O.map(({ authorities }) => setAuthoritiesSelected(authorities)))
+  }, [pipe(user, O.map(u => u.authorities), O.getOrNull)])
   const handleClose = () => {
     navigate('/admin/user-management')
   }
 
-  const saveUser = (authoritiesSelected: Array<string>) => (values: IUser) => {
+  const saveUser = (authoritiesSelected: readonly Authorities[]) => (values: User) => {
     if (isNew) {
       dispatch(createUser({ ...values, authorities: authoritiesSelected }))
     } else {
@@ -94,7 +90,7 @@ export const UserManagementUpdate = () => {
 
       {loading ? <p>Loading...</p> : (
         <form
-          onSubmit={handleSubmit(saveUserWithAuthorities)}
+          onSubmit={handleSubmit(v => saveUserWithAuthorities(v as unknown as User))}
         >
           <VStack spacing={4}>
             <FormControl isRequired isInvalid={errors.login !== undefined}>
@@ -186,8 +182,7 @@ export const UserManagementUpdate = () => {
             </FormControl>
 
             <Checkbox
-              disabled={!user.id}
-              isChecked={user.activated === undefined ? false : user.activated}
+              disabled={!pipe(user, O.map(u => u.id), O.exists(O.isSome))}
               alignSelf={'flex-start'}
               {...register('activated')}
             >

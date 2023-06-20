@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as O from '@effect/data/Option'
 import { createAsyncThunk, createSlice, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit'
-import type { User, UserDecoded } from 'app/shared/model/user.model'
-import { Authorities } from 'app/shared/model/user.model'
+import { Authorities, User } from 'app/shared/model/user.model'
 import { serializeAxiosError } from 'app/shared/reducers/reducer.utils'
-import { getHttpEntities } from 'app/shared/util/httpUtils'
+import { getHttpEntities, getHttpEntity, postHttpEntity,
+  putHttpEntity } from 'app/shared/util/httpUtils'
 import axios from 'axios'
 import { castDraft } from 'immer'
 
 const initialState = {
   loading: false,
   errorMessage: undefined as string | undefined,
-  users: [] as readonly UserDecoded[],
+  users: [] as User[],
   authorities: [] as readonly Authorities[],
-  user: O.none(),
+  user: O.none<User>(),
   updating: false,
   updateSuccess: false,
   totalItems: 0
@@ -27,14 +27,15 @@ const adminUrl = 'api/admin/users'
 export const getUsers = createAsyncThunk(
   'userManagement/fetch_users',
   async () => {
-    const requestUrl = `${apiUrl}`
-    return axios.get<User[]>(requestUrl)
+    const requestUrl = apiUrl
+
+    return getHttpEntities(requestUrl, User)
   }
 )
 
 export const getUsersAsAdmin = createAsyncThunk(
   'userManagement/fetch_users_as_admin',
-  async () => axios.get<User[]>(adminUrl)
+  async () => getHttpEntities(adminUrl, User)
 )
 
 export const getRoles = createAsyncThunk(
@@ -46,7 +47,8 @@ export const getUser = createAsyncThunk(
   'userManagement/fetch_user',
   async (id: string) => {
     const requestUrl = `${adminUrl}/${id}`
-    return axios.get<User>(requestUrl)
+
+    return getHttpEntity(requestUrl, User)
   },
   { serializeError: serializeAxiosError }
 )
@@ -54,7 +56,8 @@ export const getUser = createAsyncThunk(
 export const createUser = createAsyncThunk(
   'userManagement/create_user',
   async (user: User, thunkAPI) => {
-    const result = await axios.post<User>(adminUrl, { ...user, langKey: 'fr' })
+    const result = await postHttpEntity(adminUrl, User, user, User)
+
     thunkAPI.dispatch(getUsersAsAdmin())
     return result
   },
@@ -64,7 +67,7 @@ export const createUser = createAsyncThunk(
 export const updateUser = createAsyncThunk(
   'userManagement/update_user',
   async (user: User, thunkAPI) => {
-    const result = await axios.put<User>(adminUrl, user)
+    const result = await putHttpEntity(adminUrl, User, user, User)
     thunkAPI.dispatch(getUsersAsAdmin())
     return result
   },
@@ -95,36 +98,35 @@ export const UserManagementSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(getRoles.fulfilled, (state, action) => {
-        state.authorities = castDraft(action.payload)
+        state.authorities = action.payload
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.loading = false
-        state.user = action.payload.data
+        state.user = action.payload
       })
       .addCase(deleteUser.fulfilled, state => {
         state.updating = false
         state.updateSuccess = true
-        state.user = defaultValue
+        state.user = castDraft(O.none())
       })
       .addMatcher(isFulfilled(getUsers, getUsersAsAdmin), (state, action) => {
         state.loading = false
-        state.users = action.payload.data
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        state.totalItems = parseInt(action.payload.headers['x-total-count'], 10)
+        state.users = action.payload
+        // state.totalItems = parseInt(action.payload.headers['x-total-count'], 10)
       })
       .addMatcher(isFulfilled(createUser, updateUser), (state, action) => {
         state.updating = false
         state.loading = false
         state.updateSuccess = true
-        state.user = action.payload.data
+        state.user = action.payload
       })
       .addMatcher(isPending(getUsers, getUsersAsAdmin, getUser), state => {
-        state.errorMessage = null
+        state.errorMessage = undefined
         state.updateSuccess = false
         state.loading = true
       })
       .addMatcher(isPending(createUser, updateUser, deleteUser), state => {
-        state.errorMessage = null
+        state.errorMessage = undefined
         state.updateSuccess = false
         state.updating = true
       })

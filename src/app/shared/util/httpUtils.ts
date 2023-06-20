@@ -21,11 +21,12 @@ export const getHttpEntity = <A, B,>(
 export const getHttpEntities = <A, B,>(
   url: string,
   schema: S.Schema<B, A>
-): Promise<readonly A[]> =>
+): Promise<WritableDraft<readonly A[]>> =>
   pipe(
     T.promise(() => axios.get(url)),
     T.flatMap(d => S.parseEffect(S.array(schema))(d.data)),
     T.mapError(e => formatErrors(e.errors)),
+    T.map(d => castDraft(d)),
     T.runPromise
   )
 
