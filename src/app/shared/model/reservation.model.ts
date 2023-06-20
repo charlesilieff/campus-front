@@ -1,12 +1,12 @@
-import { pipe } from '@effect/data/Function'
 import type * as O from '@effect/data/Option'
-import * as PR from '@effect/schema/ParseResult'
 import * as S from '@effect/schema/Schema'
 import type { BedDecoded, BedEncoded } from 'app/shared/model/bed.model'
 import { Bed } from 'app/shared/model/bed.model'
 import type { CustomerDecoded, CustomerEncoded } from 'app/shared/model/customer.model'
 import { Customer } from 'app/shared/model/customer.model'
 import type { IPricing } from 'app/shared/model/pricing.model'
+
+import { FormatLocalDate } from './formatLocalDate'
 
 export interface ReservationEncoded {
   id?: number
@@ -58,15 +58,6 @@ export interface ReservationDecoded {
   isDepartureBreakfast: boolean
   commentMeals: O.Option<string>
 }
-
-export const FormatLocalDate: S.Schema<string, Date> = S.transform(
-  S.string,
-  S.ValidDateFromSelf,
-  // define a function that converts a string into a Date
-  s => new Date(s) instanceof Date ? new Date(s) : PR.failure(PR.type(S.Date.ast, s)),
-  // define a function that converts a Date into a string
-  b => pipe(b, S.encode(S.ValidDateFromSelf), b => b.toISOString().slice(0, 10))
-)
 
 export const Reservation: S.Schema<ReservationEncoded, ReservationDecoded> = S.lazy(() =>
   S.struct({

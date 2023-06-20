@@ -18,8 +18,9 @@ export const ReservationDetail = () => {
     hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.ADMIN])
   )
   useEffect(() => {
-    // @ts-expect-error TODO: fix this
-    dispatch(getReservation(reservationId))
+    if (reservationId) {
+      dispatch(getReservation(reservationId))
+    }
   }, [])
 
   const reservationEntity = useAppSelector(state => state.reservation.entity)

@@ -1,16 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import * as O from '@effect/data/Option'
 import { createAsyncThunk, createSlice, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit'
-import type { IUser } from 'app/shared/model/user.model'
-import { defaultValue } from 'app/shared/model/user.model'
+import type { User, UserDecoded } from 'app/shared/model/user.model'
+import { Authorities } from 'app/shared/model/user.model'
 import { serializeAxiosError } from 'app/shared/reducers/reducer.utils'
+import { getHttpEntities } from 'app/shared/util/httpUtils'
 import axios from 'axios'
+import { castDraft } from 'immer'
 
 const initialState = {
   loading: false,
-  errorMessage: null,
-  users: [] as readonly IUser[],
-  authorities: [] as string[],
-  user: defaultValue,
+  errorMessage: undefined as string | undefined,
+  users: [] as readonly UserDecoded[],
+  authorities: [] as readonly Authorities[],
+  user: O.none(),
   updating: false,
   updateSuccess: false,
   totalItems: 0
@@ -25,34 +28,33 @@ export const getUsers = createAsyncThunk(
   'userManagement/fetch_users',
   async () => {
     const requestUrl = `${apiUrl}`
-    return axios.get<IUser[]>(requestUrl)
+    return axios.get<User[]>(requestUrl)
   }
 )
 
 export const getUsersAsAdmin = createAsyncThunk(
   'userManagement/fetch_users_as_admin',
-  async () => axios.get<IUser[]>(adminUrl)
+  async () => axios.get<User[]>(adminUrl)
 )
 
 export const getRoles = createAsyncThunk(
   'userManagement/fetch_roles',
-  async () => axios.get<any[]>(`api/authorities`)
+  async () => getHttpEntities('api/authorities', Authorities)
 )
 
 export const getUser = createAsyncThunk(
   'userManagement/fetch_user',
   async (id: string) => {
     const requestUrl = `${adminUrl}/${id}`
-    return axios.get<IUser>(requestUrl)
+    return axios.get<User>(requestUrl)
   },
   { serializeError: serializeAxiosError }
 )
 
 export const createUser = createAsyncThunk(
   'userManagement/create_user',
-  async (user: IUser, thunkAPI) => {
-    user.langKey = 'fr'
-    const result = await axios.post<IUser>(adminUrl, user)
+  async (user: User, thunkAPI) => {
+    const result = await axios.post<User>(adminUrl, { ...user, langKey: 'fr' })
     thunkAPI.dispatch(getUsersAsAdmin())
     return result
   },
@@ -61,8 +63,8 @@ export const createUser = createAsyncThunk(
 
 export const updateUser = createAsyncThunk(
   'userManagement/update_user',
-  async (user: IUser, thunkAPI) => {
-    const result = await axios.put<IUser>(adminUrl, user)
+  async (user: User, thunkAPI) => {
+    const result = await axios.put<User>(adminUrl, user)
     thunkAPI.dispatch(getUsersAsAdmin())
     return result
   },
@@ -73,7 +75,7 @@ export const deleteUser = createAsyncThunk(
   'userManagement/delete_user',
   async (id: string, thunkAPI) => {
     const requestUrl = `${adminUrl}/delete/${id}`
-    const result = await axios.delete<IUser>(requestUrl)
+    const result = await axios.delete<User>(requestUrl)
     thunkAPI.dispatch(getUsersAsAdmin())
     return result
   },
@@ -93,8 +95,7 @@ export const UserManagementSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(getRoles.fulfilled, (state, action) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        state.authorities = action.payload.data
+        state.authorities = castDraft(action.payload)
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.loading = false
@@ -141,8 +142,10 @@ export const UserManagementSlice = createSlice({
           state.loading = false
           state.updating = false
           state.updateSuccess = false
-          // @ts-expect-error TODO: fix this
-          state.errorMessage = action.error.message
+
+          state.errorMessage = action.error.message ?
+            'An error has occurred!' :
+            action.error.message
         }
       )
   }

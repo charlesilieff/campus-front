@@ -11,10 +11,11 @@ import {
   Tr,
   VStack
 } from '@chakra-ui/react'
+import * as O from '@effect/data/Option'
 import { APP_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { TextFormat } from 'app/entities/bookingbeds/text-format'
-import type { IUser } from 'app/shared/model/user.model'
+import type { UserDecoded } from 'app/shared/model/user.model'
 import React, { useEffect } from 'react'
 import { FaEye, FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
@@ -37,7 +38,7 @@ export const UserManagement = () => {
     getUsersFromProps()
   }
 
-  const toggleActive = (user: IUser) => () => {
+  const toggleActive = (user: UserDecoded) => () => {
     dispatch(
       updateUser({
         ...user,
@@ -122,29 +123,21 @@ export const UserManagement = () => {
                   null}
               </Td>
               <Td>
-                {user.createdDate ?
-                  (
-                    <TextFormat
-                      value={user.createdDate}
-                      type="date"
-                      format={APP_DATE_FORMAT}
-                      blankOnInvalid
-                    />
-                  ) :
-                  null}
+                <TextFormat
+                  value={O.getOrUndefined(user.createdDate)}
+                  type="date"
+                  format={APP_DATE_FORMAT}
+                  blankOnInvalid
+                />
               </Td>
               <Td>{user.lastModifiedBy}</Td>
               <Td>
-                {user.lastModifiedDate ?
-                  (
-                    <TextFormat
-                      value={user.lastModifiedDate}
-                      type="date"
-                      format={APP_DATE_FORMAT}
-                      blankOnInvalid
-                    />
-                  ) :
-                  null}
+                <TextFormat
+                  value={O.getOrUndefined(user.lastModifiedDate)}
+                  type="date"
+                  format={APP_DATE_FORMAT}
+                  blankOnInvalid
+                />
               </Td>
               <Td className="text-end">
                 <HStack justifyContent={'flex-end'} spacing={0}>
@@ -170,7 +163,6 @@ export const UserManagement = () => {
                   </Button>
 
                   <UserManagementDeleteDialog
-                    // @ts-expect-error TODO: fix this
                     login={user.login}
                   />
                 </HStack>

@@ -104,19 +104,24 @@ export const ReservationRequestDetail = (): JSX.Element => {
 
               <dd>{O.getOrNull(reservationRequestEntity.value.reservation.comment)}</dd>
 
+              <Heading size={'sm'}>Commentaire des repas</Heading>
+
+              <dd>{O.getOrNull(reservationRequestEntity.value.reservation.commentMeals)}</dd>
+
               <Heading size={'sm'}>Chambres réservées à votre nom</Heading>
-              {
-                /* <dd>
-            {uniqueRooms === undefined || uniqueRooms?.length === 0 ?
-              "Vous n'avez pas encore de chambres attribuées." :
-              uniqueRooms.map((val, i) => (
-                <span key={val}>
-                  <a>{val}</a>
-                  {uniqueRooms && i === uniqueRooms.length - 1 ? '' : ', '}
-                </span>
-              ))}
-          </dd> */
-              }
+              <dd>
+                {reservationRequestEntity.value.reservation.beds.length === 0 ?
+                  "Vous n'avez pas encore de chambres attribuées." :
+                  reservationRequestEntity.value.reservation.beds.map((bed, i) => (
+                    <span key={bed.id}>
+                      <a>{bed.number}</a>
+                      {reservationRequestEntity.value.reservation.beds
+                          && i === reservationRequestEntity.value.reservation.beds.length - 1 ?
+                        '' :
+                        ', '}
+                    </span>
+                  ))}
+              </dd>
 
               <HStack>
                 {uuid !== undefined ?

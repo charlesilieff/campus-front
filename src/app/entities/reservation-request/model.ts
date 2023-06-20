@@ -61,7 +61,6 @@ export const DatesAndMeals: S.Schema<DatesAndMealsEncoded, DatesAndMealsDecoded>
     isArrivalLunch: S.boolean,
     isDepartureLunch: S.boolean,
     arrivalDate: S.DateFromSelf,
-
     departureDate: S.DateFromSelf,
     comment: S.optional(S.string).toOption(),
     // pricing: S.optional(S.lazy(() => Pricing)).toOption(),

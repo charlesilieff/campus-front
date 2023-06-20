@@ -7,7 +7,7 @@ import React from 'react'
 export type ITextFormatTypes = 'date' | 'number'
 
 export interface ITextFormatProps {
-  value: string | number | Date
+  value: string | number | Date | undefined
   type: ITextFormatTypes
   format?: string
   blankOnInvalid?: boolean
@@ -23,6 +23,8 @@ export interface ITextFormatProps {
  * @param blankOnInvalid optional to output error or blank on null/invalid values
  */
 export const TextFormat = ({ value, type, format, blankOnInvalid }: ITextFormatProps) => {
+  if (value === undefined) return null
+
   if (blankOnInvalid) {
     if (!value || !type) return null
   }

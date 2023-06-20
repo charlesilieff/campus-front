@@ -53,11 +53,20 @@ export const ReservationChoices = (
 
   const personNumber = useRef({})
   personNumber.current = watch('personNumber', 0)
-  useEffect(() => {
+  useEffect(() =>
     resetForm(
-      pipe(props.reservation, O.map(S.encode(DatesAndMeals)), O.getOrElse(() => ({})))
-    )
-  }, [props.reservation])
+      // @ts-expect-error format date is mandatory for react-hook-form
+      pipe(
+        props.reservation,
+        O.map(S.encode(DatesAndMeals)),
+        O.map(d => ({
+          ...d,
+          arrivalDate: d.arrivalDate.toISOString().slice(0, 10),
+          departureDate: d.departureDate.toISOString().slice(0, 10)
+        })),
+        O.getOrElse(() => ({}))
+      )
+    ), [props.reservation])
 
   const departureDate = useRef(O.none<Date>())
   departureDate.current = pipe(watch('departureDate'), O.fromNullable, O.map(d => new Date(d)))

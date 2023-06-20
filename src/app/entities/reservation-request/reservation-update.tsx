@@ -75,6 +75,7 @@ export const ReservationRequestUpdate = (): JSX.Element => {
   const { uuid: uuidParam } = useParams<'uuid'>()
 
   const [uuid, setUUID] = useState<O.Option<string>>(O.fromNullable(uuidParam))
+  console.log(uuid)
   const dispatch = useAppDispatch()
   const toast = useToast()
   const [updateSuccess, setUpdateSuccess] = useState(false)
@@ -119,57 +120,65 @@ export const ReservationRequestUpdate = (): JSX.Element => {
 
   useEffect(() => {
     pipe(
-      uuid,
-      O.map(uuid => dispatch(getReservationRequest(uuid)))
+      reservationRequest,
+      O.match(() => {
+        setReservation(O.none())
+        setCustomer(O.none())
+      }, reservationRequest => {
+        setReservation(O.some({
+          paymentMode: O.none(),
+          beds: reservationRequest.reservation.beds,
+          customer: O.none(),
+          isConfirmed: reservationRequest.reservation.isConfirmed,
+          isPaid: reservationRequest.reservation.isPaid,
+          id: reservationRequest.reservation.id,
+
+          reservationNumber: reservationRequest.reservation.reservationNumber,
+
+          arrivalDate: reservationRequest.reservation.arrivalDate,
+
+          departureDate: reservationRequest.reservation.departureDate,
+
+          personNumber: reservationRequest.reservation.personNumber,
+
+          specialDietNumber: reservationRequest.reservation.specialDietNumber,
+
+          isArrivalLunch: reservationRequest.reservation.isArrivalLunch,
+
+          isArrivalDinner: reservationRequest.reservation.isArrivalDinner,
+
+          isDepartureDinner: reservationRequest.reservation.isDepartureDinner,
+
+          isDepartureLunch: reservationRequest.reservation.isDepartureLunch,
+
+          comment: reservationRequest.reservation.comment,
+
+          isArrivalBreakfast: reservationRequest.reservation.isArrivalBreakfast,
+
+          isDepartureBreakfast: reservationRequest.reservation.isDepartureBreakfast,
+
+          commentMeals: reservationRequest.reservation.commentMeals,
+          userCategoryId: O.some(3)
+        }))
+
+        setCustomer(O.some({
+          age: reservationRequest.customer.age,
+          email: reservationRequest.customer.email,
+          firstname: reservationRequest.customer.firstname,
+          id: reservationRequest.customer.id,
+          lastname: reservationRequest.customer.lastname,
+          phoneNumber: reservationRequest.customer.phoneNumber,
+          comment: reservationRequest.customer.comment
+        }))
+      })
     )
-
-    if (O.isSome(reservationRequest)) {
-      setReservation(O.some({
-        paymentMode: O.none(),
-        beds: reservationRequest.value.reservation.beds,
-        customer: O.none(),
-        isConfirmed: reservationRequest.value.reservation.isConfirmed,
-        isPaid: reservationRequest.value.reservation.isPaid,
-        id: reservationRequest.value.reservation.id,
-
-        reservationNumber: reservationRequest.value.reservation.reservationNumber,
-
-        arrivalDate: reservationRequest.value.reservation.arrivalDate,
-
-        departureDate: reservationRequest.value.reservation.departureDate,
-
-        personNumber: reservationRequest.value.reservation.personNumber,
-
-        specialDietNumber: reservationRequest.value.reservation.specialDietNumber,
-
-        isArrivalLunch: reservationRequest.value.reservation.isArrivalLunch,
-
-        isArrivalDinner: reservationRequest.value.reservation.isArrivalDinner,
-
-        isDepartureDinner: reservationRequest.value.reservation.isDepartureDinner,
-
-        isDepartureLunch: reservationRequest.value.reservation.isDepartureLunch,
-
-        comment: reservationRequest.value.reservation.comment,
-
-        isArrivalBreakfast: reservationRequest.value.reservation.isArrivalBreakfast,
-
-        isDepartureBreakfast: reservationRequest.value.reservation.isDepartureBreakfast,
-
-        commentMeals: reservationRequest.value.reservation.commentMeals,
-        userCategoryId: O.some(3)
-      }))
-
-      setCustomer(O.some({
-        age: reservationRequest.value.customer.age,
-        email: reservationRequest.value.customer.email,
-        firstname: reservationRequest.value.customer.firstname,
-        id: reservationRequest.value.customer.id,
-        lastname: reservationRequest.value.customer.lastname,
-        phoneNumber: reservationRequest.value.customer.phoneNumber,
-        comment: reservationRequest.value.customer.comment
-      }))
-    }
+    pipe(
+      uuid,
+      O.match(() => {
+        setReservation(O.none())
+        setCustomer(O.none())
+      }, uuid => dispatch(getReservationRequest(uuid)))
+    )
   }, [pipe(reservationRequest, O.flatMap(r => r.reservation.reservationNumber), O.getOrNull)])
   useEffect(() => {
     if (uuid === undefined) {
