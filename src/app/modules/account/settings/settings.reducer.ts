@@ -1,14 +1,16 @@
+import * as O from '@effect/data/Option'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { AppThunk } from 'app/config/store'
-import type { IUser } from 'app/shared/model/user.model'
+import { User } from 'app/shared/model/user.model'
 import { getSession } from 'app/shared/reducers/authentication'
 import { serializeAxiosError } from 'app/shared/reducers/reducer.utils'
-import axios from 'axios'
+import { putHttpEntity } from 'app/shared/util/httpUtils'
+import { castDraft } from 'immer'
 
 const initialState = {
   loading: false,
-  errorMessage: null,
-  successMessage: null,
+  errorMessage: O.none<string>(),
+  successMessage: O.none<string>(),
   updateSuccess: false,
   updateFailure: false
 }
@@ -18,7 +20,7 @@ export type SettingsState = Readonly<typeof initialState>
 // Actions
 const apiUrl = 'api/account/update'
 
-export const saveAccountSettings: (account: IUser) => AppThunk = account => async dispatch => {
+export const saveAccountSettings: (account: User) => AppThunk = account => async dispatch => {
   await dispatch(updateAccount(account))
 
   dispatch(getSession())
@@ -26,7 +28,7 @@ export const saveAccountSettings: (account: IUser) => AppThunk = account => asyn
 
 export const updateAccount = createAsyncThunk(
   'settings/update_account',
-  async (account: IUser) => axios.put<IUser>(apiUrl, account),
+  async (account: User) => putHttpEntity(apiUrl, User, account, User),
   {
     serializeError: serializeAxiosError
   }
@@ -44,7 +46,7 @@ export const SettingsSlice = createSlice({
     builder
       .addCase(updateAccount.pending, state => {
         state.loading = true
-        state.errorMessage = null
+        state.errorMessage = castDraft(O.none())
         state.updateSuccess = false
       })
       .addCase(updateAccount.rejected, state => {
@@ -56,8 +58,8 @@ export const SettingsSlice = createSlice({
         state.loading = false
         state.updateSuccess = true
         state.updateFailure = false
-        // @ts-expect-error TODO: fix this
-        state.successMessage = 'Settings saved!'
+
+        state.successMessage = O.some('Modification sauvegardée avec succès')
       })
   }
 })

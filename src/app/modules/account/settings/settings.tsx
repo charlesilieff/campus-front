@@ -10,10 +10,13 @@ import {
   useToast,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
 import { AUTHORITIES } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { schemaResolver } from 'app/entities/bed/resolver'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
-import type { IUser } from 'app/shared/model/user.model'
 import { getSession } from 'app/shared/reducers/authentication'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -21,12 +24,14 @@ import { FaSave } from 'react-icons/fa'
 
 import { reset, saveAccountSettings } from './settings.reducer'
 
-interface UserForm {
-  firstName: string
-  lastName: string
-  email: string
-  receiveMailReservation: boolean
-}
+const UserForm = S.struct({
+  firstName: S.string,
+  lastName: S.string,
+  email: S.string,
+  receiveMailReservation: S.boolean
+})
+
+type UserForm = S.To<typeof UserForm>
 
 export const Settings = () => {
   const toast = useToast()
@@ -35,22 +40,17 @@ export const Settings = () => {
     register,
     formState: { errors },
     reset: resetForm
-  } = useForm<UserForm>({})
+  } = useForm<UserForm>({
+    resolver: schemaResolver(UserForm)
+  })
   const dispatch = useAppDispatch()
-  const account: IUser = useAppSelector(state => state.authentication.account)
-  const accountModify: IUser = {
-    ...account,
-    receiveMailReservation: account.receiveMailReservation === undefined ?
-      true :
-      account.receiveMailReservation
-  }
+  const account = useAppSelector(state => state.authentication.account)
 
   const isRespHebergement = useAppSelector(state =>
-    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.RESPHEBERGEMENT])
+    hasAnyAuthority(state.authentication.account, [AUTHORITIES.RESPHEBERGEMENT])
   )
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment
-  const successMessage: string | null = useAppSelector(state => state.settings.successMessage)
+  const successMessage = useAppSelector(state => state.settings.successMessage)
 
   useEffect(() => {
     dispatch(getSession())
@@ -60,10 +60,10 @@ export const Settings = () => {
   }, [])
 
   useEffect(() => {
-    if (successMessage) {
+    if (O.isSome(successMessage)) {
       toast({
         position: 'top',
-        title: successMessage,
+        title: successMessage.value,
         status: 'success',
         duration: 4000,
         isClosable: true
@@ -71,22 +71,42 @@ export const Settings = () => {
     }
   }, [successMessage])
 
-  const handleValidSubmit = (values: IUser) => {
-    dispatch(
-      saveAccountSettings({
-        ...accountModify,
-        ...values
-      })
+  const handleValidSubmit = (values: UserForm) => {
+    pipe(
+      account,
+      O.map(a => ({
+        ...a,
+        firstName: O.some(values.firstName),
+        lastName: O.some(values.lastName),
+        email: values.email,
+        receiveMailReservation: O.some(values.receiveMailReservation)
+      })),
+      O.map(v =>
+        dispatch(
+          saveAccountSettings(v)
+        )
+      )
     )
   }
   useEffect(() => {
-    resetForm(accountModify)
-  }, [accountModify.id])
+    pipe(
+      account,
+      O.map(a =>
+        resetForm({
+          email: a.email,
+          firstName: O.getOrElse(a.firstName, () => ''),
+          lastName: O.getOrElse(a.lastName, () => ''),
+          receiveMailReservation: O.getOrElse(a.receiveMailReservation, () => true)
+        })
+      )
+    )
+  }, [pipe(account, O.map(a => a.id), O.getOrNull)])
   return (
     <VStack>
-      <Heading size={'md'}>Modifier utilisateur {accountModify.login}</Heading>
+      <Heading size={'md'}>
+        Modifier utilisateur {pipe(account, O.map(a => a.login), O.getOrUndefined)}
+      </Heading>
       <form
-        // @ts-expect-error TODO: fix this
         onSubmit={handleSubmit(handleValidSubmit)}
       >
         <VStack spacing={4}>
