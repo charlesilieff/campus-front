@@ -1,13 +1,16 @@
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
+import * as T from '@effect/io/Effect'
 import * as S from '@effect/schema/Schema'
+import { formatErrors } from '@effect/schema/TreeFormatter'
 import type { Dispatch } from '@reduxjs/toolkit'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { AppThunk } from 'app/config/store'
 import type { AxiosResponse } from 'axios'
+import axios from 'axios'
 
 import { User } from '../model/user.model'
-import { getHttpEntity, postHttpEntity } from '../util/httpUtils'
+import { getHttpEntity } from '../util/httpUtils'
 import { Storage } from '../util/storage-util'
 import { serializeAxiosError } from './reducer.utils'
 
@@ -20,11 +23,11 @@ export const initialState = {
   loginError: false, // Errors returned from server side
   showModalLogin: false,
   account: O.none<User>(),
-  errorMessage: null as unknown as string, // Errors returned from server side
-  redirectMessage: null as unknown as string,
+  errorMessage: O.none<string>(), // Errors returned from server side
+  redirectMessage: O.none<string>(),
   sessionHasBeenFetched: false,
-  idToken: null as unknown as string,
-  logoutUrl: null as unknown as string
+  idToken: O.none<string>(),
+  logoutUrl: O.none<string>()
 }
 
 export type AuthenticationState = Readonly<typeof initialState>
@@ -54,11 +57,17 @@ const IdToken = S.struct({
   // eslint-disable-next-line @typescript-eslint/naming-convention
   id_token: S.string
 })
-type IdToken = S.To<typeof AuthParams>
+type IdToken = S.To<typeof IdToken>
 
 export const authenticate = createAsyncThunk(
   'authentication/login',
-  async (auth: AuthParams) => postHttpEntity('api/authenticate', AuthParams, auth, IdToken),
+  async (auth: AuthParams) =>
+    pipe(
+      S.encodeEffect(AuthParams)(auth),
+      T.mapError(e => formatErrors(e.errors)),
+      T.flatMap(b => T.promise(() => axios.post('api/authenticate', b))),
+      T.runPromise
+    ),
   {
     serializeError: serializeAxiosError
   }
@@ -76,15 +85,13 @@ export const login: (
 async dispatch => {
   const result = await dispatch(authenticate({ username, password, rememberMe }))
 
-  const response = result.payload as AxiosResponse
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const bearerToken: string = response?.headers?.authorization
-  if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
-    const jwt = bearerToken.slice(7, bearerToken.length)
+  const response = result.payload as AxiosResponse<IdToken>
+  console.log('response', result)
+  if (response) {
     if (rememberMe) {
-      Storage.local.set(AUTH_TOKEN_KEY, jwt)
+      Storage.local.set(AUTH_TOKEN_KEY, response.data.id_token)
     } else {
-      Storage.local.set(AUTH_TOKEN_KEY, jwt)
+      Storage.local.set(AUTH_TOKEN_KEY, response.data.id_token)
     }
   }
   dispatch(getSession())
@@ -138,11 +145,10 @@ export const AuthenticationSlice = createSlice({
     }
   },
   extraReducers(builder) {
-    // @ts-expect-error TODO: fix this
     builder
       .addCase(authenticate.rejected, (_state, action) => ({
         ...initialState,
-        errorMessage: action.error.message,
+        errorMessage: O.fromNullable(action.error.message),
         showModalLogin: true,
         loginError: true
       }))
@@ -159,7 +165,7 @@ export const AuthenticationSlice = createSlice({
         isAuthenticated: false,
         sessionHasBeenFetched: true,
         showModalLogin: true,
-        errorMessage: action.error.message
+        errorMessage: O.fromNullable(action.error.message)
       }))
       .addCase(getAccount.fulfilled, (state, action) => {
         const isAuthenticated = pipe(

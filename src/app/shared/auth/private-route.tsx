@@ -1,11 +1,16 @@
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
+import * as A from '@effect/data/ReadonlyArray'
 import { useAppSelector } from 'app/config/store'
 import { ErrorBoundary } from 'app/shared/error/error-boundary'
 import React from 'react'
 import type { PathRouteProps } from 'react-router-dom'
 import { Navigate, useLocation } from 'react-router-dom'
 
+import type { Authorities, User } from '../model/user.model'
+
 interface IOwnProps extends PathRouteProps {
-  hasAnyAuthorities?: string[]
+  hasAnyAuthorities?: Authorities[]
   children: React.ReactNode
 }
 
@@ -13,7 +18,7 @@ export const PrivateRoute = ({ children, hasAnyAuthorities = [], ...rest }: IOwn
   const isAuthenticated = useAppSelector(state => state.authentication.isAuthenticated)
   const sessionHasBeenFetched = useAppSelector(state => state.authentication.sessionHasBeenFetched)
   const account = useAppSelector(state => state.authentication.account)
-  const isAuthorized = hasAnyAuthority(account.authorities, hasAnyAuthorities)
+  const isAuthorized = hasAnyAuthority(account, hasAnyAuthorities)
   const location = useLocation()
 
   if (!children) {
@@ -52,12 +57,11 @@ export const PrivateRoute = ({ children, hasAnyAuthorities = [], ...rest }: IOwn
   )
 }
 
-export const hasAnyAuthority = (authorities: string[], hasAnyAuthorities: string[]) => {
-  if (authorities && authorities.length !== 0) {
-    if (hasAnyAuthorities.length === 0) {
-      return true
-    }
-    return hasAnyAuthorities.some(auth => authorities.includes(auth))
-  }
-  return false
-}
+export const hasAnyAuthority = (user: O.Option<User>, hasAnyAuthorities: Authorities[]) =>
+  pipe(
+    user,
+    O.map(u =>
+      pipe(u.authorities, A.some(d => A.contains((a, b) => a === b)(hasAnyAuthorities, d)))
+    ),
+    O.exists(d => d)
+  )

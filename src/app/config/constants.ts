@@ -23,12 +23,12 @@ export const SERVER_API_URL = (() => {
 
 console.log(SERVER_API_URL)
 export const AUTHORITIES = {
-  ADMIN: 'ROLE_ADMIN',
-  USER: 'ROLE_USER', // todo: tbc
-  RESPHEBERGEMENT: 'ROLE_RESPHEBERGEMENT',
-  INTERMITTENT: 'ROLE_INTERMITTENT',
-  HABITANT: 'ROLE_HABITANT',
-  EMPLOYEE: 'ROLE_EMPLOYEE'
+  ADMIN: 'ROLE_ADMIN' as const,
+  USER: 'ROLE_USER' as const, // todo: tbc
+  RESPHEBERGEMENT: 'ROLE_RESPHEBERGEMENT' as const,
+  INTERMITTENT: 'ROLE_INTERMITTENT' as const,
+  HABITANT: 'ROLE_HABITANT' as const,
+  EMPLOYEE: 'ROLE_EMPLOYEE' as const
 }
 
 export const messages = {

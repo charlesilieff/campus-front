@@ -28,22 +28,22 @@ export const App = () => {
 
   const isAuthenticated = useAppSelector(state => state.authentication.isAuthenticated)
   const isAdmin = useAppSelector(state =>
-    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.ADMIN])
+    hasAnyAuthority(state.authentication.account, [AUTHORITIES.ADMIN])
   )
   const isIntermittent = useAppSelector(state =>
-    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.INTERMITTENT])
+    hasAnyAuthority(state.authentication.account, [AUTHORITIES.INTERMITTENT])
   )
   const isUser = useAppSelector(state =>
-    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.USER])
+    hasAnyAuthority(state.authentication.account, [AUTHORITIES.USER])
   )
   const isResp = useAppSelector(state =>
-    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.RESPHEBERGEMENT])
+    hasAnyAuthority(state.authentication.account, [AUTHORITIES.RESPHEBERGEMENT])
   )
   const isHabitant = useAppSelector(state =>
-    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.HABITANT])
+    hasAnyAuthority(state.authentication.account, [AUTHORITIES.HABITANT])
   )
   const isEmployee = useAppSelector(state =>
-    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.EMPLOYEE])
+    hasAnyAuthority(state.authentication.account, [AUTHORITIES.EMPLOYEE])
   )
 
   const ribbonEnv = useAppSelector(state => state.applicationProfile.ribbonEnv)

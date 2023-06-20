@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { logout } from 'app/shared/reducers/authentication'
 import React, { useLayoutEffect } from 'react'
@@ -9,9 +11,9 @@ export const Logout = () => {
 
   useLayoutEffect(() => {
     dispatch(logout())
-    if (logoutUrl) {
+    if (O.isSome(logoutUrl)) {
       // if Keycloak, logoutUrl has protocol/openid-connect in it
-      window.location.href = logoutUrl.includes('/protocol') ?
+      window.location.href = logoutUrl.value.includes('/protocol') ?
         logoutUrl + '?redirect_uri=' + window.location.origin :
         logoutUrl + '?id_token_hint=' + idToken + '&post_logout_redirect_uri='
         + window.location.origin

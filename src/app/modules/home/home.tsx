@@ -2,6 +2,8 @@ import './home.scss'
 
 import { CopyIcon } from '@chakra-ui/icons'
 import { Box, Button, HStack, Image, Stack, Text, VStack } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
 import { AUTHORITIES } from 'app/config/constants'
 import { useAppSelector } from 'app/config/store'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
@@ -14,17 +16,17 @@ import { RGPDAnonymizeData } from '../rgpd/rgpdAnonymizeData'
 
 export const Home = (): JSX.Element => {
   const isAdmin = useAppSelector(state =>
-    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.ADMIN])
+    hasAnyAuthority(state.authentication.account, [AUTHORITIES.ADMIN])
   )
   const isIntermittent = useAppSelector(state =>
-    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.INTERMITTENT])
+    hasAnyAuthority(state.authentication.account, [AUTHORITIES.INTERMITTENT])
   )
   // const isHabitant = useAppSelector(state =>
-  //   hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.HABITANT])
+  //   hasAnyAuthority(state.authentication.account, [AUTHORITIES.HABITANT])
   // )
 
   const isRespHebergement = useAppSelector(state =>
-    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.RESPHEBERGEMENT])
+    hasAnyAuthority(state.authentication.account, [AUTHORITIES.RESPHEBERGEMENT])
   )
   const account = useAppSelector(state => state.authentication.account)
 
@@ -117,13 +119,16 @@ export const Home = (): JSX.Element => {
             </Box>
           </Box>
         </Box>
-        {account && account.login ?
-          (
-            <Box backgroundColor={'blue.100'} p={5}>
-              Vous êtes connecté comme {account.login}.
+        {pipe(
+          account,
+          O.map(a => a.login),
+          O.map(login => (
+            <Box backgroundColor={'blue.100'} p={5} key="0">
+              Vous êtes connecté comme {login}.
             </Box>
-          ) :
-          null}
+          )),
+          O.getOrNull
+        )}
         {isIntermittent ?
           (
             <Box
