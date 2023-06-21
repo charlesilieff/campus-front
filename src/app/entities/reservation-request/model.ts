@@ -2,7 +2,7 @@ import type * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import type { CustomerDecoded, CustomerEncoded } from 'app/shared/model/customer.model'
 import { Customer } from 'app/shared/model/customer.model'
-import type { IPricing } from 'app/shared/model/pricing.model'
+import type { Pricing } from 'app/shared/model/pricing.model'
 
 export interface DatesAndMealsEncoded {
   id?: number
@@ -17,7 +17,7 @@ export interface DatesAndMealsEncoded {
   arrivalDate: Date
   departureDate: Date
   comment?: string
-  pricing?: IPricing
+  pricing?: Pricing
   customer?: CustomerEncoded
   // userCategory?: IUserCategory
   userCategoryId?: number

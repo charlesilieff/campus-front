@@ -5,18 +5,22 @@ import dayjs from 'dayjs'
 
 export const FormatLocalDate: S.Schema<string, Date> = S.transform(
   S.string,
+  // @ts-expect-error S.ValidDateFromSelf is not exported
   S.ValidDateFromSelf,
   // define a function that converts a string into a Date
   s => new Date(s) instanceof Date ? new Date(s) : PR.failure(PR.type(S.Date.ast, s)),
   // define a function that converts a Date into a string
+  // @ts-expect-error S.ValidDateFromSelf is not exported
   b => pipe(b, S.encode(S.ValidDateFromSelf), b => b.toISOString().slice(0, 10))
 )
 
 export const FormatLocalDateTime: S.Schema<string, Date> = S.transform(
   S.string,
+  // @ts-expect-error S.ValidDateFromSelf is not exported
   S.ValidDateFromSelf,
   // define a function that converts a string into a Date
   s => new Date(s) instanceof Date ? new Date(s) : PR.failure(PR.type(S.Date.ast, s)),
   // define a function that converts a Date into a string
+  // @ts-expect-error S.ValidDateFromSelf is not exported
   b => pipe(b, S.encode(S.ValidDateFromSelf), b => dayjs(b).format('YYYY-MM-DDTHH:mm:ss'))
 )

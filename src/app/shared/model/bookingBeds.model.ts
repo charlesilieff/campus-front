@@ -2,7 +2,7 @@ import * as S from '@effect/schema/Schema'
 
 import type { CustomerEncoded } from './customer.model'
 import { Customer } from './customer.model'
-import type { IUserCategory } from './userCategory.model'
+import type { UserCategory } from './userCategory.model'
 
 export interface IBookingBeds {
   id?: number
@@ -25,7 +25,7 @@ export interface IBookingBeds {
   customer?: CustomerEncoded
   // pricing?: IPricing
   // userCategoryId?: number
-  userCategory?: IUserCategory
+  userCategory?: UserCategory
   isPaid?: boolean
   isConfirmed?: boolean
   paymentMode?: string | null

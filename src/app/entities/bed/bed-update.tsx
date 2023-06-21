@@ -15,7 +15,7 @@ import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getRooms } from 'app/entities/room/room.reducer'
-import type { Bed, BedCreateDecoded, BedCreateEncoded } from 'app/shared/model/bed.model'
+import type { Bed, BedCreateDecoded } from 'app/shared/model/bed.model'
 import { BedCreate } from 'app/shared/model/bed.model'
 import React, { useEffect } from 'react'
 import type { UseFormHandleSubmit } from 'react-hook-form'
@@ -45,7 +45,7 @@ export const BedUpdate = () => {
     register,
     formState: { errors },
     reset: resetForm
-  } = useForm<BedCreateEncoded>({
+  } = useForm({
     resolver: schemaResolver(BedCreate)
   })
   useEffect(() => {

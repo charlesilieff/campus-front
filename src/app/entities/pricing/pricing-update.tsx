@@ -8,28 +8,22 @@ import {
   Input,
   Select,
   Textarea,
-  // Tooltip,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getTypeReservations } from 'app/entities/type-reservation/type-reservation.reducer'
 import { getEntities as getUserCategories } from 'app/entities/user-category/user-category.reducer'
-import type { IPricing } from 'app/shared/model/pricing.model'
+import { PricingCreate } from 'app/shared/model/pricing.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
+import { schemaResolver } from '../bed/resolver'
 import { createEntity, getEntity, reset, updateEntity } from './pricing.reducer'
-
-interface PricingForm {
-  // wording: string
-  price: number
-  comment: string
-  userCategoryId: string
-  // userCategoryId: string
-  typeReservationId: string
-}
 
 export const PricingUpdate = () => {
   const dispatch = useAppDispatch()
@@ -42,25 +36,23 @@ export const PricingUpdate = () => {
   const typeReservations = useAppSelector(state => state.typeReservation.entities)
 
   const defaultValues = () =>
-    isNew ? {} : {
-      ...pricingEntity,
-      userCategoryId: pricingEntity?.userCategory?.id,
-      typeReservationId: pricingEntity?.typeReservation?.id
-      // userCategoryId: pricingEntity?.userCategory?.id === '' ?
-      //   undefined :
-      //   pricingEntity?.userCategory?.id
-      // typeReservationId: pricingEntity?.typeReservation?.id === '' ? // todo fix this number
-      //   undefined :
-      //   pricingEntity?.typeReservation?.id
-    }
+    isNew || O.isNone(pricingEntity) ? {} : S.encode(PricingCreate)({
+      id: pricingEntity.value.id,
+      comment: pricingEntity.value.comment,
+      price: pricingEntity.value.price,
+      typeReservationId: pipe(pricingEntity.value.typeReservation, O.map(p => p.id)),
+      userCategoryId: pipe(pricingEntity.value.userCategory, O.map(p => p.id))
+    })
 
   const {
     handleSubmit,
     register,
     reset: resetForm,
     formState: { errors }
-  } = useForm<PricingForm>()
-
+  } = useForm(
+    { resolver: schemaResolver(PricingCreate) }
+  )
+  console.log('errors', errors)
   const loading = useAppSelector(state => state.pricing.loading)
   const updating = useAppSelector(state => state.pricing.updating)
   const updateSuccess = useAppSelector(state => state.pricing.updateSuccess)
@@ -70,7 +62,7 @@ export const PricingUpdate = () => {
   }
   useEffect(() => {
     resetForm(defaultValues())
-  }, [pricingEntity.id])
+  }, [pipe(pricingEntity, O.map(p => p.id), O.getOrNull)])
 
   useEffect(() => {
     if (isNew) {
@@ -89,33 +81,11 @@ export const PricingUpdate = () => {
     }
   }, [updateSuccess])
 
-  interface ExtendIPricingForTheBAckendToBeDeleted extends IPricing {
-    userCategoryId: string
-    typeReservationId: string
-  }
-
-  const saveEntity = (values: ExtendIPricingForTheBAckendToBeDeleted) => {
-    const entity = {
-      ...pricingEntity,
-      ...values,
-      userCategoryId: values.userCategoryId === '' ? undefined : values.userCategoryId,
-      userCategory: userCategories.find(userCategory =>
-        // @ts-expect-error TODO: fix this
-        userCategory.id.toString() === values.userCategoryId.toString()
-      ),
-      typeReservationId: values.typeReservationId === '' ? undefined : values.typeReservationId,
-      typeReservation: typeReservations.find(typeReservation =>
-        // @ts-expect-error TODO: fix this
-        typeReservation.id.toString() === values.typeReservationId.toString()
-      )
-    }
-
+  const saveEntity = (values: PricingCreate) => {
     if (isNew) {
-      // @ts-expect-error TODO: fix this
-      dispatch(createEntity(entity))
+      dispatch(createEntity(values))
     } else {
-      // @ts-expect-error TODO: fix this
-      dispatch(updateEntity(entity))
+      dispatch(updateEntity(values))
     }
   }
 
@@ -125,111 +95,109 @@ export const PricingUpdate = () => {
         {isNew ? 'Créez' : 'Modifiez'} un tarif
       </Heading>
 
-      {loading ? <p>Chargement...</p> : (
-        <form onSubmit={handleSubmit(saveEntity)}>
-          <VStack minW={'300px'}>
-            <FormControl isRequired isInvalid={errors.userCategoryId !== undefined}>
-              <FormLabel htmlFor="userCategory" fontWeight={'bold'}>
-                {"Categorie d'utilisateur"}
-              </FormLabel>
+      {loading ?
+        <p>Chargement...</p> :
+        (
+          <form onSubmit={handleSubmit(v => saveEntity(v as unknown as PricingCreate))}>
+            <VStack minW={'300px'}>
+              <FormControl isRequired isInvalid={errors.userCategoryId !== undefined}>
+                <FormLabel htmlFor="userCategory" fontWeight={'bold'}>
+                  {"Categorie d'utilisateur"}
+                </FormLabel>
 
-              <Select
-                id="userCategory"
-                {...register('userCategoryId', {})}
-              >
-                <option value="" key="0" />
-                {userCategories ?
-                  userCategories.map(userCategory => (
-                    <option value={userCategory.id} key={userCategory.id}>
-                      {userCategory.name}
-                    </option>
-                  )) :
-                  null}
-              </Select>
-            </FormControl>
+                <Select
+                  id="userCategory"
+                  {...register('userCategoryId', {
+                    valueAsNumber: true
+                  })}
+                >
+                  <option value="" key="0" />
+                  {userCategories ?
+                    userCategories.map(userCategory => (
+                      <option value={userCategory.id} key={userCategory.id}>
+                        {userCategory.name}
+                      </option>
+                    )) :
+                    null}
+                </Select>
+              </FormControl>
 
-            <FormControl isRequired isInvalid={errors.typeReservationId !== undefined}>
-              <FormLabel htmlFor="typeReservation" fontWeight={'bold'}>
-                {'Type de réservation'}
-              </FormLabel>
-              <Select
-                id="typeReservation"
-                {
-                  // defaultValue={'Nuitée'}
+              <FormControl isRequired isInvalid={errors.typeReservationId !== undefined}>
+                <FormLabel htmlFor="typeReservation" fontWeight={'bold'}>
+                  {'Type de réservation'}
+                </FormLabel>
+                <Select
+                  id="typeReservation"
+                  {...register('typeReservationId', {
+                    valueAsNumber: true
+                  })}
+                >
+                  <option value="" key="0" />
+                  {typeReservations ?
+                    typeReservations.map(typeReservation => (
+                      <option value={typeReservation.id} key={typeReservation.id}>
+                        {typeReservation.name}
+                      </option>
+                    )) :
+                    null}
+                </Select>
+              </FormControl>
 
-                  // defaultValue={'DEFAULT'}
-                  ...register('typeReservationId', {
-                    // required: "la date d'arrivée' est obligatoire"
-                  })
-                }
-              >
-                {/* <option value="DEFAULT" disabled>Choississez un type de réservation ...</option> */}
-                <option value="" key="0" />
-                {typeReservations ?
-                  typeReservations.map(typeReservation => (
-                    <option value={typeReservation.id} key={typeReservation.id}>
-                      {typeReservation.name}
-                    </option>
-                  )) :
-                  null}
-              </Select>
-            </FormControl>
+              <FormControl isRequired isInvalid={errors.price !== undefined}>
+                <FormLabel htmlFor="price" fontWeight={'bold'}>
+                  {'Prix'}
+                </FormLabel>
+                <Input
+                  id="price"
+                  type="number"
+                  placeholder="Prix"
+                  {...register('price', {
+                    required: 'Le prix est obligatoire',
+                    min: { value: 0, message: 'This field should be at least 0.' }
+                  })}
+                />
 
-            <FormControl isRequired isInvalid={errors.price !== undefined}>
-              <FormLabel htmlFor="price" fontWeight={'bold'}>
-                {'Prix'}
-              </FormLabel>
-              <Input
-                id="price"
-                type="number"
-                placeholder="Prix"
-                {...register('price', {
-                  required: 'Le prix est obligatoire',
-                  min: { value: 0, message: 'This field should be at least 0.' }
-                })}
-              />
+                <FormErrorMessage>
+                  {errors.price && errors.price.message}
+                </FormErrorMessage>
+              </FormControl>
 
-              <FormErrorMessage>
-                {errors.price && errors.price.message}
-              </FormErrorMessage>
-            </FormControl>
+              <FormControl isInvalid={errors.comment !== undefined}>
+                <FormLabel htmlFor="comment" fontWeight={'bold'}>
+                  {'Commentaire'}
+                </FormLabel>
+                <Textarea
+                  id="comment"
+                  placeholder="Commentaire"
+                  {...register('comment', {})}
+                />
+                <FormErrorMessage>
+                  {errors.comment && errors.comment.message}
+                </FormErrorMessage>
+              </FormControl>
 
-            <FormControl isInvalid={errors.comment !== undefined}>
-              <FormLabel htmlFor="comment" fontWeight={'bold'}>
-                {'Commentaire'}
-              </FormLabel>
-              <Textarea
-                id="comment"
-                placeholder="Commentaire"
-                {...register('comment', {})}
-              />
-              <FormErrorMessage>
-                {errors.comment && errors.comment.message}
-              </FormErrorMessage>
-            </FormControl>
+              <HStack>
+                <Button
+                  as={Link}
+                  to="/pricing"
+                  variant={'back'}
+                  leftIcon={<FaArrowLeft />}
+                >
+                  Retour
+                </Button>
 
-            <HStack>
-              <Button
-                as={Link}
-                to="/pricing"
-                variant={'back'}
-                leftIcon={<FaArrowLeft />}
-              >
-                Retour
-              </Button>
-
-              <Button
-                variant={'save'}
-                type="submit"
-                isLoading={updating}
-                leftIcon={<FaSave />}
-              >
-                Sauvegarder
-              </Button>
-            </HStack>
-          </VStack>
-        </form>
-      )}
+                <Button
+                  variant={'save'}
+                  type="submit"
+                  isLoading={updating}
+                  leftIcon={<FaSave />}
+                >
+                  Sauvegarder
+                </Button>
+              </HStack>
+            </VStack>
+          </form>
+        )}
     </VStack>
   )
 }

@@ -1,10 +1,28 @@
-import type { IPricing } from './pricing.model'
+import type * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
 
-export interface ITypeReservation {
-  id?: number
-  name?: string
+import type { PricingEncoded } from './pricing.model'
+import { Pricing } from './pricing.model'
+
+export interface TypeReservationEncoded {
+  id: number
+  name: string
   comment?: string
-  pricing?: IPricing[] | null
+  pricings: readonly PricingEncoded[]
 }
 
-export const defaultValue: Readonly<ITypeReservation> = {}
+export interface TypeReservation {
+  id: number
+  name: string
+  comment: O.Option<string>
+  pricings: readonly Pricing[]
+}
+
+export const TypeReservation: S.Schema<TypeReservationEncoded, TypeReservation> = S.lazy(() =>
+  S.struct({
+    id: S.number,
+    name: S.string,
+    comment: S.optional(S.string).toOption(),
+    pricings: S.array(Pricing)
+  })
+)

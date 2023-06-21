@@ -10,7 +10,6 @@ import type { AxiosResponse } from 'axios'
 import axios from 'axios'
 
 import { User } from '../model/user.model'
-import { getHttpEntity } from '../util/httpUtils'
 import { Storage } from '../util/storage-util'
 import { serializeAxiosError } from './reducer.utils'
 
@@ -40,7 +39,12 @@ export const getSession = (): AppThunk => dispatch => {
 
 export const getAccount = createAsyncThunk(
   'authentication/get_account',
-  async () => getHttpEntity('api/account', User),
+  async () =>
+    pipe(
+      T.promise(() => axios.get('api/account')),
+      T.map(d => S.parseOption(User)(d.data)),
+      T.runPromise
+    ),
   {
     serializeError: serializeAxiosError
   }

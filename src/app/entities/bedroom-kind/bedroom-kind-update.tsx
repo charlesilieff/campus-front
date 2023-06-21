@@ -12,7 +12,7 @@ import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import type { BedroomKindDecoded, BedroomKindEncoded } from 'app/shared/model/bedroom-kind.model'
+import type { BedroomKindDecoded } from 'app/shared/model/bedroom-kind.model'
 import { BedroomKind } from 'app/shared/model/bedroom-kind.model'
 import { getParamId } from 'app/shared/util/utils'
 import React, { useEffect } from 'react'
@@ -35,7 +35,7 @@ export const BedroomKindUpdate = () => {
     register,
     formState: { errors },
     reset: resetForm
-  } = useForm<BedroomKindEncoded>({
+  } = useForm({
     resolver: schemaResolver(BedroomKind)
   })
 

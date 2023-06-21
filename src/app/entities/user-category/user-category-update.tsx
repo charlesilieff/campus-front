@@ -9,19 +9,18 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import type { IUserCategory } from 'app/shared/model/userCategory.model'
+import { UserCategory } from 'app/shared/model/userCategory.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
+import { schemaResolver } from '../bed/resolver'
 import { createEntity, getEntity, reset, updateEntity } from './user-category.reducer'
-
-interface UserCategoryForm {
-  name?: string
-  comment?: string
-}
 
 export const UserCategoryUpdate = () => {
   const dispatch = useAppDispatch()
@@ -30,20 +29,20 @@ export const UserCategoryUpdate = () => {
   const isNew = id === undefined
   const userCategoryEntity = useAppSelector(state => state.userCategory.entity)
 
-  const defaultValues = (): UserCategoryForm =>
-    isNew ? {} : {
-      ...userCategoryEntity
-    }
+  const defaultValues = () =>
+    isNew || O.isNone(userCategoryEntity) ? {} : S.encode(UserCategory)(userCategoryEntity.value)
   const {
     handleSubmit,
     register,
     formState: { errors },
     reset: resetForm
-  } = useForm<UserCategoryForm>({})
+  } = useForm({
+    resolver: schemaResolver(UserCategory)
+  })
 
   useEffect(() => {
     resetForm(defaultValues())
-  }, [userCategoryEntity.id])
+  }, [pipe(userCategoryEntity, O.map(u => u.id), O.getOrNull)])
 
   const loading = useAppSelector(state => state.userCategory.loading)
   const updating = useAppSelector(state => state.userCategory.updating)
@@ -67,16 +66,11 @@ export const UserCategoryUpdate = () => {
     }
   }, [updateSuccess])
 
-  const saveEntity = (values: UserCategoryForm) => {
-    const entity: IUserCategory = {
-      ...userCategoryEntity,
-      ...values
-    }
-
+  const saveEntity = (values: UserCategory) => {
     if (isNew) {
-      dispatch(createEntity(entity))
+      dispatch(createEntity(values))
     } else {
-      dispatch(updateEntity(entity))
+      dispatch(updateEntity(values))
     }
   }
 
@@ -86,70 +80,72 @@ export const UserCategoryUpdate = () => {
         {isNew ? 'Créer' : 'Éditer'} une catégorie d&apos;utilisateur
       </Heading>
 
-      {loading ? <p>Chargement...</p> : (
-        <form onSubmit={handleSubmit(saveEntity)}>
-          <VStack minW={'300px'}>
-            <FormControl isRequired isInvalid={errors.name !== undefined}>
-              <FormLabel htmlFor="name" fontWeight={'bold'}>
-                {'Nom'}
-              </FormLabel>
-              <Input
-                id="name"
-                type="text"
-                placeholder="Nom"
-                {...register('name', {
-                  required: 'Le nom est obligatoire',
-                  minLength: {
-                    value: 2,
-                    message: 'This field is required to be at least 2 characters.'
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: 'This field cannot be longer than 20 characters.'
-                  }
-                })}
-              />{' '}
-              <FormErrorMessage>
-                {errors.name && errors.name.message}
-              </FormErrorMessage>
-            </FormControl>
-            <FormControl isInvalid={errors.comment !== undefined}>
-              <FormLabel htmlFor="comment" fontWeight={'bold'}>
-                {'Commentaire'}
-              </FormLabel>
-              <Textarea
-                id="comment"
-                placeholder="Commentaire"
-                {...register('comment', {})}
-              />
+      {loading ?
+        <p>Chargement...</p> :
+        (
+          <form onSubmit={handleSubmit(v => saveEntity(v as unknown as UserCategory))}>
+            <VStack minW={'300px'}>
+              <FormControl isRequired isInvalid={errors.name !== undefined}>
+                <FormLabel htmlFor="name" fontWeight={'bold'}>
+                  {'Nom'}
+                </FormLabel>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Nom"
+                  {...register('name', {
+                    required: 'Le nom est obligatoire',
+                    minLength: {
+                      value: 2,
+                      message: 'This field is required to be at least 2 characters.'
+                    },
+                    maxLength: {
+                      value: 20,
+                      message: 'This field cannot be longer than 20 characters.'
+                    }
+                  })}
+                />{' '}
+                <FormErrorMessage>
+                  {errors.name && errors.name.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl isInvalid={errors.comment !== undefined}>
+                <FormLabel htmlFor="comment" fontWeight={'bold'}>
+                  {'Commentaire'}
+                </FormLabel>
+                <Textarea
+                  id="comment"
+                  placeholder="Commentaire"
+                  {...register('comment', {})}
+                />
 
-              <FormErrorMessage>
-                {errors.comment && errors.comment.message}
-              </FormErrorMessage>
-            </FormControl>
+                <FormErrorMessage>
+                  {errors.comment && errors.comment.message}
+                </FormErrorMessage>
+              </FormControl>
 
-            <HStack>
-              <Button
-                as={Link}
-                variant="back"
-                to="/pricing"
-                leftIcon={<FaArrowLeft />}
-              >
-                Retour
-              </Button>
+              <HStack>
+                <Button
+                  as={Link}
+                  variant="back"
+                  to="/pricing"
+                  leftIcon={<FaArrowLeft />}
+                >
+                  Retour
+                </Button>
 
-              <Button
-                variant="save"
-                type="submit"
-                disabled={updating}
-                leftIcon={<FaSave />}
-              >
-                Sauvegarder
-              </Button>
-            </HStack>
-          </VStack>
-        </form>
-      )}
+                <Button
+                  variant="save"
+                  type="submit"
+                  disabled={updating}
+                  leftIcon={<FaSave />}
+                >
+                  Sauvegarder
+                </Button>
+              </HStack>
+            </VStack>
+          </form>
+        )}
     </VStack>
   )
 }

@@ -1,6 +1,6 @@
+import * as O from '@effect/data/Option'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
-import type { ITypeReservation } from 'app/shared/model/typeReservation.model'
-import { defaultValue } from 'app/shared/model/typeReservation.model'
+import type { TypeReservation } from 'app/shared/model/typeReservation.model'
 import type {
   EntityState
 } from 'app/shared/reducers/reducer.utils'
@@ -8,14 +8,13 @@ import {
   createEntitySlice,
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
-import { cleanEntity } from 'app/shared/util/entity-utils'
 import axios from 'axios'
 
-const initialState: EntityState<ITypeReservation> = {
+const initialState: EntityState<TypeReservation> = {
   loading: false,
   errorMessage: null,
   entities: [],
-  entity: defaultValue,
+  entity: O.none(),
   updating: false,
   updateSuccess: false
 }
@@ -28,7 +27,7 @@ export const getEntities = createAsyncThunk(
   'type-reservation/fetch_entity_list',
   async () => {
     const requestUrl = `${apiUrl}`
-    return axios.get<ITypeReservation[]>(requestUrl)
+    return axios.get<TypeReservation[]>(requestUrl)
   }
 )
 
@@ -36,15 +35,15 @@ export const getEntity = createAsyncThunk(
   'type-reservation/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`
-    return axios.get<ITypeReservation>(requestUrl)
+    return axios.get<TypeReservation>(requestUrl)
   },
   { serializeError: serializeAxiosError }
 )
 
 export const createEntity = createAsyncThunk(
   'type-reservation/create_entity',
-  async (entity: ITypeReservation, thunkAPI) => {
-    const result = await axios.post<ITypeReservation>(apiUrl, cleanEntity(entity))
+  async (entity: TypeReservation, thunkAPI) => {
+    const result = await axios.post<TypeReservation>(apiUrl, entity)
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -53,8 +52,8 @@ export const createEntity = createAsyncThunk(
 
 export const updateEntity = createAsyncThunk(
   'type-reservation/update_entity',
-  async (entity: ITypeReservation, thunkAPI) => {
-    const result = await axios.put<ITypeReservation>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
+  async (entity: TypeReservation, thunkAPI) => {
+    const result = await axios.put<TypeReservation>(`${apiUrl}/${entity.id}`, entity)
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -63,10 +62,10 @@ export const updateEntity = createAsyncThunk(
 
 export const partialUpdateEntity = createAsyncThunk(
   'type-reservation/partial_update_entity',
-  async (entity: ITypeReservation, thunkAPI) => {
-    const result = await axios.patch<ITypeReservation>(
+  async (entity: TypeReservation, thunkAPI) => {
+    const result = await axios.patch<TypeReservation>(
       `${apiUrl}/${entity.id}`,
-      cleanEntity(entity)
+      entity
     )
     thunkAPI.dispatch(getEntities())
     return result
@@ -78,7 +77,7 @@ export const deleteEntity = createAsyncThunk(
   'type-reservation/delete_entity',
   async (id: string | number, thunkAPI) => {
     const requestUrl = `${apiUrl}/${id}`
-    const result = await axios.delete<ITypeReservation>(requestUrl)
+    const result = await axios.delete<TypeReservation>(requestUrl)
     thunkAPI.dispatch(getEntities())
     return result
   },

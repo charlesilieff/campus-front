@@ -1,6 +1,6 @@
+import * as O from '@effect/data/Option'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
-import type { IPricing } from 'app/shared/model/pricing.model'
-import { defaultValue } from 'app/shared/model/pricing.model'
+import { Pricing, PricingCreate } from 'app/shared/model/pricing.model'
 import type {
   EntityState
 } from 'app/shared/reducers/reducer.utils'
@@ -8,14 +8,20 @@ import {
   createEntitySlice,
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
-import { cleanEntity } from 'app/shared/util/entity-utils'
+import {
+  getHttpEntities,
+  getHttpEntity,
+  postHttpEntity,
+  putHttpEntity
+} from 'app/shared/util/httpUtils'
 import axios from 'axios'
+import { castDraft } from 'immer'
 
-const initialState: EntityState<IPricing> = {
+const initialState: EntityState<Pricing> = {
   loading: false,
   errorMessage: null,
   entities: [],
-  entity: defaultValue,
+  entity: O.none(),
   updating: false,
   updateSuccess: false
 }
@@ -28,7 +34,8 @@ export const getEntities = createAsyncThunk(
   'pricing/fetch_entity_list',
   async () => {
     const requestUrl = `${apiUrl}`
-    return axios.get<IPricing[]>(requestUrl)
+
+    return getHttpEntities(requestUrl, Pricing)
   }
 )
 
@@ -36,15 +43,16 @@ export const getEntity = createAsyncThunk(
   'pricing/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`
-    return axios.get<IPricing>(requestUrl)
+
+    return getHttpEntity(requestUrl, Pricing)
   },
   { serializeError: serializeAxiosError }
 )
 
 export const createEntity = createAsyncThunk(
   'pricing/create_entity',
-  async (entity: IPricing, thunkAPI) => {
-    const result = await axios.post<IPricing>(apiUrl, cleanEntity(entity))
+  async (entity: PricingCreate, thunkAPI) => {
+    const result = await postHttpEntity(apiUrl, PricingCreate, entity, Pricing)
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -53,18 +61,8 @@ export const createEntity = createAsyncThunk(
 
 export const updateEntity = createAsyncThunk(
   'pricing/update_entity',
-  async (entity: IPricing, thunkAPI) => {
-    const result = await axios.put<IPricing>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
-    thunkAPI.dispatch(getEntities())
-    return result
-  },
-  { serializeError: serializeAxiosError }
-)
-
-export const partialUpdateEntity = createAsyncThunk(
-  'pricing/partial_update_entity',
-  async (entity: IPricing, thunkAPI) => {
-    const result = await axios.patch<IPricing>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
+  async (entity: PricingCreate, thunkAPI) => {
+    const result = await putHttpEntity(apiUrl, PricingCreate, entity, Pricing)
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -75,7 +73,7 @@ export const deleteEntity = createAsyncThunk(
   'pricing/delete_entity',
   async (id: string | number, thunkAPI) => {
     const requestUrl = `${apiUrl}/${id}`
-    const result = await axios.delete<IPricing>(requestUrl)
+    const result = await axios.delete<Pricing>(requestUrl)
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -91,23 +89,23 @@ export const PricingSlice = createEntitySlice({
     builder
       .addCase(getEntity.fulfilled, (state, action) => {
         state.loading = false
-        state.entity = action.payload.data
+        state.entity = action.payload
       })
       .addCase(deleteEntity.fulfilled, state => {
         state.updating = false
         state.updateSuccess = true
-        state.entity = {}
+        state.entity = castDraft(O.none())
       })
       .addMatcher(isFulfilled(getEntities), (state, action) => ({
         ...state,
         loading: false,
-        entities: action.payload.data
+        entities: action.payload
       }))
-      .addMatcher(isFulfilled(createEntity, updateEntity, partialUpdateEntity), (state, action) => {
+      .addMatcher(isFulfilled(createEntity, updateEntity), (state, action) => {
         state.updating = false
         state.loading = false
         state.updateSuccess = true
-        state.entity = action.payload.data
+        state.entity = action.payload
       })
       .addMatcher(isPending(getEntities, getEntity), state => {
         state.errorMessage = null
@@ -115,7 +113,7 @@ export const PricingSlice = createEntitySlice({
         state.loading = true
       })
       .addMatcher(
-        isPending(createEntity, updateEntity, partialUpdateEntity, deleteEntity),
+        isPending(createEntity, updateEntity, deleteEntity),
         state => {
           state.errorMessage = null
           state.updateSuccess = false

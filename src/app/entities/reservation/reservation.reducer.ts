@@ -8,7 +8,6 @@ import {
   createEntitySlice,
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
-import { cleanEntity } from 'app/shared/util/entity-utils'
 import axios from 'axios'
 
 const initialState: EntityState<Reservation> = {
@@ -62,7 +61,7 @@ export const getReservation = createAsyncThunk(
 export const createEntity = createAsyncThunk(
   'reservation/create_entity',
   async (entity: Reservation, thunkAPI) => {
-    const result = await axios.post<Reservation>(apiUrl, cleanEntity(entity))
+    const result = await axios.post<Reservation>(apiUrl, entity)
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -72,7 +71,7 @@ export const createEntity = createAsyncThunk(
 export const updateEntity = createAsyncThunk(
   'reservation/update_entity',
   async (entity: Reservation, thunkAPI) => {
-    const result = await axios.put<Reservation>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
+    const result = await axios.put<Reservation>(`${apiUrl}/${entity.id}`, entity)
     thunkAPI.dispatch(getEntities())
     return result
   },
@@ -82,7 +81,7 @@ export const updateEntity = createAsyncThunk(
 export const partialUpdateEntity = createAsyncThunk(
   'reservation/partial_update_entity',
   async (entity: Reservation, thunkAPI) => {
-    const result = await axios.patch<Reservation>(`${apiUrl}/${entity.id}`, cleanEntity(entity))
+    const result = await axios.patch<Reservation>(`${apiUrl}/${entity.id}`, entity)
     thunkAPI.dispatch(getEntities())
     return result
   },

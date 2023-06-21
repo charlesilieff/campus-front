@@ -1,5 +1,6 @@
 import { Box, Button, Heading, HStack, SimpleGrid, StackDivider, Table, Tbody, Td, Th, Thead, Tr,
   VStack } from '@chakra-ui/react'
+import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
 import { FaEye, FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
@@ -20,24 +21,6 @@ export const Pricing = () => {
   const handleSyncList = () => {
     dispatch(getEntities())
   }
-
-  const myData = pricingList.flatMap(pricing => ({
-    ...pricing
-  }))
-
-  // const mySort = pipe(pricingList, A.sort((a, b) =>
-  const mySort = myData.sort((a, b) =>
-    // @ts-expect-error TODO: fix this
-    a.userCategory.name !== b.userCategory.name ?
-      // @ts-expect-error TODO: fix this
-      a.userCategory.name.localeCompare(b.userCategory.name) :
-      // @ts-expect-error TODO: fix this
-      a.typeReservation.name !== b.typeReservation.name ?
-      // @ts-expect-error TODO: fix this
-      a.typeReservation.name.localeCompare(b.typeReservation.name) :
-      // @ts-expect-error TODO: fix this
-      a.price - b.price
-  )
 
   return (
     <VStack
@@ -68,7 +51,7 @@ export const Pricing = () => {
         </Button>
       </HStack>
       <Box width={'100%'}>
-        {mySort && pricingList.length > 0 ?
+        {pricingList.length > 0 ?
           (
             <Table
               id="tableTarif"
@@ -123,20 +106,20 @@ export const Pricing = () => {
                 fontSize={{ base: '8px', sm: '10px', md: '16px' }}
                 // width={'auto'}
               >
-                {myData.map((pricing, i) => (
+                {pricingList.map((pricing, i) => (
                   <Tr key={`entity-${i}`}>
                     <Td
                       margin={{ base: '2px', sm: '10px', md: '20px' }}
                       padding={{ base: '2px', sm: '10px', md: '20px' }}
                       // padding={screen.availWidth > 500 ? 'auto' : '5px'}
                     >
-                      {pricing.userCategory ?
+                      {O.isSome(pricing.userCategory) ?
                         (
                           <Link
                             title="Modfier la catégorie utilisateur"
-                            to={`/user-category/${pricing.userCategory.id}/edit`}
+                            to={`/user-category/${pricing.userCategory.value.id}/edit`}
                           >
-                            {pricing.userCategory.name}
+                            {pricing.userCategory.value.name}
                           </Link>
                         ) :
                         'yyy'}
@@ -145,13 +128,13 @@ export const Pricing = () => {
                       margin={{ base: '2px', sm: '10px', md: '20px' }}
                       padding={{ base: '2px', sm: '10px', md: '20px' }}
                     >
-                      {pricing.typeReservation ?
+                      {O.isSome(pricing.typeReservation) ?
                         (
                           <Link
                             title="Modfier le type de réservation"
-                            to={`/type-reservation/${pricing.typeReservation.id}`}
+                            to={`/type-reservation/${pricing.typeReservation.value.id}`}
                           >
-                            {pricing.typeReservation.name}
+                            {pricing.typeReservation.value.name}
                           </Link>
                         ) :
                         'xxx'}
@@ -167,7 +150,7 @@ export const Pricing = () => {
                       margin={{ base: '2px', sm: '10px', md: '20px' }}
                       padding={{ base: '2px', sm: '10px', md: '20px' }}
                     >
-                      {pricing.comment}
+                      {O.getOrNull(pricing.comment)}
                     </Td>
 
                     <Td>
@@ -201,7 +184,6 @@ export const Pricing = () => {
                           </Button>
                           <Box>
                             <PricingDeleteDialog
-                              // @ts-expect-error TODO: fix this
                               pricingId={pricing.id}
                             />
                           </Box>

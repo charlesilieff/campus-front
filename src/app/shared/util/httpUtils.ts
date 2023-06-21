@@ -24,7 +24,10 @@ export const getHttpEntities = <A, B,>(
 ): Promise<WritableDraft<readonly A[]>> =>
   pipe(
     T.promise(() => axios.get(url)),
-    T.flatMap(d => S.parseEffect(S.array(schema))(d.data)),
+    T.flatMap(d => {
+      console.log('getHttpEntities', d.data)
+      return S.parseEffect(S.array(schema))(d.data)
+    }),
     T.mapError(e => formatErrors(e.errors)),
     T.map(d => castDraft(d)),
     T.runPromise

@@ -10,7 +10,7 @@ import {
   VStack
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import type { ITypeReservation } from 'app/shared/model/typeReservation.model'
+import type { TypeReservation } from 'app/shared/model/typeReservation.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
@@ -69,7 +69,7 @@ export const TypeReservationUpdate = () => {
   }, [updateSuccess])
 
   const saveEntity = (values: TypeReservationForm) => {
-    const entity: ITypeReservation = {
+    const entity: TypeReservation = {
       ...typeReservationEntity,
       ...values
     }

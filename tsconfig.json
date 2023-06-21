@@ -1,7 +1,7 @@
 {
   "declaration": false,
   "compilerOptions": {
-    "strict": false,
+    "strict": true,
     "composite": true,
     "skipLibCheck": true,
     "jsx": "react",

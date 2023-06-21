@@ -3,8 +3,8 @@ import type { BedroomKind } from 'app/shared/model/bedroom-kind.model'
 import type { Customer } from 'app/shared/model/customer.model'
 import type { MealsOnlyUserReservation } from 'app/shared/model/mealsReservation.model'
 import type { OneBedUserReservation } from 'app/shared/model/onebedReservation.model'
-import type { ITypeReservation } from 'app/shared/model/typeReservation.model'
-import type { IUserCategory } from 'app/shared/model/userCategory.model'
+import type { TypeReservation } from 'app/shared/model/typeReservation.model'
+import type { UserCategory } from 'app/shared/model/userCategory.model'
 import axios from 'axios'
 import dayjs from 'dayjs'
 
@@ -77,8 +77,8 @@ export interface IRoomWithBeds {
 export interface IPricing { // WithReservation
   id?: number
   comment?: string | null
-  userCategory?: IUserCategory | null
-  typeReservation?: ITypeReservation | null
+  userCategory?: UserCategory | null
+  typeReservation?: TypeReservation | null
 }
 
 export interface IBedWithStatus {

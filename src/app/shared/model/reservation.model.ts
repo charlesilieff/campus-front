@@ -4,7 +4,7 @@ import type { BedDecoded, BedEncoded } from 'app/shared/model/bed.model'
 import { Bed } from 'app/shared/model/bed.model'
 import type { CustomerDecoded, CustomerEncoded } from 'app/shared/model/customer.model'
 import { Customer } from 'app/shared/model/customer.model'
-import type { IPricing } from 'app/shared/model/pricing.model'
+import type { Pricing } from 'app/shared/model/pricing.model'
 
 import { FormatLocalDate } from './formatLocalDate'
 
@@ -23,7 +23,7 @@ export interface ReservationEncoded {
   arrivalDate: string
   departureDate: string
   comment?: string
-  pricing?: IPricing
+  pricing?: Pricing
   beds: readonly BedEncoded[]
   customer?: CustomerEncoded
   // userCategory?: IUserCategory

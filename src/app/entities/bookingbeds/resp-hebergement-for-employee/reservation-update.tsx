@@ -6,7 +6,6 @@ import * as T from '@effect/io/Effect'
 import type { ParseError } from '@effect/schema/ParseResult'
 import * as S from '@effect/schema/Schema'
 import { MealsOnlyUserReservation } from 'app/shared/model/mealsReservation.model'
-import { cleanEntity } from 'app/shared/util/entity-utils'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
@@ -47,7 +46,7 @@ export const createMealsOnlyReservationReservationUpdateUser = (
       () =>
         axios.post<MealsOnlyUserReservation>(
           requestUrl,
-          cleanEntity(mealsOnlyReservation)
+          mealsOnlyReservation
         ),
       identity
     ),
@@ -69,7 +68,7 @@ export const updateMealsOnlyReservationReservationUpdateUser = (
       () =>
         axios.put<MealsOnlyUserReservation>(
           requestUrl,
-          cleanEntity({ ...mealsOnlyReservation, reservationId })
+          { ...mealsOnlyReservation, reservationId }
         ),
       T.catchAll(e =>
         pipe(e, S.decodeEffect(AxiosError), T.flatMap(e => T.fail(console.log(e.code))))
