@@ -12,12 +12,12 @@ export interface ReservationsPlanningEncoded {
   readonly isConfirmed: boolean
   readonly personNumber: number
   readonly customer: CustomerEncoded
-  readonly firstname: string
-  readonly lastname: string
-  readonly age: number
-  readonly phoneNumber: number
-  readonly email: string
-  readonly comment: string
+  // readonly firstname: string
+  // readonly lastname: string
+  // readonly age: number
+  // readonly phoneNumber: number
+  // readonly email: string
+  // readonly comment: string
   readonly arrivalDate: string
   readonly departureDate: string
   readonly bedsId: readonly number[]
@@ -30,12 +30,12 @@ export interface ReservationsPlanning {
   readonly isConfirmed: boolean
   readonly personNumber: number
   readonly customer: CustomerDecoded
-  readonly firstname: string
-  readonly lastname: string
-  readonly age: number
-  readonly phoneNumber: number
-  readonly email: string
-  readonly comment: string
+  // readonly firstname: string
+  // readonly lastname: string
+  // readonly age: number
+  // readonly phoneNumber: number
+  // readonly email: string
+  // readonly comment: string
   readonly arrivalDate: Date
   readonly departureDate: Date
   readonly bedsId: readonly number[]
@@ -49,12 +49,12 @@ export const ReservationsPlanning: S.Schema<ReservationsPlanningEncoded, Reserva
     isConfirmed: S.boolean,
     personNumber: S.number,
     customer: Customer,
-    firstname: S.string,
-    lastname: S.string,
-    age: S.number,
-    phoneNumber: S.number,
-    email: S.string,
-    comment: S.string,
+    // firstname: S.string,
+    // lastname: S.string,
+    // age: S.number,
+    // phoneNumber: S.number,
+    // email: S.string,
+    // comment: S.string,
     arrivalDate: FormatLocalDate,
     departureDate: FormatLocalDate,
     bedsId: S.array(S.number),

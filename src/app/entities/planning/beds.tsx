@@ -1,12 +1,12 @@
 import { Box } from '@chakra-ui/react'
-import type { IBed } from 'app/shared/model/bed.model'
+import type { BedCreateDecoded, BedCreateEncoded } from 'app/shared/model/bed.model'
 import type { FunctionComponent } from 'react'
 import React from 'react'
 
 interface IProps {
   rowPosition: number
   index: number
-  bed: IBed
+  bed: Omit<BedCreateDecoded, 'kind' | 'numberOfPlaces'>
 }
 
 export const Bed: FunctionComponent<IProps> = ({ rowPosition, index, bed }) => {

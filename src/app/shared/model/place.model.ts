@@ -19,16 +19,14 @@ export interface PlaceDecoded {
   intermittentAllowed: O.Option<boolean>
 }
 
-export const Place: S.Schema<PlaceEncoded, PlaceDecoded> = S.lazy(() =>
-  S.struct({
-    id: S.number,
-    name: S.string,
-    comment: S.optional(S.string).toOption(),
-    imageContentType: S.optional(S.string).toOption(),
-    image: S.optional(S.string).toOption(),
-    intermittentAllowed: S.optional(S.boolean).toOption()
-  })
-)
+export const Place: S.Schema<PlaceEncoded, PlaceDecoded> = S.struct({
+  id: S.number,
+  name: S.string,
+  comment: S.optional(S.string).toOption(),
+  imageContentType: S.optional(S.string).toOption(),
+  image: S.optional(S.string).toOption(),
+  intermittentAllowed: S.optional(S.boolean).toOption()
+})
 
 export type Place = S.To<typeof Place>
 

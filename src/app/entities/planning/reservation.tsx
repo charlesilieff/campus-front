@@ -1,21 +1,25 @@
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
 import { AUTHORITIES } from 'app/config/constants'
 import { useAppSelector } from 'app/config/store'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
-import type { IPlace } from 'app/shared/model/place.model'
-import type { ReservationsPlanning,
-  ReservationStatus } from 'app/shared/model/reservationsPlanning.model'
+import type {
+  ReservationsPlanning,
+  ReservationStatus
+} from 'app/shared/model/reservationsPlanning.model'
 import { getDateKey } from 'app/shared/util/date-utils'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import type { FunctionComponent } from 'react'
 import React from 'react'
 
+import type { PlaceWithRooms } from './model'
 import { ReservationBed } from './reservationBed'
 
 interface IProps {
   reservation: ReservationsPlanning
   index: number
-  place: IPlace
+  place: PlaceWithRooms
   positionX: number[]
   positionY: number[]
   date: Dayjs
@@ -26,7 +30,7 @@ export const Reservation: FunctionComponent<IProps> = (
 ) => {
   const positionYEnd = {}
   const isRespHebergement = useAppSelector(state =>
-    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.RESPHEBERGEMENT])
+    hasAnyAuthority(state.authentication.account, [AUTHORITIES.RESPHEBERGEMENT])
   )
   const colors = ['#74CAE7', '#E19BE8', '#F08E6A', '#82B865', '#FFCAD4', '#B8D8BA']
   const backgroundColorCalculation = (status: ReservationStatus, isRespHebergement: boolean) => {
@@ -72,12 +76,13 @@ export const Reservation: FunctionComponent<IProps> = (
 
   // construction de la liste des lits présents au lieu affiché du planning.
   const reservationBedIds: number[] = []
-  place.rooms?.forEach(room => {
-    room.beds?.forEach(bed => {
-      // @ts-expect-error TODO: fix this
-      if (reservation.bedsId.includes(bed.id)) {
-        // @ts-expect-error TODO: fix this
-        reservationBedIds.push(bed.id)
+  place.rooms.forEach(room => {
+    room.beds.forEach(bed => {
+      if (
+        pipe(bed.id, O.map(id => reservation.bedsId.includes(id)), O.exists(x => x))
+        && O.isSome(bed.id)
+      ) {
+        reservationBedIds.push(bed.id.value)
       }
     })
   })

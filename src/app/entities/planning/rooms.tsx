@@ -1,10 +1,11 @@
 import { Box } from '@chakra-ui/react'
-import type { RoomDecoded } from 'app/shared/model/room.model'
 import type { FunctionComponent } from 'react'
 import React from 'react'
 
+import type { RoomDecodedPlanning } from './model'
+
 interface IProps {
-  room: RoomDecoded
+  room: RoomDecodedPlanning
   gridRowEnd: number
 }
 

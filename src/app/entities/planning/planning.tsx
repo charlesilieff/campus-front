@@ -1,5 +1,6 @@
 import { Box, Grid, Text } from '@chakra-ui/react'
-import type { IPlace } from 'app/shared/model/place.model'
+import { pipe } from '@effect/data/Function'
+import * as O from '@effect/data/Option'
 import { getDateKey } from 'app/shared/util/date-utils'
 import type { Dayjs } from 'dayjs'
 import React from 'react'
@@ -7,6 +8,7 @@ import React from 'react'
 import type { ReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
 import { Bed } from './beds'
 import { Day } from './day'
+import type { PlaceWithRooms } from './model'
 import { Months } from './months'
 import { Reservation } from './reservation'
 import { Room } from './rooms'
@@ -14,7 +16,7 @@ import { Room } from './rooms'
 interface IProps {
   date: Dayjs
   totalDays: number
-  place: IPlace
+  place: PlaceWithRooms
   reservations: ReservationsPlanning[]
 }
 
@@ -96,20 +98,18 @@ export const Planning = ({ place, date, totalDays, reservations }: IProps) => {
         {
           // Affichage des chambres
         }
-        {place?.rooms?.map(room => {
-          // @ts-expect-error TODO: fix this
+        {place.rooms.map(room => {
           if (room.beds.length > 0) {
             // On incrémente en fonction du nombre de lits de la room précédente.
-            // @ts-expect-error TODO: fix this
+
             roomRowPosition += room.beds.length
 
             return [
               <Room room={room} gridRowEnd={roomRowPosition} key={room.id} />,
-              // @ts-expect-error TODO: fix this
+
               room.beds.map((bed, index) => {
                 // On construit l'object qui va permettre de récupérer la bonne position en Y pour afficher les réservations.
-                // @ts-expect-error TODO: fix this
-                positionY[bed.id] = roomRowPosition - index - 1
+                pipe(bed.id, O.map(id => positionY[id] = roomRowPosition - index - 1))
                 return <Bed key={index} bed={bed} rowPosition={roomRowPosition} index={index} />
               })
             ]

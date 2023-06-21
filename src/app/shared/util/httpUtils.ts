@@ -13,7 +13,14 @@ export const getHttpEntity = <A, B,>(
 ): Promise<WritableDraft<O.Option<A>>> =>
   pipe(
     T.promise(() => axios.get(url)),
-    T.map(d => S.parseOption(schema)(d.data)),
+    T.flatMap(d =>
+      pipe(
+        S.parseEffect(schema)(d.data),
+        T.mapError(e => formatErrors(e.errors)),
+        T.tapError(d => T.logError(d)),
+        T.option
+      )
+    ),
     T.map(d => castDraft(d)),
     T.runPromise
   )
@@ -24,10 +31,7 @@ export const getHttpEntities = <A, B,>(
 ): Promise<WritableDraft<readonly A[]>> =>
   pipe(
     T.promise(() => axios.get(url)),
-    T.flatMap(d => {
-      console.log('getHttpEntities', d.data)
-      return S.parseEffect(S.array(schema))(d.data)
-    }),
+    T.flatMap(d => S.parseEffect(S.array(schema))(d.data)),
     T.mapError(e => formatErrors(e.errors)),
     T.map(d => castDraft(d)),
     T.runPromise
@@ -41,10 +45,7 @@ export const putHttpEntity = <A, B, C, D,>(
 ): Promise<WritableDraft<O.Option<D>>> =>
   pipe(
     S.encodeEffect(schema)(entity, { errors: 'all' }),
-    T.mapError(e => {
-      console.log('putHttpEntity', e)
-      return formatErrors(e.errors)
-    }),
+    T.mapError(e => formatErrors(e.errors)),
     T.flatMap(b => T.promise(() => axios.put(url, b))),
     T.map(d => S.parseOption(responseType)(d.data)),
     T.map(d => castDraft(d)),
