@@ -80,7 +80,7 @@ export const ReservationRequestDetail = (): JSX.Element => {
                 {reservationRequestEntity.value.reservation.arrivalDate ?
                   (
                     <TextFormat
-                      value={reservationRequestEntity.value.reservation.arrivalDate}
+                      value={O.some(reservationRequestEntity.value.reservation.arrivalDate)}
                       type="date"
                       format={APP_LOCAL_DATE_FORMAT}
                     />
@@ -93,7 +93,7 @@ export const ReservationRequestDetail = (): JSX.Element => {
                 {reservationRequestEntity.value.reservation.departureDate ?
                   (
                     <TextFormat
-                      value={reservationRequestEntity.value.reservation.departureDate}
+                      value={O.some(reservationRequestEntity.value.reservation.departureDate)}
                       type="date"
                       format={APP_LOCAL_DATE_FORMAT}
                     />

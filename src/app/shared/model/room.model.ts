@@ -1,5 +1,5 @@
 import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
+import type * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import type { BedroomKindDecoded, BedroomKindEncoded } from 'app/shared/model/bedroom-kind.model'
 import { BedroomKind } from 'app/shared/model/bedroom-kind.model'
@@ -39,8 +39,6 @@ export const Room: S.Schema<RoomEncoded, RoomDecoded> = S.lazy(() =>
 )
 
 export type Room = S.To<typeof Room>
-
-export const defaultValue: Readonly<O.Option<Room>> = O.none()
 
 export interface RoomCreateDecoded {
   id: O.Option<number>

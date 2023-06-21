@@ -1,17 +1,17 @@
 import { Box } from '@chakra-ui/react'
-import type { IRoom } from 'app/shared/model/room.model'
+import type { RoomDecoded } from 'app/shared/model/room.model'
 import type { FunctionComponent } from 'react'
 import React from 'react'
 
 interface IProps {
-  room: IRoom
+  room: RoomDecoded
   gridRowEnd: number
 }
 
 export const Room: FunctionComponent<IProps> = ({ gridRowEnd, room }) => {
   const style = {
     // On test l'index car la premiére chambre a une postion absolu dans le tableau (de 4).
-    // @ts-expect-error TODO: fix this
+
     gridRowStart: gridRowEnd - room.beds.length,
     gridRowEnd
   } as React.CSSProperties

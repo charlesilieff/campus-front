@@ -1,6 +1,6 @@
 import * as O from '@effect/data/Option'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
-import type { Reservation } from 'app/shared/model/reservation.model'
+import { Reservation } from 'app/shared/model/reservation.model'
 import type {
   EntityState
 } from 'app/shared/reducers/reducer.utils'
@@ -8,7 +8,9 @@ import {
   createEntitySlice,
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
+import { getHttpEntities, getHttpEntity } from 'app/shared/util/httpUtils'
 import axios from 'axios'
+import { castDraft } from 'immer'
 
 const initialState: EntityState<Reservation> = {
   loading: false,
@@ -29,7 +31,8 @@ export const getEntities = createAsyncThunk(
   'reservation/fetch_entity_list',
   async () => {
     const requestUrl = `${apiUrl}`
-    return axios.get<Reservation[]>(requestUrl)
+
+    return getHttpEntities(requestUrl, Reservation)
   }
 )
 
@@ -37,7 +40,8 @@ export const getReservationsToBeProcessed = createAsyncThunk(
   'reservation/fetch_entity_list',
   async () => {
     const requestUrl = `${apiUrlReservationsToBeProcessed}`
-    return axios.get<Reservation[]>(requestUrl)
+
+    return getHttpEntities(requestUrl, Reservation)
   }
 )
 
@@ -45,7 +49,8 @@ export const getOneBedUserReservationsByUserId = createAsyncThunk(
   'reservation/fetch_entity_list',
   async (id: number) => {
     const requestUrl = `${apiUrlOneBedUserReservations}/${id}`
-    return axios.get<Reservation[]>(requestUrl)
+
+    return getHttpEntity(requestUrl, Reservation)
   }
 )
 
@@ -53,37 +58,7 @@ export const getReservation = createAsyncThunk(
   'reservation/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`
-    return axios.get<Reservation>(requestUrl)
-  },
-  { serializeError: serializeAxiosError }
-)
-
-export const createEntity = createAsyncThunk(
-  'reservation/create_entity',
-  async (entity: Reservation, thunkAPI) => {
-    const result = await axios.post<Reservation>(apiUrl, entity)
-    thunkAPI.dispatch(getEntities())
-    return result
-  },
-  { serializeError: serializeAxiosError }
-)
-
-export const updateEntity = createAsyncThunk(
-  'reservation/update_entity',
-  async (entity: Reservation, thunkAPI) => {
-    const result = await axios.put<Reservation>(`${apiUrl}/${entity.id}`, entity)
-    thunkAPI.dispatch(getEntities())
-    return result
-  },
-  { serializeError: serializeAxiosError }
-)
-
-export const partialUpdateEntity = createAsyncThunk(
-  'reservation/partial_update_entity',
-  async (entity: Reservation, thunkAPI) => {
-    const result = await axios.patch<Reservation>(`${apiUrl}/${entity.id}`, entity)
-    thunkAPI.dispatch(getEntities())
-    return result
+    return getHttpEntity(requestUrl, Reservation)
   },
   { serializeError: serializeAxiosError }
 )
@@ -108,31 +83,25 @@ export const ReservationSlice = createEntitySlice({
     builder
       .addCase(getReservation.fulfilled, (state, action) => {
         state.loading = false
-        state.entity = action.payload.data
+        state.entity = action.payload
       })
       .addCase(deleteEntity.fulfilled, state => {
         state.updating = false
         state.updateSuccess = true
-        state.entity = {}
+        state.entity = castDraft(O.none())
       })
       .addMatcher(isFulfilled(getEntities), (state, action) => ({
         ...state,
         loading: false,
-        entities: action.payload.data
+        entities: action.payload
       }))
-      .addMatcher(isFulfilled(createEntity, updateEntity, partialUpdateEntity), (state, action) => {
-        state.updating = false
-        state.loading = false
-        state.updateSuccess = true
-        state.entity = action.payload.data
-      })
       .addMatcher(isPending(getEntities, getReservation), state => {
         state.errorMessage = null
         state.updateSuccess = false
         state.loading = true
       })
       .addMatcher(
-        isPending(createEntity, updateEntity, partialUpdateEntity, deleteEntity),
+        isPending(deleteEntity),
         state => {
           state.errorMessage = null
           state.updateSuccess = false

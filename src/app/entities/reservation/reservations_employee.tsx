@@ -85,7 +85,7 @@ export const ReservationsListEmployee = () => {
                       (
                         <TextFormat
                           type="date"
-                          value={reservation.arrivalDate}
+                          value={O.some(reservation.arrivalDate)}
                           format={APP_LOCAL_DATE_FORMAT}
                         />
                       ) :
@@ -96,7 +96,7 @@ export const ReservationsListEmployee = () => {
                       (
                         <TextFormat
                           type="date"
-                          value={reservation.departureDate}
+                          value={O.some(reservation.departureDate)}
                           format={APP_LOCAL_DATE_FORMAT}
                         />
                       ) :

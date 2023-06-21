@@ -1,4 +1,5 @@
 import { Button, Heading, HStack, Table, Tbody, Td, Th, Thead, Tr, VStack } from '@chakra-ui/react'
+import * as O from '@effect/data/Option'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import React, { useEffect } from 'react'
@@ -90,7 +91,7 @@ export const ReservationsListToBeProcessed = () => {
                       (
                         <TextFormat
                           type="date"
-                          value={reservation.arrivalDate}
+                          value={O.some(reservation.arrivalDate)}
                           format={APP_LOCAL_DATE_FORMAT}
                         />
                       ) :
@@ -101,65 +102,67 @@ export const ReservationsListToBeProcessed = () => {
                       (
                         <TextFormat
                           type="date"
-                          value={reservation.departureDate}
+                          value={O.some(reservation.departureDate)}
                           format={APP_LOCAL_DATE_FORMAT}
                         />
                       ) :
                       null}
                   </Td>
-                  <Td px={2} py={1}>{reservation.comment}</Td>
+                  <Td px={2} py={1}>{O.getOrElse(reservation.comment, () => '')}</Td>
 
                   <Td px={2} py={1}>
                     {reservation.beds ?
                       reservation.beds.map((val, j) => (
                         <span key={j}>
                           <Link to={`/bed/${val.id}`}>{val.number}</Link>
-                          {
-                            // @ts-expect-error TODO: fix this
-                            j === reservation.beds.length - 1 ? '' : ', '
-                          }
+                          {j === reservation.beds.length - 1 ? '' : ', '}
                         </span>
                       )) :
                       null}
                   </Td>
                   <Td px={2} py={1}>
-                    {reservation.customer ?
+                    {O.isSome(reservation.customer) ?
                       (
-                        <Link to={`/customer/${reservation.customer.id}`}>
-                          {reservation.customer.email}
+                        <Link to={`/customer/${reservation.customer.value.id}`}>
+                          {reservation.customer.value.email}
                         </Link>
                       ) :
                       ''}
                   </Td>
                   <Td px={2} py={1} className="text-right">
                     <HStack spacing={0}>
-                      <Button
-                        as={Link}
-                        to={`/bookingbeds/${reservation.id}`}
-                        variant={'see'}
-                        size="sm"
-                        leftIcon={<FaEye />}
-                        borderRightRadius={0}
-                      >
-                        Voir
-                      </Button>
-                      <Button
-                        as={Link}
-                        to={`/bookingbeds/${reservation.id}/edit`}
-                        variant={'modify'}
-                        size="sm"
-                        leftIcon={<FaPencilAlt />}
-                        borderRadius={0}
-                      >
-                        Modifier
-                      </Button>
-                      <ReservationDeleteDialog
-                        // @ts-expect-error TODO: fix this
-                        reservationId={reservation.id}
-                        buttonProps={{ size: 'sm', variant: 'danger', borderLeftRadius: 0 }}
-                        backToPlanning={false}
-                        handleSyncList={handleSyncList}
-                      />
+                      {O.isSome(reservation.id) ?
+                        (
+                          <>
+                            <Button
+                              as={Link}
+                              to={`/bookingbeds/${reservation.id.value}`}
+                              variant={'see'}
+                              size="sm"
+                              leftIcon={<FaEye />}
+                              borderRightRadius={0}
+                            >
+                              Voir
+                            </Button>
+                            <Button
+                              as={Link}
+                              to={`/bookingbeds/${reservation.id.value}/edit`}
+                              variant={'modify'}
+                              size="sm"
+                              leftIcon={<FaPencilAlt />}
+                              borderRadius={0}
+                            >
+                              Modifier
+                            </Button>
+                            <ReservationDeleteDialog
+                              reservationId={reservation.id.value}
+                              buttonProps={{ size: 'sm', variant: 'danger', borderLeftRadius: 0 }}
+                              backToPlanning={false}
+                              handleSyncList={handleSyncList}
+                            />
+                          </>
+                        ) :
+                        null}
                     </HStack>
                   </Td>
                 </Tr>
