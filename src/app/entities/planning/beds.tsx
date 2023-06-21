@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react'
-import type { BedCreateDecoded, BedCreateEncoded } from 'app/shared/model/bed.model'
+import type { BedCreateDecoded } from 'app/shared/model/bed.model'
 import type { FunctionComponent } from 'react'
 import React from 'react'
 

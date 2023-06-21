@@ -2,6 +2,7 @@ import { Box, Button, Heading, HStack, Input, Stack, Text, useToast,
   VStack } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
+import * as A from '@effect/data/ReadonlyArray'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 // import { isArrivalDateIsBeforeDepartureDate, isDateBeforeNow } from 'app/entities/bookingbeds/utils'
 import { getOneBedUserReservationsByUserId,
@@ -35,7 +36,6 @@ export const Index = () => {
   const toast = useToast()
   const account = useAppSelector(state => state.authentication.account)
 
-  const customerId = account.customerId
   // const customerId = pipe(
   //   account.customerId,
   //   O.fromNullable,
@@ -54,21 +54,22 @@ export const Index = () => {
 
   const dispatch = useAppDispatch()
 
-  const userId = pipe(
-    account.id,
-    O.fromNullable,
-    O.map(Number)
-  )
+  const userId = O.flatMap(account, a => a.id)
+  const customerId = O.flatMap(account, a => a.customerId)
 
-  const reservationList = useAppSelector(state => state.reservation.entities).filter(x =>
-    dayjs(dayjs(x?.departureDate)).isAfter(
-      date.subtract(1, 'day').format('YYYY-MM-DD'),
-      'day'
-    )
-  ).filter(x =>
-    dayjs(dayjs(x?.arrivalDate)).isBefore(
-      date.format('YYYY-MM-DD'),
-      'day'
+  const reservationList = pipe(
+    useAppSelector(state => state.reservation.entities),
+    A.filter(x =>
+      dayjs(dayjs(x?.departureDate)).isAfter(
+        date.subtract(1, 'day').format('YYYY-MM-DD'),
+        'day'
+      )
+    ),
+    A.filter(x =>
+      dayjs(dayjs(x?.arrivalDate)).isBefore(
+        date.format('YYYY-MM-DD'),
+        'day'
+      )
     )
   ) // .filter(x => x.beds?.length > 0)
 
@@ -85,8 +86,10 @@ export const Index = () => {
 
   useEffect(() => {
     if (O.isSome(userId)) dispatch(getOneBedUserReservationsByUserId(userId.value))
-    // @ts-expect-error TODO: fix this
-    if (reservationList.length > 0) dispatch(getReservation(reservationList[0].id))
+
+    if (reservationList.length > 0 && O.isSome(reservationList[0].id)) {
+      dispatch(getReservation(reservationList[0].id.value))
+    }
 
     // setReservationId(reservationListFirst.id)
     // MealsUserPlanning
@@ -112,8 +115,7 @@ export const Index = () => {
       setMealsData(data)
       setRefreshing(false)
     }
-    // @ts-expect-error TODO: fix this
-    getMealsDateFor31DaysByUser(date, customerId)
+    pipe(customerId, O.map(customerId => getMealsDateFor31DaysByUser(date, customerId)))
   }, [date, refreshing])
   /**
    * Get meals for 31 days by reservation. //todo getMealsDateFor31DaysByUser by reservation
@@ -140,14 +142,13 @@ export const Index = () => {
     return table.reduce(add, 0) // with initial value to avoid when the array is empty
   }
 
-  let resultTotalMeals: number[]
+  let resultTotalMeals: number[] = []
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   let mealsDataDays: IMeal[] = new Array(numberOfDays)
   ;({ mealsDataDays, resultTotalMeals } = calculateAccordingToNumberOfDays(
     mealsDataDays,
     numberOfDays,
     mealsData,
-    // @ts-expect-error TODO: fix this
     resultTotalMeals,
     totalMeals
   ))
@@ -178,8 +179,8 @@ export const Index = () => {
     // TODO check if it's necessarry to load new data (if calendar is showing 7 days)
     setDate(date.add(1, 'day'))
     if (O.isSome(userId)) dispatch(getOneBedUserReservationsByUserId(userId.value))
-    // @ts-expect-error TODO: fix this
-    dispatch(getReservation(reservationList[0].id))
+
+    if (O.isSome(reservationList[0].id)) dispatch(getReservation(reservationList[0].id.value))
 
     if (reservationList.length > 0) {
       console.error('erreur plusieurs réservation', reservationList.length)
@@ -439,17 +440,21 @@ export const Index = () => {
           </Box> */
           }
 
-          <Box alignSelf={'self-end'}>
-            <ConfirmationUpdateMealsByPeriodModal
-              setRefreshing={setRefreshing}
-              startDate={startDate}
-              endDate={endDate}
-              // reservationId={reservationId}
-              // @ts-expect-error TODO: fix this
-              reservationId={customerId} // TODO tmp to test without reservation id
-              setDate={setDate}
-            />
-          </Box>
+          {O.isSome(customerId) ?
+            (
+              <Box alignSelf={'self-end'}>
+                <ConfirmationUpdateMealsByPeriodModal
+                  setRefreshing={setRefreshing}
+                  startDate={startDate}
+                  endDate={endDate}
+                  // reservationId={reservationId}
+
+                  reservationId={customerId.value} // TODO tmp to test without reservation id
+                  setDate={setDate}
+                />
+              </Box>
+            ) :
+            null}
         </Stack>
       </form>
       <DisplayTotalMeals resultTotalMeals={resultTotalMeals} />
@@ -481,22 +486,22 @@ const calculateAccordingToNumberOfDays = (
  */
 const totalMealsCalculation = (mealsData: IMeal[], totalMeals: (table: number[]) => number) => {
   // regularLunch: calculation of total.
-  // @ts-expect-error TODO: fix this
-  let table: number[] = mealsData.map(meals => meals.regularLunch)
+
+  let table = pipe(mealsData.map(meals => meals.regularLunch), A.map(O.fromNullable), A.compact)
 
   const totalRegularLunch: number = totalMeals(table)
-  // @ts-expect-error TODO: fix this
-  table = mealsData.map(meals => meals.regularDinner)
+
+  table = pipe(mealsData.map(meals => meals.regularDinner), A.map(O.fromNullable), A.compact)
   const totalRegularDinner: number = totalMeals(table)
 
   // specialLunch: calculation of total.
-  // @ts-expect-error TODO: fix this
-  table = mealsData.map(meals => meals.specialLunch)
+
+  table = pipe(mealsData.map(meals => meals.specialLunch), A.map(O.fromNullable), A.compact)
   const totalSpecialLunch: number = totalMeals(table)
 
   // specialDinner: calculation of total.
-  // @ts-expect-error TODO: fix this
-  table = mealsData.map(meals => meals.specialDinner)
+
+  table = pipe(mealsData.map(meals => meals.specialDinner), A.map(O.fromNullable), A.compact)
   const totalSpecialDinner: number = totalMeals(table)
 
   const totalRegular: number = totalRegularDinner + totalRegularLunch
@@ -504,8 +509,8 @@ const totalMealsCalculation = (mealsData: IMeal[], totalMeals: (table: number[])
   const total: number = totalRegular + totalSpecial
 
   // breakfast: calculation of total .
-  // @ts-expect-error TODO: fix this
-  table = mealsData.map(meals => meals.breakfast)
+
+  table = pipe(mealsData.map(meals => meals.breakfast), A.map(O.fromNullable), A.compact)
   const totalBreakfast: number = totalMeals(table)
 
   const result: number[] = [
