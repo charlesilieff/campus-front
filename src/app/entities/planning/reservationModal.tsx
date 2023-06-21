@@ -12,36 +12,35 @@ import {
   Text,
   useDisclosure
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
+import * as S from '@effect/match'
 import dayjs from 'dayjs'
 import React from 'react'
 import { FaTimesCircle } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
 import type {
-  IReservationsPlanning,
+  ReservationsPlanning,
   ReservationStatus
 } from '../../shared/model/reservationsPlanning.model'
 
 interface IProps {
-  reservation: IReservationsPlanning
+  reservation: ReservationsPlanning
   isRespHebergement: boolean
 }
 export const ReservationModal = ({ reservation, isRespHebergement }: IProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const status = reservation.status
-  const statusIcon = (status: ReservationStatus) => {
-    switch (status) {
-      case 'pending':
-        return <FaTimesCircle />
-      case 'processed':
-        return <CheckCircleIcon />
-      case 'urgent':
-        return <WarningIcon />
-      default:
-        return null
-    }
-  }
+  const statusIcon = (status: ReservationStatus) =>
+    pipe(
+      status,
+      S.value,
+      S.when('pending', _ => <FaTimesCircle />),
+      S.when('processed', _ => <CheckCircleIcon />),
+      S.when('urgent', _ => <WarningIcon />),
+      S.exhaustive
+    )
 
   return (
     <Box p={1}>
@@ -53,31 +52,30 @@ export const ReservationModal = ({ reservation, isRespHebergement }: IProps) => 
         leftIcon={<EditIcon />}
         _hover={{ textDecoration: 'none', color: 'black' }}
         _active={{ textDecoration: 'none', color: 'black' }}
-        // @ts-expect-error TODO: fix this
-        rightIcon={isRespHebergement ? statusIcon(status) : null}
+        rightIcon={isRespHebergement ? statusIcon(status) : <></>}
         px={2}
         py={4}
       >
         <Stack minW={'80%'}>
-          <Text fontSize={14} isTruncated>{reservation?.customer.firstname}</Text>
-          <Text fontSize={14} isTruncated>{reservation?.customer.lastname}</Text>
+          <Text fontSize={14} isTruncated>{reservation.customer.firstname}</Text>
+          <Text fontSize={14} isTruncated>{reservation.customer.lastname}</Text>
         </Stack>
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader borderBottom={'solid'}>
-            {reservation?.customer.lastname} {reservation?.customer.firstname}
+            {reservation.customer.lastname} {reservation.customer.firstname}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <div>Date d&apos;arrivée : {dayjs(reservation?.arrivalDate).format('DD/MM/YYYY')}</div>
-            <div>Date de départ : {dayjs(reservation?.departureDate).format('DD/MM/YYYY')}</div>
-            <div>Nombre de personnes : {reservation?.personNumber}</div>
-            <div>Réservation payée : {reservation?.isPaid ? 'Oui' : 'Non'}</div>
-            <div>Réservation confirmée : {reservation?.isConfirmed ? 'Oui' : 'Non'}</div>
-            <div>Email de contact : {reservation?.customer.email}</div>
-            <Link to={`/bookingbeds/${reservation?.id}`} className="alert-link">
+            <div>Date d&apos;arrivée : {dayjs(reservation.arrivalDate).format('DD/MM/YYYY')}</div>
+            <div>Date de départ : {dayjs(reservation.departureDate).format('DD/MM/YYYY')}</div>
+            <div>Nombre de personnes : {reservation.personNumber}</div>
+            <div>Réservation payée : {reservation.isPaid ? 'Oui' : 'Non'}</div>
+            <div>Réservation confirmée : {reservation.isConfirmed ? 'Oui' : 'Non'}</div>
+            <div>Email de contact : {reservation.customer.email}</div>
+            <Link to={`/bookingbeds/${reservation.id}`} className="alert-link">
               Détails de la réservation
             </Link>
           </ModalBody>

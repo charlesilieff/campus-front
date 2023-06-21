@@ -3,7 +3,7 @@ import { Box, Button, HStack, Input, Select, Text, VStack } from '@chakra-ui/rea
 import { AUTHORITIES } from 'app/config/constants'
 import { useAppSelector } from 'app/config/store'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
-import type { IPlace } from 'app/shared/model/place.model'
+import type { Place } from 'app/shared/model/place.model'
 import axios from 'axios'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react'
 import { BsFillExclamationCircleFill, BsList, BsPlusCircle } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 
-import type { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
+import type { ReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
 import { PlaceModal } from '../place/placeModal'
 import { Planning } from './planning'
 
@@ -21,12 +21,12 @@ const apiUrlReservations = 'api/planning/reservations'
 
 export const IndexPlanning = () => {
   const isAdmin = useAppSelector(state =>
-    hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.ADMIN])
+    hasAnyAuthority(state.authentication.account, [AUTHORITIES.ADMIN])
   )
-  const [reservations, setReservations] = useState([] as IReservationsPlanning[])
-  const [places, setPlaces] = useState([] as IPlace[])
-  // @ts-expect-error TODO: fix this
-  const [place, setPlace] = useState(null as IPlace)
+  const [reservations, setReservations] = useState([] as ReservationsPlanning[])
+  const [places, setPlaces] = useState([] as Place[])
+
+  const [place, setPlace] = useState(null as Place)
   const [date, setDate] = useState(dayjs())
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export const IndexPlanning = () => {
 
   const getPlaces = async () => {
     const requestUrl = `${apiUrlPlacesWithoutImage}`
-    const { data } = await axios.get<IPlace[]>(requestUrl)
+    const { data } = await axios.get<Place[]>(requestUrl)
 
     setPlaces(data)
     // @ts-expect-error TODO: fix this
@@ -44,7 +44,7 @@ export const IndexPlanning = () => {
 
   const getOnePlace = async (id: string) => {
     const requestUrl = `${apiUrlPlaces}/${id}`
-    const { data } = await axios.get<IPlace>(requestUrl)
+    const { data } = await axios.get<Place>(requestUrl)
 
     setPlace(data)
     // @ts-expect-error TODO: fix this
@@ -54,7 +54,7 @@ export const IndexPlanning = () => {
 
   const getReservations = async (id: string, startDate: Dayjs) => {
     const requestUrl = `${apiUrlReservations}/${id}/${startDate.format('YYYY-MM-DD')}`
-    const { data } = await axios.get<IReservationsPlanning[]>(requestUrl)
+    const { data } = await axios.get<ReservationsPlanning[]>(requestUrl)
     setReservations(data)
   }
 

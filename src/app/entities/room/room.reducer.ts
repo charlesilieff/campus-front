@@ -1,6 +1,6 @@
 import * as O from '@effect/data/Option'
 import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit'
-import { defaultValue, Room, RoomCreate } from 'app/shared/model/room.model'
+import { Room, RoomCreate } from 'app/shared/model/room.model'
 import type {
   EntityState
 } from 'app/shared/reducers/reducer.utils'
@@ -21,7 +21,7 @@ const initialState: EntityState<Room> = {
   loading: false,
   errorMessage: null,
   entities: [],
-  entity: defaultValue,
+  entity: O.none(),
   updating: false,
   updateSuccess: false
 }

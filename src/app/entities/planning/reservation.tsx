@@ -2,7 +2,7 @@ import { AUTHORITIES } from 'app/config/constants'
 import { useAppSelector } from 'app/config/store'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
 import type { IPlace } from 'app/shared/model/place.model'
-import type { IReservationsPlanning,
+import type { ReservationsPlanning,
   ReservationStatus } from 'app/shared/model/reservationsPlanning.model'
 import { getDateKey } from 'app/shared/util/date-utils'
 import type { Dayjs } from 'dayjs'
@@ -13,7 +13,7 @@ import React from 'react'
 import { ReservationBed } from './reservationBed'
 
 interface IProps {
-  reservation: IReservationsPlanning
+  reservation: ReservationsPlanning
   index: number
   place: IPlace
   positionX: number[]

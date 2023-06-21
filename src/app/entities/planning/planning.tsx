@@ -4,7 +4,7 @@ import { getDateKey } from 'app/shared/util/date-utils'
 import type { Dayjs } from 'dayjs'
 import React from 'react'
 
-import type { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
+import type { ReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
 import { Bed } from './beds'
 import { Day } from './day'
 import { Months } from './months'
@@ -15,7 +15,7 @@ interface IProps {
   date: Dayjs
   totalDays: number
   place: IPlace
-  reservations: IReservationsPlanning[]
+  reservations: ReservationsPlanning[]
 }
 
 // On souhaite afficher 31 jours => Tableau de 31 éléments.

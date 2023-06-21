@@ -1,11 +1,11 @@
 import { HStack } from '@chakra-ui/react'
 import React from 'react'
 
-import type { IReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
+import type { ReservationsPlanning } from '../../shared/model/reservationsPlanning.model'
 import { ReservationModal } from './reservationModal'
 
 interface IProps {
-  reservation: IReservationsPlanning
+  reservation: ReservationsPlanning
   gridRowStart: number
   gridRowEnd: number
   gridColumnStart: number
