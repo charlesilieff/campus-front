@@ -16,15 +16,15 @@ import * as String from '@effect/data/String'
 import type { Order } from '@effect/data/typeclass/Order'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getUsersAsAdmin } from 'app/modules/administration/user-management/user-management.reducer'
-import type { IUser } from 'app/shared/model/user.model'
-import React, { useEffect, useState } from 'react'
+import type { User } from 'app/shared/model/user.model'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import type { Customer } from '../models'
+import type { CustomerForm } from './customer-update'
 
 interface UserUpdateProps {
-  setCustomer: (user: O.Option<Customer>) => void
+  setCustomer: (user: O.Option<CustomerForm>) => void
   setUserId: (userId: O.Option<number>) => void
   setUpdateUser: (updateUser: boolean) => void
   setUpdateCustomer: (updateUser: boolean) => void
@@ -47,17 +47,14 @@ export const UserSelect = (
     )
   }
 
-  const [userSelect, setUserSelect] = useState<O.Option<string>>(O.none())
-
-  const userOderByEmail: Order<IUser> = {
-    // @ts-expect-error TODO: fix this
+  const userOderByEmail: Order<User> = {
     compare: (self, that) => String.Order.compare(self.email, that.email)
   }
 
   const users = pipe(
     useAppSelector(state => state.userManagement.users),
     A.filter(u => pipe(u.authorities, A.contains(String.Equivalence)('ROLE_HABITANT'))),
-    A.sort<IUser>(userOderByEmail)
+    A.sort<User>(userOderByEmail)
   )
 
   const {
@@ -72,22 +69,30 @@ export const UserSelect = (
 
     pipe(
       users,
-      A.findFirst(user => user.id === Number(formUser.id)),
+      A.findFirst(user => O.contains((a, b) => a === b)(user.id, formUser.id)),
       O.map(x => ({
-        firstname: x.firstName,
-        lastname: x.lastName,
+        age: O.none(),
+        firstname: x.firstName !== undefined ? x.firstName : O.none(),
+        lastname: x.lastName !== undefined ? x.lastName : O.none(),
+        comment: O.none(),
         email: x.email,
-        id: O.fromNullable(x.customerId),
-        phoneNumber: O.none(),
-        age: O.none()
+        id: x.id,
+        phoneNumber: O.none()
       })),
-      // @ts-expect-error TODO: fix this
       props.setCustomer
     )
-    // @ts-expect-error TODO: fix this
-    users.find(user => user.id === Number(formUser.id)).firstName
-      // @ts-expect-error TODO: fix this
-      && users.find(user => user.id === Number(formUser.id)).lastName ?
+
+    pipe(
+        users,
+        A.findFirst(user => O.contains((a, b) => a === b)(user.id, Number(formUser.id))),
+        O.flatMap(u =>
+          O.struct({
+            firstName: u.firstName !== undefined ? u.firstName : O.none(),
+            lastName: u.lastName !== undefined ? u.lastName : O.none()
+          })
+        ),
+        O.isSome
+      ) ?
       props.setUpdateCustomer(false) :
       props.setUpdateCustomer(true)
 
@@ -122,19 +127,20 @@ export const UserSelect = (
                   </FormLabel>
 
                   <Select
-                    // @ts-expect-error TODO: fix this
-                    onChange={e => setUserSelect(O.some(e.target.value))}
                     id="user"
-                    {...register('id', {})}
+                    {...register('id', {
+                      valueAsNumber: true
+                    })}
                   >
                     <option value="" key="0" />
                     {users ?
                       users.map(user => (
-                        // @ts-expect-error TODO: fix this
-                        <option value={user.id} key={user.id}>
-                          {user.email} {user.firstName ? '; Prénom : ' : null} {user.firstName}
-                          {user.firstName ? '; Nom : ' : null}
-                          {user.lastName}
+                        <option value={O.getOrUndefined(user.id)} key={O.getOrNull(user.id)}>
+                          {user.email} {user.firstName !== undefined && O.isSome(user.firstName) ?
+                            `; Prénom : ${user.firstName.value}` :
+                            null} {user.lastName !== undefined && O.isSome(user.lastName) ?
+                            `; Nom : ${user.lastName.value}` :
+                            null}
                         </option>
                       )) :
                       null}
@@ -144,7 +150,7 @@ export const UserSelect = (
 
               <Button
                 rightIcon={<CheckIcon />}
-                colorScheme={userSelect ? 'green' : 'red'}
+                colorScheme={'green'}
                 alignSelf={'flex-start'}
                 type="submit"
               >

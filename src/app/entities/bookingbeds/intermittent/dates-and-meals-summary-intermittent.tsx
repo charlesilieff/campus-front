@@ -9,10 +9,10 @@ import {
 import React from 'react'
 import { BsPencil } from 'react-icons/bs'
 
-import type { OneBedReservationDatesAndMeals } from '../models'
+import type { OneBedReservationDatesAndMealsEncoded } from '../models'
 
 interface DatesAndMealsSummaryProps {
-  datesAndMeals: OneBedReservationDatesAndMeals
+  datesAndMeals: OneBedReservationDatesAndMealsEncoded
   setUpdate: (update: boolean) => void
 }
 

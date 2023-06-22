@@ -7,6 +7,7 @@ import {
   Heading,
   HStack,
   Input,
+  useToast,
   VStack
 } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
@@ -17,7 +18,7 @@ import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { schemaResolver } from 'app/entities/bed/resolver'
 import type { Authorities } from 'app/shared/model/user.model'
-import { User, type UserEncoded } from 'app/shared/model/user.model'
+import { User } from 'app/shared/model/user.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
@@ -27,7 +28,11 @@ import { createUser, getRoles, getUser, reset, updateUser } from './user-managem
 
 export const UserManagementUpdate = () => {
   const [authoritiesSelected, setAuthoritiesSelected] = React.useState<readonly Authorities[]>([])
-
+  const currentUser = pipe(
+    useAppSelector(state => state.authentication.account),
+    O.map(a => a.login),
+    O.getOrElse(() => '')
+  )
   const dispatch = useAppDispatch()
 
   const navigate = useNavigate()
@@ -35,8 +40,20 @@ export const UserManagementUpdate = () => {
   const { login } = useParams<'login'>()
   const isNew = login === undefined
   const user = useAppSelector(state => state.userManagement.user)
+  const updateSuccess = useAppSelector(state => state.userManagement.updateSuccess)
+
+  const toast = useToast()
+
   const defaultValues = (user: O.Option<User>) =>
-    isNew || !O.isSome(user) ? {} : S.encode(User)(user.value)
+    isNew || !O.isSome(user) ?
+      {
+        activated: true,
+        createdBy: currentUser,
+        langKey: 'fr-FR',
+        lastModifiedBy: currentUser,
+        authorities: []
+      } :
+      S.encode(User)(user.value)
   useEffect(() => {
     if (isNew) {
       dispatch(reset())
@@ -54,7 +71,7 @@ export const UserManagementUpdate = () => {
     register,
     formState: { errors },
     reset: resetForm
-  } = useForm<UserEncoded>({
+  } = useForm({
     resolver: schemaResolver(User)
   })
 
@@ -64,9 +81,19 @@ export const UserManagementUpdate = () => {
   useEffect(() => {
     pipe(user, O.map(({ authorities }) => setAuthoritiesSelected(authorities)))
   }, [pipe(user, O.map(u => u.authorities), O.getOrNull)])
-  const handleClose = () => {
-    navigate('/admin/user-management')
-  }
+
+  useEffect(() => {
+    if (updateSuccess) {
+      toast({
+        position: 'top',
+        title: `L'utilisateur a bien été ${isNew ? 'créé' : 'modifié'}.`,
+        status: 'success',
+        duration: 9000,
+        isClosable: true
+      })
+      navigate('/admin/user-management')
+    }
+  }, [updateSuccess])
 
   const saveUser = (authoritiesSelected: readonly Authorities[]) => (values: User) => {
     if (isNew) {
@@ -74,11 +101,9 @@ export const UserManagementUpdate = () => {
     } else {
       dispatch(updateUser({ ...values, authorities: authoritiesSelected }))
     }
-    handleClose()
   }
   const saveUserWithAuthorities = saveUser(authoritiesSelected)
-  const isInvalid = false
-
+  console.log(errors)
   const loading = useAppSelector(state => state.userManagement.loading)
   const updating = useAppSelector(state => state.userManagement.updating)
 
@@ -237,7 +262,7 @@ export const UserManagementUpdate = () => {
               <Button
                 variant="save"
                 type="submit"
-                disabled={isInvalid || updating}
+                disabled={updating}
                 leftIcon={<FaSave />}
               >
                 Sauvegarder

@@ -20,7 +20,7 @@ import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import type { OneBedReservationDatesAndMeals } from '../models'
+import type { OneBedReservationDatesAndMealsEncoded } from '../models'
 import {
   isArrivalDateEqualDepartureDate,
   isArrivalDateIsBeforeDepartureDate,
@@ -28,9 +28,9 @@ import {
 } from '../utils'
 
 interface DatesAndMealsChoicesProps {
-  setDatesAndMeal: (datesAndMeal: O.Option<OneBedReservationDatesAndMeals>) => void
+  setDatesAndMeal: (datesAndMeal: O.Option<OneBedReservationDatesAndMealsEncoded>) => void
   setUpdateDatesAndMeals: (updateDatesAndMeals: boolean) => void
-  datesAndMeals: O.Option<OneBedReservationDatesAndMeals>
+  datesAndMeals: O.Option<OneBedReservationDatesAndMealsEncoded>
   setBedId: (bedId: O.Option<number>) => void
 }
 
@@ -43,7 +43,7 @@ export const DatesAndMealsChoices = (
     watch,
     formState: { errors },
     reset: resetForm
-  } = useForm<OneBedReservationDatesAndMeals>()
+  } = useForm<OneBedReservationDatesAndMealsEncoded>()
 
   useEffect(() => {
     resetForm(
@@ -56,7 +56,7 @@ export const DatesAndMealsChoices = (
   const arrivalDate = useRef({})
   arrivalDate.current = watch('arrivalDate', '')
   const handleValidDateAndMealSubmit = (
-    datesAndMeal: OneBedReservationDatesAndMeals
+    datesAndMeal: OneBedReservationDatesAndMealsEncoded
   ): void => {
     props.setBedId(O.none())
     props.setUpdateDatesAndMeals(false)

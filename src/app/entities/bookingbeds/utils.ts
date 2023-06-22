@@ -8,7 +8,8 @@ import type { UserCategory } from 'app/shared/model/userCategory.model'
 import axios from 'axios'
 import dayjs from 'dayjs'
 
-import type { MealsOnlyReservationDatesAndMeals, OneBedReservationDatesAndMeals } from './models'
+import type { MealsOnlyReservationDatesAndMeals, OneBedReservationDatesAndMeals,
+  OneBedReservationDatesAndMealsEncoded } from './models'
 
 const apiUrlAllPlaces = 'api/planning/places'
 
@@ -29,10 +30,8 @@ export const getPlacesWithoutImage = async (): Promise<ReadonlyArray<IPlace>> =>
 export const filterBedPlace =
   (places: ReadonlyArray<IPlace>) => (idPlace: number): ReadonlyArray<IPlace> => {
     if (isNaN(idPlace) || idPlace === 0) {
-      // @ts-expect-error TODO: fix this
       return places?.flatMap(place => place.rooms)
     } else {
-      // @ts-expect-error TODO: fix this
       return places
         ?.filter(place => place.id === idPlace)
         ?.flatMap(place => place.rooms)
@@ -44,13 +43,10 @@ export const filterBedRoomKind = (
   idRoomKind: number
 ): ReadonlyArray<IPlace> => {
   if (isNaN(idRoomKind)) {
-    // @ts-expect-error TODO: fix this
     return places?.flatMap(place => place.rooms)
   } else {
-    // @ts-expect-error TODO: fix this
     return places
       ?.flatMap(place => place.rooms)
-      // @ts-expect-error TODO: fix this
       .filter(room => room.bedroomKind?.id === idRoomKind)
   }
 }
@@ -100,7 +96,6 @@ async (
   }${arrivalDate}/${departureDate}${O.isSome(reservationId) ? `/${reservationId.value}` : ''}`
 
   const { data } = await axios.get<IPlace[]>(apiUrlPlaces)
-  // @ts-expect-error TODO: fix this
   data.forEach(place => place.rooms.sort((room1, room2) => room1.name.localeCompare(room2.name)))
   return data
 }
@@ -125,9 +120,7 @@ export const createUserOneBedReservation = (
 ): OneBedUserReservation => ({
   id: O.none(),
   userId,
-  // @ts-expect-error TODO: fix this
   arrivalDate: datesAndMeals.arrivalDate,
-  // @ts-expect-error TODO: fix this
   departureDate: datesAndMeals.departureDate,
   isSpecialDiet: datesAndMeals.isSpecialDiet === 'true',
   isArrivalLunch: datesAndMeals.isArrivalLunch,
@@ -136,14 +129,14 @@ export const createUserOneBedReservation = (
   isDepartureDinner: datesAndMeals.isDepartureDinner,
   comment: datesAndMeals.comment,
   bedId,
-  // @ts-expect-error TODO: fix this
   customer: {
-    id: O.getOrUndefined(customer.id),
+    id: customer.id,
     firstname: customer.firstname,
     lastname: customer.lastname,
     email: customer.email,
-    phoneNumber: O.getOrUndefined(customer.phoneNumber),
-    age: O.getOrUndefined(customer.age)
+    phoneNumber: customer.phoneNumber,
+    age: customer.age,
+    comment: customer.comment
   },
   isArrivalBreakfast: datesAndMeals.isArrivalBreakfast,
   isDepartureBreakfast: datesAndMeals.isDepartureBreakfast,

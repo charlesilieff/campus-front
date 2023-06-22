@@ -1,4 +1,8 @@
-export interface OneBedReservationDatesAndMeals {
+import type * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
+import { FormatLocalDate } from 'app/shared/model/formatLocalDate'
+
+export interface OneBedReservationDatesAndMealsEncoded {
   arrivalDate: string
   departureDate: string
   isSpecialDiet: 'false' | 'true'
@@ -6,11 +10,42 @@ export interface OneBedReservationDatesAndMeals {
   isArrivalDinner: boolean
   isDepartureLunch: boolean
   isDepartureDinner: boolean
-  comment: string
+  comment?: string
   isArrivalBreakfast: boolean
   isDepartureBreakfast: boolean
-  commentMeals: string
+  commentMeals?: string
 }
+
+export interface OneBedReservationDatesAndMeals {
+  arrivalDate: Date
+  departureDate: Date
+  isSpecialDiet: 'false' | 'true'
+  isArrivalLunch: boolean
+  isArrivalDinner: boolean
+  isDepartureLunch: boolean
+  isDepartureDinner: boolean
+  comment: O.Option<string>
+  isArrivalBreakfast: boolean
+  isDepartureBreakfast: boolean
+  commentMeals: O.Option<string>
+}
+
+export const OneBedReservationDatesAndMeals: S.Schema<
+  OneBedReservationDatesAndMealsEncoded,
+  OneBedReservationDatesAndMeals
+> = S.struct({
+  arrivalDate: FormatLocalDate,
+  departureDate: FormatLocalDate,
+  isSpecialDiet: S.literal('false', 'true'),
+  isArrivalLunch: S.boolean,
+  isArrivalDinner: S.boolean,
+  isDepartureLunch: S.boolean,
+  isDepartureDinner: S.boolean,
+  comment: S.optional(S.string).toOption(),
+  isArrivalBreakfast: S.boolean,
+  isDepartureBreakfast: S.boolean,
+  commentMeals: S.optional(S.string).toOption()
+})
 
 export interface MealsOnlyReservationDatesAndMeals {
   arrivalDate: string

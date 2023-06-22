@@ -1,3 +1,4 @@
+import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 
 import { FormatLocalDateTime } from './formatLocalDate'
@@ -14,12 +15,20 @@ export const Authorities = S.union(
 )
 export type Authorities = S.To<typeof Authorities>
 
+export const NonEmptyString = S.optional(S.transform(
+  S.union(S.string, S.undefined),
+  S.option(S.string),
+  s => s === undefined || s.length === 0 ? O.none() : O.some(s),
+  // define a function that converts a Date into a string
+  b => b._tag === 'None' ? undefined : b.value
+))
+
 export const User = S.struct({
   createdDate: S.optional(FormatLocalDateTime).toOption(),
   id: S.optional(S.number).toOption(),
   login: S.string,
-  firstName: S.optional(S.string).toOption(),
-  lastName: S.optional(S.string).toOption(),
+  firstName: NonEmptyString,
+  lastName: NonEmptyString,
   email: S.string,
   imageUrl: S.optional(S.string).toOption(),
   activated: S.boolean,

@@ -16,12 +16,15 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
+import { schemaResolver } from 'app/entities/bed/resolver'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import type { OneBedReservationDatesAndMeals } from '../models'
+import { OneBedReservationDatesAndMeals } from '../models'
 import { isArrivalDateIsBeforeDepartureDate } from '../utils'
 
 interface DatesAndMealsChoicesProps {
@@ -40,11 +43,13 @@ export const DatesAndMealsChoices = (
     watch,
     formState: { errors },
     reset: resetForm
-  } = useForm<OneBedReservationDatesAndMeals>()
+  } = useForm({ resolver: schemaResolver(OneBedReservationDatesAndMeals) })
 
   useEffect(() => {
     resetForm(
-      O.isSome(props.datesAndMeals) ? props.datesAndMeals.value : {}
+      O.isSome(props.datesAndMeals) ?
+        pipe(props.datesAndMeals.value, S.encode(OneBedReservationDatesAndMeals)) :
+        {}
     )
   }, [props.datesAndMeals])
 
@@ -79,7 +84,9 @@ export const DatesAndMealsChoices = (
         </HStack>
         <Box>
           <form
-            onSubmit={handleSubmit(handleValidDateAndMealSubmit)}
+            onSubmit={handleSubmit(v =>
+              handleValidDateAndMealSubmit(v as unknown as OneBedReservationDatesAndMeals)
+            )}
           >
             <Stack
               spacing={{ base: '15', lg: '30' }}

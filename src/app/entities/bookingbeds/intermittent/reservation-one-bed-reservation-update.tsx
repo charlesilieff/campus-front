@@ -20,7 +20,7 @@ import {
   reset as resetReservations,
   updateOneBedUserReservationReservation
 } from '../booking-beds.reducer'
-import type { Customer, OneBedReservationDatesAndMeals } from '../models'
+import type { Customer, OneBedReservationDatesAndMealsEncoded } from '../models'
 import { createUserOneBedReservation, isArrivalDateEqualDepartureDate } from '../utils'
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
@@ -29,7 +29,9 @@ import { DatesAndMealsChoices } from './dates-and-meals-choices-intermittent'
 import { DatesAndMealsSummary } from './dates-and-meals-summary-intermittent'
 
 export const OneBedReservationUpdate = (): JSX.Element => {
-  const [datesAndMeal, setDatesAndMeal] = useState<O.Option<OneBedReservationDatesAndMeals>>(O.none)
+  const [datesAndMeal, setDatesAndMeal] = useState<O.Option<OneBedReservationDatesAndMealsEncoded>>(
+    O.none
+  )
   const [customer, setCustomer] = useState<O.Option<Customer>>(O.none)
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
@@ -46,7 +48,7 @@ export const OneBedReservationUpdate = (): JSX.Element => {
   const userId: number = useAppSelector(state => state.authentication.account.id)
 
   const handleSubmitReservation = async (
-    datesAndMeal: OneBedReservationDatesAndMeals,
+    datesAndMeal: OneBedReservationDatesAndMealsEncoded,
     bedId: O.Option<number>,
     customer: Customer,
     userId: number
