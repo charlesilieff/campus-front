@@ -10,7 +10,7 @@ import {
 import React from 'react'
 import { BsPencil } from 'react-icons/bs'
 
-import type { MealsOnlyReservationDatesAndMeals } from '../models'
+import type { MealsOnlyReservationDatesAndMeals } from '../models/OneBedReservationDatesAndMeals'
 
 interface DatesAndMealsSummaryProps {
   datesAndMeals: MealsOnlyReservationDatesAndMeals

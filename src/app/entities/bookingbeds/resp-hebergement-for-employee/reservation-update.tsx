@@ -15,7 +15,7 @@ import { AxiosError } from '../AxiosError'
 import type {
   Customer,
   MealsOnlyReservationDatesAndMeals
-} from '../models'
+} from '../models/OneBedReservationDatesAndMeals'
 import { UserSummary } from '../resp-hebergement-for-habitant/user-summary'
 import { createUserMealsOnlyReservation } from '../utils'
 import { CustomerSummary } from './customer-summary'

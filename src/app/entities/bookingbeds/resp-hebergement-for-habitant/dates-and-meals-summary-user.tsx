@@ -7,10 +7,11 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
+import * as O from '@effect/data/Option'
 import React from 'react'
 import { BsPencil } from 'react-icons/bs'
 
-import type { OneBedReservationDatesAndMeals } from '../models'
+import type { OneBedReservationDatesAndMeals } from '../models/OneBedReservationDatesAndMeals'
 
 interface DatesAndMealsSummaryProps {
   datesAndMeals: OneBedReservationDatesAndMeals
@@ -93,13 +94,13 @@ export const DatesAndMealsSummary = (
       </HStack>
       <VStack alignItems={'flex-start'} py={2}>
         <Text fontWeight={'bold'}>Votre commentaire à propos de la réservation :</Text>
-        <Text>{comment}</Text>
+        <Text>{O.getOrNull(comment)}</Text>
       </VStack>
       <VStack alignItems={'flex-start'} py={2}>
         <Text fontWeight={'bold'}>
           Votre commentaire à propos des repas (ex : allergie, régime, vegan...) :
         </Text>
-        <Text>{commentMeals}</Text>
+        <Text>{O.getOrNull(commentMeals)}</Text>
       </VStack>
       <Button
         colorScheme="blue"

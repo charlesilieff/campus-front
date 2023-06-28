@@ -20,7 +20,8 @@ import {
   reset as resetReservations,
   updateOneBedUserReservationReservation
 } from '../booking-beds.reducer'
-import type { Customer, OneBedReservationDatesAndMealsEncoded } from '../models'
+import type { Customer,
+  OneBedReservationDatesAndMealsEncoded } from '../models/OneBedReservationDatesAndMeals'
 import { createUserOneBedReservation, isArrivalDateEqualDepartureDate } from '../utils'
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'

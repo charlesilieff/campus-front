@@ -18,7 +18,7 @@ import {
   reset as resetReservations,
   updateOneBedUserReservationReservation
 } from '../booking-beds.reducer'
-import type { OneBedReservationDatesAndMeals } from '../models'
+import type { OneBedReservationDatesAndMeals } from '../models/OneBedReservationDatesAndMeals'
 import { createUserOneBedReservation } from '../utils'
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
@@ -192,17 +192,13 @@ export const ReservationHabitantUpdate = () => {
               comment: O.some(c.comment),
               updateCustomer: !updateCustomer ? O.some(updateCustomer) : O.none()
             })),
-          O.match(() => {
-            console.log('customer is none')
-
-            return (
-              <CustomerUpdate
-                customer={customer}
-                setUpdateCustomer={setUpdateCustomer}
-                setCustomer={setCustomer}
-              />
-            )
-          }, customer => (
+          O.match(() => (
+            <CustomerUpdate
+              customer={customer}
+              setUpdateCustomer={setUpdateCustomer}
+              setCustomer={setCustomer}
+            />
+          ), customer => (
             <CustomerSummary
               setUpdateCustomer={setUpdateCustomer}
               customer={customer}
@@ -275,20 +271,45 @@ export const ReservationHabitantUpdate = () => {
             >
               Retour
             </Button>
-            <Button
-              isLoading={isLoading}
-              colorScheme={'blue'}
-              rightIcon={<CheckIcon />}
-              onClick={() => console.log('TODO')}
-              // handleSubmitReservation(
-              //   datesAndMeal.value,
-              //   bedId.value,
-              //   customer.value,
-              //   userId.value
-              // )
-            >
-              Finaliser la réservation
-            </Button>
+            {pipe(
+              O.flatMap(customer, c =>
+                O.struct({
+                  age: O.some(c.age),
+                  firstname: c.firstname,
+                  lastname: c.lastname,
+                  id: O.some(c.id),
+                  email: O.some(c.email),
+                  phoneNumber: O.some(c.phoneNumber),
+                  comment: O.some(c.comment),
+                  updateCustomer: !updateCustomer ? O.some(updateCustomer) : O.none()
+                })),
+              O.map(customer => (
+                <Button
+                  key="0"
+                  isLoading={isLoading}
+                  colorScheme={'blue'}
+                  rightIcon={<CheckIcon />}
+                  onClick={() =>
+                    handleSubmitReservation(
+                      datesAndMeal.value,
+                      bedId.value,
+                      {
+                        age: customer.age,
+                        firstname: customer.firstname,
+                        lastname: customer.lastname,
+                        id: customer.id,
+                        email: customer.email,
+                        phoneNumber: customer.phoneNumber,
+                        comment: customer.comment
+                      },
+                      userId.value
+                    )}
+                >
+                  Finaliser la réservation
+                </Button>
+              )),
+              O.getOrNull
+            )}
           </HStack>
         ) :
         null}

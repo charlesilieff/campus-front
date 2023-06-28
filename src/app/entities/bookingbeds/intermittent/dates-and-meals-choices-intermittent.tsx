@@ -20,7 +20,7 @@ import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import type { OneBedReservationDatesAndMealsEncoded } from '../models'
+import type { OneBedReservationDatesAndMealsEncoded } from '../models/OneBedReservationDatesAndMeals'
 import {
   isArrivalDateEqualDepartureDate,
   isArrivalDateIsBeforeDepartureDate,

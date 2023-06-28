@@ -17,7 +17,7 @@ import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import type { Customer } from '../models'
+import type { Customer } from '../models/OneBedReservationDatesAndMeals'
 
 interface CustomerUpdateProps {
   setCustomer: (customer: O.Option<Customer>) => void

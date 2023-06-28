@@ -3,17 +3,21 @@ import * as S from '@effect/schema/Schema'
 
 import { FormatLocalDateTime } from './formatLocalDate'
 
-export const Authorities = S.union(
-  S.literal(
-    'ROLE_USER',
-    'ROLE_ADMIN',
-    'ROLE_RESPHEBERGEMENT',
-    'ROLE_INTERMITTENT',
-    'ROLE_HABITANT',
-    'ROLE_EMPLOYEE'
-  )
+export const Authorities = S.literal(
+  'ROLE_USER',
+  'ROLE_ADMIN',
+  'ROLE_RESPHEBERGEMENT',
+  'ROLE_INTERMITTENT',
+  'ROLE_HABITANT',
+  'ROLE_EMPLOYEE'
 )
+
 export type Authorities = S.To<typeof Authorities>
+
+// {firstName : undefined,id: 1}
+// {firstName : "",id: 1}
+// {id: 1}
+// => {id: 1, firstName: O.none()}
 
 export const NonEmptyString = S.optional(S.transform(
   S.union(S.string, S.undefined),
@@ -40,5 +44,6 @@ export const User = S.struct({
   customerId: S.optional(S.number).toOption(),
   receiveMailReservation: S.optional(S.boolean).toOption()
 })
+
 export type UserEncoded = S.From<typeof User>
 export type User = S.To<typeof User>

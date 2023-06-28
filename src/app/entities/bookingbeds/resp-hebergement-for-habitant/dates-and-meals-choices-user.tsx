@@ -24,7 +24,7 @@ import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import { OneBedReservationDatesAndMeals } from '../models'
+import { OneBedReservationDatesAndMeals } from '../models/OneBedReservationDatesAndMeals'
 import { isArrivalDateIsBeforeDepartureDate } from '../utils'
 
 interface DatesAndMealsChoicesProps {
@@ -47,14 +47,21 @@ export const DatesAndMealsChoices = (
 
   useEffect(() => {
     resetForm(
-      O.isSome(props.datesAndMeals) ?
-        pipe(props.datesAndMeals.value, S.encode(OneBedReservationDatesAndMeals)) :
-        {}
+      // @ts-expect-error format date is mandatory for react-hook-form
+      pipe(
+        props.datesAndMeals,
+        O.map(S.encode(OneBedReservationDatesAndMeals)),
+        O.map(d => ({
+          ...d,
+          arrivalDate: d.arrivalDate.toISOString().slice(0, 10),
+          departureDate: d.departureDate.toISOString().slice(0, 10)
+        }))
+      )
     )
   }, [props.datesAndMeals])
 
-  const departureDate = useRef({})
-  departureDate.current = watch('departureDate', '')
+  const departureDate = useRef(O.none<Date>())
+  departureDate.current = pipe(watch('departureDate'), O.fromNullable, O.map(d => new Date(d)))
 
   const handleValidDateAndMealSubmit = (
     datesAndMeal: OneBedReservationDatesAndMeals
@@ -104,10 +111,15 @@ export const DatesAndMealsChoices = (
                   type="date"
                   placeholder="Date d'arrivée'"
                   {...register('arrivalDate', {
+                    valueAsDate: true,
                     required: "la date d'arrivée' est obligatoire",
                     validate(v) {
                       if (
-                        !isArrivalDateIsBeforeDepartureDate(v, departureDate.current.toString())
+                        O.isSome(departureDate.current)
+                        && !isArrivalDateIsBeforeDepartureDate(
+                          new Date(v),
+                          departureDate.current.value
+                        )
                       ) {
                         return "La date d'arrivée doit être avant la date de départ"
                       }
@@ -129,6 +141,7 @@ export const DatesAndMealsChoices = (
                   type="date"
                   placeholder="Date de départ"
                   {...register('departureDate', {
+                    valueAsDate: true,
                     required: 'la date de départ est obligatoire'
                   })}
                 />

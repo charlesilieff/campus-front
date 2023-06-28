@@ -1,5 +1,6 @@
 import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay,
   useDisclosure } from '@chakra-ui/react'
+import * as O from '@effect/data/Option'
 import type { Place } from 'app/shared/model/place.model'
 import React from 'react'
 import { BsMap } from 'react-icons/bs'
@@ -31,10 +32,10 @@ export const PlaceModal = (place: Place) => {
           <ModalBody>
             {place.image && (
               <div>
-                {place.imageContentType && (
+                {O.isSome(place.imageContentType) && O.isSome(place.image) && (
                   <img
                     alt={place.name}
-                    src={`data:${place.imageContentType};base64,${place.image}`}
+                    src={`data:${place.imageContentType.value};base64,${place.image.value}`}
                     style={{ maxHeight: '100%', maxWidth: '100%' }}
                   />
                 )}

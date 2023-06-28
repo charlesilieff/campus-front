@@ -1,10 +1,9 @@
 import type * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
-import { FormatLocalDate } from 'app/shared/model/formatLocalDate'
 
 export interface OneBedReservationDatesAndMealsEncoded {
-  arrivalDate: string
-  departureDate: string
+  arrivalDate: Date
+  departureDate: Date
   isSpecialDiet: 'false' | 'true'
   isArrivalLunch: boolean
   isArrivalDinner: boolean
@@ -34,8 +33,8 @@ export const OneBedReservationDatesAndMeals: S.Schema<
   OneBedReservationDatesAndMealsEncoded,
   OneBedReservationDatesAndMeals
 > = S.struct({
-  arrivalDate: FormatLocalDate,
-  departureDate: FormatLocalDate,
+  arrivalDate: S.DateFromSelf,
+  departureDate: S.DateFromSelf,
   isSpecialDiet: S.literal('false', 'true'),
   isArrivalLunch: S.boolean,
   isArrivalDinner: S.boolean,

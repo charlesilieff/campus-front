@@ -11,7 +11,7 @@ import * as O from '@effect/data/Option'
 import React from 'react'
 import { BsPencil } from 'react-icons/bs'
 
-import type { Customer } from '../models'
+import type { Customer } from '../models/OneBedReservationDatesAndMeals'
 
 interface CustomerSummaryProps {
   customer: Customer

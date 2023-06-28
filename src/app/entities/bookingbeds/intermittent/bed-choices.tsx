@@ -8,7 +8,7 @@ import * as O from '@effect/data/Option'
 import type { FunctionComponent } from 'react'
 import React, { useEffect, useState } from 'react'
 
-import type { OneBedReservationDatesAndMealsEncoded } from '../models'
+import type { OneBedReservationDatesAndMealsEncoded } from '../models/OneBedReservationDatesAndMeals'
 import type { IRoomWithBeds } from '../utils'
 import { isArrivalDateEqualDepartureDate } from '../utils'
 import { getIntermittentPlaceWithFreeAndBookedBeds } from '../utils'

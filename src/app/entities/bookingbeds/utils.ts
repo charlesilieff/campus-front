@@ -1,34 +1,42 @@
+import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
-import type { BedroomKind } from 'app/shared/model/bedroom-kind.model'
+import * as S from '@effect/schema/Schema'
 import type { Customer } from 'app/shared/model/customer.model'
 import type { MealsOnlyUserReservation } from 'app/shared/model/mealsReservation.model'
 import type { OneBedUserReservation } from 'app/shared/model/onebedReservation.model'
+import { Place as PlaceImage } from 'app/shared/model/place.model'
 import type { TypeReservation } from 'app/shared/model/typeReservation.model'
 import type { UserCategory } from 'app/shared/model/userCategory.model'
+import { getHttpEntities, getHttpEntity } from 'app/shared/util/httpUtils'
 import axios from 'axios'
 import dayjs from 'dayjs'
 
-import type { MealsOnlyReservationDatesAndMeals, OneBedReservationDatesAndMeals,
-  OneBedReservationDatesAndMealsEncoded } from './models'
+import { PlaceWithRooms } from '../planning/model'
+import type {
+  MealsOnlyReservationDatesAndMeals,
+  OneBedReservationDatesAndMeals
+} from './models/OneBedReservationDatesAndMeals'
+import type { PlaceEncoded } from './models/Place'
+import { Place } from './models/Place'
 
 const apiUrlAllPlaces = 'api/planning/places'
 
-export const getOnePlace = async (id: number | string): Promise<IPlace> => {
-  const requestUrl = `${apiUrlAllPlaces}/${id}?cacheBuster=${new Date().getTime()}`
-  const { data } = await axios.get<IPlace>(requestUrl)
-  return data
+export const getOnePlace = async (id: number | string): Promise<O.Option<PlaceImage>> => {
+  const requestUrl = `${apiUrlAllPlaces}/${id}`
+
+  return await getHttpEntity(requestUrl, PlaceImage)
 }
 
-export const getPlacesWithoutImage = async (): Promise<ReadonlyArray<IPlace>> => {
+export const getPlacesWithoutImage = async (): Promise<ReadonlyArray<PlaceEncoded>> => {
   const apiUrlPlacesWithoutImage = 'api/places/noimage'
   const requestUrl = `${apiUrlPlacesWithoutImage}?cacheBuster=${new Date().getTime()}`
-  const { data } = await axios.get<IPlace[]>(requestUrl)
+  const { data } = await axios.get<PlaceEncoded[]>(requestUrl)
 
   return data
 }
 
 export const filterBedPlace =
-  (places: ReadonlyArray<IPlace>) => (idPlace: number): ReadonlyArray<IPlace> => {
+  (places: ReadonlyArray<PlaceEncoded>) => (idPlace: number): ReadonlyArray<PlaceEncoded> => {
     if (isNaN(idPlace) || idPlace === 0) {
       return places?.flatMap(place => place.rooms)
     } else {
@@ -39,9 +47,9 @@ export const filterBedPlace =
   }
 
 export const filterBedRoomKind = (
-  places: ReadonlyArray<IPlace>,
+  places: ReadonlyArray<PlaceEncoded>,
   idRoomKind: number
-): ReadonlyArray<IPlace> => {
+): ReadonlyArray<PlaceEncoded> => {
   if (isNaN(idRoomKind)) {
     return places?.flatMap(place => place.rooms)
   } else {
@@ -51,25 +59,6 @@ export const filterBedRoomKind = (
   }
 }
 
-export interface IPlace {
-  id?: number
-  name?: string
-  comment?: string | null
-  imageContentType?: string | null
-  image?: string | null
-  rooms: IRoomWithBeds[] | null
-  intermittentAllowed?: boolean
-}
-
-export interface IRoomWithBeds {
-  id?: number
-  name?: string
-  comment?: string | null
-  beds?: IBedWithStatus[] | null
-  bedroomKind?: BedroomKind | null
-  place?: IPlace | null
-}
-
 export interface IPricing { // WithReservation
   id?: number
   comment?: string | null
@@ -77,25 +66,20 @@ export interface IPricing { // WithReservation
   typeReservation?: TypeReservation | null
 }
 
-export interface IBedWithStatus {
-  id?: number
-  kind?: string
-  number?: string
-  numberOfPlaces?: number
-  booked: boolean
-}
-
 export const getPlaceWithFreeBedsAndBookedBeds = (isIntermittent: boolean) =>
 async (
-  arrivalDate: string,
-  departureDate: string,
+  arrivalDate: Date,
+  departureDate: Date,
   reservationId: O.Option<string>
-): Promise<ReadonlyArray<IPlace>> => {
-  const apiUrlPlaces = `api/bookingbeds/${
-    isIntermittent ? 'intermittent/' : ''
-  }${arrivalDate}/${departureDate}${O.isSome(reservationId) ? `/${reservationId.value}` : ''}`
+): Promise<ReadonlyArray<Place>> => {
+  const apiUrlPlaces = `api/bookingbeds/${isIntermittent ? 'intermittent/' : ''}${
+    arrivalDate.toISOString().slice(0, 10)
+  }/${departureDate.toISOString().slice(0, 10)}${
+    O.isSome(reservationId) ? `/${reservationId.value}` : ''
+  }`
 
-  const { data } = await axios.get<IPlace[]>(apiUrlPlaces)
+  const data = await getHttpEntities(apiUrlPlaces, Place)
+
   data.forEach(place => place.rooms.sort((room1, room2) => room1.name.localeCompare(room2.name)))
   return data
 }

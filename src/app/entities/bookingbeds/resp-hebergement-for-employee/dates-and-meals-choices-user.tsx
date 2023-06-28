@@ -23,7 +23,7 @@ import { BsPencil } from 'react-icons/bs'
 
 import type {
   MealsOnlyReservationDatesAndMeals
-} from '../models'
+} from '../models/OneBedReservationDatesAndMeals'
 import { isArrivalDateIsBeforeDepartureDate } from '../utils'
 
 interface DatesAndMealsChoicesProps {

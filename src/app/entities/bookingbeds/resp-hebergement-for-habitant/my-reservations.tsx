@@ -26,15 +26,13 @@ export const MyHabitantReservations = () => {
   const dispatch = useAppDispatch()
 
   const account = useAppSelector(state => state.authentication.account)
-  const customerId = pipe(
-    account.customerId,
-    O.fromNullable,
-    O.map(Number)
-  )
+  // const customerId = pipe(
+  //   account,
+  //   O.flatMap(account => account.customerId)
+  // )
   const userId = pipe(
-    account.id,
-    O.fromNullable,
-    O.map(Number)
+    account,
+    O.flatMap(account => account.id)
   )
 
   const reservationList = useAppSelector(state => state.reservation.entities)
@@ -83,64 +81,52 @@ export const MyHabitantReservations = () => {
                   <Td>{reservation.specialDietNumber === 1 ? 'Oui' : 'Non'}</Td>
 
                   <Td>
-                    {reservation.arrivalDate ?
-                      (
-                        <TextFormat
-                          type="date"
-                          value={reservation.arrivalDate}
-                          format={APP_LOCAL_DATE_FORMAT}
-                        />
-                      ) :
-                      null}
+                    <TextFormat
+                      type="date"
+                      value={O.some(reservation.arrivalDate)}
+                      format={APP_LOCAL_DATE_FORMAT}
+                    />
                   </Td>
                   <Td>
-                    {reservation.departureDate ?
-                      (
-                        <TextFormat
-                          type="date"
-                          value={reservation.departureDate}
-                          format={APP_LOCAL_DATE_FORMAT}
-                        />
-                      ) :
-                      null}
+                    <TextFormat
+                      type="date"
+                      value={O.some(reservation.departureDate)}
+                      format={APP_LOCAL_DATE_FORMAT}
+                    />
                   </Td>
-                  <Td>{reservation.comment}</Td>
-                  <Td>{reservation.commentMeals}</Td>
+                  <Td>{O.getOrNull(reservation.comment)}</Td>
+                  <Td>{O.getOrNull(reservation.commentMeals)}</Td>
                   <Td>
-                    {reservation.beds ?
-                      reservation.beds.map((val, j) => (
-                        <span key={j}>
-                          <Link to={`bed/${val.id}`}>{val.number}</Link>
-                          {
-                            // @ts-expect-error TODO: fix this
-                            j === reservation.beds.length - 1 ? '' : ', '
-                          }
-                        </span>
-                      )) :
-                      null}
+                    {reservation.beds.map((val, j) => (
+                      <span key={j}>
+                        <Link to={`bed/${val.id}`}>{val.number}</Link>
+                        {j === reservation.beds.length - 1 ? '' : ', '}
+                      </span>
+                    ))}
                   </Td>
 
                   <Td>
                     <HStack spacing={0}>
-                      <CancelReservationModal
-                        userId={userId}
-                        getReservations={getOneBedUserReservationsByUserId}
-                        // @ts-expect-error TODO: fix this
-                        reservationId={reservation.id}
-                      />
-
-                      {O.isSome(customerId) ?
+                      {O.isSome(reservation.id) ?
                         (
-                          <Button
-                            size="sm"
-                            as={Link}
-                            to={`/bookingbeds/one-bed-user/${reservation.id}`}
-                            variant={'modify'}
-                            borderLeftRadius={0}
-                            leftIcon={<FaPencilAlt />}
-                          >
-                            Modifier
-                          </Button>
+                          <>
+                            <CancelReservationModal
+                              userId={userId}
+                              getReservations={getOneBedUserReservationsByUserId}
+                              reservationId={reservation.id.value}
+                            />
+
+                            <Button
+                              size="sm"
+                              as={Link}
+                              to={`/bookingbeds/one-bed-user/${reservation.id.value}`}
+                              variant={'modify'}
+                              borderLeftRadius={0}
+                              leftIcon={<FaPencilAlt />}
+                            >
+                              Modifier
+                            </Button>
+                          </>
                         ) :
                         null}
                     </HStack>
