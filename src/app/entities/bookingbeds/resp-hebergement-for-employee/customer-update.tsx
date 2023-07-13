@@ -13,6 +13,8 @@ import {
 } from '@chakra-ui/react'
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
+import { schemaResolver } from 'app/entities/bed/resolver'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
@@ -25,13 +27,18 @@ interface CustomerUpdateProps {
   customer: O.Option<Customer>
 }
 
-export interface FormCustomer {
-  firstname: string
-  lastname: string
-  email: string
-  phoneNumber?: string
-  age?: number
-}
+const CustomerAndPersonNumberSchema = S.struct({
+  id: S.optional(S.number).toOption(),
+  firstname: S.string,
+  lastname: S.string,
+  email: S.string,
+  phoneNumber: S.optional(S.string).toOption(),
+  age: S.optional(S.number).toOption(),
+  personNumber: S.number,
+  specialDietNumber: S.number
+})
+
+export type CustomerAndPersonNumberSchema = S.To<typeof CustomerAndPersonNumberSchema>
 
 export const CustomerUpdate = (
   props: CustomerUpdateProps
@@ -41,10 +48,9 @@ export const CustomerUpdate = (
     register,
     formState: { errors },
     reset: resetForm
-  } = useForm<FormCustomer>()
+  } = useForm({ resolver: schemaResolver(CustomerAndPersonNumberSchema) })
   useEffect(() => {
     resetForm(
-      // @ts-expect-error TODO: fix this
       O.isSome(props.customer) ?
         {
           ...props.customer.value,
@@ -61,7 +67,6 @@ export const CustomerUpdate = (
   (
     customer: FormCustomer
   ): void => {
-    // @ts-expect-error react hook form ne gère pas bien le type de age
     const age = customer.age === undefined || customer.age === '' ? O.none() : O.some(customer.age)
     const phoneNumber = customer.phoneNumber === undefined || customer.phoneNumber === '' ?
       O.none() :

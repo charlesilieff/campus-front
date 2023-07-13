@@ -14,17 +14,26 @@ import * as O from '@effect/data/Option'
 import * as A from '@effect/data/ReadonlyArray'
 import * as String from '@effect/data/String'
 import type { Order } from '@effect/data/typeclass/Order'
+import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getUsersAsAdmin } from 'app/modules/administration/user-management/user-management.reducer'
-import type { IUser } from 'app/shared/model/user.model'
+import type { User } from 'app/shared/model/user.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import type { Customer } from '../models/OneBedReservationDatesAndMeals'
+const CustomerFromUser = S.struct({
+  firstname: S.optional(S.string).toOption(),
+  lastname: S.optional(S.string).toOption(),
+  email: S.string,
+  phoneNumber: S.optional(S.string).toOption(),
+  age: S.optional(S.number).toOption()
+})
+
+export type CustomerFromUser = S.To<typeof CustomerFromUser>
 
 interface UserUpdateProps {
-  setCustomer: (user: O.Option<Customer>) => void
+  setCustomer: (user: O.Option<CustomerFromUser>) => void
   setUserId: (userId: O.Option<number>) => void
   setUpdateUser: (updateUser: boolean) => void
   setUpdateCustomer: (updateUser: boolean) => void
@@ -49,15 +58,14 @@ export const UserSelect = (
     )
   }
 
-  const userOderByEmail: Order<IUser> = {
-    // @ts-expect-error TODO: fix this
+  const userOderByEmail: Order<User> = {
     compare: (self, that) => String.Order.compare(self.email, that.email)
   }
 
   const users = pipe(
     useAppSelector(state => state.userManagement.users),
     A.filter(u => pipe(u.authorities, A.contains(String.Equivalence)('ROLE_EMPLOYEE'))),
-    A.sort<IUser>(userOderByEmail)
+    A.sort<User>(userOderByEmail)
   )
 
   const {
@@ -68,26 +76,34 @@ export const UserSelect = (
   const handleValidUserSubmit = (
     formUser: FormUser
   ) => {
-    props.setUserId(O.some(Number(formUser.id)))
-    console.log('customer', users)
+    props.setUserId(O.some(formUser.id))
     pipe(
       users,
-      A.findFirst(user => user.id === Number(formUser.id)),
+      A.findFirst(user => pipe(user.id, O.contains((a, b) => a === b)(formUser.id))),
       O.map(x => ({
-        firstname: x.firstName,
-        lastname: x.lastName,
+        firstname: x.firstName !== undefined ? x.firstName : O.none(),
+        lastname: x.lastName !== undefined ? x.lastName : O.none(),
         email: x.email,
-        id: O.fromNullable(x.customerId),
+        id: x.customerId,
         phoneNumber: O.none(),
-        age: O.none()
+        age: O.none(),
+        comment: O.none()
       })),
-      // @ts-expect-error TODO: fix this
       props.setCustomer
     )
-    // @ts-expect-error TODO: fix this
-    users.find(user => user.id === Number(formUser.id)).firstName
-      // @ts-expect-error TODO: fix this
-      && users.find(user => user.id === Number(formUser.id)).lastName ?
+
+    pipe(
+        users,
+        A.findFirst(user => pipe(user.id, O.contains((a, b) => a === b)(formUser.id))),
+        O.flatMap(x => x.firstName !== undefined ? x.firstName : O.none()),
+        O.isSome
+      )
+      && pipe(
+        users,
+        A.findFirst(user => pipe(user.id, O.contains((a, b) => a === b)(formUser.id))),
+        O.flatMap(x => x.lastName !== undefined ? x.lastName : O.none()),
+        O.isSome
+      ) ?
       props.setUpdateCustomer(false) :
       props.setUpdateCustomer(true)
 
@@ -122,16 +138,16 @@ export const UserSelect = (
                   </FormLabel>
 
                   <Select
-                    // @ts-expect-error TODO: fix this
                     onChange={e => props.setUserSelect(O.some(e.target.value))}
                     id="user"
                     defaultValue={O.getOrElse(props.userSelect, () => '')}
-                    {...register('id', {})}
+                    {...register('id', {
+                      valueAsNumber: true
+                    })}
                   >
                     <option value="" key="0" />
                     {users ?
                       users.map(user => (
-                        // @ts-expect-error TODO: fix this
                         <option value={user.id} key={user.id}>
                           {user.email} {user.firstName ? '; Prénom : ' : null} {user.firstName}
                           {user.firstName ? '; Nom : ' : null}
