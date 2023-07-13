@@ -1,7 +1,6 @@
 import * as O from '@effect/data/Option'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
-import type { BedroomKindDecoded } from 'app/shared/model/bedroom-kind.model'
-import { BedroomKind } from 'app/shared/model/bedroom-kind.model'
+import { BedroomKind, BedroomKindCreate } from 'app/shared/model/bedroom-kind.model'
 import type {
   EntityState
 } from 'app/shared/reducers/reducer.utils'
@@ -49,10 +48,10 @@ export const getEntity = createAsyncThunk(
 
 export const createEntity = createAsyncThunk(
   'bedroomKind/create_entity',
-  async (entity: BedroomKindDecoded, thunkAPI) => {
+  async (entity: BedroomKindCreate, thunkAPI) => {
     const result = postHttpEntity(
       apiUrl,
-      BedroomKind,
+      BedroomKindCreate,
       entity,
       BedroomKind
     )
@@ -67,7 +66,7 @@ export const updateEntity = createAsyncThunk(
   'bedroomKind/update_entity',
   async (entity: BedroomKind, thunkAPI) => {
     const result = putHttpEntity(
-      `${apiUrl}/${O.getOrUndefined(entity.id)}`,
+      `${apiUrl}/${entity.id}`,
       BedroomKind,
       entity,
       BedroomKind

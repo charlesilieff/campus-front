@@ -16,12 +16,12 @@ import {
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import * as A from '@effect/data/ReadonlyArray'
+import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
+import type { ReservationCreateSchemaWithBedIds } from 'app/shared/model/bookingBeds.model'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
-import { FaArrowLeft } from 'react-icons/fa'
-import { FaSave } from 'react-icons/fa'
+import { FaArrowLeft, FaSave } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import {
@@ -35,50 +35,42 @@ import {
 import { isArrivalDateEqualDepartureDate } from '../utils'
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
+import type { CustomerAndPersonNumberSchema } from './customer-update'
 import { CustomerUpdate } from './customer-update'
 import { DatesAndMealsChoices } from './dates-and-meals-choices'
 import { DatesAndMealsSummary } from './dates-and-meals-summary'
 
-export interface DatesAndMeals {
-  arrivalDate: string
-  departureDate: string
-  isArrivalLunch: boolean
-  isArrivalDinner: boolean
-  isDepartureLunch: boolean
-  isDepartureDinner: boolean
-  comment: string
-  isArrivalBreakfast: boolean
-  isDepartureBreakfast: boolean
-  commentMeals: string
-}
+export const DatesAndMeals = S.struct({
+  arrivalDate: S.DateFromSelf,
+  departureDate: S.DateFromSelf,
+  isArrivalLunch: S.boolean,
+  isArrivalDinner: S.boolean,
+  isDepartureLunch: S.boolean,
+  isDepartureDinner: S.boolean,
+  comment: S.optional(S.string).toOption(),
+  isArrivalBreakfast: S.boolean,
+  isDepartureBreakfast: S.boolean,
+  commentMeals: S.optional(S.string).toOption()
+})
 
-export interface Customer {
-  id: number
-  firstname: string
-  lastname: string
-  email: string
-  phoneNumber: O.Option<string>
-  age: O.Option<number>
-  personNumber: number
-  specialDietNumber: number
-}
+export type DatesAndMeals = S.To<typeof DatesAndMeals>
 
 export type BedIds = ReadonlyArray<{ id: number }>
 
-const createIReservationWithBedIds = (
-  customer: Customer,
+const createReservationWithBedIds = (
+  customer: CustomerAndPersonNumberSchema,
   datesAndMeals: DatesAndMeals,
   selectedBeds: readonly number[],
   isConfirmed: boolean
-): IBookingBeds => ({
-  // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
-  arrivalDate: datesAndMeals.arrivalDate,
-  // @ts-expect-error le format de la date an javascript n'est pas le même que celui de scala, on ne peut pas utiliser new Date(), obligé& de passer par un string
-  departureDate:
+): ReservationCreateSchemaWithBedIds => ({
+  arrivalDate: new Date(datesAndMeals.arrivalDate),
+
+  departureDate: new Date(
     isArrivalDateEqualDepartureDate(datesAndMeals.arrivalDate, datesAndMeals.departureDate) ?
       dayjs(datesAndMeals.arrivalDate, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD')
         .toString() :
-      datesAndMeals.departureDate,
+      datesAndMeals.departureDate
+  ),
   specialDietNumber: customer.specialDietNumber,
   isArrivalLunch: datesAndMeals.isArrivalLunch,
   isArrivalDinner: datesAndMeals.isArrivalDinner,
@@ -88,16 +80,16 @@ const createIReservationWithBedIds = (
   bedIds: [...selectedBeds],
   isConfirmed,
   isPaid: false,
-  paymentMode: '',
   personNumber: customer.personNumber,
-  // @ts-expect-error TODO: fix this
+
   customer: {
     id: customer.id,
     firstname: customer.firstname,
     lastname: customer.lastname,
     email: customer.email,
-    phoneNumber: O.getOrUndefined(customer.phoneNumber),
-    age: O.getOrUndefined(customer.age)
+    phoneNumber: customer.phoneNumber,
+    age: customer.age,
+    comment: O.none()
   },
   isArrivalBreakfast: datesAndMeals.isArrivalBreakfast,
   isDepartureBreakfast: datesAndMeals.isDepartureBreakfast,
@@ -106,7 +98,7 @@ const createIReservationWithBedIds = (
 
 export const ReservationUpdate = (): JSX.Element => {
   const [datesAndMeal, setDatesAndMeal] = useState<O.Option<DatesAndMeals>>(O.none)
-  const [customer, setCustomer] = useState<O.Option<Customer>>(O.none)
+  const [customer, setCustomer] = useState<O.Option<CustomerAndPersonNumberSchema>>(O.none)
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -119,10 +111,10 @@ export const ReservationUpdate = (): JSX.Element => {
   const handleSubmitReservation = async (
     datesAndMeal: DatesAndMeals,
     selectedBeds: readonly number[],
-    customer: Customer,
+    customer: CustomerAndPersonNumberSchema,
     isConfirmed: boolean
   ): Promise<void> => {
-    const reservation = createIReservationWithBedIds(
+    const reservation = createReservationWithBedIds(
       customer,
       datesAndMeal,
       selectedBeds,
@@ -139,47 +131,50 @@ export const ReservationUpdate = (): JSX.Element => {
     }
   }
 
-  const backendReservation = O.fromNullable(useAppSelector(state => state.reservation.entity))
+  const backendReservation = useAppSelector(state => state.reservation.entity)
 
   useEffect(() => {
-    if (O.isSome(backendReservation) && backendReservation.value.arrivalDate !== undefined) {
-      // @ts-expect-error TODO: fix this
-      setCustomer(O.some({
-        // @ts-expect-error TODO: fix this
-        id: backendReservation.value.customer.id,
-        // @ts-expect-error TODO: fix this
-        firstname: backendReservation.value.customer.firstname,
-        // @ts-expect-error TODO: fix this
-        lastname: backendReservation.value.customer.lastname,
-        // @ts-expect-error TODO: fix this
-        email: backendReservation.value.customer.email,
-        // @ts-expect-error TODO: fix this
-        phoneNumber: O.fromNullable(backendReservation.value.customer.phoneNumber),
-        // @ts-expect-error TODO: fix this
-        age: O.fromNullable(backendReservation.value.customer.age),
+    pipe(
+      O.map(
+        backendReservation,
+        r => {
+          O.map(r.customer, customer =>
+            setCustomer(O.map(customer.id, id => ({
+              id: O.some(id),
 
-        personNumber: backendReservation.value.personNumber,
+              firstname: customer.firstname,
 
-        specialDietNumber: backendReservation.value.specialDietNumber
-      }))
-      // @ts-expect-error TODO: fix this
-      setDatesAndMeal(O.some({
-        arrivalDate: backendReservation.value.arrivalDate.toString(),
-        // @ts-expect-error TODO: fix this
-        departureDate: backendReservation.value.departureDate.toString(),
-        specialDiet: backendReservation.value.specialDietNumber,
-        isArrivalLunch: backendReservation.value.isArrivalLunch,
-        isArrivalDinner: backendReservation.value.isArrivalDinner,
-        isDepartureLunch: backendReservation.value.isDepartureLunch,
-        isDepartureDinner: backendReservation.value.isDepartureDinner,
-        comment: backendReservation.value.comment,
-        isArrivalBreakfast: backendReservation.value.isArrivalBreakfast,
-        isDepartureBreakfast: backendReservation.value.isDepartureBreakfast,
-        commentMeals: backendReservation.value.commentMeals
-      }))
-      // @ts-expect-error TODO: fix this
-      setSelectedBeds(pipe(backendReservation.value.beds, A.map(bed => bed.id)))
-    }
+              lastname: customer.lastname,
+
+              email: customer.email,
+
+              phoneNumber: customer.phoneNumber,
+
+              age: customer.age,
+
+              personNumber: r.personNumber,
+
+              specialDietNumber: r.specialDietNumber
+            }))))
+
+          setDatesAndMeal(O.some({
+            arrivalDate: r.arrivalDate,
+
+            departureDate: r.departureDate,
+            specialDiet: r.specialDietNumber,
+            isArrivalLunch: r.isArrivalLunch,
+            isArrivalDinner: r.isArrivalDinner,
+            isDepartureLunch: r.isDepartureLunch,
+            isDepartureDinner: r.isDepartureDinner,
+            comment: r.comment,
+            isArrivalBreakfast: r.isArrivalBreakfast,
+            isDepartureBreakfast: r.isDepartureBreakfast,
+            commentMeals: r.commentMeals
+          }))
+          setSelectedBeds(pipe(r.beds, A.map(bed => bed.id)))
+        }
+      )
+    )
   }, [pipe(backendReservation, O.map(reservation => reservation.arrivalDate), O.getOrUndefined)])
 
   useEffect(() => {
@@ -285,7 +280,6 @@ export const ReservationUpdate = (): JSX.Element => {
             }}
             reservationId={O.fromNullable(reservationId)}
             personNumber={pipe(customer, O.map(c => +c.personNumber), O.getOrElse(() => 0))}
-            // @ts-expect-error TODO: fix this
             reservationBeds={pipe(
               backendReservation,
               O.flatMap(r => pipe(O.fromNullable(r.beds), O.map(b => b.map(x => x.id)))),

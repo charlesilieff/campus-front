@@ -10,8 +10,7 @@ import { isFulfilledAction, isRejectedAction } from '../shared/reducers/reducer.
 const { toast } = createStandaloneToast()
 // eslint-disable-next-line complexity
 export const handleError = () => next => action => {
-  const addErrorAlert = (message: string, key?: string, data?: string) => {
-    console.log(key, data)
+  const addErrorAlert = (message: string) => {
     toast({
       position: 'top',
       title: message,
@@ -60,7 +59,7 @@ export const handleError = () => next => action => {
         switch (response.status) {
           // connection refused, server not reachable
           case 0:
-            addErrorAlert('Server not reachable', 'error.server.not.reachable')
+            addErrorAlert('Server not reachable')
             break
           case 406:
             if (
@@ -89,17 +88,15 @@ export const handleError = () => next => action => {
             break
           case 400: {
             let errorHeader: string | null = null
-            let entityKey: string | undefined = undefined
+
             response?.headers
               && Object.entries<string>(response.headers).forEach(([k, v]) => {
                 if (k.toLowerCase().endsWith('app-error')) {
                   errorHeader = v
-                } else if (k.toLowerCase().endsWith('app-params')) {
-                  entityKey = v
                 }
               })
             if (errorHeader) {
-              addErrorAlert(errorHeader, errorHeader, entityKey)
+              addErrorAlert(errorHeader)
             } else if (data?.fieldErrors) {
               const fieldErrors = data.fieldErrors
               for (i = 0; i < fieldErrors.length; i++) {
@@ -113,9 +110,7 @@ export const handleError = () => next => action => {
                 const fieldName = convertedField.charAt(0).toUpperCase()
                   + convertedField.slice(1)
                 addErrorAlert(
-                  `Error on field "${fieldName}"`,
-                  `error.${fieldError.message}`,
-                  fieldName
+                  `Error on field "${fieldName}"`
                 )
               }
             } else if (typeof data === 'string' && data !== '') {
@@ -132,7 +127,7 @@ export const handleError = () => next => action => {
             break
           }
           case 404:
-            addErrorAlert('Not found', 'error.url.not.found')
+            addErrorAlert('Not found')
             break
 
           default:

@@ -1,9 +1,11 @@
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
-import type { IBookingBeds } from 'app/shared/model/bookingBeds.model'
-import type { OneBedUserReservation } from 'app/shared/model/onebedReservation.model'
+import { ReservationCreateSchemaWithBedIds,
+  ReservationSchemaWithBedIds } from 'app/shared/model/bookingBeds.model'
+import { OneBedUserReservation } from 'app/shared/model/onebedReservation.model'
 import type {
   EntityState
 } from 'app/shared/reducers/reducer.utils'
@@ -11,10 +13,12 @@ import {
   createEntitySlice,
   serializeAxiosError
 } from 'app/shared/reducers/reducer.utils'
+import { getHttpEntity, postHttpEntity, putHttpEntity } from 'app/shared/util/httpUtils'
 import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
+import { castDraft } from 'immer'
 
-const initialState: EntityState<IBookingBeds> = {
+const initialState: EntityState<ReservationCreateSchemaWithBedIds> = {
   loading: false,
   errorMessage: null,
   entities: [],
@@ -29,23 +33,13 @@ const apiUrlBookingBeds = 'api/bookingbeds'
 const apiUrlReservations = 'api/reservations'
 const apiUrlOneBedUserReservation = 'api/one-bed-with-user/bookingbeds'
 
-const apiAllPlaces = 'api/all-places-with-rooms-and-beds'
 // Actions
-
-// this is not used
-export const getAllPlaceWithRoomsAndBeds = createAsyncThunk(
-  'reservation/fetch_entity_list',
-  async () => {
-    const requestUrl = `${apiAllPlaces}?cacheBuster=${new Date().getTime()}`
-    return axios.get<IBookingBeds[]>(requestUrl)
-  }
-)
 
 export const getReservationsWithBedEntity = createAsyncThunk(
   'bookingBeds/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrlReservations}/${id}`
-    return axios.get<IBookingBeds>(requestUrl)
+    return getHttpEntity(requestUrl, ReservationCreateSchemaWithBedIds)
   },
   { serializeError: serializeAxiosError }
 )
@@ -54,34 +48,32 @@ export const getReservationsWithBedIdsEntity = createAsyncThunk(
   'bookingBeds/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrlBookingBeds}/${id}`
-    return axios.get<IBookingBeds>(requestUrl)
+    return getHttpEntity(requestUrl, ReservationCreateSchemaWithBedIds)
   },
   { serializeError: serializeAxiosError }
 )
 
-interface ReservationAndSendMail {
-  entity: IBookingBeds
-  sendMail: boolean
-}
+const ReservationAndSendMailSchema = S.struct({
+  entity: ReservationCreateSchemaWithBedIds,
+  sendMail: S.boolean
+})
+type ReservationAndSendMail = S.To<typeof ReservationAndSendMailSchema>
 
 export const createEntity = createAsyncThunk(
   'bookingBeds/create_entity',
-  async (reservationAndSendMail: ReservationAndSendMail) => {
-    const result = await axios.post<IBookingBeds>(
+  async (reservationAndSendMail: ReservationAndSendMail) =>
+    await postHttpEntity(
       apiUrlBookingBeds,
+      ReservationCreateSchemaWithBedIds,
       reservationAndSendMail.entity,
-      {
-        params: { sendMail: reservationAndSendMail.sendMail }
-      }
-    )
-    // thunkAPI.dispatch(getEntities())
-    return result
-  },
+      ReservationCreateSchemaWithBedIds,
+      { params: { sendMail: reservationAndSendMail.sendMail } }
+    ),
   { serializeError: serializeAxiosError }
 )
 
 interface ReservationAndSendMailAndUpdateUser {
-  entity: IBookingBeds
+  entity: ReservationCreateSchemaWithBedIds
   sendMail: boolean
   userId: number
 }
@@ -89,9 +81,11 @@ export const createReservationAndUpdateUser = createAsyncThunk(
   'bookingBeds/create_entity',
   async (reservationAndSendMailAndUpdateUser: ReservationAndSendMailAndUpdateUser) => {
     const requestUrl = `${apiUrlBookingBeds}/${reservationAndSendMailAndUpdateUser.userId}`
-    const result = await axios.post<IBookingBeds>(
+    const result = await postHttpEntity(
       requestUrl,
+      ReservationCreateSchemaWithBedIds,
       reservationAndSendMailAndUpdateUser.entity,
+      ReservationCreateSchemaWithBedIds,
       {
         params: { sendMail: reservationAndSendMailAndUpdateUser.sendMail }
       }
@@ -106,12 +100,12 @@ export const createOneBedUserReservationUpdateUser = createAsyncThunk(
   'bookingBeds/create_entity',
   async (intermittentReservation: OneBedUserReservation) => {
     const requestUrl = `${apiUrlOneBedUserReservation}`
-    const result = await axios.post<OneBedUserReservation>(
+    return await postHttpEntity(
       requestUrl,
-      intermittentReservation
+      OneBedUserReservation,
+      intermittentReservation,
+      OneBedUserReservation
     )
-
-    return result
   },
   { serializeError: serializeAxiosError }
 )
@@ -120,55 +114,40 @@ export const createReservationWithoutMealsAndUpdateUser = createAsyncThunk(
   'bookingBeds/create_entity',
   async (reservationAndSendMailAndUpdateUser: ReservationAndSendMailAndUpdateUser) => {
     const requestUrl = `${apiUrlBookingBeds}/meals/${reservationAndSendMailAndUpdateUser.userId}`
-    const result = await axios.post<IBookingBeds>(
+    return await postHttpEntity(
       requestUrl,
+      ReservationCreateSchemaWithBedIds,
       reservationAndSendMailAndUpdateUser.entity,
+      S.string,
       {
         params: { sendMail: reservationAndSendMailAndUpdateUser.sendMail }
       }
     )
-
-    return result
   },
   { serializeError: serializeAxiosError }
 )
 
 export const updateEntity = createAsyncThunk(
   'bookingBeds/update_entity',
-  async (entity: IBookingBeds) => {
-    const result = await axios.put<IBookingBeds>(
+  async (entity: ReservationSchemaWithBedIds) =>
+    await putHttpEntity(
       `${apiUrlBookingBeds}/${entity.id}`,
-      entity
-    )
-
-    return result
-  },
+      ReservationSchemaWithBedIds,
+      entity,
+      ReservationSchemaWithBedIds
+    ),
   { serializeError: serializeAxiosError }
 )
 
 export const updateOneBedUserReservationReservation = createAsyncThunk(
   'bookingBeds/update_entity',
-  async (entity: OneBedUserReservation) => {
-    const result = await axios.put<OneBedUserReservation>(
+  async (entity: OneBedUserReservation) =>
+    await putHttpEntity(
       `${apiUrlOneBedUserReservation}/${pipe(entity.id, O.getOrElse(() => 'error'))}`,
-      entity
-    )
-
-    return result
-  },
-  { serializeError: serializeAxiosError }
-)
-
-export const partialUpdateEntity = createAsyncThunk(
-  'bookingBeds/partial_update_entity',
-  async (entity: IBookingBeds) => {
-    const result = await axios.patch<IBookingBeds>(
-      `${apiUrlBookingBeds}/${entity.id}`,
-      entity
-    )
-
-    return result
-  },
+      OneBedUserReservation,
+      entity,
+      OneBedUserReservation
+    ),
   { serializeError: serializeAxiosError }
 )
 
@@ -185,7 +164,7 @@ export const deleteEntity = createAsyncThunk(
     const options: AxiosRequestConfig = {
       params: { sendMail: cancelReservationAndSendMail.sendMail }
     }
-    const result = await axios.delete<IBookingBeds>(
+    const result = await axios.delete<ReservationSchemaWithBedIds>(
       requestUrl,
       options
     )
@@ -199,7 +178,7 @@ export const BookingBedsSlice = createEntitySlice({
   name: 'bookingBeds',
   initialState,
   reducers: {
-    setData(state, action: PayloadAction<IBookingBeds>) {
+    setData(state, action: PayloadAction<ReservationSchemaWithBedIds>) {
       state.entity = {
         ...state.entity,
         ...action.payload
@@ -207,7 +186,7 @@ export const BookingBedsSlice = createEntitySlice({
       state.stepOne = true
       state.creating = true
     },
-    backToOne(state, action: PayloadAction<IBookingBeds>) {
+    backToOne(state, action: PayloadAction<ReservationSchemaWithBedIds>) {
       state.stepOne = false
       state.entity = {
         ...state.entity,
@@ -219,28 +198,23 @@ export const BookingBedsSlice = createEntitySlice({
     builder
       .addCase(getReservationsWithBedIdsEntity.fulfilled, (state, action) => {
         state.loading = false
-        state.entity = action.payload.data
+        state.entity = action.payload
       })
       .addCase(deleteEntity.fulfilled, state => {
         state.updating = false
         state.updateSuccess = true
-        state.entity = { bedIds: [] }
+        state.entity = castDraft(O.none())
       })
-      .addMatcher(isFulfilled(getAllPlaceWithRoomsAndBeds), (state, action) => ({
-        ...state,
-        loading: false,
-        entities: action.payload.data
-      }))
-      .addMatcher(isFulfilled(createEntity, updateEntity, partialUpdateEntity), (state, action) => {
+      .addMatcher(isFulfilled(createEntity, updateEntity), (state, action) => {
         state.updating = false
         state.loading = false
         state.updateSuccess = true
-        state.entity = action.payload.data
+        state.entity = action.payload
         state.stepOne = false
         state.creating = false
       })
       .addMatcher(
-        isPending(getAllPlaceWithRoomsAndBeds, getReservationsWithBedIdsEntity),
+        isPending(getReservationsWithBedIdsEntity),
         state => {
           state.errorMessage = null
           state.updateSuccess = false
@@ -248,7 +222,7 @@ export const BookingBedsSlice = createEntitySlice({
         }
       )
       .addMatcher(
-        isPending(createEntity, updateEntity, partialUpdateEntity, deleteEntity),
+        isPending(createEntity, updateEntity, deleteEntity),
         state => {
           state.errorMessage = null
           state.updateSuccess = false

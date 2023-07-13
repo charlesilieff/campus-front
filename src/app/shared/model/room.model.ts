@@ -1,7 +1,7 @@
 import { pipe } from '@effect/data/Function'
 import type * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
-import type { BedroomKindDecoded, BedroomKindEncoded } from 'app/shared/model/bedroom-kind.model'
+import type { BedroomKindEncoded } from 'app/shared/model/bedroom-kind.model'
 import { BedroomKind } from 'app/shared/model/bedroom-kind.model'
 
 import type { BedCreateDecoded, BedCreateEncoded } from './bed.model'
@@ -14,7 +14,7 @@ export interface RoomDecoded {
   name: string
   comment: O.Option<string>
   beds: readonly Omit<BedCreateDecoded, 'kind' | 'numberOfPlaces'>[]
-  bedroomKind: O.Option<BedroomKindDecoded>
+  bedroomKind: O.Option<BedroomKind>
   place: O.Option<PlaceDecoded>
 }
 
@@ -65,5 +65,3 @@ export const RoomCreate: S.Schema<RoomCreateEncoded, RoomCreateDecoded> = S.lazy
     placeId: S.optional(S.number).toOption()
   })
 )
-
-export type RoomCreate = S.To<typeof RoomCreate>

@@ -6,6 +6,7 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
+import * as O from '@effect/data/Option'
 import React from 'react'
 import { BsPencil } from 'react-icons/bs'
 
@@ -19,6 +20,7 @@ interface DatesAndMealsSummaryProps {
 export const DatesAndMealsSummary = (
   {
     datesAndMeals: {
+      commentMeals,
       arrivalDate,
       comment,
       departureDate,
@@ -86,7 +88,11 @@ export const DatesAndMealsSummary = (
       </VStack>
       <VStack alignItems={'flex-start'} py={2}>
         <Text fontWeight={'bold'}>Commentaire :</Text>
-        <Text>{comment}</Text>
+        <Text>{O.getOrNull(comment)}</Text>
+      </VStack>
+      <VStack alignItems={'flex-start'} py={2}>
+        <Text fontWeight={'bold'}>Commentaire repas :</Text>
+        <Text>{O.getOrNull(commentMeals)}</Text>
       </VStack>
       <Button
         colorScheme="blue"

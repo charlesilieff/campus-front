@@ -13,7 +13,7 @@ import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { BedroomKindDecoded } from 'app/shared/model/bedroom-kind.model'
-import { BedroomKind } from 'app/shared/model/bedroom-kind.model'
+import { BedroomKindCreate } from 'app/shared/model/bedroom-kind.model'
 import { getParamId } from 'app/shared/util/utils'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -29,14 +29,14 @@ export const BedroomKindUpdate = () => {
   const bedroomKindEntity = useAppSelector(state => state.bedroomKind.entity)
   const isNew = O.isNone(id)
   const defaultValues = () =>
-    isNew || O.isNone(bedroomKindEntity) ? {} : S.encode(BedroomKind)(bedroomKindEntity.value)
+    isNew || O.isNone(bedroomKindEntity) ? {} : S.encode(BedroomKindCreate)(bedroomKindEntity.value)
   const {
     handleSubmit,
     register,
     formState: { errors },
     reset: resetForm
   } = useForm({
-    resolver: schemaResolver(BedroomKind)
+    resolver: schemaResolver(BedroomKindCreate)
   })
 
   useEffect(() => {

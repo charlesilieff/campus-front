@@ -10,30 +10,31 @@ import {
   Input,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
+import { schemaResolver } from 'app/entities/bed/resolver'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import type { Customer } from './reservation-update'
+const CustomerAndPersonNumberSchema = S.struct({
+  id: S.optional(S.number).toOption(),
+  firstname: S.string,
+  lastname: S.string,
+  email: S.string,
+  phoneNumber: S.optional(S.string).toOption(),
+  age: S.optional(S.number).toOption(),
+  personNumber: S.number,
+  specialDietNumber: S.number
+})
 
+export type CustomerAndPersonNumberSchema = S.To<typeof CustomerAndPersonNumberSchema>
 interface CustomerUpdateProps {
-  setCustomer: (customer: O.Option<Customer>) => void
+  setCustomer: (customer: O.Option<CustomerAndPersonNumberSchema>) => void
   setUpdateCustomer: (updateCustomer: boolean) => void
-  customer: O.Option<Customer>
+  customer: O.Option<CustomerAndPersonNumberSchema>
 }
-
-export interface FormCustomer {
-  id: number
-  firstname: string
-  lastname: string
-  email: string
-  phoneNumber?: string
-  age?: number
-  personNumber: number
-  specialDietNumber: number
-}
-
 export const CustomerUpdate = (
   props: CustomerUpdateProps
 ): JSX.Element => {
@@ -43,31 +44,23 @@ export const CustomerUpdate = (
     formState: { errors },
     reset: resetForm,
     watch
-  } = useForm<FormCustomer>()
-  const personNumber = useRef({})
+  } = useForm({ resolver: schemaResolver(CustomerAndPersonNumberSchema) })
+  const personNumber = useRef(0)
   personNumber.current = watch('personNumber', 0)
   useEffect(() => {
     resetForm(
-      // @ts-expect-error TODO: fix this
-      O.isSome(props.customer) ?
-        {
-          ...props.customer.value,
-          age: O.getOrUndefined(props.customer.value.age),
-          phoneNumber: O.getOrUndefined(props.customer.value.phoneNumber)
-        } :
-        {}
+      pipe(
+        props.customer,
+        O.map(S.encode(CustomerAndPersonNumberSchema)),
+        O.getOrElse(() => ({}))
+      )
     )
   }, [props.customer])
 
   const handleValidCustomerSubmit = (
-    customer: FormCustomer
+    customer: CustomerAndPersonNumberSchema
   ): void => {
-    // @ts-expect-error react hook form ne gère pas bien le type de age
-    const age = customer.age === undefined || customer.age === '' ? O.none() : O.some(customer.age)
-    const phoneNumber = customer.phoneNumber === undefined || customer.phoneNumber === '' ?
-      O.none() :
-      O.some(customer.phoneNumber)
-    props.setCustomer(O.some({ ...customer, age, phoneNumber }))
+    props.setCustomer(O.some(customer))
 
     props.setUpdateCustomer(false)
   }
@@ -90,7 +83,9 @@ export const CustomerUpdate = (
         </HStack>
         <Box minW={'500px'}>
           <form
-            onSubmit={handleSubmit(handleValidCustomerSubmit)}
+            onSubmit={handleSubmit(v =>
+              handleValidCustomerSubmit(v as unknown as CustomerAndPersonNumberSchema)
+            )}
           >
             <VStack spacing={10} alignItems={'left'}>
               <HStack spacing={12} minW={600} my={4}>
@@ -120,7 +115,7 @@ export const CustomerUpdate = (
                     type="text"
                     placeholder="Nom"
                     {...register('lastname', {
-                      required: 'Le prénom est obligatoire'
+                      required: 'Le nom est obligatoire'
                     })}
                   />
 
@@ -170,7 +165,7 @@ export const CustomerUpdate = (
                     id="age"
                     type="number"
                     placeholder="Age"
-                    {...register('age')}
+                    {...register('age', { valueAsNumber: true })}
                   />
 
                   <FormErrorMessage>
@@ -186,7 +181,7 @@ export const CustomerUpdate = (
                   <Input
                     type="number"
                     placeholder="Nombre de personnes"
-                    {...register('personNumber')}
+                    {...register('personNumber', { valueAsNumber: true })}
                   />
 
                   <FormErrorMessage>
@@ -200,6 +195,7 @@ export const CustomerUpdate = (
                   <Input
                     type="number"
                     {...register('specialDietNumber', {
+                      valueAsNumber: true,
                       required: 'Le nombre de régimes spéciaux est obligatoire',
                       validate(v) {
                         if (v > personNumber.current) {

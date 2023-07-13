@@ -10,10 +10,10 @@ import * as O from '@effect/data/Option'
 import React from 'react'
 import { BsPencil } from 'react-icons/bs'
 
-import type { Customer } from './reservation-update'
+import type { CustomerAndPersonNumber } from './reservation-update'
 
 interface CustomerSummaryProps {
-  customer: Customer
+  customer: CustomerAndPersonNumber
   setUpdateCustomer: (updateCustomer: boolean) => void
 }
 

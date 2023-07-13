@@ -1,29 +1,19 @@
-import type * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 
-export interface BedroomKindDecoded {
-  id: O.Option<number>
-  name: string
-  description: O.Option<string>
-}
-
-export interface BedroomKindEncoded {
-  id?: number
-  name: string
-  description?: string
-}
-
-export const BedroomKind: S.Schema<BedroomKindEncoded, BedroomKindDecoded> = S.struct({
+export const BedroomKindCreate = S.struct({
   id: S.optional(S.number).toOption(),
   name: S.string,
   description: S.optional(S.string).toOption()
 })
 
-export const BedroomKindDecodedToDecoded = S
-  .struct({
-    id: S.option(S.number),
-    name: S.string,
-    description: S.option(S.string)
-  })
+export type BedroomKindCreate = S.To<typeof BedroomKindCreate>
+
+export const BedroomKind = S.struct({
+  id: S.number,
+  name: S.string,
+  description: S.optional(S.string).toOption()
+})
 
 export type BedroomKind = S.To<typeof BedroomKind>
+
+export type BedroomKindEncoded = S.From<typeof BedroomKind>

@@ -17,7 +17,7 @@ import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getBedroomKinds } from 'app/entities/bedroom-kind/bedroom-kind.reducer'
 import { findAllPlaces } from 'app/entities/place/place.reducer'
-import type { Room, RoomCreateDecoded, RoomCreateEncoded } from 'app/shared/model/room.model'
+import type { Room, RoomCreateDecoded } from 'app/shared/model/room.model'
 import { RoomCreate } from 'app/shared/model/room.model'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -34,16 +34,14 @@ export const RoomUpdate = () => {
   const { id } = useParams<'id'>()
   const isNew = id === undefined
   const places = useAppSelector(state => state.place.entities)
-  const bedroomKinds = pipe(
-    useAppSelector(state => state.bedroomKind.entities),
-    A.filterMap(b => O.struct({ id: b.id, name: O.some(b.name) }))
-  )
+  const bedroomKinds = useAppSelector(state => state.bedroomKind.entities)
+
   const roomEntity = useAppSelector(state => state.room.entity)
 
   const defaultValues = (room: O.Option<Room>) =>
     isNew || !O.isSome(room) ? {} : S.encode(RoomCreate)({
       id: O.some(room.value.id),
-      bedroomKindId: O.isSome(room.value.bedroomKind) ? room.value.bedroomKind.value.id : O.none(),
+      bedroomKindId: pipe(room.value.bedroomKind, O.map(b => b.id)),
       comment: room.value.comment,
       name: room.value.name,
       placeId: O.isSome(room.value.place) ? O.some(room.value.place.value.id) : O.none()
@@ -53,7 +51,7 @@ export const RoomUpdate = () => {
     register,
     formState: { errors },
     reset: resetForm
-  } = useForm<RoomCreateEncoded>({
+  } = useForm({
     resolver: schemaResolver(RoomCreate)
   })
 

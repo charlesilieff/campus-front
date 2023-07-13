@@ -28,7 +28,7 @@ import {
   isArrivalDateIsBeforeDepartureDate,
   isDateBeforeNow
 } from '../bookingbeds/utils'
-import type { DatesAndMealsDecoded, DatesAndMealsEncoded } from './model'
+import type { DatesAndMealsDecoded } from './model'
 import { DatesAndMeals } from './model'
 
 interface ReservationChoicesProps {
@@ -47,7 +47,7 @@ export const ReservationChoices = (
     watch,
     formState: { errors },
     reset: resetForm
-  } = useForm<DatesAndMealsEncoded>({
+  } = useForm({
     resolver: schemaResolver(DatesAndMeals)
   })
 

@@ -9,7 +9,7 @@ import {
 import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import { PlaceModal } from 'app/entities/place/placeModal'
-import type { BedroomKind } from 'app/shared/model/bedroom-kind.model'
+import type { BedroomKindCreate } from 'app/shared/model/bedroom-kind.model'
 import type { FunctionComponent } from 'react'
 import React, { useEffect, useState } from 'react'
 

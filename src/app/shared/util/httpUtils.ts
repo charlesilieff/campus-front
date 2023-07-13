@@ -3,6 +3,7 @@ import type * as O from '@effect/data/Option'
 import * as T from '@effect/io/Effect'
 import * as S from '@effect/schema/Schema'
 import { formatErrors } from '@effect/schema/TreeFormatter'
+import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { castDraft } from 'immer'
 import type { WritableDraft } from 'immer/dist/internal'
@@ -56,13 +57,16 @@ export const postHttpEntity = <A, B, C, D,>(
   url: string,
   schema: S.Schema<A, B>,
   entity: B,
-  responseType: S.Schema<C, D>
-): Promise<WritableDraft<O.Option<D>>> =>
-  pipe(
+  responseType: S.Schema<C, D>,
+  config?: AxiosRequestConfig<A> | undefined
+): Promise<WritableDraft<O.Option<D>>> => {
+  console.log('postHttpEntity', url, schema, entity, responseType, config)
+  return pipe(
     S.encodeEffect(schema)(entity),
     T.mapError(e => formatErrors(e.errors)),
-    T.flatMap(b => T.promise(() => axios.post(url, b))),
+    T.flatMap(b => T.promise(() => axios.post(url, b, config))),
     T.map(d => S.parseOption(responseType)(d.data)),
     T.map(d => castDraft(d)),
     T.runPromise
   )
+}
