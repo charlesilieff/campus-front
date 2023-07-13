@@ -5,6 +5,7 @@ import * as O from '@effect/data/Option'
 import * as T from '@effect/io/Effect'
 import type { ParseError } from '@effect/schema/ParseResult'
 import * as S from '@effect/schema/Schema'
+import type { Customer } from 'app/shared/model/customer.model'
 import { MealsOnlyUserReservation } from 'app/shared/model/mealsReservation.model'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
@@ -13,12 +14,12 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { AxiosError } from '../AxiosError'
 import type {
-  Customer,
   MealsOnlyReservationDatesAndMeals
 } from '../models/OneBedReservationDatesAndMeals'
 import { UserSummary } from '../resp-hebergement-for-habitant/user-summary'
 import { createUserMealsOnlyReservation } from '../utils'
 import { CustomerSummary } from './customer-summary'
+import type { CustomerForm } from './customer-update'
 import { CustomerUpdate } from './customer-update'
 import { DatesAndMealsChoices } from './dates-and-meals-choices-user'
 import { DatesAndMealsSummary } from './dates-and-meals-summary-user'
@@ -51,7 +52,11 @@ export const createMealsOnlyReservationReservationUpdateUser = (
       identity
     ),
     T.catchAll(e =>
-      pipe(e, S.decodeEffect(AxiosError), T.flatMap(e => T.fail(console.log(e.code))))
+      pipe(
+        e,
+        S.parseEffect(AxiosError),
+        T.flatMap(e => T.fail(console.log(e.code)))
+      )
     )
   )
 }
@@ -70,8 +75,13 @@ export const updateMealsOnlyReservationReservationUpdateUser = (
           requestUrl,
           { ...mealsOnlyReservation, reservationId }
         ),
-      T.catchAll(e =>
-        pipe(e, S.decodeEffect(AxiosError), T.flatMap(e => T.fail(console.log(e.code))))
+      identity
+    ),
+    T.catchAll(e =>
+      pipe(
+        e,
+        S.parseEffect(AxiosError),
+        T.flatMap(e => T.fail(console.log(e.code)))
       )
     )
   )
@@ -95,8 +105,7 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
   >(
     O.none()
   )
-  const [customer, setCustomer] = useState<O.Option<Customer>>(O.none())
-  const [userSelect, setUserSelect] = useState<O.Option<string>>(O.none())
+  const [customer, setCustomer] = useState<O.Option<CustomerForm>>(O.none())
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
   const [selectUser, setSelectUser] = useState<boolean>(false)
@@ -113,7 +122,7 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
     userId: number
   ): Promise<void> => {
     setIsLoading(true)
-    const reservation = createUserMealsOnlyReservation(customer, datesAndMeal, O.none(), userId)
+    const reservation = createUserMealsOnlyReservation(customer, datesAndMeal, userId)
     await pipe(
       reservationId,
       O.match(
@@ -156,15 +165,13 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
         T.map(reservation => {
           setCustomer(
             O.some({
-              age: O.fromNullable(reservation.customer.age),
-              firstname: pipe(
-                O.fromNullable(reservation.customer.firstname),
-                O.getOrElse(() => '')
-              ),
-              lastname: pipe(O.fromNullable(reservation.customer.lastname), O.getOrElse(() => '')),
-              email: pipe(O.fromNullable(reservation.customer.email), O.getOrElse(() => '')),
-              phoneNumber: O.fromNullable(reservation.customer.phoneNumber),
-              id: O.fromNullable(reservation.customer.id)
+              age: reservation.customer.age,
+              firstname: O.some(reservation.customer.firstname),
+              lastname: O.some(reservation.customer.lastname),
+              email: reservation.customer.email,
+              phoneNumber: reservation.customer.phoneNumber,
+              id: reservation.customer.id,
+              comment: reservation.customer.comment
             })
           )
 
@@ -188,7 +195,7 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
           )
 
           setSelectUser(false)
-          setUserSelect(O.fromNullable(reservation.customer.email))
+
           setUserId(O.some(reservation.userId))
           setUpdateCustomer(false)
         }),
@@ -206,8 +213,6 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
       {O.isNone(userId) || O.isNone(customer) ?
         (
           <UserSelect
-            userSelect={userSelect}
-            setUserSelect={setUserSelect}
             setUserId={setUserId}
             setCustomer={setCustomer}
             setUpdateUser={setSelectUser}
@@ -298,19 +303,36 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
             >
               Retour
             </Button>
-            <Button
-              isLoading={isLoading}
-              colorScheme={'blue'}
-              rightIcon={<CheckIcon />}
-              onClick={() =>
-                handleSubmitReservation(
-                  datesAndMeal.value,
-                  customer.value,
-                  userId.value
-                )}
-            >
-              Finaliser la réservation
-            </Button>
+            {pipe(
+              O.flatMap(customer, c =>
+                O.struct({
+                  age: O.some(c.age),
+                  firstname: c.firstname,
+                  lastname: c.lastname,
+                  id: O.some(c.id),
+                  email: O.some(c.email),
+                  phoneNumber: O.some(c.phoneNumber),
+                  comment: O.some(c.comment),
+                  updateCustomer: !updateCustomer ? O.some(updateCustomer) : O.none()
+                })),
+              O.map(customer => (
+                <Button
+                  isLoading={isLoading}
+                  colorScheme={'blue'}
+                  rightIcon={<CheckIcon />}
+                  key={'e'}
+                  onClick={() =>
+                    handleSubmitReservation(
+                      datesAndMeal.value,
+                      customer,
+                      userId.value
+                    )}
+                >
+                  Finaliser la réservation
+                </Button>
+              )),
+              O.getOrNull
+            )}
           </HStack>
         ) :
         null}
