@@ -1,6 +1,4 @@
-import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
-import * as S from '@effect/schema/Schema'
 import type { Customer } from 'app/shared/model/customer.model'
 import type { MealsOnlyUserReservation } from 'app/shared/model/mealsReservation.model'
 import type { OneBedUserReservation } from 'app/shared/model/onebedReservation.model'
@@ -11,7 +9,6 @@ import { getHttpEntities, getHttpEntity } from 'app/shared/util/httpUtils'
 import axios from 'axios'
 import dayjs from 'dayjs'
 
-import { PlaceWithRooms } from '../planning/model'
 import type {
   MealsOnlyReservationDatesAndMeals,
   OneBedReservationDatesAndMeals
