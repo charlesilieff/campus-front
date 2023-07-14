@@ -1,5 +1,6 @@
 import * as O from '@effect/data/Option'
 import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit'
+import type { RoomCreateDecoded } from 'app/shared/model/room.model'
 import { Room, RoomCreate } from 'app/shared/model/room.model'
 import type {
   EntityState
@@ -49,7 +50,7 @@ export const getEntity = createAsyncThunk(
 
 export const createEntity = createAsyncThunk(
   'room/create_entity',
-  async (entity: RoomCreate, thunkAPI) => {
+  async (entity: RoomCreateDecoded, thunkAPI) => {
     const result = await postHttpEntity(apiUrl, RoomCreate, entity, Room)
 
     thunkAPI.dispatch(getEntities())
@@ -60,7 +61,7 @@ export const createEntity = createAsyncThunk(
 
 export const updateEntity = createAsyncThunk(
   'room/update_entity',
-  async (entity: RoomCreate, thunkAPI) => {
+  async (entity: RoomCreateDecoded, thunkAPI) => {
     const result = await putHttpEntity(
       `${apiUrl}/${O.getOrNull(entity.id)}`,
       RoomCreate,

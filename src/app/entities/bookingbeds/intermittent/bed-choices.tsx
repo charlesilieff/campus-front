@@ -8,29 +8,33 @@ import * as O from '@effect/data/Option'
 import type { FunctionComponent } from 'react'
 import React, { useEffect, useState } from 'react'
 
-import type { OneBedReservationDatesAndMealsEncoded } from '../models/OneBedReservationDatesAndMeals'
-import type { IRoomWithBeds } from '../utils'
-import { isArrivalDateEqualDepartureDate } from '../utils'
-import { getIntermittentPlaceWithFreeAndBookedBeds } from '../utils'
+import type {
+  OneBedReservationDatesAndMeals
+} from '../models/OneBedReservationDatesAndMeals'
+import type { RoomWithBedsWithStatus } from '../models/Room'
+import {
+  getIntermittentPlaceWithFreeAndBookedBeds,
+  isArrivalDateEqualDepartureDate
+} from '../utils'
 import { IntermittentBeds } from './beds-intermittent'
 
 interface DatesAndMealsChoicesProps {
   setSelectedBedId: (bedId: O.Option<number>) => void
   bedId: O.Option<number>
-  datesAndMeals: O.Option<OneBedReservationDatesAndMealsEncoded>
+  datesAndMeals: O.Option<OneBedReservationDatesAndMeals>
   reservationId: O.Option<string>
 }
 
 export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
   props
 ): JSX.Element => {
-  const [rooms, setRooms] = useState<ReadonlyArray<IRoomWithBeds>>([])
+  const [rooms, setRooms] = useState<ReadonlyArray<RoomWithBedsWithStatus>>([])
   const [loading, setLoading] = useState(false)
   useEffect(() => {
     setLoading(true)
     const getIntermittentPlaceWithFreeAndBookedBedsAsync = async (
-      arrivalDate: string,
-      departureDate: string,
+      arrivalDate: Date,
+      departureDate: Date,
       reservationId: O.Option<string>
     ) => {
       const data = await getIntermittentPlaceWithFreeAndBookedBeds(
@@ -41,7 +45,7 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
       const roomsData = data?.flatMap(place => place.rooms)
 
       setLoading(false)
-      // @ts-expect-error TODO: fix this
+
       setRooms(roomsData)
     }
 

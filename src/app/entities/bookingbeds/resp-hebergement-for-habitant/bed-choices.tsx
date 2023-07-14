@@ -11,7 +11,7 @@ import * as O from '@effect/data/Option'
 import * as A from '@effect/data/ReadonlyArray'
 import * as S from '@effect/schema/Schema'
 import { PlaceModal } from 'app/entities/place/placeModal'
-import type { BedroomKindCreate } from 'app/shared/model/bedroom-kind.model'
+import type { BedroomKind } from 'app/shared/model/bedroom-kind.model'
 import type { Place as PlaceImage } from 'app/shared/model/place.model'
 import type { FunctionComponent } from 'react'
 import React, { useEffect, useState } from 'react'
@@ -59,15 +59,7 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
       setBedRoomKinds(
         pipe(
           A.filterMap(roomsData, room => room.bedroomKind),
-          A.uniq((roomOne, roomTwo) =>
-            pipe(
-              O.struct({
-                one: roomOne.id,
-                two: roomTwo.id
-              }),
-              O.exists(({ one, two }) => one === two)
-            )
-          )
+          A.uniq((roomOne, roomTwo) => roomOne.id === roomTwo.id)
         )
       )
     }
@@ -109,7 +101,7 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
           A.filter(room =>
             pipe(
               room.bedroomKind,
-              O.flatMap(b => b.id),
+              O.map(b => b.id),
               O.contains((a, b) => a === b)(idRoomKind.value)
             )
           )
@@ -190,7 +182,7 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
                     <option value={undefined}>Aucune</option>
 
                     {roomKinds.map((p, index) => (
-                      <option value={O.getOrUndefined(p.id)} key={index}>
+                      <option value={p.id} key={index}>
                         {p.name}
                       </option>
                     ))}

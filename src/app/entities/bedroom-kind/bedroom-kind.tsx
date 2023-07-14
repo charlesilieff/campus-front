@@ -88,38 +88,36 @@ export const BedroomKind = () => {
                     {O.getOrNull(bedroomKind.description)}
                   </Td>
                   <Td>
-                    {O.isSome(bedroomKind.id) ?
-                      (
-                        <HStack justifyContent={'flex-end'} spacing={0}>
-                          <Button
-                            as={Link}
-                            to={`${bedroomKind.id.value}`}
-                            variant="see"
-                            size="sm"
-                            borderRightRadius={0}
-                            leftIcon={<FaEye />}
-                          >
-                            Voir
-                          </Button>
-                          <Button
-                            as={Link}
-                            to={`${bedroomKind.id.value}/edit`}
-                            variant={'modify'}
-                            borderRadius={0}
-                            size="sm"
-                            leftIcon={<FaPencilAlt />}
-                          >
-                            Modifier
-                          </Button>
+                    (
+                    <HStack justifyContent={'flex-end'} spacing={0}>
+                      <Button
+                        as={Link}
+                        to={`${bedroomKind.id}`}
+                        variant="see"
+                        size="sm"
+                        borderRightRadius={0}
+                        leftIcon={<FaEye />}
+                      >
+                        Voir
+                      </Button>
+                      <Button
+                        as={Link}
+                        to={`${bedroomKind.id}/edit`}
+                        variant={'modify'}
+                        borderRadius={0}
+                        size="sm"
+                        leftIcon={<FaPencilAlt />}
+                      >
+                        Modifier
+                      </Button>
 
-                          (
-                          <BedroomKindDeleteDialog
-                            bedroomKindId={bedroomKind.id.value}
-                          />
-                          )
-                        </HStack>
-                      ) :
-                      null}
+                      (
+                      <BedroomKindDeleteDialog
+                        bedroomKindId={bedroomKind.id}
+                      />
+                      )
+                    </HStack>
+                    )
                   </Td>
                 </Tr>
               ))}

@@ -12,7 +12,6 @@ import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import type { BedroomKindDecoded } from 'app/shared/model/bedroom-kind.model'
 import { BedroomKindCreate } from 'app/shared/model/bedroom-kind.model'
 import { getParamId } from 'app/shared/util/utils'
 import React, { useEffect } from 'react'
@@ -29,7 +28,10 @@ export const BedroomKindUpdate = () => {
   const bedroomKindEntity = useAppSelector(state => state.bedroomKind.entity)
   const isNew = O.isNone(id)
   const defaultValues = () =>
-    isNew || O.isNone(bedroomKindEntity) ? {} : S.encode(BedroomKindCreate)(bedroomKindEntity.value)
+    isNew || O.isNone(bedroomKindEntity) ? {} : S.encode(BedroomKindCreate)({
+      ...bedroomKindEntity.value,
+      id: O.some(bedroomKindEntity.value.id)
+    })
   const {
     handleSubmit,
     register,
@@ -66,31 +68,13 @@ export const BedroomKindUpdate = () => {
     }
   }, [updateSuccess])
 
-  const saveEntity = (values: BedroomKindDecoded) => {
+  const saveEntity = (values: BedroomKindCreate) => {
     if (isNew) {
       dispatch(createEntity(values))
-    } else {
-      dispatch(updateEntity(values))
+    } else if (O.isSome(id)) {
+      dispatch(updateEntity({ ...values, id: id.value }))
     }
   }
-
-  const toto = S.struct({
-    name: S.string,
-    description: S.optional(S.string).toOption()
-  })
-
-  const totoToEncode = {
-    name: 'toto',
-    description: O.some('toto')
-  }
-  const totoToDecode = {
-    name: 'toto'
-  }
-
-  const test = S.encode(toto)(totoToEncode)
-  const test2 = S.decode(toto)(totoToDecode)
-  console.log(test)
-  console.log(test2)
 
   return (
     <VStack>
@@ -100,7 +84,7 @@ export const BedroomKindUpdate = () => {
 
       {loading ? <p>Chargement...</p> : (
         <form
-          onSubmit={handleSubmit(data => saveEntity(data as unknown as BedroomKindDecoded))}
+          onSubmit={handleSubmit(data => saveEntity(data as unknown as BedroomKindCreate))}
         >
           <VStack minW={'300px'}>
             <FormControl isRequired isInvalid={errors.name !== undefined}>

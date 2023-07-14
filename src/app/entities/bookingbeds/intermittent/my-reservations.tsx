@@ -28,14 +28,12 @@ export const MyIntermittentReservations = () => {
 
   const account = useAppSelector(state => state.authentication.account)
   const customerId = pipe(
-    account.customerId,
-    O.fromNullable,
-    O.map(Number)
+    account,
+    O.flatMap(a => a.customerId)
   )
   const userId = pipe(
-    account.id,
-    O.fromNullable,
-    O.map(Number)
+    account,
+    O.flatMap(a => a.id)
   )
 
   const reservationList = useAppSelector(state => state.reservation.entities)
@@ -106,7 +104,7 @@ export const MyIntermittentReservations = () => {
                         (
                           <TextFormat
                             type="date"
-                            value={reservation.arrivalDate}
+                            value={O.some(reservation.arrivalDate)}
                             format={APP_LOCAL_DATE_FORMAT}
                           />
                         ) :
@@ -117,23 +115,20 @@ export const MyIntermittentReservations = () => {
                         (
                           <TextFormat
                             type="date"
-                            value={reservation.departureDate}
+                            value={O.some(reservation.departureDate)}
                             format={APP_LOCAL_DATE_FORMAT}
                           />
                         ) :
                         null}
                     </Td>
-                    <Td>{reservation.comment}</Td>
+                    <Td>{O.getOrNull(reservation.comment)}</Td>
 
                     <Td>
                       {reservation.beds ?
                         reservation.beds.map((val, j) => (
                           <span key={j}>
                             <Link to={`bed/${val.id}`}>{val.number}</Link>
-                            {
-                              // @ts-expect-error TODO: fix this
-                              j === reservation.beds.length - 1 ? '' : ', '
-                            }
+                            {j === reservation.beds.length - 1 ? '' : ', '}
                           </span>
                         )) :
                         null}
@@ -141,12 +136,15 @@ export const MyIntermittentReservations = () => {
 
                     <Td>
                       <HStack spacing={0}>
-                        <CancelReservationModal
-                          userId={userId}
-                          getReservations={getOneBedUserReservationsByUserId}
-                          // @ts-expect-error TODO: fix this
-                          reservationId={reservation.id}
-                        />
+                        {O.isSome(reservation.id) ?
+                          (
+                            <CancelReservationModal
+                              userId={userId}
+                              getReservations={getOneBedUserReservationsByUserId}
+                              reservationId={reservation.id.value}
+                            />
+                          ) :
+                          null}
 
                         {O.isSome(customerId) ?
                           (

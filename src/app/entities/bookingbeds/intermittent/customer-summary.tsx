@@ -7,10 +7,9 @@ import {
   VStack
 } from '@chakra-ui/react'
 import * as O from '@effect/data/Option'
+import type { Customer } from 'app/shared/model/customer.model'
 import React from 'react'
 import { BsPencil } from 'react-icons/bs'
-
-import type { Customer } from '../models/OneBedReservationDatesAndMeals'
 
 interface CustomerSummaryProps {
   customer: Customer

@@ -75,7 +75,9 @@ export const Room = () => {
                   <Td>
                     {O.isSome(room.bedroomKind) ?
                       (
-                        <Link to={`/bedroom-kind/${O.getOrNull(room.bedroomKind.value.id)}`}>
+                        <Link
+                          to={`/bedroom-kind/${room.bedroomKind.value.id}`}
+                        >
                           {room.bedroomKind.value.name}
                         </Link>
                       ) :

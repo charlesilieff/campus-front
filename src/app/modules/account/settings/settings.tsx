@@ -94,8 +94,8 @@ export const Settings = () => {
       O.map(a =>
         resetForm({
           email: a.email,
-          firstName: O.getOrElse(a.firstName, () => ''),
-          lastName: O.getOrElse(a.lastName, () => ''),
+          firstName: a.firstName !== undefined ? O.getOrElse(a.firstName, () => '') : '',
+          lastName: a.lastName !== undefined ? O.getOrElse(a.lastName, () => '') : '',
           receiveMailReservation: O.getOrElse(a.receiveMailReservation, () => true)
         })
       )
@@ -177,12 +177,12 @@ export const Settings = () => {
             && (
               <FormControl isInvalid={errors.receiveMailReservation !== undefined}>
                 <FormLabel htmlFor="receiveMailReservation" fontWeight={'bold'}>
-                  {'Je souhaite recevoir les emails de resérvation'}
+                  {'Je souhaite recevoir les emails de réservation'}
                 </FormLabel>
                 <Checkbox
                   id="receiveMailReservation"
                   type="checkbox"
-                  placeholder="reception des emails de resérvation"
+                  placeholder="reception des emails de réservation"
                   {...register('receiveMailReservation')}
                 />
 
