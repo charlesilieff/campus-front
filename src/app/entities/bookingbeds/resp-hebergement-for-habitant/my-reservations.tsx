@@ -26,10 +26,7 @@ export const MyHabitantReservations = () => {
   const dispatch = useAppDispatch()
 
   const account = useAppSelector(state => state.authentication.account)
-  // const customerId = pipe(
-  //   account,
-  //   O.flatMap(account => account.customerId)
-  // )
+
   const userId = pipe(
     account,
     O.flatMap(account => account.id)

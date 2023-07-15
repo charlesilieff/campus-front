@@ -243,20 +243,31 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
             {'Informations personnelles'}
           </Heading>
         ) :
-        (O.isNone(customer) || updateCustomer) ?
-        (
-          <CustomerUpdate
-            customer={customer}
-            setUpdateCustomer={setUpdateCustomer}
-            setCustomer={setCustomer}
-          />
-        ) :
-        (
-          <CustomerSummary
-            setUpdateCustomer={setUpdateCustomer}
-            customer={customer.value}
-          />
-        )}
+        (pipe(
+          O.flatMap(customer, c =>
+            O.struct({
+              age: O.some(c.age),
+              firstname: c.firstname,
+              lastname: c.lastname,
+              id: O.some(c.id),
+              email: O.some(c.email),
+              phoneNumber: O.some(c.phoneNumber),
+              comment: O.some(c.comment),
+              updateCustomer: !updateCustomer ? O.some(updateCustomer) : O.none()
+            })),
+          O.match(() => (
+            <CustomerUpdate
+              customer={customer}
+              setUpdateCustomer={setUpdateCustomer}
+              setCustomer={setCustomer}
+            />
+          ), customer => (
+            <CustomerSummary
+              setUpdateCustomer={setUpdateCustomer}
+              customer={customer}
+            />
+          ))
+        ))}
 
       {O.isNone(userId) || (O.isNone(customer) || updateCustomer) ?
         (

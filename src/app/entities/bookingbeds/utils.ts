@@ -1,4 +1,6 @@
+import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
+import * as A from '@effect/data/ReadonlyArray'
 import type { Customer } from 'app/shared/model/customer.model'
 import type { MealsOnlyUserReservation } from 'app/shared/model/mealsReservation.model'
 import type { OneBedUserReservation } from 'app/shared/model/onebedReservation.model'
@@ -15,6 +17,7 @@ import type {
 } from './models/OneBedReservationDatesAndMeals'
 import type { PlaceEncoded } from './models/Place'
 import { Place } from './models/Place'
+import type { RoomWithBedsWithStatus } from './models/Room'
 
 const apiUrlAllPlaces = 'api/planning/places'
 
@@ -69,7 +72,7 @@ export const isArrivalDateEqualDepartureDate = (
   departureDate: Date | string
 ): boolean => dayjs(arrivalDate).isSame(dayjs(departureDate))
 
-export const isDateBeforeNow = (date: Date): boolean => dayjs(date).isBefore(dayjs())
+export const isDateBeforeNow = (date: Date | string): boolean => dayjs(date).isBefore(dayjs())
 
 export const createUserOneBedReservation = (
   customer: Customer,
@@ -127,3 +130,27 @@ export const createUserMealsOnlyReservation = (
   weekMeals: datesAndMeals.weekMeals,
   commentMeals: O.some(datesAndMeals.commentMeals)
 })
+
+export const filterRoomsByBedRoomKind = (
+  idRoomKind: O.Option<number>,
+  places: readonly Place[]
+): RoomWithBedsWithStatus[] =>
+  (O.isNone(idRoomKind)) ? places.flatMap(place => place.rooms) : pipe(
+    places,
+    A.flatMap(place => place.rooms),
+    A.filter(room =>
+      pipe(
+        room.bedroomKind,
+        O.map(r => r.id),
+        O.contains((a, b) => a === b)(idRoomKind.value)
+      )
+    )
+  )
+
+export const filterBedPlace = (
+  idPlace: O.Option<number>,
+  places: readonly Place[]
+): RoomWithBedsWithStatus[] =>
+  O.isNone(idPlace) ?
+    places?.flatMap(place => place.rooms) :
+    places.filter(place => place.id === idPlace.value).flatMap(place => place.rooms)

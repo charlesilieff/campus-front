@@ -17,7 +17,8 @@ import React, { useEffect, useState } from 'react'
 
 import type { Place } from '../models/Place'
 import type { RoomWithBedsWithStatus } from '../models/Room'
-import { getOnePlace, getPlaceWithFreeBedsAndBookedBeds } from '../utils'
+import { filterBedPlace, filterRoomsByBedRoomKind, getOnePlace,
+  getPlaceWithFreeBedsAndBookedBeds } from '../utils'
 import { Beds } from './beds-checkbox'
 import type { DatesAndMeals } from './reservation-update'
 
@@ -75,30 +76,6 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
     }
     setLoading(false)
   }, [])
-
-  const filterBedPlace = (
-    idPlace: O.Option<number>,
-    places: readonly Place[]
-  ): RoomWithBedsWithStatus[] =>
-    O.isNone(idPlace) ?
-      places?.flatMap(place => place.rooms) :
-      places.filter(place => place.id === idPlace.value).flatMap(place => place.rooms)
-
-  const filterRoomsByBedRoomKind = (
-    idRoomKind: O.Option<number>,
-    places: readonly Place[]
-  ): RoomWithBedsWithStatus[] =>
-    (O.isNone(idRoomKind)) ? places.flatMap(place => place.rooms) : pipe(
-      places,
-      A.flatMap(place => place.rooms),
-      A.filter(room =>
-        pipe(
-          room.bedroomKind,
-          O.map(r => r.id),
-          O.contains((a, b) => a === b)(idRoomKind.value)
-        )
-      )
-    )
 
   const placesBooked = places?.reduce((accP, place) => (accP
     + place.rooms?.reduce((accR, room) => (accR

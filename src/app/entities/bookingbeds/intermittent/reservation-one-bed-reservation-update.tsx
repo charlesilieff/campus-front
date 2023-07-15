@@ -5,6 +5,7 @@ import * as O from '@effect/data/Option'
 import * as A from '@effect/data/ReadonlyArray'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getUserCategories } from 'app/entities/user-category/user-category.reducer'
+import type { Customer } from 'app/shared/model/customer.model'
 import { getSession } from 'app/shared/reducers/authentication'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
@@ -20,20 +21,22 @@ import {
   reset as resetReservations,
   updateOneBedUserReservationReservation
 } from '../booking-beds.reducer'
-import type { Customer,
-  OneBedReservationDatesAndMealsEncoded } from '../models/OneBedReservationDatesAndMeals'
+import type {
+  OneBedReservationDatesAndMeals
+} from '../models/OneBedReservationDatesAndMeals'
 import { createUserOneBedReservation, isArrivalDateEqualDepartureDate } from '../utils'
 import { BedsChoices } from './bed-choices'
 import { CustomerSummary } from './customer-summary'
+import type { CustomerForm } from './customer-update'
 import { CustomerUpdate } from './customer-update'
 import { DatesAndMealsChoices } from './dates-and-meals-choices-intermittent'
 import { DatesAndMealsSummary } from './dates-and-meals-summary-intermittent'
 
 export const OneBedReservationUpdate = (): JSX.Element => {
-  const [datesAndMeal, setDatesAndMeal] = useState<O.Option<OneBedReservationDatesAndMealsEncoded>>(
+  const [datesAndMeal, setDatesAndMeal] = useState<O.Option<OneBedReservationDatesAndMeals>>(
     O.none
   )
-  const [customer, setCustomer] = useState<O.Option<Customer>>(O.none)
+  const [customer, setCustomer] = useState<O.Option<CustomerForm>>(O.none)
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -42,14 +45,19 @@ export const OneBedReservationUpdate = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const toast = useToast()
   const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
-  const customerId = O.fromNullable(
-    useAppSelector(state => state.authentication.account.customerId)
+  const account = useAppSelector(state => state.authentication.account)
+  const customerId = pipe(
+    account,
+    O.flatMap(c => c.id)
   )
-  // @ts-expect-error TODO: fix this
-  const userId: number = useAppSelector(state => state.authentication.account.id)
+
+  const userId = pipe(
+    account,
+    O.flatMap(account => account.id)
+  )
 
   const handleSubmitReservation = async (
-    datesAndMeal: OneBedReservationDatesAndMealsEncoded,
+    datesAndMeal: OneBedReservationDatesAndMeals,
     bedId: O.Option<number>,
     customer: Customer,
     userId: number
@@ -60,8 +68,7 @@ export const OneBedReservationUpdate = (): JSX.Element => {
         ...datesAndMeal,
         departureDate:
           isArrivalDateEqualDepartureDate(datesAndMeal.arrivalDate, datesAndMeal.departureDate) ?
-            dayjs(datesAndMeal.arrivalDate, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD')
-              .toString() :
+            dayjs(datesAndMeal.arrivalDate, 'YYYY-MM-DD').add(1, 'day').toDate() :
             datesAndMeal.departureDate
       },
       bedId,
@@ -92,22 +99,22 @@ export const OneBedReservationUpdate = (): JSX.Element => {
   const backendCustomer = useAppSelector(state => state.customer.entity)
 
   useEffect(() => {
-    if (backendCustomer.id === undefined) {
+    if (pipe(backendCustomer, O.map(c => c.id), O.isSome)) {
       pipe(customerId, O.map(id => dispatch(getCustomer(id))))
     }
 
-    if (backendCustomer.id !== undefined) {
-      // @ts-expect-error TODO: fix this
+    if (O.isSome(backendCustomer)) {
       setCustomer(O.some({
-        id: O.fromNullable(backendCustomer?.id),
-        firstname: backendCustomer?.firstname,
-        lastname: backendCustomer?.lastname,
-        email: backendCustomer?.email,
-        phoneNumber: O.some(backendCustomer?.phoneNumber),
-        age: O.some(backendCustomer?.age)
+        id: backendCustomer.value.id,
+        firstname: O.some(backendCustomer.value.firstname),
+        lastname: O.some(backendCustomer.value.lastname),
+        email: backendCustomer.value.email,
+        phoneNumber: backendCustomer.value.phoneNumber,
+        age: backendCustomer.value.age,
+        comment: backendCustomer.value.comment
       }))
     }
-  }, [backendCustomer.id])
+  }, [pipe(backendCustomer, O.flatMap(c => c.id))])
 
   useEffect(() => {
     pipe(
@@ -116,26 +123,25 @@ export const OneBedReservationUpdate = (): JSX.Element => {
       O.map(id => dispatch(getReservation(id)))
     )
 
-    if (backendReservation.arrivalDate !== undefined) {
-      // @ts-expect-error TODO: fix this
+    if (O.isSome(backendReservation)) {
       setDatesAndMeal(O.some({
-        arrivalDate: backendReservation.arrivalDate.toString(),
-        // @ts-expect-error TODO: fix this
-        departureDate: backendReservation.departureDate.toString(),
-        isSpecialDiet: backendReservation.specialDietNumber === 1 ? 'true' : 'false',
-        isArrivalLunch: backendReservation.isArrivalLunch,
-        isArrivalDinner: backendReservation.isArrivalDinner,
-        isDepartureLunch: backendReservation.isDepartureLunch,
-        isDepartureDinner: backendReservation.isDepartureDinner,
-        comment: backendReservation.comment,
-        isArrivalBreakfast: backendReservation.isArrivalBreakfast,
-        isDepartureBreakfast: backendReservation.isDepartureBreakfast,
-        commentMeals: backendReservation.commentMeals
+        arrivalDate: backendReservation.value.arrivalDate,
+
+        departureDate: backendReservation.value.departureDate,
+        isSpecialDiet: backendReservation.value.specialDietNumber === 1 ? 'true' : 'false',
+        isArrivalLunch: backendReservation.value.isArrivalLunch,
+        isArrivalDinner: backendReservation.value.isArrivalDinner,
+        isDepartureLunch: backendReservation.value.isDepartureLunch,
+        isDepartureDinner: backendReservation.value.isDepartureDinner,
+        comment: backendReservation.value.comment,
+        isArrivalBreakfast: backendReservation.value.isArrivalBreakfast,
+        isDepartureBreakfast: backendReservation.value.isDepartureBreakfast,
+        commentMeals: backendReservation.value.commentMeals
       }))
-      // @ts-expect-error TODO: fix this
-      setBedId(pipe(backendReservation.beds, A.head, O.map(bed => bed.id)))
+
+      setBedId(pipe(backendReservation.value.beds, A.head, O.map(bed => bed.id)))
     }
-  }, [backendReservation.id])
+  }, [pipe(backendReservation, O.flatMap(c => c.id))])
   useEffect(() => {
     if (reservationId === undefined) {
       dispatch(resetReservations())
@@ -180,20 +186,31 @@ export const OneBedReservationUpdate = (): JSX.Element => {
       <Heading size={'lg'} m={4}>
         Votre réservation
       </Heading>
-      {O.isNone(customer) || updateCustomer ?
-        (
+      {pipe(
+        O.flatMap(customer, c =>
+          O.struct({
+            age: O.some(c.age),
+            firstname: c.firstname,
+            lastname: c.lastname,
+            id: O.some(c.id),
+            email: O.some(c.email),
+            phoneNumber: O.some(c.phoneNumber),
+            comment: O.some(c.comment),
+            updateCustomer: !updateCustomer ? O.some(updateCustomer) : O.none()
+          })),
+        O.match(() => (
           <CustomerUpdate
             customer={customer}
             setUpdateCustomer={setUpdateCustomer}
             setCustomer={setCustomer}
           />
-        ) :
-        (
+        ), customer => (
           <CustomerSummary
             setUpdateCustomer={setUpdateCustomer}
-            customer={customer.value}
+            customer={customer}
           />
-        )}
+        ))
+      )}
       {O.isNone(customer) || (updateCustomer && O.isNone(datesAndMeal)) ?
         (
           <Heading
@@ -246,32 +263,47 @@ export const OneBedReservationUpdate = (): JSX.Element => {
           </Heading>
         )}
       {O.isSome(customer) && O.isSome(datesAndMeal) && O.isNone(bedId) && !updateDatesAndMeals
-          && !updateCustomer ?
-        (
-          <HStack justifyContent={'end'}>
-            <Button
-              as={Link}
-              to={''}
-              colorScheme={'red'}
-              leftIcon={<FaArrowLeft />}
-              onClick={() => navigate(-1)}
-            >
-              Retour
-            </Button>
-            <Button
-              isLoading={isLoading}
-              colorScheme={'blue'}
-              rightIcon={<CheckIcon />}
-              onClick={() =>
-                handleSubmitReservation(datesAndMeal.value, O.none(), customer.value, userId)}
-            >
-              Finaliser la réservation sans lit
-            </Button>
-          </HStack>
+          && !updateCustomer && O.isSome(userId) ?
+        pipe(
+          customer,
+          O.flatMap(c =>
+            O.struct({
+              firstname: c.firstname,
+              lastname: c.lastname,
+              age: O.some(c.age),
+              phoneNumber: O.some(c.phoneNumber),
+              email: O.some(c.email),
+              comment: O.some(c.comment),
+              id: O.some(c.id)
+            })
+          ),
+          O.map(customer => (
+            <HStack justifyContent={'end'} key={''}>
+              <Button
+                as={Link}
+                to={''}
+                colorScheme={'red'}
+                leftIcon={<FaArrowLeft />}
+                onClick={() => navigate(-1)}
+              >
+                Retour
+              </Button>
+              <Button
+                isLoading={isLoading}
+                colorScheme={'blue'}
+                rightIcon={<CheckIcon />}
+                onClick={() =>
+                  handleSubmitReservation(datesAndMeal.value, O.none(), customer, userId.value)}
+              >
+                Finaliser la réservation sans lit
+              </Button>
+            </HStack>
+          )),
+          O.getOrNull
         ) :
         null}
       {O.isSome(customer) && O.isSome(datesAndMeal) && O.isSome(bedId) && !updateDatesAndMeals
-          && !updateCustomer ?
+          && !updateCustomer && O.isSome(userId) ?
         (
           <HStack justifyContent={'end'}>
             <Button
@@ -283,15 +315,39 @@ export const OneBedReservationUpdate = (): JSX.Element => {
             >
               Retour
             </Button>
-            <Button
-              isLoading={isLoading}
-              colorScheme={'blue'}
-              rightIcon={<CheckIcon />}
-              onClick={() =>
-                handleSubmitReservation(datesAndMeal.value, bedId, customer.value, userId)}
-            >
-              Finaliser la réservation
-            </Button>
+
+            {pipe(
+              customer,
+              O.flatMap(c =>
+                O.struct({
+                  firstname: c.firstname,
+                  lastname: c.lastname,
+                  age: O.some(c.age),
+                  phoneNumber: O.some(c.phoneNumber),
+                  email: O.some(c.email),
+                  comment: O.some(c.comment),
+                  id: O.some(c.id)
+                })
+              ),
+              O.map(customer => (
+                <Button
+                  key={''}
+                  isLoading={isLoading}
+                  colorScheme={'blue'}
+                  rightIcon={<CheckIcon />}
+                  onClick={() =>
+                    handleSubmitReservation(
+                      datesAndMeal.value,
+                      bedId,
+                      customer,
+                      userId.value
+                    )}
+                >
+                  Finaliser la réservation
+                </Button>
+              )),
+              O.getOrNull
+            )}
           </HStack>
         ) :
         null}

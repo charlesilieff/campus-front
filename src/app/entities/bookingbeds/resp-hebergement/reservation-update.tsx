@@ -63,14 +63,12 @@ const createReservationWithBedIds = (
   selectedBeds: readonly number[],
   isConfirmed: boolean
 ): ReservationCreateSchemaWithBedIds => ({
-  arrivalDate: new Date(datesAndMeals.arrivalDate),
+  arrivalDate: datesAndMeals.arrivalDate,
 
-  departureDate: new Date(
+  departureDate:
     isArrivalDateEqualDepartureDate(datesAndMeals.arrivalDate, datesAndMeals.departureDate) ?
-      dayjs(datesAndMeals.arrivalDate, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD')
-        .toString() :
-      datesAndMeals.departureDate
-  ),
+      dayjs(datesAndMeals.arrivalDate, 'YYYY-MM-DD').add(1, 'day').toDate() :
+      datesAndMeals.departureDate,
   specialDietNumber: customer.specialDietNumber,
   isArrivalLunch: datesAndMeals.isArrivalLunch,
   isArrivalDinner: datesAndMeals.isArrivalDinner,

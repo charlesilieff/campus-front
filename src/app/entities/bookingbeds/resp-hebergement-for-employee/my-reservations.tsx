@@ -42,8 +42,8 @@ export const MyEmployeeReservations = () => {
   const account = useAppSelector(state => state.authentication.account)
 
   const userId = pipe(
-    account.id,
-    O.fromNullable
+    account,
+    O.flatMap(account => account.id)
   )
 
   useEffect(() => {
@@ -102,7 +102,7 @@ export const MyEmployeeReservations = () => {
                       (
                         <TextFormat
                           type="date"
-                          value={reservation.arrivalDate}
+                          value={O.some(reservation.arrivalDate)}
                           format={APP_LOCAL_DATE_FORMAT}
                         />
                       ) :
@@ -113,7 +113,7 @@ export const MyEmployeeReservations = () => {
                       (
                         <TextFormat
                           type="date"
-                          value={reservation.departureDate}
+                          value={O.some(reservation.departureDate)}
                           format={APP_LOCAL_DATE_FORMAT}
                         />
                       ) :

@@ -15,12 +15,17 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
+import { pipe } from '@effect/data/Function'
 import * as O from '@effect/data/Option'
+import * as S from '@effect/schema/Schema'
+import { schemaResolver } from 'app/entities/bed/resolver'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import type { OneBedReservationDatesAndMealsEncoded } from '../models/OneBedReservationDatesAndMeals'
+import {
+  OneBedReservationDatesAndMeals
+} from '../models/OneBedReservationDatesAndMeals'
 import {
   isArrivalDateEqualDepartureDate,
   isArrivalDateIsBeforeDepartureDate,
@@ -28,9 +33,9 @@ import {
 } from '../utils'
 
 interface DatesAndMealsChoicesProps {
-  setDatesAndMeal: (datesAndMeal: O.Option<OneBedReservationDatesAndMealsEncoded>) => void
+  setDatesAndMeal: (datesAndMeal: O.Option<OneBedReservationDatesAndMeals>) => void
   setUpdateDatesAndMeals: (updateDatesAndMeals: boolean) => void
-  datesAndMeals: O.Option<OneBedReservationDatesAndMealsEncoded>
+  datesAndMeals: O.Option<OneBedReservationDatesAndMeals>
   setBedId: (bedId: O.Option<number>) => void
 }
 
@@ -43,27 +48,32 @@ export const DatesAndMealsChoices = (
     watch,
     formState: { errors },
     reset: resetForm
-  } = useForm<OneBedReservationDatesAndMealsEncoded>()
+  } = useForm({ resolver: schemaResolver(OneBedReservationDatesAndMeals) })
 
   useEffect(() => {
     resetForm(
-      O.isSome(props.datesAndMeals) ? props.datesAndMeals.value : {}
+      pipe(
+        props.datesAndMeals,
+        O.map(S.encode(OneBedReservationDatesAndMeals)),
+        O.getOrElse(() => ({}))
+      )
     )
   }, [props.datesAndMeals])
 
-  const departureDate = useRef({})
-  departureDate.current = watch('departureDate', '')
-  const arrivalDate = useRef({})
-  arrivalDate.current = watch('arrivalDate', '')
+  const departureDate = useRef(O.none<Date>())
+  departureDate.current = pipe(watch('departureDate'), O.fromNullable, O.map(d => new Date(d)))
+  const arrivalDate = useRef(O.none<Date>())
+  arrivalDate.current = pipe(watch('arrivalDate'), O.fromNullable, O.map(d => new Date(d)))
   const handleValidDateAndMealSubmit = (
-    datesAndMeal: OneBedReservationDatesAndMealsEncoded
+    datesAndMeal: OneBedReservationDatesAndMeals
   ): void => {
     props.setBedId(O.none())
     props.setUpdateDatesAndMeals(false)
     if (
-      isArrivalDateEqualDepartureDate(
-        arrivalDate.current.toString(),
-        departureDate.current.toString()
+      O.isSome(departureDate.current) && O.isSome(arrivalDate.current)
+      && isArrivalDateEqualDepartureDate(
+        arrivalDate.current.value,
+        departureDate.current.value
       )
     ) {
       props.setDatesAndMeal(
@@ -97,7 +107,9 @@ export const DatesAndMealsChoices = (
         </HStack>
         <Box minW={'500px'}>
           <form
-            onSubmit={handleSubmit(handleValidDateAndMealSubmit)}
+            onSubmit={handleSubmit(v =>
+              handleValidDateAndMealSubmit(v as unknown as OneBedReservationDatesAndMeals)
+            )}
           >
             <VStack spacing={10}>
               <HStack spacing={12} minW={600} my={4}>

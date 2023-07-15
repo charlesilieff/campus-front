@@ -47,15 +47,10 @@ export const DatesAndMealsChoices = (
 
   useEffect(() => {
     resetForm(
-      // @ts-expect-error format date is mandatory for react-hook-form
       pipe(
         props.datesAndMeals,
         O.map(S.encode(OneBedReservationDatesAndMeals)),
-        O.map(d => ({
-          ...d,
-          arrivalDate: d.arrivalDate.toISOString().slice(0, 10),
-          departureDate: d.departureDate.toISOString().slice(0, 10)
-        }))
+        O.getOrElse(() => ({}))
       )
     )
   }, [props.datesAndMeals])
