@@ -68,7 +68,7 @@ export const OneBedReservationUpdate = (): JSX.Element => {
         ...datesAndMeal,
         departureDate:
           isArrivalDateEqualDepartureDate(datesAndMeal.arrivalDate, datesAndMeal.departureDate) ?
-            dayjs(datesAndMeal.arrivalDate, 'YYYY-MM-DD').add(1, 'day').toDate() :
+            dayjs(datesAndMeal.arrivalDate).add(1, 'day').toDate() :
             datesAndMeal.departureDate
       },
       bedId,

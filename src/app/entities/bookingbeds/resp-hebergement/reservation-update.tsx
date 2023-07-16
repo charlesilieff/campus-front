@@ -67,7 +67,7 @@ const createReservationWithBedIds = (
 
   departureDate:
     isArrivalDateEqualDepartureDate(datesAndMeals.arrivalDate, datesAndMeals.departureDate) ?
-      dayjs(datesAndMeals.arrivalDate, 'YYYY-MM-DD').add(1, 'day').toDate() :
+      dayjs(datesAndMeals.arrivalDate).add(1, 'day').toDate() :
       datesAndMeals.departureDate,
   specialDietNumber: customer.specialDietNumber,
   isArrivalLunch: datesAndMeals.isArrivalLunch,

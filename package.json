@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@chakra-ui/icons": "2.0.19",
-    "@chakra-ui/react": "2.7.0",
+    "@chakra-ui/react": "2.7.1",
     "@effect/data": "0.12.10",
     "@effect/io": "0.26.1",
     "@effect/match": "^0.24.4",

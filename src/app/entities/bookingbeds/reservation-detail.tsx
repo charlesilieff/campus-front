@@ -43,14 +43,18 @@ export const ReservationDetail = () => {
                     ) :
                     null}
 
-                  <Button
-                    as={Link}
-                    to={`/bookingbeds/${reservationEntity.value.id}/edit`}
-                    variant="modify"
-                    leftIcon={<FaPencilAlt />}
-                  >
-                    Modifier la réservation
-                  </Button>
+                  {O.isSome(reservationEntity.value.id) ?
+                    (
+                      <Button
+                        as={Link}
+                        to={`/bookingbeds/${reservationEntity.value.id.value}/edit`}
+                        variant="modify"
+                        leftIcon={<FaPencilAlt />}
+                      >
+                        Modifier la réservation
+                      </Button>
+                    ) :
+                    null}
                 </HStack>
               ) :
               (
@@ -182,14 +186,18 @@ export const ReservationDetail = () => {
                     ) :
                     null}
 
-                  <Button
-                    as={Link}
-                    to={`/bookingbeds/${reservationEntity.value.id}/edit`}
-                    variant="modify"
-                    leftIcon={<FaPencilAlt />}
-                  >
-                    Modifier la réservation
-                  </Button>
+                  {O.isSome(reservationEntity.value.id) ?
+                    (
+                      <Button
+                        as={Link}
+                        to={`/bookingbeds/${reservationEntity.value.id.value}/edit`}
+                        variant="modify"
+                        leftIcon={<FaPencilAlt />}
+                      >
+                        Modifier la réservation
+                      </Button>
+                    ) :
+                    null}
                 </HStack>
               ) :
               (

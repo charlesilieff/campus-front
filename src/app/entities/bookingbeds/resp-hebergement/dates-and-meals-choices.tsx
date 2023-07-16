@@ -91,6 +91,7 @@ export const DatesAndMealsChoices = (
     } else {
       props.setDatesAndMeal(O.some(datesAndMeal))
     }
+    console.log('datesAndMeal', datesAndMeal)
   }
 
   return (
@@ -209,7 +210,6 @@ export const DatesAndMealsChoices = (
               </FormControl>
               <FormControl
                 isInvalid={errors.commentMeals !== undefined}
-                width={'auto'}
                 alignItems={'flex-start'}
               >
                 <FormLabel
@@ -221,10 +221,9 @@ export const DatesAndMealsChoices = (
                 </FormLabel>
                 <Textarea
                   id="commentMeals"
-                  width={{ base: '300px', lg: '1000px' }}
+                  minH={100}
                   placeholder="Votre commentaire à propos des repas (ex : allergie, régime, vegan...)"
                   {...register('commentMeals')}
-                  minH={{ base: '100', lg: '50' }}
                 />
                 <FormErrorMessage>
                   {errors.commentMeals && errors.commentMeals.message}
