@@ -111,11 +111,9 @@ export const BedroomKind = () => {
                         Modifier
                       </Button>
 
-                      (
                       <BedroomKindDeleteDialog
                         bedroomKindId={bedroomKind.id}
                       />
-                      )
                     </HStack>
                     )
                   </Td>

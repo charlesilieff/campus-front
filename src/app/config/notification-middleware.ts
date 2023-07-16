@@ -72,7 +72,7 @@ export const handleError = () => next => action => {
             ) {
               toast({
                 position: 'top',
-                title: 'Réservation non crée/modifié !',
+                title: 'Réservation non crée/modifiée !',
                 description: "L'utilisateur a déjà une réservation pour cette période.",
                 status: 'error',
                 duration: 9000,

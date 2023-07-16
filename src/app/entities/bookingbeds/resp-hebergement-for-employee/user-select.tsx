@@ -53,7 +53,7 @@ export const UserSelect = (
 
   const users = pipe(
     useAppSelector(state => state.userManagement.users),
-    A.filter(u => pipe(u.authorities, A.contains(String.Equivalence)('ROLE_HABITANT'))),
+    A.filter(u => pipe(u.authorities, A.contains(String.Equivalence)('ROLE_EMPLOYEE'))),
     A.sort<User>(userOderByEmail)
   )
 

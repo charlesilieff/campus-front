@@ -24,9 +24,7 @@ export const ReservationsListEmployee = () => {
   const handleSyncList = async () => {
     setLoading(true)
     await pipe(
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       getEmployeeReservations,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       T.flatMap(d => S.parseEffect(S.array(MealsOnlyUserReservation))(d.data)),
       T.mapError(e => formatErrors(e.errors)),
       T.map(setReservations),
