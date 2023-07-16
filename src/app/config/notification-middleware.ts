@@ -11,6 +11,7 @@ const { toast } = createStandaloneToast()
 // eslint-disable-next-line complexity
 export const handleError = () => next => action => {
   const addErrorAlert = (message: string) => {
+    console.log('Error message not', message)
     toast({
       position: 'top',
       title: message,
@@ -34,6 +35,7 @@ export const handleError = () => next => action => {
         }
       })
     if (alert) {
+      console.log('Alert message not', alert)
       toast({
         position: 'top',
         title: alert,
@@ -55,6 +57,7 @@ export const handleError = () => next => action => {
               && (data.path.includes('/api/account')
                 || data.path.includes('/api/authenticate')))))
       ) {
+        console.log('Error message not ddd', data)
         let i
         switch (response.status) {
           // connection refused, server not reachable
@@ -62,6 +65,7 @@ export const handleError = () => next => action => {
             addErrorAlert('Server not reachable')
             break
           case 406:
+            console.log('Not acceptable', data)
             if (
               typeof data.raison === 'string'
               && data.raison.includes('ReservationDatesNotAvailableError')
@@ -150,6 +154,7 @@ export const handleError = () => next => action => {
       /* eslint-disable no-console */
       console.log('Authentication Error: Trying to access url api/account with GET.')
     } else {
+      console.log('Error message not Unknown', error)
       toast({
         position: 'top',
         title: error.message || 'Unknown error!',
@@ -159,6 +164,7 @@ export const handleError = () => next => action => {
       })
     }
   } else if (error) {
+    console.log('Error message not Unknown 2', error)
     toast({
       position: 'top',
       title: error.message || 'Unknown error!',

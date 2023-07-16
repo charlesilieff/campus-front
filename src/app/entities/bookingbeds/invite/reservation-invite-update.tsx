@@ -163,8 +163,8 @@
 // })
 
 // export const ReservationInviteUpdate = (): JSX.Element => {
-//   const [datesAndMeal, setDatesAndMeal] = useState<O.Option<DatesAndMeals>>(O.none)
-//   const [customer, setCustomer] = useState<O.Option<Customer>>(O.none)
+//   const [datesAndMeal, setDatesAndMeal] = useState<O.Option<DatesAndMeals>>(O.none())
+//   const [customer, setCustomer] = useState<O.Option<Customer>>(O.none())
 //   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
 //   const [updateBeds, setUpdateBeds] = useState<boolean>(false)
 //   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
@@ -357,12 +357,12 @@
 //   useEffect(() => {
 //     if (reservationId === undefined) {
 //       dispatch(resetReservations())
-//       setDatesAndMeal(O.none)
+//       setDatesAndMeal(O.none())
 //       setUpdateDatesAndMeals(false)
 //       setUpdateBeds(false)
 //     }
 //   }, [])
-//   const [bedId, setBedId] = useState<O.Option<number>>(O.none)
+//   const [bedId, setBedId] = useState<O.Option<number>>(O.none())
 
 //   useEffect(() => {
 //     if (updateSuccess) {

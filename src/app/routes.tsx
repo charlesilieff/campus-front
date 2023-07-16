@@ -57,7 +57,6 @@ export const Routes = () => (
               AUTHORITIES.RESPHEBERGEMENT,
               AUTHORITIES.INTERMITTENT,
               AUTHORITIES.HABITANT
-              // AUTHORITIES.VOLONTAIRE
             ]}
           >
             <AccountRoutes />
@@ -99,6 +98,7 @@ export const Routes = () => (
             AUTHORITIES.RESPHEBERGEMENT,
             AUTHORITIES.ADMIN,
             AUTHORITIES.HABITANT,
+            AUTHORITIES.INTERMITTENT,
             AUTHORITIES.EMPLOYEE
           ]}
         >

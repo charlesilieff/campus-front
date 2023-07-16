@@ -109,11 +109,11 @@ export const ReservationHabitantUpdate = () => {
   useEffect(() => {
     if (reservationId === undefined) {
       dispatch(resetReservations())
-      setDatesAndMeal(O.none)
+      setDatesAndMeal(O.none())
       setUpdateDatesAndMeals(false)
     }
   }, [])
-  const [bedId, setBedId] = useState<O.Option<number>>(O.none)
+  const [bedId, setBedId] = useState<O.Option<number>>(O.none())
 
   useEffect(() => {
     if (updateSuccess) {

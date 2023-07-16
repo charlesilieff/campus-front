@@ -34,9 +34,9 @@ import { DatesAndMealsSummary } from './dates-and-meals-summary-intermittent'
 
 export const OneBedReservationUpdate = (): JSX.Element => {
   const [datesAndMeal, setDatesAndMeal] = useState<O.Option<OneBedReservationDatesAndMeals>>(
-    O.none
+    O.none()
   )
-  const [customer, setCustomer] = useState<O.Option<CustomerForm>>(O.none)
+  const [customer, setCustomer] = useState<O.Option<CustomerForm>>(O.none())
   const [updateDatesAndMeals, setUpdateDatesAndMeals] = useState<boolean>(false)
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -46,9 +46,10 @@ export const OneBedReservationUpdate = (): JSX.Element => {
   const toast = useToast()
   const updateSuccess = useAppSelector(state => state.bookingBeds.updateSuccess)
   const account = useAppSelector(state => state.authentication.account)
+
   const customerId = pipe(
     account,
-    O.flatMap(c => c.id)
+    O.flatMap(c => c.customerId)
   )
 
   const userId = pipe(
@@ -99,10 +100,12 @@ export const OneBedReservationUpdate = (): JSX.Element => {
   const backendCustomer = useAppSelector(state => state.customer.entity)
 
   useEffect(() => {
-    if (pipe(backendCustomer, O.map(c => c.id), O.isSome)) {
+    if (O.isSome(customerId)) {
       pipe(customerId, O.map(id => dispatch(getCustomer(id))))
     }
+  }, [])
 
+  useEffect(() => {
     if (O.isSome(backendCustomer)) {
       setCustomer(O.some({
         id: backendCustomer.value.id,
@@ -112,6 +115,16 @@ export const OneBedReservationUpdate = (): JSX.Element => {
         phoneNumber: backendCustomer.value.phoneNumber,
         age: backendCustomer.value.age,
         comment: backendCustomer.value.comment
+      }))
+    } else if (O.isSome(account)) {
+      setCustomer(O.some({
+        id: O.none(),
+        firstname: account.value.firstName !== undefined ? account.value.firstName : O.none(),
+        lastname: account.value.lastName !== undefined ? account.value.lastName : O.none(),
+        email: account.value.email,
+        phoneNumber: O.none(),
+        age: O.none(),
+        comment: O.none()
       }))
     }
   }, [pipe(backendCustomer, O.flatMap(c => c.id))])
@@ -145,11 +158,11 @@ export const OneBedReservationUpdate = (): JSX.Element => {
   useEffect(() => {
     if (reservationId === undefined) {
       dispatch(resetReservations())
-      setDatesAndMeal(O.none)
+      setDatesAndMeal(O.none())
       setUpdateDatesAndMeals(false)
     }
   }, [])
-  const [bedId, setBedId] = useState<O.Option<number>>(O.none)
+  const [bedId, setBedId] = useState<O.Option<number>>(O.none())
 
   useEffect(() => {
     if (updateSuccess) {

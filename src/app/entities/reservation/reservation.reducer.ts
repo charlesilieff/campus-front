@@ -50,7 +50,7 @@ export const getOneBedUserReservationsByUserId = createAsyncThunk(
   async (id: number) => {
     const requestUrl = `${apiUrlOneBedUserReservations}/${id}`
 
-    return getHttpEntity(requestUrl, Reservation)
+    return getHttpEntities(requestUrl, Reservation)
   }
 )
 
@@ -90,7 +90,7 @@ export const ReservationSlice = createEntitySlice({
         state.updateSuccess = true
         state.entity = castDraft(O.none())
       })
-      .addMatcher(isFulfilled(getEntities), (state, action) => ({
+      .addMatcher(isFulfilled(getEntities, getOneBedUserReservationsByUserId), (state, action) => ({
         ...state,
         loading: false,
         entities: action.payload

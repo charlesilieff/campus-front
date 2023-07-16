@@ -13,7 +13,7 @@ interface ReservationToBeProcessed {
 export const ReservationsToBeProcessedButton = () => {
   const [reservationToBeProcessed, setReservationToBeProcessed] = useState<
     O.Option<ReservationToBeProcessed>
-  >(O.none)
+  >(O.none())
 
   useEffect(() => {
     const fetchReservationsToBeProcessed = async () => {

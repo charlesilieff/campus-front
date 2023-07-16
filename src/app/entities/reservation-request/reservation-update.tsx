@@ -66,8 +66,8 @@ const createReservationRequest = (
 })
 
 export const ReservationRequestUpdate = (): JSX.Element => {
-  const [reservation, setReservation] = useState<O.Option<Reservation>>(O.none)
-  const [customer, setCustomer] = useState<O.Option<Customer>>(O.none)
+  const [reservation, setReservation] = useState<O.Option<Reservation>>(O.none())
+  const [customer, setCustomer] = useState<O.Option<Customer>>(O.none())
   const [updateReservation, setUpdateReservation] = useState<boolean>(false)
   const [updateCustomer, setUpdateCustomer] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -183,7 +183,7 @@ export const ReservationRequestUpdate = (): JSX.Element => {
   useEffect(() => {
     if (uuid === undefined) {
       dispatch(resetReservations())
-      setReservation(O.none)
+      setReservation(O.none())
       setUpdateReservation(false)
     }
   }, [])

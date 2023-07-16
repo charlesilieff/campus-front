@@ -103,7 +103,7 @@ export const UserManagementUpdate = () => {
     }
   }
   const saveUserWithAuthorities = saveUser(authoritiesSelected)
-  console.log(errors)
+
   const loading = useAppSelector(state => state.userManagement.loading)
   const updating = useAppSelector(state => state.userManagement.updating)
 

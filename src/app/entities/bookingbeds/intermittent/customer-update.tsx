@@ -19,27 +19,7 @@ import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-interface CustomerFormEncoded {
-  id?: number
-  firstname?: string
-  lastname?: string
-  age?: number
-  phoneNumber?: string
-  email: string
-  comment?: string
-}
-
-export interface CustomerForm {
-  id: O.Option<number>
-  firstname: O.Option<string>
-  lastname: O.Option<string>
-  age: O.Option<number>
-  phoneNumber: O.Option<string>
-  email: string
-  comment: O.Option<string>
-}
-
-export const CustomerForm: S.Schema<CustomerFormEncoded, CustomerForm> = S.struct({
+export const CustomerForm = S.struct({
   id: S.optional(S.number).toOption(),
   firstname: S.optional(S.string).toOption(),
   lastname: S.optional(S.string).toOption(),
@@ -48,6 +28,8 @@ export const CustomerForm: S.Schema<CustomerFormEncoded, CustomerForm> = S.struc
   email: S.string,
   comment: S.optional(S.string).toOption()
 })
+
+export type CustomerForm = S.To<typeof CustomerForm>
 
 interface CustomerUpdateProps {
   setCustomer: (customer: O.Option<CustomerForm>) => void

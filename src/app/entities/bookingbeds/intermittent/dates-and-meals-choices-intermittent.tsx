@@ -52,9 +52,15 @@ export const DatesAndMealsChoices = (
 
   useEffect(() => {
     resetForm(
+      // @ts-expect-error format date is mandatory for react-hook-form
       pipe(
         props.datesAndMeals,
         O.map(S.encode(OneBedReservationDatesAndMeals)),
+        O.map(d => ({
+          ...d,
+          arrivalDate: d.arrivalDate.toISOString().slice(0, 10),
+          departureDate: d.departureDate.toISOString().slice(0, 10)
+        })),
         O.getOrElse(() => ({}))
       )
     )
@@ -122,6 +128,7 @@ export const DatesAndMealsChoices = (
                     type="date"
                     placeholder="Date d'arrivée'"
                     {...register('arrivalDate', {
+                      valueAsDate: true,
                       required: "La date d'arrivée' est obligatoire",
                       validate(v) {
                         if (
@@ -153,6 +160,7 @@ export const DatesAndMealsChoices = (
                     type="date"
                     placeholder="Date de départ"
                     {...register('departureDate', {
+                      valueAsDate: true,
                       required: 'La date de départ est obligatoire'
                     })}
                   />
