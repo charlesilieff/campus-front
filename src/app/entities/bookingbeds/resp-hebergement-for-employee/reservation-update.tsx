@@ -64,7 +64,7 @@ export const createMealsOnlyReservationReservationUpdateUser = (
 export const updateMealsOnlyReservationReservationUpdateUser = (
   { mealsOnlyReservation, reservationId }: {
     mealsOnlyReservation: MealsOnlyUserReservation
-    reservationId: string
+    reservationId: number
   }
 ) => {
   const requestUrl = `${apiUrlMealsOnlyUserReservation}/${reservationId}`
@@ -73,7 +73,10 @@ export const updateMealsOnlyReservationReservationUpdateUser = (
       () =>
         axios.put<MealsOnlyUserReservation>(
           requestUrl,
-          { ...mealsOnlyReservation, reservationId }
+          S.encode(MealsOnlyUserReservation)({
+            ...mealsOnlyReservation,
+            reservationId: O.some(reservationId)
+          })
         ),
       identity
     ),
@@ -87,7 +90,7 @@ export const updateMealsOnlyReservationReservationUpdateUser = (
   )
 }
 
-const getReservation = (id: string): T.Effect<never, void | ParseError, MealsOnlyUserReservation> =>
+const getReservation = (id: number): T.Effect<never, void | ParseError, MealsOnlyUserReservation> =>
   pipe(
     T.promise(
       () => axios.get(`${apiReservation}/${id}`)
@@ -98,7 +101,8 @@ const getReservation = (id: string): T.Effect<never, void | ParseError, MealsOnl
 export const ReservationEmployeeUpdate = (): JSX.Element => {
   const reservationId = pipe(
     useParams<{ reservationId: string }>(),
-    param => O.fromNullable(param.reservationId)
+    param => O.fromNullable(param.reservationId),
+    O.map(Number)
   )
   const [datesAndMeal, setDatesAndMeal] = useState<
     O.Option<MealsOnlyReservationDatesAndMeals>
