@@ -76,7 +76,7 @@ export const UserSelect = (
         lastname: x.lastName !== undefined ? x.lastName : O.none(),
         comment: O.none(),
         email: x.email,
-        id: x.id,
+        id: O.none(),
         phoneNumber: O.none()
       })),
       props.setCustomer

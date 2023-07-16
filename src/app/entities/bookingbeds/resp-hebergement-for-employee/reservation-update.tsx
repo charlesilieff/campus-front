@@ -47,7 +47,7 @@ export const createMealsOnlyReservationReservationUpdateUser = (
       () =>
         axios.post<MealsOnlyUserReservation>(
           requestUrl,
-          mealsOnlyReservation
+          S.encode(MealsOnlyUserReservation)(mealsOnlyReservation)
         ),
       identity
     ),
@@ -136,7 +136,7 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
       T.mapBoth(_ =>
         toast({
           position: 'top',
-          title: 'Réservation non crée/modifié" !',
+          title: 'Réservation non crée/modifié !',
           description: 'Le salarié a déjà une réservation pour cette période',
           status: 'error',
           duration: 9000,

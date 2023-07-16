@@ -136,28 +136,26 @@ export const MyIntermittentReservations = () => {
 
                     <Td>
                       <HStack spacing={0}>
-                        {O.isSome(reservation.id) ?
+                        {O.isSome(reservation.id) && O.isSome(customerId) ?
                           (
-                            <CancelReservationModal
-                              userId={userId}
-                              getReservations={getOneBedUserReservationsByUserId}
-                              reservationId={reservation.id.value}
-                            />
-                          ) :
-                          null}
+                            <>
+                              <CancelReservationModal
+                                userId={userId}
+                                getReservations={getOneBedUserReservationsByUserId}
+                                reservationId={reservation.id.value}
+                              />
 
-                        {O.isSome(customerId) ?
-                          (
-                            <Button
-                              size="sm"
-                              as={Link}
-                              to={`/bookingbeds/one-bed-user/${reservation.id}`}
-                              variant={'modify'}
-                              borderLeftRadius={0}
-                              leftIcon={<FaPencilAlt />}
-                            >
-                              Modifier
-                            </Button>
+                              <Button
+                                size="sm"
+                                as={Link}
+                                to={`/bookingbeds/one-bed-user/${O.getOrNull(reservation.id)}`}
+                                variant={'modify'}
+                                borderLeftRadius={0}
+                                leftIcon={<FaPencilAlt />}
+                              >
+                                Modifier
+                              </Button>
+                            </>
                           ) :
                           null}
                       </HStack>
