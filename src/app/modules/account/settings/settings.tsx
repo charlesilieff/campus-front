@@ -10,14 +10,14 @@ import {
   useToast,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import { AUTHORITIES } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { schemaResolver } from 'app/entities/bed/resolver'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
 import { getSession } from 'app/shared/reducers/authentication'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaSave } from 'react-icons/fa'

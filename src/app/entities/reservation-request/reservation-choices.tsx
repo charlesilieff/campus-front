@@ -13,11 +13,10 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
-import { identity, pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import type { Reservation } from 'app/shared/model/reservation.model'
 import dayjs from 'dayjs'
+import { identity, Option as O, pipe } from 'effect'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
@@ -58,7 +57,7 @@ export const ReservationChoices = (
       // @ts-expect-error format date is mandatory for react-hook-form
       pipe(
         props.reservation,
-        O.map(S.encode(DatesAndMeals)),
+        O.map(S.encodeSync(DatesAndMeals)),
         O.map(d => ({
           ...d,
           arrivalDate: d.arrivalDate.toISOString().slice(0, 10),
@@ -79,7 +78,7 @@ export const ReservationChoices = (
     props.setUpdateReservation(false)
     if (
       pipe(
-        O.struct({ arrival: arrivalDate.current, departureDate: departureDate.current }),
+        O.all({ arrival: arrivalDate.current, departureDate: departureDate.current }),
         O.map(({ arrival, departureDate }) =>
           isArrivalDateEqualDepartureDate(
             arrival,

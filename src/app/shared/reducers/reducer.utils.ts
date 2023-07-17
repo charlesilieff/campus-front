@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type * as O from '@effect/data/Option'
 import type {
   ActionReducerMapBuilder,
   AsyncThunk,
@@ -13,6 +12,7 @@ import {
   createSlice
 } from '@reduxjs/toolkit'
 import type { AxiosError } from 'axios'
+import type { Option as O } from 'effect'
 import type {} from 'immer/dist/internal'
 
 /**

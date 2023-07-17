@@ -1,4 +1,3 @@
-import * as O from '@effect/data/Option'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
 import { BedroomKind, BedroomKindCreate } from 'app/shared/model/bedroom-kind.model'
 import type {
@@ -15,6 +14,7 @@ import {
   putHttpEntity
 } from 'app/shared/util/httpUtils'
 import axios from 'axios'
+import { Option as O } from 'effect'
 
 const initialState: EntityState<BedroomKind> = {
   loading: false,

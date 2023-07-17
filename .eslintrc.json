@@ -4,7 +4,6 @@
     "@typescript-eslint",
     "sort-destructure-keys",
     "simple-import-sort",
-    "jest",
     "no-type-assertion",
     "eslint-plugin-no-type-assertion",
     "import"
@@ -42,16 +41,7 @@
         ]
       }
     ],
-    "@typescript-eslint/no-parameter-properties": [
-      "error",
-      {
-        "allows": [
-          "public",
-          "private",
-          "protected"
-        ]
-      }
-    ],
+    "@typescript-eslint/no-base-to-string": "warn",
     "@typescript-eslint/no-misused-promises": [
       "error",
       {

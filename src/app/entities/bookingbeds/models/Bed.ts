@@ -1,5 +1,5 @@
-import { pipe } from '@effect/data/Function'
 import * as S from '@effect/schema/Schema'
+import { pipe } from 'effect'
 
 export const BedWithStatus = S.struct({
   id: S.number,

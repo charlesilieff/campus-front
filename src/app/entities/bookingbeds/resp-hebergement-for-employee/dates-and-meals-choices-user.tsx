@@ -16,7 +16,7 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
-import * as O from '@effect/data/Option'
+import { Option as O } from 'effect'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'

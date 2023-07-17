@@ -16,10 +16,10 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import { schemaResolver } from 'app/entities/bed/resolver'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
@@ -49,7 +49,7 @@ export const DatesAndMealsChoices = (
     resetForm(
       pipe(
         props.datesAndMeals,
-        O.map(S.encode(OneBedReservationDatesAndMeals)),
+        O.map(S.encodeSync(OneBedReservationDatesAndMeals)),
         O.getOrElse(() => ({}))
       )
     )

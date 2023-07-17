@@ -1,6 +1,3 @@
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
-import * as A from '@effect/data/ReadonlyArray'
 import type { Customer } from 'app/shared/model/customer.model'
 import type { MealsOnlyUserReservation } from 'app/shared/model/mealsReservation.model'
 import type { OneBedUserReservation } from 'app/shared/model/onebedReservation.model'
@@ -9,6 +6,9 @@ import type { UserCategory } from 'app/shared/model/userCategory.model'
 import { getHttpEntities, getHttpEntity } from 'app/shared/util/httpUtils'
 import axios from 'axios'
 import dayjs from 'dayjs'
+import { Option as O } from 'effect'
+import { ReadonlyArray as A } from 'effect'
+import { pipe } from 'effect'
 
 import { PlaceWithRooms } from '../planning/model'
 import type {
@@ -142,7 +142,7 @@ export const filterRoomsByBedRoomKind = (
       pipe(
         room.bedroomKind,
         O.map(r => r.id),
-        O.contains((a, b) => a === b)(idRoomKind.value)
+        O.contains(idRoomKind.value)
       )
     )
   )

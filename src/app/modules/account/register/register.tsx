@@ -55,7 +55,7 @@ export const RegisterPage = () => {
     navigate('/')
   }
 
-  const password = useRef({})
+  const password = useRef('')
   password.current = watch('firstPassword', '')
   const successMessage = useAppSelector(state => state.register.successMessage)
 

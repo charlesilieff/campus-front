@@ -10,13 +10,13 @@ import {
   Tooltip,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getRooms } from 'app/entities/room/room.reducer'
 import type { Bed, BedCreateDecoded } from 'app/shared/model/bed.model'
 import { BedCreate } from 'app/shared/model/bed.model'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
 import React, { useEffect } from 'react'
 import type { UseFormHandleSubmit } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
@@ -32,7 +32,7 @@ export const BedUpdate = () => {
   const id = pipe(useParams<'id'>(), ({ id }) => O.fromNullable(id), O.map(Number))
   const isNew = O.isNone(id)
   const defaultValues = (bed: O.Option<Bed>) =>
-    isNew || !O.isSome(bed) ? {} : S.encode(BedCreate)({
+    isNew || !O.isSome(bed) ? {} : S.encodeSync(BedCreate)({
       id: O.some(bed.value.id),
       kind: bed.value.kind,
       number: bed.value.number,

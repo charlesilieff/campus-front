@@ -13,13 +13,13 @@ import {
   useDisclosure,
   useToast
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
-import * as A from '@effect/data/ReadonlyArray'
 import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { ReservationCreateSchemaWithBedIds } from 'app/shared/model/bookingBeds.model'
 import dayjs from 'dayjs'
+import { Option as O } from 'effect'
+import { ReadonlyArray as A } from 'effect'
+import { pipe } from 'effect'
 import React, { useEffect, useState } from 'react'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -179,12 +179,15 @@ export const ReservationUpdate = (): JSX.Element => {
     pipe(
       reservationId,
       O.fromNullable,
-      O.match(() => {
-        dispatch(resetReservations())
-        setDatesAndMeal(O.none())
-        setCustomer(O.none())
-        setUpdateDatesAndMeals(false)
-      }, id => dispatch(getReservation(id)))
+      O.match({
+        onNone() {
+          dispatch(resetReservations())
+          setDatesAndMeal(O.none())
+          setCustomer(O.none())
+          setUpdateDatesAndMeals(false)
+        },
+        onSome: id => dispatch(getReservation(id))
+      })
     )
   }, [])
 

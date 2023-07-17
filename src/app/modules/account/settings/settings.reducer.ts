@@ -1,10 +1,10 @@
-import * as O from '@effect/data/Option'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { AppThunk } from 'app/config/store'
 import { User } from 'app/shared/model/user.model'
 import { getSession } from 'app/shared/reducers/authentication'
 import { serializeAxiosError } from 'app/shared/reducers/reducer.utils'
 import { putHttpEntity } from 'app/shared/util/httpUtils'
+import { Option as O } from 'effect'
 import { castDraft } from 'immer'
 
 const initialState = {

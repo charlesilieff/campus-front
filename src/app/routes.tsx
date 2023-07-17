@@ -1,18 +1,17 @@
+// eslint-disable-next-line simple-import-sort/imports
 import React from 'react'
 import { Route } from 'react-router-dom'
 
 import { AUTHORITIES } from './config/constants'
 import { EntitiesRoutes } from './entities'
-// import { UserReservationRequestUpdate } from './entities/reservation-request-for-user/reservation-update'
-// import { UserReservationRequestUpdate } from './entities/bookingbeds/resp-hebergement-for-user/reservation-update'
 import { Index } from './entities/kitchen'
 import { Index as IndexMealUser } from './entities/meal/index'
 import { ReservationRequestDetail } from './entities/reservation-request/request-detail'
 import { ReservationRequestUpdate } from './entities/reservation-request/reservation-update'
 import { AccountRoutes } from './modules/account'
 import { Activate } from './modules/account/activate/activate'
-import { PasswordResetFinish } from './modules/account/password-reset/finish/password-reset-finish'
 import { PasswordResetInit } from './modules/account/password-reset/init/password-reset-init'
+import { Password } from './modules/account/password/password'
 import { RegisterPage } from './modules/account/register/register'
 import { RegisterIntermittentPage } from './modules/account/register/register-intermittent'
 import { AdministrationRoutes } from './modules/administration'
@@ -67,7 +66,7 @@ export const Routes = () => (
       <Route path="activate" element={<Activate />} />
       <Route path="reset">
         <Route path="request" element={<PasswordResetInit />} />
-        <Route path="finish" element={<PasswordResetFinish />} />
+        <Route path="finish" element={<Password />} />
       </Route>
     </Route>
     <Route path="admin">

@@ -1,13 +1,11 @@
 import { CheckIcon } from '@chakra-ui/icons'
 import { Button, Heading, HStack, Stack, Text, useToast } from '@chakra-ui/react'
-import { flow, identity, pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
-import * as T from '@effect/io/Effect'
 import type { ParseError } from '@effect/schema/ParseResult'
 import * as S from '@effect/schema/Schema'
 import type { Customer } from 'app/shared/model/customer.model'
 import { MealsOnlyUserReservation } from 'app/shared/model/mealsReservation.model'
 import axios from 'axios'
+import { Effect as T, Option as O, pipe } from 'effect'
 import React, { useEffect, useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -43,18 +41,17 @@ export const createMealsOnlyReservationReservationUpdateUser = (
 ) => {
   const requestUrl = `${apiUrlMealsOnlyUserReservation}`
   return pipe(
-    T.tryCatchPromise(
+    T.tryPromise(
       () =>
         axios.post<MealsOnlyUserReservation>(
           requestUrl,
-          S.encode(MealsOnlyUserReservation)(mealsOnlyReservation)
-        ),
-      identity
+          S.encodeSync(MealsOnlyUserReservation)(mealsOnlyReservation)
+        )
     ),
     T.catchAll(e =>
       pipe(
         e,
-        S.parseEffect(AxiosError),
+        S.parseResult(AxiosError),
         T.flatMap(e => T.fail(console.log(e.code)))
       )
     )
@@ -69,21 +66,20 @@ export const updateMealsOnlyReservationReservationUpdateUser = (
 ) => {
   const requestUrl = `${apiUrlMealsOnlyUserReservation}/${reservationId}`
   return pipe(
-    T.tryCatchPromise(
+    T.tryPromise(
       () =>
         axios.put<MealsOnlyUserReservation>(
           requestUrl,
-          S.encode(MealsOnlyUserReservation)({
+          S.encodeSync(MealsOnlyUserReservation)({
             ...mealsOnlyReservation,
             reservationId: O.some(reservationId)
           })
-        ),
-      identity
+        )
     ),
     T.catchAll(e =>
       pipe(
         e,
-        S.parseEffect(AxiosError),
+        S.parseResult(AxiosError),
         T.flatMap(e => T.fail(console.log(e.code)))
       )
     )
@@ -95,7 +91,7 @@ const getReservation = (id: number): T.Effect<never, void | ParseError, MealsOnl
     T.promise(
       () => axios.get(`${apiReservation}/${id}`)
     ),
-    T.flatMap(d => S.parseEffect(MealsOnlyUserReservation)(d.data))
+    T.flatMap(d => S.parseResult(MealsOnlyUserReservation)(d.data))
   )
 
 export const ReservationEmployeeUpdate = (): JSX.Element => {
@@ -129,32 +125,35 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
     const reservation = createUserMealsOnlyReservation(customer, datesAndMeal, userId)
     await pipe(
       reservationId,
-      O.match(
-        () => createMealsOnlyReservationReservationUpdateUser(reservation),
-        reservationId =>
+      O.match({
+        onNone: () => createMealsOnlyReservationReservationUpdateUser(reservation),
+        onSome: reservationId =>
           updateMealsOnlyReservationReservationUpdateUser({
             mealsOnlyReservation: reservation,
             reservationId
           })
-      ),
-      T.mapBoth(_ =>
-        toast({
-          position: 'top',
-          title: 'Réservation non crée/modifiée !',
-          description: 'Le salarié a déjà une réservation pour cette période',
-          status: 'error',
-          duration: 9000,
-          isClosable: true
-        }), _ => {
-        toast({
-          position: 'top',
-          title: 'Réservation crée !',
-          description: 'A bientôt !',
-          status: 'success',
-          duration: 9000,
-          isClosable: true
-        })
-        navigate('/planning')
+      }),
+      T.mapBoth({
+        onFailure: _ =>
+          toast({
+            position: 'top',
+            title: 'Réservation non crée/modifiée !',
+            description: 'Le salarié a déjà une réservation pour cette période',
+            status: 'error',
+            duration: 9000,
+            isClosable: true
+          }),
+        onSuccess(_) {
+          toast({
+            position: 'top',
+            title: 'Réservation crée !',
+            description: 'A bientôt !',
+            status: 'success',
+            duration: 9000,
+            isClosable: true
+          })
+          navigate('/planning')
+        }
       }),
       T.as(setIsLoading(false)),
       T.runPromise
@@ -164,47 +163,50 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
   useEffect(() => {
     pipe(
       reservationId,
-      O.map(flow(
-        getReservation,
-        T.map(reservation => {
-          setCustomer(
-            O.some({
-              age: reservation.customer.age,
-              firstname: O.some(reservation.customer.firstname),
-              lastname: O.some(reservation.customer.lastname),
-              email: reservation.customer.email,
-              phoneNumber: reservation.customer.phoneNumber,
-              id: reservation.customer.id,
-              comment: reservation.customer.comment
-            })
-          )
+      O.map(a =>
+        pipe(
+          a,
+          getReservation,
+          T.map(reservation => {
+            setCustomer(
+              O.some({
+                age: reservation.customer.age,
+                firstname: O.some(reservation.customer.firstname),
+                lastname: O.some(reservation.customer.lastname),
+                email: reservation.customer.email,
+                phoneNumber: reservation.customer.phoneNumber,
+                id: reservation.customer.id,
+                comment: reservation.customer.comment
+              })
+            )
 
-          setDatesAndMeal(
-            O.some({
-              arrivalDate: reservation.arrivalDate,
-              departureDate: reservation.departureDate,
-              isSpecialDiet: reservation.isSpecialDiet ? 'true' : 'false',
-              weekMeals: {
-                friday: { isLunch: true, isDinner: false, isBreakfast: false },
-                saturday: { isLunch: true, isDinner: false, isBreakfast: false },
-                sunday: { isLunch: true, isDinner: false, isBreakfast: false },
-                monday: { isLunch: true, isDinner: false, isBreakfast: false },
-                tuesday: { isLunch: true, isDinner: false, isBreakfast: false },
-                wednesday: { isLunch: true, isDinner: false, isBreakfast: false },
-                thursday: { isLunch: true, isDinner: false, isBreakfast: false }
-              },
-              comment: O.getOrElse(reservation.comment, () => ''),
-              commentMeals: O.getOrElse(reservation.commentMeals, () => '')
-            })
-          )
+            setDatesAndMeal(
+              O.some({
+                arrivalDate: reservation.arrivalDate,
+                departureDate: reservation.departureDate,
+                isSpecialDiet: reservation.isSpecialDiet ? 'true' : 'false',
+                weekMeals: {
+                  friday: { isLunch: true, isDinner: false, isBreakfast: false },
+                  saturday: { isLunch: true, isDinner: false, isBreakfast: false },
+                  sunday: { isLunch: true, isDinner: false, isBreakfast: false },
+                  monday: { isLunch: true, isDinner: false, isBreakfast: false },
+                  tuesday: { isLunch: true, isDinner: false, isBreakfast: false },
+                  wednesday: { isLunch: true, isDinner: false, isBreakfast: false },
+                  thursday: { isLunch: true, isDinner: false, isBreakfast: false }
+                },
+                comment: O.getOrElse(reservation.comment, () => ''),
+                commentMeals: O.getOrElse(reservation.commentMeals, () => '')
+              })
+            )
 
-          setSelectUser(false)
+            setSelectUser(false)
 
-          setUserId(O.some(reservation.userId))
-          setUpdateCustomer(false)
-        }),
-        T.runPromise
-      ))
+            setUserId(O.some(reservation.userId))
+            setUpdateCustomer(false)
+          }),
+          T.runPromise
+        )
+      )
     )
   }, [])
 
@@ -249,7 +251,7 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
         ) :
         (pipe(
           O.flatMap(customer, c =>
-            O.struct({
+            O.all({
               age: O.some(c.age),
               firstname: c.firstname,
               lastname: c.lastname,
@@ -259,18 +261,21 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
               comment: O.some(c.comment),
               updateCustomer: !updateCustomer ? O.some(updateCustomer) : O.none()
             })),
-          O.match(() => (
-            <CustomerUpdate
-              customer={customer}
-              setUpdateCustomer={setUpdateCustomer}
-              setCustomer={setCustomer}
-            />
-          ), customer => (
-            <CustomerSummary
-              setUpdateCustomer={setUpdateCustomer}
-              customer={customer}
-            />
-          ))
+          O.match({
+            onNone: () => (
+              <CustomerUpdate
+                customer={customer}
+                setUpdateCustomer={setUpdateCustomer}
+                setCustomer={setCustomer}
+              />
+            ),
+            onSome: customer => (
+              <CustomerSummary
+                setUpdateCustomer={setUpdateCustomer}
+                customer={customer}
+              />
+            )
+          })
         ))}
 
       {O.isNone(userId) || (O.isNone(customer) || updateCustomer) ?
@@ -320,7 +325,7 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
             </Button>
             {pipe(
               O.flatMap(customer, c =>
-                O.struct({
+                O.all({
                   age: O.some(c.age),
                   firstname: c.firstname,
                   lastname: c.lastname,

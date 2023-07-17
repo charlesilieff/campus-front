@@ -1,4 +1,4 @@
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
 
 export const getParamId = (id: string | undefined) => pipe(id, O.fromNullable, O.map(Number))

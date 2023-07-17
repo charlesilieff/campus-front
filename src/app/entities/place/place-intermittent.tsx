@@ -1,10 +1,9 @@
 import { Button, Checkbox, CheckboxGroup, Heading, useToast, VStack } from '@chakra-ui/react'
-import * as O from '@effect/data/Option'
-import * as A from '@effect/data/ReadonlyArray'
 import { Place } from 'app/shared/model/place.model'
 import { getHttpEntities } from 'app/shared/util/httpUtils'
 import axios from 'axios'
-import { identity } from 'fp-ts/lib/function'
+import { identity, Option as O } from 'effect'
+import { ReadonlyArray as A } from 'effect'
 import React, { useEffect, useState } from 'react'
 import { FaSave } from 'react-icons/fa'
 

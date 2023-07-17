@@ -7,8 +7,8 @@
 //   Text,
 //   VStack
 // } from '@chakra-ui/react'
-// import { pipe } from '@effect/data/Function'
-// import * as O from '@effect/data/Option'
+// import { pipe } from 'effect'
+// import {Option as O} from 'effect'
 // import { PlaceModal } from 'app/entities/place/placeModal'
 // import type { BedroomKind } from 'app/shared/model/bedroom-kind.model'
 // import type { FunctionComponent } from 'react'

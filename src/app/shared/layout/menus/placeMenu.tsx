@@ -1,9 +1,9 @@
 import { HStack, Select } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
 import { PlaceModal } from 'app/entities/place/placeModal'
 import type { Place } from 'app/shared/model/place.model'
 import axios from 'axios'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
 import React, { useEffect, useState } from 'react'
 
 export const PlaceMenu = () => {

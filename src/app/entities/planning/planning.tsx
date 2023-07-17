@@ -1,8 +1,8 @@
 import { Box, Grid, Text } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
 import { getDateKey } from 'app/shared/util/date-utils'
 import type { Dayjs } from 'dayjs'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
 import React from 'react'
 
 import type { ReservationsPlanning } from '../../shared/model/reservationsPlanning.model'

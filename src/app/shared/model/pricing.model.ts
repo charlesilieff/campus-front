@@ -1,8 +1,8 @@
 // import type { IReservation } from 'app/shared/model/reservation.model'
-import type * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import type { UserCategoryEncoded } from 'app/shared/model/userCategory.model'
 import { UserCategory } from 'app/shared/model/userCategory.model'
+import type { Option as O } from 'effect'
 
 import type { TypeReservationEncoded } from './typeReservation.model'
 import { TypeReservation } from './typeReservation.model'

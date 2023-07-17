@@ -12,9 +12,9 @@ import {
   useDisclosure,
   useToast
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as Z from '@effect/io/Effect'
 import { useAppDispatch } from 'app/config/store'
+import { Effect as T } from 'effect'
+import { pipe } from 'effect'
 import type { FunctionComponent } from 'react'
 import React from 'react'
 import { FaBan, FaTrash } from 'react-icons/fa'
@@ -42,10 +42,10 @@ export const ReservationDeleteDialog: FunctionComponent<
   const confirmDelete = async () => {
     setIsDeleting(true)
 
-    // Version effectify with Z.gen (équivalent defer dans scala ZIO) :
+    // Version effectify with T.gen (équivalent defer dans scala ZIO) :
     await pipe(
-      Z.gen(function* (_) {
-        const response = yield* _(Z.promise(() =>
+      T.gen(function* (_) {
+        const response = yield* _(T.promise(() =>
           dispatch(
             deleteEntity({ id: reservationId, sendMail: true })
           )
@@ -84,21 +84,21 @@ export const ReservationDeleteDialog: FunctionComponent<
 
         setIsDeleting(false)
       }),
-      Z.runPromise
+      T.runPromise
     )
 
     // Version effectify with map and pipe :
 
     //
     // await pipe(
-    //   Z.attemptPromise(() =>
+    //   T.attemptPromise(() =>
     //     dispatch(
     //       deleteEntity({ id: reservationId, sendMail: true })
     //     )
     //   ),
-    //   Z.map(response => response.meta.requestStatus),
-    //   Z.flatMap(requestStatus => requestStatus === 'fulfilled' ? Z.unit() : Z.fail('ko')),
-    //   Z.map(() =>
+    //   T.map(response => response.meta.requestStatus),
+    //   T.flatMap(requestStatus => requestStatus === 'fulfilled' ? T.unit() : T.fail('ko')),
+    //   T.map(() =>
     //     toast({
     //       position: 'top',
     //       title: 'Réservation supprimée !',
@@ -108,10 +108,10 @@ export const ReservationDeleteDialog: FunctionComponent<
     //       isClosable: true
     //     })
     //   ),
-    //   Z.map(() => dispatch(reset())),
-    //   Z.map(() => navigate('/planning')),
-    //   Z.catchAll(() =>
-    //     Z.succeed(toast({
+    //   T.map(() => dispatch(reset())),
+    //   T.map(() => navigate('/planning')),
+    //   T.catchAll(() =>
+    //     T.succeed(toast({
     //       position: 'top',
     //       title: 'Erreur !',
     //       description: "La réservation n'a pas pu être supprimée.",
@@ -120,9 +120,9 @@ export const ReservationDeleteDialog: FunctionComponent<
     //       isClosable: true
     //     }))
     //   ),
-    //   Z.map(() => onClose()),
-    //   Z.map(() => setIsDeleting(false)),
-    //   Z.runPromise
+    //   T.map(() => onClose()),
+    //   T.map(() => setIsDeleting(false)),
+    //   T.runPromise
     // )
 
     // Version async await javascript classique :

@@ -3,7 +3,7 @@ import './password-strength-bar.scss'
 import React from 'react'
 
 export interface IPasswordStrengthBarProps {
-  password: string | unknown
+  password: string
 }
 
 export const PasswordStrengthBar = ({ password }: IPasswordStrengthBarProps): JSX.Element => {

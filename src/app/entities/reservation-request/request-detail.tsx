@@ -1,7 +1,7 @@
 import { Button, Heading, HStack, VStack } from '@chakra-ui/react'
-import * as O from '@effect/data/Option'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { Option as O } from 'effect'
 import React, { useEffect } from 'react'
 import { FaPencilAlt } from 'react-icons/fa'
 import { Link, useParams } from 'react-router-dom'

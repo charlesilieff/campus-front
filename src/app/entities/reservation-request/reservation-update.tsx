@@ -1,14 +1,14 @@
 // eslint-disable-next-line simple-import-sort/imports
 import { Button, Heading, HStack, Stack, Text, useToast, VStack } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
-import * as T from '@effect/io/Effect'
 import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { Customer } from 'app/shared/model/customer.model'
 import type { ReservationRequest } from 'app/shared/model/reservation-request.model'
 import type { Reservation } from 'app/shared/model/reservation.model'
 import dayjs from 'dayjs'
+import { Effect as T } from 'effect'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
 import React, { useEffect, useState } from 'react'
 import { FaSave } from 'react-icons/fa'
 import { Link, useParams } from 'react-router-dom'
@@ -108,7 +108,7 @@ export const ReservationRequestUpdate = (): JSX.Element => {
       const payload = await pipe(
         T.promise(() => dispatch(createEntity(reservationRequest))),
         T.map(d => d.payload),
-        T.map(S.parse(S.optionFromSelf(S.string))),
+        T.map(S.parseSync(S.optionFromSelf(S.string))),
         T.runPromise
       )
       setIsLoading(false)
@@ -121,63 +121,69 @@ export const ReservationRequestUpdate = (): JSX.Element => {
   useEffect(() => {
     pipe(
       reservationRequest,
-      O.match(() => {
-        setReservation(O.none())
-        setCustomer(O.none())
-      }, reservationRequest => {
-        setReservation(O.some({
-          paymentMode: O.none(),
-          beds: reservationRequest.reservation.beds,
-          customer: O.none(),
-          isConfirmed: reservationRequest.reservation.isConfirmed,
-          isPaid: reservationRequest.reservation.isPaid,
-          id: reservationRequest.reservation.id,
+      O.match({
+        onNone() {
+          setReservation(O.none())
+          setCustomer(O.none())
+        },
+        onSome(reservationRequest) {
+          setReservation(O.some({
+            paymentMode: O.none(),
+            beds: reservationRequest.reservation.beds,
+            customer: O.none(),
+            isConfirmed: reservationRequest.reservation.isConfirmed,
+            isPaid: reservationRequest.reservation.isPaid,
+            id: reservationRequest.reservation.id,
 
-          reservationNumber: reservationRequest.reservation.reservationNumber,
+            reservationNumber: reservationRequest.reservation.reservationNumber,
 
-          arrivalDate: reservationRequest.reservation.arrivalDate,
+            arrivalDate: reservationRequest.reservation.arrivalDate,
 
-          departureDate: reservationRequest.reservation.departureDate,
+            departureDate: reservationRequest.reservation.departureDate,
 
-          personNumber: reservationRequest.reservation.personNumber,
+            personNumber: reservationRequest.reservation.personNumber,
 
-          specialDietNumber: reservationRequest.reservation.specialDietNumber,
+            specialDietNumber: reservationRequest.reservation.specialDietNumber,
 
-          isArrivalLunch: reservationRequest.reservation.isArrivalLunch,
+            isArrivalLunch: reservationRequest.reservation.isArrivalLunch,
 
-          isArrivalDinner: reservationRequest.reservation.isArrivalDinner,
+            isArrivalDinner: reservationRequest.reservation.isArrivalDinner,
 
-          isDepartureDinner: reservationRequest.reservation.isDepartureDinner,
+            isDepartureDinner: reservationRequest.reservation.isDepartureDinner,
 
-          isDepartureLunch: reservationRequest.reservation.isDepartureLunch,
+            isDepartureLunch: reservationRequest.reservation.isDepartureLunch,
 
-          comment: reservationRequest.reservation.comment,
+            comment: reservationRequest.reservation.comment,
 
-          isArrivalBreakfast: reservationRequest.reservation.isArrivalBreakfast,
+            isArrivalBreakfast: reservationRequest.reservation.isArrivalBreakfast,
 
-          isDepartureBreakfast: reservationRequest.reservation.isDepartureBreakfast,
+            isDepartureBreakfast: reservationRequest.reservation.isDepartureBreakfast,
 
-          commentMeals: reservationRequest.reservation.commentMeals,
-          userCategoryId: O.some(3)
-        }))
+            commentMeals: reservationRequest.reservation.commentMeals,
+            userCategoryId: O.some(3)
+          }))
 
-        setCustomer(O.some({
-          age: reservationRequest.customer.age,
-          email: reservationRequest.customer.email,
-          firstname: reservationRequest.customer.firstname,
-          id: reservationRequest.customer.id,
-          lastname: reservationRequest.customer.lastname,
-          phoneNumber: reservationRequest.customer.phoneNumber,
-          comment: reservationRequest.customer.comment
-        }))
+          setCustomer(O.some({
+            age: reservationRequest.customer.age,
+            email: reservationRequest.customer.email,
+            firstname: reservationRequest.customer.firstname,
+            id: reservationRequest.customer.id,
+            lastname: reservationRequest.customer.lastname,
+            phoneNumber: reservationRequest.customer.phoneNumber,
+            comment: reservationRequest.customer.comment
+          }))
+        }
       })
     )
     pipe(
       uuid,
-      O.match(() => {
-        setReservation(O.none())
-        setCustomer(O.none())
-      }, uuid => dispatch(getReservationRequest(uuid)))
+      O.match({
+        onNone() {
+          setReservation(O.none())
+          setCustomer(O.none())
+        },
+        onSome: uuid => dispatch(getReservationRequest(uuid))
+      })
     )
   }, [pipe(reservationRequest, O.flatMap(r => r.reservation.reservationNumber), O.getOrNull)])
   useEffect(() => {

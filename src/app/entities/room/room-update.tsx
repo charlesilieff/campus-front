@@ -10,15 +10,15 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
-import * as A from '@effect/data/ReadonlyArray'
 import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getBedroomKinds } from 'app/entities/bedroom-kind/bedroom-kind.reducer'
 import { findAllPlaces } from 'app/entities/place/place.reducer'
 import type { Room, RoomCreateDecoded } from 'app/shared/model/room.model'
 import { RoomCreate } from 'app/shared/model/room.model'
+import { Option as O } from 'effect'
+import { ReadonlyArray as A } from 'effect'
+import { pipe } from 'effect'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
@@ -39,7 +39,7 @@ export const RoomUpdate = () => {
   const roomEntity = useAppSelector(state => state.room.entity)
 
   const defaultValues = (room: O.Option<Room>) =>
-    isNew || !O.isSome(room) ? {} : S.encode(RoomCreate)({
+    isNew || !O.isSome(room) ? {} : S.encodeSync(RoomCreate)({
       id: O.some(room.value.id),
       bedroomKindId: pipe(room.value.bedroomKind, O.map(b => b.id)),
       comment: room.value.comment,

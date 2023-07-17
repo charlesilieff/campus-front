@@ -9,10 +9,10 @@ import {
   useToast,
   VStack
 } from '@chakra-ui/react'
-import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { PasswordStrengthBar } from 'app/shared/layout/password/password-strength-bar'
 import { getSession } from 'app/shared/reducers/authentication'
+import { Option as O } from 'effect'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaSave } from 'react-icons/fa'
@@ -33,7 +33,7 @@ export const Password = () => {
     watch,
     formState: { errors }
   } = useForm<PasswordForm>({})
-  const password = useRef({})
+  const password = useRef('')
   password.current = watch('newPassword', '')
   const dispatch = useAppDispatch()
 

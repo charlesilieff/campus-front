@@ -1,5 +1,5 @@
 // import { Box, Button, HStack, Spinner, Text, VStack } from '@chakra-ui/react'
-// import * as O from '@effect/data/Option'
+// import {Option as O} from 'effect'
 // import axios from 'axios'
 // import React, { useEffect, useState } from 'react'
 // import { BsFillExclamationCircleFill } from 'react-icons/bs'

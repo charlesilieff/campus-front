@@ -1,8 +1,8 @@
 import 'numeral/locales'
 
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
 import dayjs from 'dayjs'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
 import numeral from 'numeral'
 import React from 'react'
 

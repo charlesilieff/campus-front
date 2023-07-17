@@ -1,5 +1,5 @@
-import type * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
+import type { Option as O } from 'effect'
 
 export interface UserCategoryEncoded {
   id: number

@@ -9,11 +9,11 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { UserCategory } from 'app/shared/model/userCategory.model'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
@@ -30,7 +30,9 @@ export const UserCategoryUpdate = () => {
   const userCategoryEntity = useAppSelector(state => state.userCategory.entity)
 
   const defaultValues = () =>
-    isNew || O.isNone(userCategoryEntity) ? {} : S.encode(UserCategory)(userCategoryEntity.value)
+    isNew || O.isNone(userCategoryEntity) ?
+      {} :
+      S.encodeSync(UserCategory)(userCategoryEntity.value)
   const {
     handleSubmit,
     register,

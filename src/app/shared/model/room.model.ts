@@ -1,8 +1,8 @@
-import { pipe } from '@effect/data/Function'
-import type * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import type { BedroomKindEncoded } from 'app/shared/model/bedroom-kind.model'
 import { BedroomKind } from 'app/shared/model/bedroom-kind.model'
+import type { Option as O } from 'effect'
+import { pipe } from 'effect'
 
 import type { BedCreateDecoded, BedCreateEncoded } from './bed.model'
 import { BedCreate } from './bed.model'

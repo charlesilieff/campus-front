@@ -7,8 +7,8 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
-import * as O from '@effect/data/Option'
 import type { Customer } from 'app/shared/model/customer.model'
+import { Option as O } from 'effect'
 import React from 'react'
 import { BsPencil } from 'react-icons/bs'
 

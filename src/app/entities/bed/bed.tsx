@@ -10,12 +10,12 @@ import {
   Tr,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
-import * as A from '@effect/data/ReadonlyArray'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { PlaceMenu } from 'app/shared/layout/menus/placeMenu'
 import { ordBedByNumber } from 'app/shared/model/bed.model'
+import { Option as O } from 'effect'
+import { ReadonlyArray as A } from 'effect'
+import { pipe } from 'effect'
 import React, { useEffect } from 'react'
 import { FaEye, FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'

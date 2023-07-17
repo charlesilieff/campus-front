@@ -1,8 +1,8 @@
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
-import * as A from '@effect/data/ReadonlyArray'
 import { useAppSelector } from 'app/config/store'
 import { ErrorBoundary } from 'app/shared/error/error-boundary'
+import { Option as O } from 'effect'
+import { ReadonlyArray as A } from 'effect'
+import { pipe } from 'effect'
 import React from 'react'
 import type { PathRouteProps } from 'react-router-dom'
 import { Navigate, useLocation } from 'react-router-dom'
@@ -60,8 +60,6 @@ export const PrivateRoute = ({ children, hasAnyAuthorities = [], ...rest }: IOwn
 export const hasAnyAuthority = (user: O.Option<User>, hasAnyAuthorities: Authorities[]) =>
   pipe(
     user,
-    O.map(u =>
-      pipe(u.authorities, A.some(d => A.contains((a, b) => a === b)(hasAnyAuthorities, d)))
-    ),
+    O.map(u => pipe(u.authorities, A.some(d => A.contains(hasAnyAuthorities, d)))),
     O.exists(d => d)
   )

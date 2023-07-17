@@ -1,10 +1,10 @@
-import type * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import type { BedDecoded, BedEncoded } from 'app/shared/model/bed.model'
 import { Bed } from 'app/shared/model/bed.model'
 import type { CustomerDecoded, CustomerEncoded } from 'app/shared/model/customer.model'
 import { Customer } from 'app/shared/model/customer.model'
 import type { Pricing } from 'app/shared/model/pricing.model'
+import type { Option as O } from 'effect'
 
 import { FormatLocalDate } from './formatLocalDate'
 

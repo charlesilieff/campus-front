@@ -11,8 +11,8 @@
 //   useDisclosure,
 //   useToast
 // } from '@chakra-ui/react'
-// import { pipe } from '@effect/data/Function'
-// import * as O from '@effect/data/Option'
+// import { pipe } from 'effect'
+// import {Option as O} from 'effect'
 // import { useAppDispatch } from 'app/config/store'
 // import { deleteEntity } from 'app/entities/bookingbeds/booking-beds.reducer'
 // import type { getOneBedUserReservationsByUserId } from 'app/entities/reservation/reservation.reducer'

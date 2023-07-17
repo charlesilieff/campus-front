@@ -1,10 +1,10 @@
 import { Button, HStack, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay,
   useDisclosure } from '@chakra-ui/react'
-import * as O from '@effect/data/Option'
 import type { CustomerDecoded, CustomerEncoded } from 'app/shared/model/customer.model'
 import { Customer } from 'app/shared/model/customer.model'
 import { getHttpEntities } from 'app/shared/util/httpUtils'
 import axios from 'axios'
+import { Option as O } from 'effect'
 import React, { useEffect, useState } from 'react'
 import { FaBan, FaTrash } from 'react-icons/fa'
 

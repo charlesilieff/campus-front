@@ -1,4 +1,3 @@
-import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
@@ -7,6 +6,7 @@ import type { EntityState } from 'app/shared/reducers/reducer.utils'
 import { createEntitySlice, serializeAxiosError } from 'app/shared/reducers/reducer.utils'
 import { getHttpEntity, postHttpEntity, putHttpEntity } from 'app/shared/util/httpUtils'
 import axios from 'axios'
+import { Option as O } from 'effect'
 import { castDraft } from 'immer'
 
 const initialState: EntityState<ReservationRequest> = {

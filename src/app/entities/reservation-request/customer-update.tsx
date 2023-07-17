@@ -10,10 +10,10 @@ import {
   Input,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import type { Customer, CustomerDecoded } from 'app/shared/model/customer.model'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
@@ -69,7 +69,7 @@ export const CustomerUpdate = (
     resetForm(
       pipe(
         props.customer,
-        O.map(S.encode(CustomerForm)),
+        O.map(S.encodeSync(CustomerForm)),
         O.getOrElse(() => ({}))
       )
     )

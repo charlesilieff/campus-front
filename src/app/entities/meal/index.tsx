@@ -1,8 +1,5 @@
 import { Box, Button, Heading, HStack, Input, Stack, Text, useToast,
   VStack } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
-import * as A from '@effect/data/ReadonlyArray'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 // import { isArrivalDateIsBeforeDepartureDate, isDateBeforeNow } from 'app/entities/bookingbeds/utils'
 import { getOneBedUserReservationsByUserId,
@@ -11,6 +8,9 @@ import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
+import { Option as O } from 'effect'
+import { ReadonlyArray as A } from 'effect'
+import { pipe } from 'effect'
 import React, { useEffect, useState } from 'react'
 // import { useForm } from 'react-hook-form'
 import { FaCalendar, FaCaretLeft, FaCaretRight } from 'react-icons/fa'
@@ -154,7 +154,7 @@ export const Index = () => {
   ))
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-extra-semi
+    // eslint-disable-next-line no-extra-semi
     ;({ mealsDataDays, resultTotalMeals } = calculateAccordingToNumberOfDays(
       mealsDataDays,
       numberOfDays,

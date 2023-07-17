@@ -1,6 +1,6 @@
-import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { login } from 'app/shared/reducers/authentication'
+import { Option as O } from 'effect'
 import React, { useEffect, useState } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 

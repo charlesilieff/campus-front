@@ -1,7 +1,7 @@
 import { Checkbox, Stack, Text } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
-import * as A from '@effect/data/ReadonlyArray'
+import { Option as O } from 'effect'
+import { ReadonlyArray as A } from 'effect'
+import { pipe } from 'effect'
 import type { FunctionComponent } from 'react'
 import React from 'react'
 

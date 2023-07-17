@@ -1,6 +1,3 @@
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
-import * as T from '@effect/io/Effect'
 import * as S from '@effect/schema/Schema'
 import { formatErrors } from '@effect/schema/TreeFormatter'
 import type { Dispatch } from '@reduxjs/toolkit'
@@ -8,6 +5,9 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { AppThunk } from 'app/config/store'
 import type { AxiosResponse } from 'axios'
 import axios from 'axios'
+import { Effect as T } from 'effect'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
 
 import { User } from '../model/user.model'
 import { Storage } from '../util/storage-util'
@@ -67,7 +67,7 @@ export const authenticate = createAsyncThunk(
   'authentication/login',
   async (auth: AuthParams) =>
     pipe(
-      S.encodeEffect(AuthParams)(auth),
+      S.encodeResult(AuthParams)(auth),
       T.mapError(e => formatErrors(e.errors)),
       T.flatMap(b => T.promise(() => axios.post('api/authenticate', b))),
       T.runPromise

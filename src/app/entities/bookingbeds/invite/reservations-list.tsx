@@ -11,8 +11,8 @@
 //   Tr,
 //   VStack
 // } from '@chakra-ui/react'
-// import { pipe } from '@effect/data/Function'
-// import * as O from '@effect/data/Option'
+// import { pipe } from 'effect'
+// import {Option as O} from 'effect'
 // import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 // import { useAppDispatch, useAppSelector } from 'app/config/store'
 // import React, { useEffect } from 'react'

@@ -1,4 +1,3 @@
-import * as O from '@effect/data/Option'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
 import { UserCategory } from 'app/shared/model/userCategory.model'
 import type {
@@ -10,6 +9,7 @@ import {
 } from 'app/shared/reducers/reducer.utils'
 import { getHttpEntity, postHttpEntity, putHttpEntity } from 'app/shared/util/httpUtils'
 import axios from 'axios'
+import { Option as O } from 'effect'
 import { castDraft } from 'immer'
 
 const initialState: EntityState<UserCategory> = {

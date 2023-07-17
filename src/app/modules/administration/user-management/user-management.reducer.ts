@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as O from '@effect/data/Option'
 import { createAsyncThunk, createSlice, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit'
 import { Authorities, User } from 'app/shared/model/user.model'
 import { serializeAxiosError } from 'app/shared/reducers/reducer.utils'
 import { getHttpEntities, getHttpEntity, postHttpEntity,
   putHttpEntity } from 'app/shared/util/httpUtils'
 import axios from 'axios'
+import { Option as O } from 'effect'
 import { castDraft } from 'immer'
 
 const initialState = {

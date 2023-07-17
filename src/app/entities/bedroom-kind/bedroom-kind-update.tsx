@@ -8,12 +8,12 @@ import {
   Input,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { BedroomKindCreate } from 'app/shared/model/bedroom-kind.model'
 import { getParamId } from 'app/shared/util/utils'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
@@ -28,7 +28,7 @@ export const BedroomKindUpdate = () => {
   const bedroomKindEntity = useAppSelector(state => state.bedroomKind.entity)
   const isNew = O.isNone(id)
   const defaultValues = () =>
-    isNew || O.isNone(bedroomKindEntity) ? {} : S.encode(BedroomKindCreate)({
+    isNew || O.isNone(bedroomKindEntity) ? {} : S.encodeSync(BedroomKindCreate)({
       ...bedroomKindEntity.value,
       id: O.some(bedroomKindEntity.value.id)
     })

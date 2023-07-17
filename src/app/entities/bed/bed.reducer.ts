@@ -1,4 +1,3 @@
-import * as O from '@effect/data/Option'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
 import type { BedDecoded } from 'app/shared/model/bed.model'
 import { Bed, BedCreate, bedDefaultValue } from 'app/shared/model/bed.model'
@@ -12,6 +11,7 @@ import {
 import { getHttpEntities, getHttpEntity, postHttpEntity,
   putHttpEntity } from 'app/shared/util/httpUtils'
 import axios from 'axios'
+import { Option as O } from 'effect'
 import { castDraft } from 'immer'
 
 const initialState: EntityState<BedDecoded> = {

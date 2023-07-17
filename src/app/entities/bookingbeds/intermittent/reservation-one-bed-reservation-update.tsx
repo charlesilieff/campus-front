@@ -1,13 +1,13 @@
 import { CheckIcon } from '@chakra-ui/icons'
 import { Button, Heading, HStack, Stack, useToast } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
-import * as A from '@effect/data/ReadonlyArray'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getUserCategories } from 'app/entities/user-category/user-category.reducer'
 import type { Customer } from 'app/shared/model/customer.model'
 import { getSession } from 'app/shared/reducers/authentication'
 import dayjs from 'dayjs'
+import { Option as O } from 'effect'
+import { ReadonlyArray as A } from 'effect'
+import { pipe } from 'effect'
 import React, { useEffect, useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -201,7 +201,7 @@ export const OneBedReservationUpdate = (): JSX.Element => {
       </Heading>
       {pipe(
         O.flatMap(customer, c =>
-          O.struct({
+          O.all({
             age: O.some(c.age),
             firstname: c.firstname,
             lastname: c.lastname,
@@ -211,18 +211,21 @@ export const OneBedReservationUpdate = (): JSX.Element => {
             comment: O.some(c.comment),
             updateCustomer: !updateCustomer ? O.some(updateCustomer) : O.none()
           })),
-        O.match(() => (
-          <CustomerUpdate
-            customer={customer}
-            setUpdateCustomer={setUpdateCustomer}
-            setCustomer={setCustomer}
-          />
-        ), customer => (
-          <CustomerSummary
-            setUpdateCustomer={setUpdateCustomer}
-            customer={customer}
-          />
-        ))
+        O.match({
+          onNone: () => (
+            <CustomerUpdate
+              customer={customer}
+              setUpdateCustomer={setUpdateCustomer}
+              setCustomer={setCustomer}
+            />
+          ),
+          onSome: customer => (
+            <CustomerSummary
+              setUpdateCustomer={setUpdateCustomer}
+              customer={customer}
+            />
+          )
+        })
       )}
       {O.isNone(customer) || (updateCustomer && O.isNone(datesAndMeal)) ?
         (
@@ -280,7 +283,7 @@ export const OneBedReservationUpdate = (): JSX.Element => {
         pipe(
           customer,
           O.flatMap(c =>
-            O.struct({
+            O.all({
               firstname: c.firstname,
               lastname: c.lastname,
               age: O.some(c.age),
@@ -332,7 +335,7 @@ export const OneBedReservationUpdate = (): JSX.Element => {
             {pipe(
               customer,
               O.flatMap(c =>
-                O.struct({
+                O.all({
                   firstname: c.firstname,
                   lastname: c.lastname,
                   age: O.some(c.age),

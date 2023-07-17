@@ -9,14 +9,14 @@ import {
   Select,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
-import * as A from '@effect/data/ReadonlyArray'
-import * as String from '@effect/data/String'
-import type { Order } from '@effect/data/typeclass/Order'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getUsersAsAdmin } from 'app/modules/administration/user-management/user-management.reducer'
 import type { User } from 'app/shared/model/user.model'
+import { String } from 'effect'
+import { ReadonlyArray as A } from 'effect'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
+import type { Order } from 'effect/Order'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
@@ -47,13 +47,11 @@ export const UserSelect = (
     )
   }
 
-  const userOderByEmail: Order<User> = {
-    compare: (self, that) => String.Order.compare(self.email, that.email)
-  }
+  const userOderByEmail: Order<User> = (self, that) => String.Order(self.email, that.email)
 
   const users = pipe(
     useAppSelector(state => state.userManagement.users),
-    A.filter(u => pipe(u.authorities, A.contains(String.Equivalence)('ROLE_HABITANT'))),
+    A.filter(u => pipe(u.authorities, A.contains('ROLE_HABITANT'))),
     A.sort<User>(userOderByEmail)
   )
 
@@ -69,7 +67,7 @@ export const UserSelect = (
 
     pipe(
       users,
-      A.findFirst(user => O.contains((a, b) => a === b)(user.id, formUser.id)),
+      A.findFirst(user => O.contains(user.id, formUser.id)),
       O.map(x => ({
         age: O.none(),
         firstname: x.firstName !== undefined ? x.firstName : O.none(),
@@ -84,9 +82,9 @@ export const UserSelect = (
 
     pipe(
         users,
-        A.findFirst(user => O.contains((a, b) => a === b)(user.id, Number(formUser.id))),
+        A.findFirst(user => O.contains(user.id, Number(formUser.id))),
         O.flatMap(u =>
-          O.struct({
+          O.all({
             firstName: u.firstName !== undefined ? u.firstName : O.none(),
             lastName: u.lastName !== undefined ? u.lastName : O.none()
           })

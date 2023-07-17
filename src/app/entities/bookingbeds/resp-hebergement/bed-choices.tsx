@@ -6,12 +6,12 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
-import * as A from '@effect/data/ReadonlyArray'
 import { PlaceModal } from 'app/entities/place/placeModal'
 import type { PlaceWithRooms } from 'app/entities/planning/model'
 import type { BedroomKind } from 'app/shared/model/bedroom-kind.model'
+import { Option as O } from 'effect'
+import { ReadonlyArray as A } from 'effect'
+import { pipe } from 'effect'
 import type { FunctionComponent } from 'react'
 import React, { useEffect, useState } from 'react'
 
@@ -62,7 +62,7 @@ export const BedsChoices: FunctionComponent<DatesAndMealsChoicesProps> = (
           roomsData,
           A.map(room => room.bedroomKind),
           A.compact,
-          A.uniq((bedroomKind1, bedroomKind2) => bedroomKind1.name === bedroomKind2.name)
+          A.dedupe
         )
       )
     }

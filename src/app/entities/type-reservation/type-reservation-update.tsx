@@ -9,12 +9,12 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { TypeReservation } from 'app/shared/model/typeReservation.model'
 import { TypeReservationCreate } from 'app/shared/model/typeReservation.model'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
@@ -31,7 +31,7 @@ export const TypeReservationUpdate = () => {
   const typeReservationEntity = useAppSelector(state => state.typeReservation.entity)
 
   const defaultValues = (typeReservationEntity: O.Option<TypeReservation>) =>
-    isNew || O.isNone(typeReservationEntity) ? {} : S.encode(TypeReservationCreate)({
+    isNew || O.isNone(typeReservationEntity) ? {} : S.encodeSync(TypeReservationCreate)({
       comment: typeReservationEntity.value.comment,
       name: typeReservationEntity.value.name,
       id: typeReservationEntity.value.id,

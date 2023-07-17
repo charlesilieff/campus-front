@@ -1,5 +1,5 @@
-import type * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
+import type { Option as O } from 'effect'
 
 import type { PricingEncoded } from './pricing.model'
 import { Pricing } from './pricing.model'

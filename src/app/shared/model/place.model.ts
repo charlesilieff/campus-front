@@ -1,5 +1,5 @@
-import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
+import { Option as O } from 'effect'
 
 export interface PlaceEncoded {
   id: number

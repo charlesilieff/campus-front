@@ -9,12 +9,12 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { CustomerDecoded, CustomerEncoded } from 'app/shared/model/customer.model'
 import { Customer } from 'app/shared/model/customer.model'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
@@ -30,7 +30,7 @@ export const CustomerUpdate = (): JSX.Element => {
   const isNew = id === undefined
   const customerEntity = useAppSelector(state => state.customer.entity)
   const defaultValues = (customer: O.Option<CustomerDecoded>) =>
-    isNew || !O.isSome(customer) ? {} : S.encode(Customer)(customer.value)
+    isNew || !O.isSome(customer) ? {} : S.encodeSync(Customer)(customer.value)
   const {
     handleSubmit,
     register,

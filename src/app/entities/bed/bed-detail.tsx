@@ -1,6 +1,6 @@
 import { Button, Heading, HStack, Text, VStack } from '@chakra-ui/react'
-import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
+import { Option as O } from 'effect'
 import React, { useEffect } from 'react'
 import { FaArrowLeft, FaPencilAlt } from 'react-icons/fa'
 import { Link, useParams } from 'react-router-dom'

@@ -7,9 +7,9 @@ import {
   Stack,
   VStack
 } from '@chakra-ui/react'
-import * as O from '@effect/data/Option'
 import { useAppDispatch } from 'app/config/store'
 import { getUsersAsAdmin } from 'app/modules/administration/user-management/user-management.reducer'
+import { Option as O } from 'effect'
 import React, { useEffect } from 'react'
 
 interface UserUpdateProps {

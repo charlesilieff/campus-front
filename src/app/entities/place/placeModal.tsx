@@ -1,7 +1,7 @@
 import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay,
   useDisclosure } from '@chakra-ui/react'
-import * as O from '@effect/data/Option'
 import type { Place } from 'app/shared/model/place.model'
+import { Option as O } from 'effect'
 import React from 'react'
 import { BsMap } from 'react-icons/bs'
 

@@ -1,5 +1,3 @@
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
 import { AUTHORITIES } from 'app/config/constants'
 import { useAppSelector } from 'app/config/store'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
@@ -10,6 +8,8 @@ import type {
 import { getDateKey } from 'app/shared/util/date-utils'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
 import type { FunctionComponent } from 'react'
 import React from 'react'
 

@@ -30,21 +30,21 @@
   "Array": {
     "prefix": "+AN",
     "body": [
-      "import * as A from '@effect/data/ReadonlyArray'"
+      "import {ReadonlyArray as a} from 'effect'"
     ],
     "description": "Array as A"
   },
   "Option": {
     "prefix": "+O",
     "body": [
-      "import * as O from '@effect/data/Option'"
+      "import {Option as O} from 'effect'"
     ],
     "description": "Option as O"
   },
   "Effect": {
     "prefix": "+T",
     "body": [
-      "import * as T from '@effect/io/Effect'"
+      "import {Effect as T } from 'effect'"
     ],
     "description": "Effect as T"
   },
@@ -79,7 +79,7 @@
   "Either": {
     "prefix": "+EN",
     "body": [
-      "import * as E from '@effect/data/Either'"
+      "import {Either as E} from 'effect'"
     ],
     "description": "Either as E"
   },

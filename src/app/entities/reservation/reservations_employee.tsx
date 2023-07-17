@@ -1,12 +1,12 @@
 import { Button, Heading, HStack, Table, Tbody, Td, Th, Thead, Tr, VStack } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
-import * as T from '@effect/io/Effect'
 import * as S from '@effect/schema/Schema'
 import { formatErrors } from '@effect/schema/TreeFormatter'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { MealsOnlyUserReservation } from 'app/shared/model/mealsReservation.model'
 import axios from 'axios'
+import { Effect as T } from 'effect'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
 import React, { useEffect, useState } from 'react'
 import { FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
@@ -25,7 +25,7 @@ export const ReservationsListEmployee = () => {
     setLoading(true)
     await pipe(
       getEmployeeReservations,
-      T.flatMap(d => S.parseEffect(S.array(MealsOnlyUserReservation))(d.data)),
+      T.flatMap(d => S.parseResult(S.array(MealsOnlyUserReservation))(d.data)),
       T.mapError(e => formatErrors(e.errors)),
       T.map(setReservations),
       T.tap(() => T.succeed(setLoading(false))),

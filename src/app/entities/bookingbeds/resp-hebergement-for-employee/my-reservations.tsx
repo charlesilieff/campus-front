@@ -10,15 +10,15 @@ import {
   Tr,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
-import * as T from '@effect/io/Effect'
 import type { ParseError } from '@effect/schema/ParseResult'
 import * as S from '@effect/schema/Schema'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppSelector } from 'app/config/store'
 import { MealsOnlyUserReservation } from 'app/shared/model/mealsReservation.model'
 import axios from 'axios'
+import { Effect as T } from 'effect'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
 import React, { useEffect, useState } from 'react'
 import { FaPencilAlt, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
@@ -32,7 +32,7 @@ const getOnlyMealsReservationsByUserId = (
 ): T.Effect<never, ParseError, readonly MealsOnlyUserReservation[]> =>
   pipe(
     T.promise(() => axios.get(`${apiEmployeeReservations}/${userId}`)),
-    T.flatMap(d => S.parseEffect(S.array(MealsOnlyUserReservation))(d.data))
+    T.flatMap(d => S.parseResult(S.array(MealsOnlyUserReservation))(d.data))
   )
 
 export const MyEmployeeReservations = () => {

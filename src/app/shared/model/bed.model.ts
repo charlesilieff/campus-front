@@ -1,7 +1,5 @@
-import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
-import { string } from 'fp-ts'
-import * as Ord from 'fp-ts/Ord'
+import { Option as O, Order, String } from 'effect'
 
 import type { RoomDecoded, RoomEncoded } from './room.model'
 import { Room } from './room.model'
@@ -37,7 +35,7 @@ export const Bed: S.Schema<BedEncoded, BedDecoded> = S.lazy(() =>
 
 export type Bed = S.To<typeof Bed>
 
-export const ordBedByNumber = Ord.contramap((b: Bed) => b.number)(string.Ord)
+export const ordBedByNumber = Order.mapInput((b: Bed) => b.number)(String.Order)
 export const bedDefaultValue: Readonly<O.Option<Bed>> = O.none()
 
 export interface BedCreateEncoded {

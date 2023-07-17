@@ -1,4 +1,3 @@
-import * as O from '@effect/data/Option'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
 import { TypeReservation, TypeReservationCreate } from 'app/shared/model/typeReservation.model'
 import type {
@@ -11,6 +10,7 @@ import {
 import { getHttpEntities, getHttpEntity, postHttpEntity,
   putHttpEntity } from 'app/shared/util/httpUtils'
 import axios from 'axios'
+import { Option as O } from 'effect'
 import { castDraft } from 'immer'
 
 const initialState: EntityState<TypeReservation> = {

@@ -109,7 +109,7 @@ export const Index = () => {
   ))
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-extra-semi
+    // eslint-disable-next-line no-extra-semi
     ;({ mealsDataDays, resultTotalMeals } = calculateAccordingToNumberOfDays(
       mealsDataDays,
       numberOfDays,

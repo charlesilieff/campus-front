@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
-import * as O from '@effect/data/Option'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { logout } from 'app/shared/reducers/authentication'
+import { Option as O } from 'effect'
 import React, { useLayoutEffect } from 'react'
 
 export const Logout = () => {

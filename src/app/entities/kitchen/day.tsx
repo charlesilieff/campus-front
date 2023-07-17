@@ -16,12 +16,12 @@ import {
   useDisclosure,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
 import type { IMeal } from 'app/shared/model/meal.model'
 import type { IMealWithCustomer } from 'app/shared/model/mealWithCustomer.model'
 import axios from 'axios'
 import type { Dayjs } from 'dayjs'
 import type dayjs from 'dayjs'
+import { pipe } from 'effect'
 import React, { useContext, useEffect, useState } from 'react'
 
 import type { IMealsNumber } from './IMealsNumber'

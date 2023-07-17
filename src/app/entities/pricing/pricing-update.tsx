@@ -10,13 +10,13 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { getEntities as getTypeReservations } from 'app/entities/type-reservation/type-reservation.reducer'
 import { getEntities as getUserCategories } from 'app/entities/user-category/user-category.reducer'
 import { PricingCreate } from 'app/shared/model/pricing.model'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
@@ -36,7 +36,7 @@ export const PricingUpdate = () => {
   const typeReservations = useAppSelector(state => state.typeReservation.entities)
 
   const defaultValues = () =>
-    isNew || O.isNone(pricingEntity) ? {} : S.encode(PricingCreate)({
+    isNew || O.isNone(pricingEntity) ? {} : S.encodeSync(PricingCreate)({
       id: pricingEntity.value.id,
       comment: pricingEntity.value.comment,
       price: pricingEntity.value.price,

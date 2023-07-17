@@ -10,15 +10,12 @@ import {
   useToast,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
-import * as A from '@effect/data/ReadonlyArray'
-import * as String from '@effect/data/String'
 import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { schemaResolver } from 'app/entities/bed/resolver'
 import type { Authorities } from 'app/shared/model/user.model'
 import { User } from 'app/shared/model/user.model'
+import { Option as O, pipe, ReadonlyArray as A } from 'effect'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
@@ -53,7 +50,7 @@ export const UserManagementUpdate = () => {
         lastModifiedBy: currentUser,
         authorities: []
       } :
-      S.encode(User)(user.value)
+      S.encodeSync(User)(user.value)
   useEffect(() => {
     if (isNew) {
       dispatch(reset())
@@ -224,14 +221,12 @@ export const UserManagementUpdate = () => {
                     value={role}
                     disabled={(role === 'ROLE_HABITANT' && pipe(
                       authoritiesSelected,
-                      A.contains(
-                        String.Equivalence
-                      )('ROLE_EMPLOYEE')
+                      A.contains('ROLE_EMPLOYEE')
                     ))
                       || (role === 'ROLE_EMPLOYEE'
                         && pipe(
                           authoritiesSelected,
-                          A.contains(String.Equivalence)('ROLE_HABITANT')
+                          A.contains('ROLE_HABITANT')
                         ))}
                     onChange={e => {
                       if (e.target.checked) {

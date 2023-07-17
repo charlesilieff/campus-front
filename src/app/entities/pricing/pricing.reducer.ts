@@ -1,4 +1,3 @@
-import * as O from '@effect/data/Option'
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit'
 import { Pricing, PricingCreate } from 'app/shared/model/pricing.model'
 import type {
@@ -15,6 +14,7 @@ import {
   putHttpEntity
 } from 'app/shared/util/httpUtils'
 import axios from 'axios'
+import { Option as O } from 'effect'
 import { castDraft } from 'immer'
 
 const initialState: EntityState<Pricing> = {

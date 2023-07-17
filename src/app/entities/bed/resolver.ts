@@ -1,13 +1,13 @@
-import * as E from '@effect/data/Either'
-import { apply, pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
-import * as Predicate from '@effect/data/Predicate'
-import * as A from '@effect/data/ReadonlyArray'
-import * as RR from '@effect/data/ReadonlyRecord'
 import * as Match from '@effect/match'
 import * as AST from '@effect/schema/AST'
 import type * as ParseResult from '@effect/schema/ParseResult'
 import * as Schema from '@effect/schema/Schema'
+import { pipe, Predicate } from 'effect'
+import { ReadonlyRecord as RR } from 'effect'
+import { Either as E } from 'effect'
+import { Option as O } from 'effect'
+import { ReadonlyArray as A } from 'effect'
+import { apply } from 'effect/Function'
 
 type Entry = [string, { readonly message: string }]
 
@@ -52,8 +52,11 @@ const buildError = (error: ParseResult.ParseErrors, path = [] as string[]): Arra
 export const schemaResolver = <I, A,>(schema: Schema.Schema<I, A>) => (data: I, _context: any) =>
   pipe(
     Schema.decodeEither(schema)(data, { errors: 'all' }),
-    E.match(({ errors }) => ({
-      values: {},
-      errors: RR.fromEntries(A.flatMap(errors, _ => buildError(_)))
-    }), values => ({ values, errors: {} }))
+    E.match({
+      onLeft: ({ errors }) => ({
+        values: {},
+        errors: RR.fromEntries(A.flatMap(errors, _ => buildError(_)))
+      }),
+      onRight: values => ({ values, errors: {} })
+    })
   )

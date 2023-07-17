@@ -10,13 +10,13 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
-import { pipe } from '@effect/data/Function'
-import * as O from '@effect/data/Option'
 import * as S from '@effect/schema/Schema'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
 import type { PlaceEncoded } from 'app/shared/model/place.model'
 import { PlaceNoImage } from 'app/shared/model/place.model'
 import { Place } from 'app/shared/model/place.model'
+import { Option as O } from 'effect'
+import { pipe } from 'effect'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaArrowLeft, FaSave } from 'react-icons/fa'
@@ -40,7 +40,7 @@ export const PlaceUpdate = () => {
   const placeEntity = useAppSelector(state => state.place.entity)
 
   const defaultValues = () =>
-    isNew || O.isNone(placeEntity) ? {} : S.encode(Place)(placeEntity.value)
+    isNew || O.isNone(placeEntity) ? {} : S.encodeSync(Place)(placeEntity.value)
   const {
     handleSubmit,
     register,
