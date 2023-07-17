@@ -59,9 +59,8 @@ export const postHttpEntity = <A, B, C, D,>(
   entity: B,
   responseType: S.Schema<C, D>,
   config?: AxiosRequestConfig<A> | undefined
-): Promise<WritableDraft<O.Option<D>>> => {
-  console.log('postHttpEntity', url, schema, entity, responseType, config)
-  return pipe(
+): Promise<WritableDraft<O.Option<D>>> =>
+  pipe(
     S.encodeResult(schema)(entity),
     T.mapError(e => formatErrors(e.errors)),
     T.flatMap(b => T.promise(() => axios.post(url, b, config))),
@@ -69,4 +68,3 @@ export const postHttpEntity = <A, B, C, D,>(
     T.map(d => castDraft(d)),
     T.runPromise
   )
-}

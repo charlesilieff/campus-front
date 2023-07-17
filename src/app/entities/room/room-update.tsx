@@ -85,7 +85,6 @@ export const RoomUpdate = () => {
   }, [updateSuccess])
 
   const saveEntity = (values: RoomCreateDecoded) => {
-    console.log(values)
     if (isNew) {
       dispatch(createEntity(values))
     } else {
@@ -101,10 +100,7 @@ export const RoomUpdate = () => {
 
       {loading ? <p>Chargement...</p> : (
         <form
-          onSubmit={handleSubmit(v => {
-            console.log(v)
-            return saveEntity(v as unknown as RoomCreateDecoded)
-          })}
+          onSubmit={handleSubmit(v => saveEntity(v as unknown as RoomCreateDecoded))}
         >
           <VStack minW={'300px'}>
             <FormControl isRequired isInvalid={errors.name !== undefined}>

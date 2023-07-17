@@ -2,7 +2,7 @@ import * as S from '@effect/schema/Schema'
 import type { CustomerDecoded, CustomerEncoded } from 'app/shared/model/customer.model'
 import { Customer } from 'app/shared/model/customer.model'
 import type { Pricing } from 'app/shared/model/pricing.model'
-import type { Option as O } from 'effect'
+import { type Option as O, pipe } from 'effect'
 
 export interface DatesAndMealsEncoded {
   id?: number
@@ -19,7 +19,6 @@ export interface DatesAndMealsEncoded {
   comment?: string
   pricing?: Pricing
   customer?: CustomerEncoded
-  // userCategory?: IUserCategory
   userCategoryId?: number
   isArrivalBreakfast: boolean
   isDepartureBreakfast: boolean
@@ -39,20 +38,23 @@ export interface DatesAndMealsDecoded {
   arrivalDate: Date
   departureDate: Date
   comment: O.Option<string>
-  // pricing: O.Option<IPricing>
   customer: O.Option<CustomerDecoded>
-
-  // userCategory: O.Option<IUserCategory>
   userCategoryId: O.Option<number>
   isArrivalBreakfast: boolean
   isDepartureBreakfast: boolean
   commentMeals: O.Option<string>
 }
 
-export const DatesAndMeals: S.Schema<DatesAndMealsEncoded, DatesAndMealsDecoded> = S.lazy(() =>
+export const DatesAndMeals: S.Schema<DatesAndMealsEncoded, DatesAndMealsDecoded> = pipe(
   S.struct({
     id: S.optional(S.number).toOption(),
-    personNumber: S.number,
+    personNumber: pipe(
+      S.number,
+      S.positive({
+        title: 'personNumber',
+        message: () => 'Le nombre de personne doit être positif'
+      })
+    ),
     paymentMode: S.optional(S.string).toOption(),
     reservationNumber: S.optional(S.UUID).toOption(),
     specialDietNumber: S.number,
@@ -60,7 +62,13 @@ export const DatesAndMeals: S.Schema<DatesAndMealsEncoded, DatesAndMealsDecoded>
     isDepartureDinner: S.boolean,
     isArrivalLunch: S.boolean,
     isDepartureLunch: S.boolean,
-    arrivalDate: S.DateFromSelf,
+    arrivalDate: pipe(
+      S.DateFromSelf,
+      S.filter(d => d > new Date(), {
+        title: 'arrivalDate',
+        message: () => "La date d'arrivée doit être supérieure à la date du jour."
+      })
+    ),
     departureDate: S.DateFromSelf,
     comment: S.optional(S.string).toOption(),
     // pricing: S.optional(S.lazy(() => Pricing)).toOption(),
@@ -70,6 +78,16 @@ export const DatesAndMeals: S.Schema<DatesAndMealsEncoded, DatesAndMealsDecoded>
     isArrivalBreakfast: S.boolean,
     isDepartureBreakfast: S.boolean,
     commentMeals: S.optional(S.string).toOption()
+  }),
+  S.filter(d => d.arrivalDate <= d.departureDate, {
+    title: 'arrivalDate',
+    message: input =>
+      `La date d'arrivée doit être avant la date de départ: ${input.departureDate.toLocaleDateString()}.`
+  }),
+  S.filter(d => d.personNumber >= d.specialDietNumber, {
+    title: 'specialDietNumber',
+    message: input =>
+      `Le nombre de personnes doit être supérieur ou égal au nombre de régimes spéciaux: ${input.personNumber}.`
   })
 )
 

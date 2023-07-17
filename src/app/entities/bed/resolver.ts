@@ -23,22 +23,25 @@ const buildError = (error: ParseResult.ParseErrors, path = [] as string[]): Arra
       e => A.flatMap(e.errors, _ => buildError(_, A.append(path, String(e.index))))
     ),
     Match.tag('UnionMember', e => A.flatMap(e.errors, _ => buildError(_, path))),
-    Match.tag('Type', _ => [
-      [A.join(path, '.'), {
-        message: pipe(
-          _.message,
-          O.orElse(() => O.map(getMessage(_.expected), apply(_.actual))),
-          O.orElse(() =>
-            pipe(
-              getExamples(_.expected),
-              O.filter(A.every(Predicate.isString)),
-              O.map(A.join(', '))
-            )
-          ),
-          O.getOrElse(() => `Unexpected value: ${_.actual}`)
-        )
-      }] as Entry
-    ]),
+    Match.tag('Type', _ => {
+      console.log('aaaaaa', _.expected.annotations)
+      return [
+        [A.join([_.expected.annotations['@effect/schema/TitleAnnotationId'] as string], '.'), {
+          message: pipe(
+            _.message,
+            O.orElse(() => O.map(getMessage(_.expected), apply(_.actual))),
+            O.orElse(() =>
+              pipe(
+                getExamples(_.expected),
+                O.filter(A.every(Predicate.isString)),
+                O.map(A.join(', '))
+              )
+            ),
+            O.getOrElse(() => `Unexpected value: ${_.actual}`)
+          )
+        }] as Entry
+      ]
+    }),
     Match.tag('Missing', _ => [[A.join(path, '.'), { message: 'Missing' }] as Entry]),
     Match.tag('Forbidden', _ => [[A.join(path, '.'), { message: 'Forbidden' }] as Entry]),
     Match.tag(
@@ -55,7 +58,7 @@ export const schemaResolver = <I, A,>(schema: Schema.Schema<I, A>) => (data: I, 
     E.match({
       onLeft: ({ errors }) => ({
         values: {},
-        errors: RR.fromEntries(A.flatMap(errors, _ => buildError(_)))
+        errors: RR.fromEntries(A.flatMap(errors, e => buildError(e)))
       }),
       onRight: values => ({ values, errors: {} })
     })

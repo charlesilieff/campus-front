@@ -48,11 +48,9 @@ export const Index = () => {
   }
 
   const toggleAddDays = () => {
-    console.log('date', date)
     setDate(date.add(1, 'day'))
   }
   const toggleSubtractDays = () => {
-    console.log('date', date)
     setDate(date.subtract(1, 'day'))
   }
 

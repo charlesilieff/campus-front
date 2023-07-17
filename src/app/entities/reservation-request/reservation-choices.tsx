@@ -15,17 +15,14 @@ import {
 } from '@chakra-ui/react'
 import * as S from '@effect/schema/Schema'
 import type { Reservation } from 'app/shared/model/reservation.model'
-import dayjs from 'dayjs'
-import { identity, Option as O, pipe } from 'effect'
+import { Option as O, pipe } from 'effect'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
 import { schemaResolver } from '../bed/resolver'
 import {
-  isArrivalDateEqualDepartureDate,
-  isArrivalDateIsBeforeDepartureDate,
-  isDateBeforeNow
+  isArrivalDateEqualDepartureDate
 } from '../bookingbeds/utils'
 import type { DatesAndMealsDecoded } from './model'
 import { DatesAndMeals } from './model'
@@ -50,8 +47,6 @@ export const ReservationChoices = (
     resolver: schemaResolver(DatesAndMeals)
   })
 
-  const personNumber = useRef({})
-  personNumber.current = watch('personNumber', 0)
   useEffect(() =>
     resetForm(
       // @ts-expect-error format date is mandatory for react-hook-form
@@ -76,44 +71,13 @@ export const ReservationChoices = (
     reservation: DatesAndMealsDecoded
   ): void => {
     props.setUpdateReservation(false)
-    if (
-      pipe(
-        O.all({ arrival: arrivalDate.current, departureDate: departureDate.current }),
-        O.map(({ arrival, departureDate }) =>
-          isArrivalDateEqualDepartureDate(
-            arrival,
-            departureDate
-          )
-        ),
-        O.exists(identity)
-      )
-    ) {
-      props.setReservation(
-        O.some({
-          ...reservation,
-          id: pipe(props.reservation, O.flatMap(r => r.id)),
-          isDepartureBreakfast: false,
-          isDepartureDinner: false,
-          isDepartureLunch: false,
-          isPaid: pipe(props.reservation, O.map(r => r.isPaid), O.getOrElse(() => false)),
-          beds: pipe(props.reservation, O.map(r => r.beds), O.getOrElse(() => [])),
-          isConfirmed: pipe(props.reservation, O.map(r => r.isConfirmed), O.getOrElse(() => false)),
-          departureDate: pipe(
-            reservation.departureDate,
-            dayjs,
-            d => d.add(1, 'day').toDate()
-          )
-        })
-      )
-    } else {
-      props.setReservation(O.some({
-        ...reservation,
-        id: pipe(props.reservation, O.flatMap(r => r.id)),
-        isPaid: pipe(props.reservation, O.map(r => r.isPaid), O.getOrElse(() => false)),
-        beds: pipe(props.reservation, O.map(r => r.beds), O.getOrElse(() => [])),
-        isConfirmed: pipe(props.reservation, O.map(r => r.isConfirmed), O.getOrElse(() => false))
-      }))
-    }
+    props.setReservation(O.some({
+      ...reservation,
+      id: pipe(props.reservation, O.flatMap(r => r.id)),
+      isPaid: pipe(props.reservation, O.map(r => r.isPaid), O.getOrElse(() => false)),
+      beds: pipe(props.reservation, O.map(r => r.beds), O.getOrElse(() => [])),
+      isConfirmed: pipe(props.reservation, O.map(r => r.isConfirmed), O.getOrElse(() => false))
+    }))
   }
 
   return (
@@ -150,32 +114,12 @@ export const ReservationChoices = (
                     placeholder="Date d'arrivée'"
                     {...register('arrivalDate', {
                       valueAsDate: true,
-                      required: "la date d'arrivée' est obligatoire",
-                      validate(v) {
-                        if (
-                          O.isSome(departureDate.current)
-                          && !isArrivalDateIsBeforeDepartureDate(
-                            new Date(v),
-                            departureDate.current.value
-                          )
-                          && !isArrivalDateEqualDepartureDate(
-                            new Date(v),
-                            departureDate.current.value
-                          )
-                        ) {
-                          return "La date d'arrivée doit être avant la date de départ"
-                        }
-                        if (isDateBeforeNow(v)) {
-                          return "La date d'arrivée doit être après aujourd’hui"
-                        } else {
-                          return true
-                        }
-                      }
+                      required: "La date d'arrivée' est obligatoire"
                     })}
                   />
 
                   <FormErrorMessage>
-                    {errors.arrivalDate && errors.arrivalDate.message}
+                    {errors.arrivalDate !== undefined ? errors.arrivalDate.message : null}
                   </FormErrorMessage>
                 </FormControl>
 
@@ -188,7 +132,7 @@ export const ReservationChoices = (
                     type="date"
                     placeholder="Date de départ"
                     {...register('departureDate', {
-                      required: 'la date de départ est obligatoire',
+                      required: 'La date de départ est obligatoire',
                       valueAsDate: true
                     })}
                   />
@@ -260,15 +204,7 @@ export const ReservationChoices = (
                   type="number"
                   {...register('specialDietNumber', {
                     valueAsNumber: true,
-                    required: 'Le nombre de régimes spéciaux est obligatoire',
-                    validate(v) {
-                      if (v > +personNumber.current) {
-                        return 'Le nombre de régimes spéciaux ne peut pas être supérieur au nombre de personnes'
-                      }
-                      if (v < 0) {
-                        return 'Le nombre de régimes spéciaux ne peut pas être négatif'
-                      }
-                    }
+                    required: 'Le nombre de régimes spéciaux est obligatoire'
                   })}
                 />
                 <FormErrorMessage>

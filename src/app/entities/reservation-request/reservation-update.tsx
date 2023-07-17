@@ -75,7 +75,7 @@ export const ReservationRequestUpdate = (): JSX.Element => {
   const { uuid: uuidParam } = useParams<'uuid'>()
 
   const [uuid, setUUID] = useState<O.Option<string>>(O.fromNullable(uuidParam))
-  console.log(uuid)
+
   const dispatch = useAppDispatch()
   const toast = useToast()
   const [updateSuccess, setUpdateSuccess] = useState(false)
@@ -92,9 +92,7 @@ export const ReservationRequestUpdate = (): JSX.Element => {
       ...reservation,
       departureDate:
         isArrivalDateEqualDepartureDate(reservation.arrivalDate, reservation.departureDate) ?
-          new Date(
-            dayjs(reservation.arrivalDate, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD')
-          ) :
+          dayjs(reservation.arrivalDate).add(1, 'day').toDate() :
           reservation.departureDate
     }, uuid)
 

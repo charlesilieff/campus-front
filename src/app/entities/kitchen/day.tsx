@@ -203,8 +203,6 @@ export const Day = ({ positionX, date, index }: IProps) => {
   // const handleSyncList = (date: string) => {
   // }
   const getMeals = async (date: Dayjs) => {
-    console.log('date', Date)
-
     const requestUrl = `${apiUrlMealForOneDay}/${date.format('YYYY-MM-DD')}`
 
     const { data } = await axios.get<IMealWithCustomer[]>(requestUrl)

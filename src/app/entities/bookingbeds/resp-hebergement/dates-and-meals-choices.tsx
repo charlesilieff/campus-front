@@ -91,7 +91,6 @@ export const DatesAndMealsChoices = (
     } else {
       props.setDatesAndMeal(O.some(datesAndMeal))
     }
-    console.log('datesAndMeal', datesAndMeal)
   }
 
   return (
