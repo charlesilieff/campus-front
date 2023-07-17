@@ -17,8 +17,7 @@ import {
 } from '@chakra-ui/react'
 import * as S from '@effect/schema/Schema'
 import { schemaResolver } from 'app/entities/bed/resolver'
-import { Option as O } from 'effect'
-import { pipe } from 'effect'
+import { Option as O, pipe } from 'effect'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
@@ -27,9 +26,7 @@ import {
   OneBedReservationDatesAndMeals
 } from '../models/OneBedReservationDatesAndMeals'
 import {
-  isArrivalDateEqualDepartureDate,
-  isArrivalDateIsBeforeDepartureDate,
-  isDateBeforeNow
+  isArrivalDateEqualDepartureDate
 } from '../utils'
 
 interface DatesAndMealsChoicesProps {
@@ -128,21 +125,7 @@ export const DatesAndMealsChoices = (
                     type="date"
                     placeholder="Date d'arrivée'"
                     {...register('arrivalDate', {
-                      valueAsDate: true,
-                      required: "La date d'arrivée' est obligatoire",
-                      validate(v) {
-                        if (
-                          !isArrivalDateIsBeforeDepartureDate(v, departureDate.current.toString())
-                          && !isArrivalDateEqualDepartureDate(v, departureDate.current.toString())
-                        ) {
-                          return "La date d'arrivée doit être avant la date de départ"
-                        }
-                        if (isDateBeforeNow(v)) {
-                          return "La date d'arrivée doit être après aujourd’hui"
-                        } else {
-                          return true
-                        }
-                      }
+                      valueAsDate: true
                     })}
                   />
 
@@ -160,8 +143,7 @@ export const DatesAndMealsChoices = (
                     type="date"
                     placeholder="Date de départ"
                     {...register('departureDate', {
-                      valueAsDate: true,
-                      required: 'La date de départ est obligatoire'
+                      valueAsDate: true
                     })}
                   />
 

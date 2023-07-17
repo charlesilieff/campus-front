@@ -15,15 +15,13 @@ import {
 } from '@chakra-ui/react'
 import * as S from '@effect/schema/Schema'
 import { schemaResolver } from 'app/entities/bed/resolver'
-import { Option as O } from 'effect'
-import { pipe } from 'effect'
+import { Option as O, pipe } from 'effect'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
 import {
-  isArrivalDateEqualDepartureDate,
-  isArrivalDateIsBeforeDepartureDate
+  isArrivalDateEqualDepartureDate
 } from '../utils'
 import { DatesAndMeals } from './reservation-update'
 
@@ -126,17 +124,7 @@ export const DatesAndMealsChoices = (
                     type="date"
                     placeholder="Date d'arrivée'"
                     {...register('arrivalDate', {
-                      valueAsDate: true,
-                      required: "la date d'arrivée' est obligatoire",
-                      validate(v) {
-                        if (
-                          O.isSome(departureDate.current)
-                          && !isArrivalDateIsBeforeDepartureDate(v, departureDate.current.value)
-                          && !isArrivalDateEqualDepartureDate(v, departureDate.current.value)
-                        ) {
-                          return "La date d'arrivée doit être avant la date de départ"
-                        }
-                      }
+                      valueAsDate: true
                     })}
                   />
 
@@ -154,8 +142,7 @@ export const DatesAndMealsChoices = (
                     type="date"
                     placeholder="Date de départ"
                     {...register('departureDate', {
-                      valueAsDate: true,
-                      required: 'La date de départ est obligatoire'
+                      valueAsDate: true
                     })}
                   />
 

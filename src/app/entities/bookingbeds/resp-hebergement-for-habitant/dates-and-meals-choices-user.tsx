@@ -18,14 +18,12 @@ import {
 } from '@chakra-ui/react'
 import * as S from '@effect/schema/Schema'
 import { schemaResolver } from 'app/entities/bed/resolver'
-import { Option as O } from 'effect'
-import { pipe } from 'effect'
+import { Option as O, pipe } from 'effect'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
 import { OneBedReservationDatesAndMeals } from '../models/OneBedReservationDatesAndMeals'
-import { isArrivalDateIsBeforeDepartureDate } from '../utils'
 
 interface DatesAndMealsChoicesProps {
   setDatesAndMeal: (datesAndMeal: O.Option<OneBedReservationDatesAndMeals>) => void
@@ -47,9 +45,15 @@ export const DatesAndMealsChoices = (
 
   useEffect(() => {
     resetForm(
+      // @ts-expect-error format date is mandatory for react-hook-form
       pipe(
         props.datesAndMeals,
         O.map(S.encodeSync(OneBedReservationDatesAndMeals)),
+        O.map(d => ({
+          ...d,
+          arrivalDate: d.arrivalDate.toISOString().slice(0, 10),
+          departureDate: d.departureDate.toISOString().slice(0, 10)
+        })),
         O.getOrElse(() => ({}))
       )
     )
@@ -106,19 +110,7 @@ export const DatesAndMealsChoices = (
                   type="date"
                   placeholder="Date d'arrivée'"
                   {...register('arrivalDate', {
-                    valueAsDate: true,
-                    required: "la date d'arrivée' est obligatoire",
-                    validate(v) {
-                      if (
-                        O.isSome(departureDate.current)
-                        && !isArrivalDateIsBeforeDepartureDate(
-                          new Date(v),
-                          departureDate.current.value
-                        )
-                      ) {
-                        return "La date d'arrivée doit être avant la date de départ"
-                      }
-                    }
+                    valueAsDate: true
                   })}
                 />
 

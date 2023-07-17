@@ -2,13 +2,13 @@ import * as S from '@effect/schema/Schema'
 
 import { Customer } from './customer.model'
 
-const MealsDay = S.struct({
+export const MealsDay = S.struct({
   isBreakfast: S.boolean,
   isLunch: S.boolean,
   isDinner: S.boolean
 })
 
-const WeekDaysName = S.literal(
+export const WeekDaysName = S.literal(
   'monday',
   'tuesday',
   'wednesday',

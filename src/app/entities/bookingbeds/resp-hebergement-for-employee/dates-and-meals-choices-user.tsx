@@ -16,15 +16,16 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
-import { Option as O } from 'effect'
+import * as S from '@effect/schema/Schema'
+import { schemaResolver } from 'app/entities/bed/resolver'
+import { Option as O, pipe } from 'effect'
 import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-import type {
+import {
   MealsOnlyReservationDatesAndMeals
 } from '../models/OneBedReservationDatesAndMeals'
-import { isArrivalDateIsBeforeDepartureDate } from '../utils'
 
 interface DatesAndMealsChoicesProps {
   setDatesAndMeal: (datesAndMeal: O.Option<MealsOnlyReservationDatesAndMeals>) => void
@@ -41,16 +42,25 @@ export const DatesAndMealsChoices = (
     watch,
     formState: { errors },
     reset: resetForm
-  } = useForm<MealsOnlyReservationDatesAndMeals>()
-
+  } = useForm({ resolver: schemaResolver(MealsOnlyReservationDatesAndMeals) })
   useEffect(() => {
     resetForm(
-      O.isSome(props.datesAndMeals) ? props.datesAndMeals.value : {}
+      // @ts-expect-error format date is mandatory for react-hook-form
+      pipe(
+        props.datesAndMeals,
+        O.map(S.encodeSync(MealsOnlyReservationDatesAndMeals)),
+        O.map(d => ({
+          ...d,
+          arrivalDate: d.arrivalDate.toISOString().slice(0, 10),
+          departureDate: d.departureDate.toISOString().slice(0, 10)
+        })),
+        O.getOrElse(() => ({}))
+      )
     )
   }, [props.datesAndMeals])
 
-  const departureDate = useRef({})
-  departureDate.current = watch('departureDate', '')
+  const departureDate = useRef(O.none<Date>())
+  departureDate.current = pipe(watch('departureDate'), O.fromNullable, O.map(d => new Date(d)))
 
   const handleValidDateAndMealSubmit = (
     datesAndMeal: MealsOnlyReservationDatesAndMeals
@@ -59,18 +69,13 @@ export const DatesAndMealsChoices = (
     props.setDatesAndMeal(O.some(datesAndMeal))
   }
 
-  return (
-    <VStack
+  return (<VStack
       alignItems={'flex-start'}
       border={'solid'}
       p={4}
       borderRadius={8}
       borderColor={'#D9D9D9'}
-      my={2}
-    >
-      <VStack
-        alignItems={'flex-start'}
-      >
+      my={2}>
         <HStack>
           <Heading size={'lg'}>
             Date et repas
@@ -79,7 +84,9 @@ export const DatesAndMealsChoices = (
         </HStack>
         <Box>
           <form
-            onSubmit={handleSubmit(handleValidDateAndMealSubmit)}
+            onSubmit={handleSubmit(v =>
+              handleValidDateAndMealSubmit(v as unknown as MealsOnlyReservationDatesAndMeals)
+            )}
           >
             <Stack
               spacing={{ base: '15', lg: '30' }}
@@ -96,16 +103,7 @@ export const DatesAndMealsChoices = (
                   id="username"
                   type="date"
                   placeholder="Date d'arrivée'"
-                  {...register('arrivalDate', {
-                    required: "la date d'arrivée' est obligatoire",
-                    validate(v) {
-                      if (
-                        !isArrivalDateIsBeforeDepartureDate(v, departureDate.current.toString())
-                      ) {
-                        return "La date d'arrivée doit être avant la date de départ"
-                      }
-                    }
-                  })}
+                  {...register('arrivalDate'),{valueAsDate: true}}
                 />
 
                 <FormErrorMessage>
@@ -121,9 +119,7 @@ export const DatesAndMealsChoices = (
                   id="username"
                   type="date"
                   placeholder="Date de départ"
-                  {...register('departureDate', {
-                    required: 'la date de départ est obligatoire'
-                  })}
+                  {...register('departureDate'),{valueAsDate: true}}
                 />
 
                 <FormErrorMessage>
@@ -288,7 +284,7 @@ export const DatesAndMealsChoices = (
             </VStack>
           </form>
         </Box>
-      </VStack>
+ 
     </VStack>
   )
 }

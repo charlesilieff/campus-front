@@ -18,16 +18,35 @@ import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
 
-const CustomerAndPersonNumberSchema = S.struct({
-  id: S.optional(S.number).toOption(),
-  firstname: S.string,
-  lastname: S.string,
-  email: S.string,
-  phoneNumber: S.optional(S.string).toOption(),
-  age: S.optional(S.number).toOption(),
-  personNumber: S.number,
-  specialDietNumber: S.number
-})
+const CustomerAndPersonNumberSchema = pipe(
+  S.struct({
+    id: S.optional(S.number).toOption(),
+    firstname: S.string,
+    lastname: S.string,
+    email: S.string,
+    phoneNumber: S.optional(S.string).toOption(),
+    age: S.optional(S.number).toOption(),
+    personNumber: pipe(
+      S.number,
+      S.positive({
+        title: 'personNumber',
+        message: () => 'Le nombre de personne doit être positif'
+      })
+    ),
+    specialDietNumber: pipe(
+      S.number,
+      S.positive({
+        title: 'specialDietNumber',
+        message: () => 'Le nombre de régime doit être positif'
+      })
+    )
+  }),
+  S.filter(d => d.personNumber >= d.specialDietNumber, {
+    title: 'specialDietNumber',
+    message: input =>
+      `Le nombre de personnes doit être supérieur ou égal au nombre de régimes spéciaux: ${input.personNumber}.`
+  })
+)
 
 export type CustomerAndPersonNumberSchema = S.To<typeof CustomerAndPersonNumberSchema>
 interface CustomerUpdateProps {
@@ -97,9 +116,7 @@ export const CustomerUpdate = (
                     id="firstname"
                     type="text"
                     placeholder="Prénom"
-                    {...register('firstname', {
-                      required: 'Le prénom est obligatoire'
-                    })}
+                    {...register('firstname')}
                   />
 
                   <FormErrorMessage>
@@ -114,9 +131,7 @@ export const CustomerUpdate = (
                     id="lastname"
                     type="text"
                     placeholder="Nom"
-                    {...register('lastname', {
-                      required: 'Le nom est obligatoire'
-                    })}
+                    {...register('lastname')}
                   />
 
                   <FormErrorMessage>
@@ -133,9 +148,7 @@ export const CustomerUpdate = (
                     id="email"
                     type="email"
                     placeholder="Email"
-                    {...register('email', {
-                      required: "L'email est obligatoire"
-                    })}
+                    {...register('email')}
                   />
 
                   <FormErrorMessage>
@@ -195,16 +208,7 @@ export const CustomerUpdate = (
                   <Input
                     type="number"
                     {...register('specialDietNumber', {
-                      valueAsNumber: true,
-                      required: 'Le nombre de régimes spéciaux est obligatoire',
-                      validate(v) {
-                        if (v > personNumber.current) {
-                          return 'Le nombre de régimes spéciaux ne peut pas être supérieur au nombre de personnes'
-                        }
-                        if (v < 0) {
-                          return 'Le nombre de régimes spéciaux ne peut pas être négatif'
-                        }
-                      }
+                      valueAsNumber: true
                     })}
                   />
 

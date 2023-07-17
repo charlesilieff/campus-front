@@ -40,18 +40,25 @@ import { CustomerUpdate } from './customer-update'
 import { DatesAndMealsChoices } from './dates-and-meals-choices'
 import { DatesAndMealsSummary } from './dates-and-meals-summary'
 
-export const DatesAndMeals = S.struct({
-  arrivalDate: S.DateFromSelf,
-  departureDate: S.DateFromSelf,
-  isArrivalLunch: S.boolean,
-  isArrivalDinner: S.boolean,
-  isDepartureLunch: S.boolean,
-  isDepartureDinner: S.boolean,
-  comment: S.optional(S.string).toOption(),
-  isArrivalBreakfast: S.boolean,
-  isDepartureBreakfast: S.boolean,
-  commentMeals: S.optional(S.string).toOption()
-})
+export const DatesAndMeals = pipe(
+  S.struct({
+    arrivalDate: S.DateFromSelf,
+    departureDate: S.DateFromSelf,
+    isArrivalLunch: S.boolean,
+    isArrivalDinner: S.boolean,
+    isDepartureLunch: S.boolean,
+    isDepartureDinner: S.boolean,
+    comment: S.optional(S.string).toOption(),
+    isArrivalBreakfast: S.boolean,
+    isDepartureBreakfast: S.boolean,
+    commentMeals: S.optional(S.string).toOption()
+  }),
+  S.filter(d => d.arrivalDate <= d.departureDate, {
+    title: 'arrivalDate',
+    message: input =>
+      `La date d'arrivée doit être avant la date de départ: ${input.departureDate.toLocaleDateString()}.`
+  })
+)
 
 export type DatesAndMeals = S.To<typeof DatesAndMeals>
 
