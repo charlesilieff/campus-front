@@ -86,6 +86,7 @@ export const ReservationRequestSlice = createEntitySlice({
         state.loading = false
         state.updateSuccess = true
         state.entity = castDraft(O.none())
+        state.errorMessage = 'totto'
       })
       .addMatcher(isPending(getReservationRequest), state => {
         state.errorMessage = null

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import * as S from '@effect/schema/Schema'
 import type {
   ActionReducerMapBuilder,
   AsyncThunk,
@@ -11,8 +12,9 @@ import type {
 import {
   createSlice
 } from '@reduxjs/toolkit'
+import { AxiosError as AxiosErrorSchema } from 'app/entities/bookingbeds/AxiosError'
 import type { AxiosError } from 'axios'
-import type { Option as O } from 'effect'
+import { type Option as O, pipe } from 'effect'
 import type {} from 'immer/dist/internal'
 
 /**
@@ -27,7 +29,6 @@ type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>
 export type PendingAction = ReturnType<GenericAsyncThunk['pending']>
 export type RejectedAction = ReturnType<GenericAsyncThunk['rejected']>
 export type FulfilledAction = ReturnType<GenericAsyncThunk['fulfilled']>
-
 /**
  * Check if the async action type is rejected
  */
@@ -49,29 +50,25 @@ export function isFulfilledAction(action: FulfilledAction) {
   return action.type.endsWith('/fulfilled')
 }
 
-const commonErrorProperties: (keyof SerializedError)[] = ['name', 'message', 'stack', 'code']
-
+export const Error = S.struct({ name: S.string, message: S.string })
 /**
  * serialize function used for async action errors,
  * since the default function from Redux Toolkit strips useful info from axios errors
  */
-export const serializeAxiosError = (value: any): AxiosError | SerializedError => {
-  if (typeof value === 'object' && value !== null) {
-    if (value.isAxiosError) {
-      return value
-    } else {
-      const simpleError: SerializedError = {}
-      for (const property of commonErrorProperties) {
-        if (typeof value[property] === 'string') {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          simpleError[property] = value[property]
-        }
-      }
-
-      return simpleError
-    }
-  }
-  return { message: String(value) }
+export const serializeAxiosError = (value: unknown): AxiosError | SerializedError => {
+  console.log('valueeeeee', value)
+  return pipe(
+    value,
+    S.parseSync(Error),
+    d => S.parseSync(AxiosErrorSchema)(JSON.parse(d.message)),
+    d => ({
+      message: d.response.data.raison,
+      code: d.response.status.toString(),
+      isAxiosError: true,
+      toJSON: '',
+      name: d.name
+    })
+  )
 }
 
 export interface EntityState<T,> {

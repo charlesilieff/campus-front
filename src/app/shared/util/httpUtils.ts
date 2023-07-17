@@ -1,5 +1,6 @@
 import * as S from '@effect/schema/Schema'
 import { formatErrors } from '@effect/schema/TreeFormatter'
+import { AxiosError } from 'app/entities/bookingbeds/AxiosError'
 import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import type { Option as O } from 'effect'
@@ -63,7 +64,11 @@ export const postHttpEntity = <A, B, C, D,>(
   pipe(
     S.encodeResult(schema)(entity),
     T.mapError(e => formatErrors(e.errors)),
-    T.flatMap(b => T.promise(() => axios.post(url, b, config))),
+    T.flatMap(b => T.tryPromise(() => axios.post(url, b, config))),
+    T.mapError(e => {
+      console.log('eeeeeee', e)
+      return S.parseSync(AxiosError)(e)
+    }),
     T.map(d => S.parseOption(responseType)(d.data)),
     T.map(d => castDraft(d)),
     T.runPromise

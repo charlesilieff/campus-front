@@ -278,7 +278,7 @@ export const ReservationRequestUpdate = (): JSX.Element => {
                 />
               )}
 
-            {O.isSome(customer) && O.isSome(reservation) ?
+            {O.isSome(customer) && O.isSome(reservation) && !updateReservation && !updateCustomer ?
               (
                 <HStack justifyContent={'end'} py={2}>
                   <Button

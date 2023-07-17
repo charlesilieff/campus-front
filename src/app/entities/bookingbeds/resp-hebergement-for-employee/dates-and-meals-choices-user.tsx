@@ -69,13 +69,15 @@ export const DatesAndMealsChoices = (
     props.setDatesAndMeal(O.some(datesAndMeal))
   }
 
-  return (<VStack
+  return (
+    <VStack
       alignItems={'flex-start'}
       border={'solid'}
       p={4}
       borderRadius={8}
       borderColor={'#D9D9D9'}
-      my={2}>
+      my={2}
+    >
       <VStack
         alignItems={'flex-start'}
       >
@@ -106,7 +108,7 @@ export const DatesAndMealsChoices = (
                   id="username"
                   type="date"
                   placeholder="Date d'arrivée'"
-                  {...register('arrivalDate'),{valueAsDate: true}}
+                  {...register('arrivalDate', { valueAsDate: true })}
                 />
 
                 <FormErrorMessage>
@@ -122,7 +124,7 @@ export const DatesAndMealsChoices = (
                   id="username"
                   type="date"
                   placeholder="Date de départ"
-                  {...register('departureDate'),{valueAsDate: true}}
+                  {...register('departureDate', { valueAsDate: true })}
                 />
 
                 <FormErrorMessage>

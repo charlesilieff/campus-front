@@ -194,8 +194,8 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
                   wednesday: { isLunch: true, isDinner: false, isBreakfast: false },
                   thursday: { isLunch: true, isDinner: false, isBreakfast: false }
                 },
-                comment: O.getOrElse(reservation.comment, () => ''),
-                commentMeals: O.getOrElse(reservation.commentMeals, () => '')
+                comment: reservation.comment,
+                commentMeals: reservation.commentMeals
               })
             )
 
