@@ -107,17 +107,7 @@ export const BedUpdate = () => {
                 id="kind"
                 type="text"
                 placeholder="Type"
-                {...register('kind', {
-                  required: 'Le type est obligatoire',
-                  minLength: {
-                    value: 2,
-                    message: 'This field is required to be at least 2 characters.'
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: 'This field cannot be longer than 20 characters.'
-                  }
-                })}
+                {...register('kind')}
               />
 
               <FormErrorMessage>
@@ -133,14 +123,7 @@ export const BedUpdate = () => {
                   id="number"
                   type="text"
                   placeholder="Numéro"
-                  {...register('number', {
-                    required: 'Le numéro est obligatoire',
-
-                    maxLength: {
-                      value: 20,
-                      message: 'This field cannot be longer than 20 characters.'
-                    }
-                  })}
+                  {...register('number')}
                 />
               </Tooltip>
 
@@ -158,8 +141,7 @@ export const BedUpdate = () => {
                 type="number"
                 placeholder="Nombre de places"
                 {...register('numberOfPlaces', {
-                  valueAsNumber: true,
-                  required: 'Le nombre de places est obligatoire'
+                  valueAsNumber: true
                 })}
               />
 

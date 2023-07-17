@@ -1,5 +1,5 @@
 import * as S from '@effect/schema/Schema'
-import { Option as O, Order, String } from 'effect'
+import { Option as O, Order, pipe, String } from 'effect'
 
 import type { RoomDecoded, RoomEncoded } from './room.model'
 import { Room } from './room.model'
@@ -56,8 +56,24 @@ export interface BedCreateDecoded {
 
 export const BedCreate: S.Schema<BedCreateEncoded, BedCreateDecoded> = S.struct({
   id: S.optional(S.number).toOption(),
-  kind: S.string,
-  number: S.string,
+  kind: pipe(
+    S.string,
+    S.filter(s => s.length > 2, {
+      title: 'kind',
+      message: () => 'Le type de lit doit être avoir au moins 3 caractères'
+    }),
+    S.filter(s => s.length < 20, {
+      title: 'kind',
+      message: () => 'Le type de lit doit être avoir au plus 20 caractères'
+    })
+  ),
+  number: pipe(
+    S.string,
+    S.filter(s => s.length < 20, {
+      title: 'kind',
+      message: () => 'Le type de lit doit être avoir au plus 20 caractères'
+    })
+  ),
   numberOfPlaces: S.number,
   roomId: S.optional(S.number).toOption()
 })

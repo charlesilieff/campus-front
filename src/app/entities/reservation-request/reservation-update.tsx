@@ -132,31 +132,18 @@ export const ReservationRequestUpdate = (): JSX.Element => {
             isConfirmed: reservationRequest.reservation.isConfirmed,
             isPaid: reservationRequest.reservation.isPaid,
             id: reservationRequest.reservation.id,
-
             reservationNumber: reservationRequest.reservation.reservationNumber,
-
             arrivalDate: reservationRequest.reservation.arrivalDate,
-
             departureDate: reservationRequest.reservation.departureDate,
-
             personNumber: reservationRequest.reservation.personNumber,
-
             specialDietNumber: reservationRequest.reservation.specialDietNumber,
-
             isArrivalLunch: reservationRequest.reservation.isArrivalLunch,
-
             isArrivalDinner: reservationRequest.reservation.isArrivalDinner,
-
             isDepartureDinner: reservationRequest.reservation.isDepartureDinner,
-
             isDepartureLunch: reservationRequest.reservation.isDepartureLunch,
-
             comment: reservationRequest.reservation.comment,
-
             isArrivalBreakfast: reservationRequest.reservation.isArrivalBreakfast,
-
             isDepartureBreakfast: reservationRequest.reservation.isDepartureBreakfast,
-
             commentMeals: reservationRequest.reservation.commentMeals,
             userCategoryId: O.some(3)
           }))
