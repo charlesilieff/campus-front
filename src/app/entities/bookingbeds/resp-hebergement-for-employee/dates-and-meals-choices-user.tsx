@@ -76,6 +76,9 @@ export const DatesAndMealsChoices = (
       borderRadius={8}
       borderColor={'#D9D9D9'}
       my={2}>
+      <VStack
+        alignItems={'flex-start'}
+      >
         <HStack>
           <Heading size={'lg'}>
             Date et repas
@@ -284,7 +287,7 @@ export const DatesAndMealsChoices = (
             </VStack>
           </form>
         </Box>
- 
+      </VStack>
     </VStack>
   )
 }
