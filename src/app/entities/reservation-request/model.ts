@@ -2,6 +2,7 @@ import * as S from '@effect/schema/Schema'
 import type { CustomerDecoded, CustomerEncoded } from 'app/shared/model/customer.model'
 import { Customer } from 'app/shared/model/customer.model'
 import type { Pricing } from 'app/shared/model/pricing.model'
+import dayjs from 'dayjs'
 import { type Option as O, pipe } from 'effect'
 
 export interface DatesAndMealsEncoded {
@@ -57,14 +58,20 @@ export const DatesAndMeals: S.Schema<DatesAndMealsEncoded, DatesAndMealsDecoded>
     ),
     paymentMode: S.optional(S.string).toOption(),
     reservationNumber: S.optional(S.UUID).toOption(),
-    specialDietNumber: S.number,
+    specialDietNumber: pipe(
+      S.number,
+      S.positive({
+        title: 'specialDietNumber',
+        message: () => 'Le nombre de régime doit être positif'
+      })
+    ),
     isArrivalDinner: S.boolean,
     isDepartureDinner: S.boolean,
     isArrivalLunch: S.boolean,
     isDepartureLunch: S.boolean,
     arrivalDate: pipe(
       S.DateFromSelf,
-      S.filter(d => d > new Date(), {
+      S.filter(d => dayjs(d).add(1, 'day').isAfter(dayjs()), {
         title: 'arrivalDate',
         message: () => "La date d'arrivée doit être supérieure à la date du jour."
       })
