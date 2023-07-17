@@ -1,6 +1,7 @@
 import * as S from '@effect/schema/Schema'
 
 import { Customer } from './customer.model'
+import { FormatLocalDate } from './formatLocalDate'
 
 export const MealsDay = S.struct({
   isBreakfast: S.boolean,
@@ -20,8 +21,8 @@ export const WeekDaysName = S.literal(
 
 export const MealsOnlyUserReservation = S.struct({
   reservationId: S.optional(S.number).toOption(),
-  arrivalDate: S.DateFromSelf,
-  departureDate: S.DateFromSelf,
+  arrivalDate: FormatLocalDate,
+  departureDate: FormatLocalDate,
   weekMeals: S.record(
     WeekDaysName,
     MealsDay

@@ -21,8 +21,7 @@ export const handleError = () => next => action => {
     })
   }
   const { error, payload } = action
-  console.log('action', { ...action })
-  console.log('errorroro', error)
+
   /**
    * The notification middleware serves to add success and error notifications
    */

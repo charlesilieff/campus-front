@@ -126,13 +126,39 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
     await pipe(
       reservationId,
       O.match({
-        onNone: () => createMealsOnlyReservationReservationUpdateUser(reservation),
+        onNone: () =>
+          pipe(
+            createMealsOnlyReservationReservationUpdateUser(reservation),
+            T.map(_ => {
+              toast({
+                position: 'top',
+                title: 'Réservation crée !',
+                description: 'A bientôt !',
+                status: 'success',
+                duration: 9000,
+                isClosable: true
+              })
+            })
+          ),
         onSome: reservationId =>
-          updateMealsOnlyReservationReservationUpdateUser({
-            mealsOnlyReservation: reservation,
-            reservationId
-          })
+          pipe(
+            updateMealsOnlyReservationReservationUpdateUser({
+              mealsOnlyReservation: reservation,
+              reservationId
+            }),
+            T.map(_ => {
+              toast({
+                position: 'top',
+                title: 'Réservation modifiée !',
+                description: 'A bientôt !',
+                status: 'success',
+                duration: 9000,
+                isClosable: true
+              })
+            })
+          )
       }),
+      x => x,
       T.mapBoth({
         onFailure: _ =>
           toast({
@@ -144,14 +170,6 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
             isClosable: true
           }),
         onSuccess(_) {
-          toast({
-            position: 'top',
-            title: 'Réservation crée !',
-            description: 'A bientôt !',
-            status: 'success',
-            duration: 9000,
-            isClosable: true
-          })
           navigate('/planning')
         }
       }),
