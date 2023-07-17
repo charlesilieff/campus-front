@@ -20,8 +20,8 @@ export const WeekDaysName = S.literal(
 
 export const MealsOnlyUserReservation = S.struct({
   reservationId: S.optional(S.number).toOption(),
-  arrivalDate: S.string,
-  departureDate: S.string,
+  arrivalDate: S.DateFromSelf,
+  departureDate: S.DateFromSelf,
   weekMeals: S.record(
     WeekDaysName,
     MealsDay

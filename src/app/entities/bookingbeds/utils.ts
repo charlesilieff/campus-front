@@ -116,7 +116,7 @@ export const createUserMealsOnlyReservation = (
   departureDate: datesAndMeals.departureDate,
   isSpecialDiet: datesAndMeals.isSpecialDiet === 'true',
 
-  comment: O.some(datesAndMeals.comment),
+  comment: datesAndMeals.comment,
 
   customer: {
     id: customer.id,
@@ -128,7 +128,7 @@ export const createUserMealsOnlyReservation = (
     comment: customer.comment
   },
   weekMeals: datesAndMeals.weekMeals,
-  commentMeals: O.some(datesAndMeals.commentMeals)
+  commentMeals: datesAndMeals.commentMeals
 })
 
 export const filterRoomsByBedRoomKind = (
