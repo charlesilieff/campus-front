@@ -19,7 +19,7 @@ export const getHttpEntity = <A, B,>(
       pipe(
         S.parseResult(schema)(d.data),
         T.mapError(e => formatErrors(e.errors)),
-        T.tapError(d => T.log(d, 'Error')),
+        T.tapError(d => T.logError(d)),
         T.option
       )
     ),
