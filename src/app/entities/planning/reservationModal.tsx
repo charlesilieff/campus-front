@@ -12,8 +12,8 @@ import {
   Text,
   useDisclosure
 } from '@chakra-ui/react'
+import * as M from '@effect/match'
 import dayjs from 'dayjs'
-import { Match as M } from 'effect'
 import { pipe } from 'effect'
 import React from 'react'
 import { FaTimesCircle } from 'react-icons/fa'

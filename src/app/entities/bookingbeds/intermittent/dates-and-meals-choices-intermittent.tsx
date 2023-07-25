@@ -177,10 +177,11 @@ export const DatesAndMealsChoices = (
                   <Checkbox {...register('isArrivalLunch')}>déjeuner</Checkbox>
                   <Checkbox {...register('isArrivalDinner')}>dîner</Checkbox>
                 </HStack>
-                {!isArrivalDateEqualDepartureDate(
-                    arrivalDate.current.toString(),
-                    departureDate.current.toString()
-                  ) ?
+                {O.isSome(departureDate.current) && O.isSome(arrivalDate.current)
+                    && !isArrivalDateEqualDepartureDate(
+                      arrivalDate.current.value,
+                      departureDate.current.value
+                    ) ?
                   (
                     <HStack>
                       <Text fontWeight={'bold'}>{'Jour de départ :'}</Text>

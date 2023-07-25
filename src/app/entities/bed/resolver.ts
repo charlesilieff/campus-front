@@ -1,7 +1,7 @@
+import * as Match from '@effect/match'
 import * as AST from '@effect/schema/AST'
 import type * as ParseResult from '@effect/schema/ParseResult'
 import * as Schema from '@effect/schema/Schema'
-import { Match } from 'effect'
 import { pipe, Predicate } from 'effect'
 import { ReadonlyRecord as RR } from 'effect'
 import { Either as E } from 'effect'
@@ -23,25 +23,22 @@ const buildError = (error: ParseResult.ParseErrors, path = [] as string[]): Arra
       e => A.flatMap(e.errors, _ => buildError(_, A.append(path, String(e.index))))
     ),
     Match.tag('UnionMember', e => A.flatMap(e.errors, _ => buildError(_, path))),
-    Match.tag('Type', _ => {
-      console.log('aaaaaa', _.expected.annotations)
-      return [
-        [A.join([_.expected.annotations['@effect/schema/TitleAnnotationId'] as string], '.'), {
-          message: pipe(
-            _.message,
-            O.orElse(() => O.map(getMessage(_.expected), apply(_.actual))),
-            O.orElse(() =>
-              pipe(
-                getExamples(_.expected),
-                O.filter(A.every(Predicate.isString)),
-                O.map(A.join(', '))
-              )
-            ),
-            O.getOrElse(() => `Unexpected value: ${_.actual}`)
-          )
-        }] as Entry
-      ]
-    }),
+    Match.tag('Type', _ => [
+      [A.join([_.expected.annotations['@effect/schema/TitleAnnotationId'] as string], '.'), {
+        message: pipe(
+          _.message,
+          O.orElse(() => O.map(getMessage(_.expected), apply(_.actual))),
+          O.orElse(() =>
+            pipe(
+              getExamples(_.expected),
+              O.filter(A.every(Predicate.isString)),
+              O.map(A.join(', '))
+            )
+          ),
+          O.getOrElse(() => `Unexpected value: ${_.actual}`)
+        )
+      }] as Entry
+    ]),
     Match.tag('Missing', _ => [[A.join(path, '.'), { message: 'Missing' }] as Entry]),
     Match.tag('Forbidden', _ => [[A.join(path, '.'), { message: 'Forbidden' }] as Entry]),
     Match.tag(
