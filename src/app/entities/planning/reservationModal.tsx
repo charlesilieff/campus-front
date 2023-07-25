@@ -12,8 +12,8 @@ import {
   Text,
   useDisclosure
 } from '@chakra-ui/react'
-import * as S from '@effect/match'
 import dayjs from 'dayjs'
+import { Match as M } from 'effect'
 import { pipe } from 'effect'
 import React from 'react'
 import { FaTimesCircle } from 'react-icons/fa'
@@ -35,11 +35,11 @@ export const ReservationModal = ({ reservation, isRespHebergement }: IProps) => 
   const statusIcon = (status: ReservationStatus) =>
     pipe(
       status,
-      S.value,
-      S.when('pending', _ => <FaTimesCircle />),
-      S.when('processed', _ => <CheckCircleIcon />),
-      S.when('urgent', _ => <WarningIcon />),
-      S.exhaustive
+      M.value,
+      M.when('pending', _ => <FaTimesCircle />),
+      M.when('processed', _ => <CheckCircleIcon />),
+      M.when('urgent', _ => <WarningIcon />),
+      M.exhaustive
     )
 
   return (
