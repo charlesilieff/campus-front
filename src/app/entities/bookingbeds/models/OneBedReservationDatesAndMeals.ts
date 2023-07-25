@@ -23,7 +23,7 @@ export const OneBedReservationDatesAndMeals = pipe(
     isDepartureBreakfast: S.boolean,
     commentMeals: S.optional(S.string).toOption()
   }),
-  S.filter(d => d.arrivalDate < d.departureDate, {
+  S.filter(d => d.arrivalDate <= d.departureDate, {
     title: 'arrivalDate',
     message: input =>
       `La date d'arrivée doit être avant la date de départ: ${input.departureDate.toLocaleDateString()}.`

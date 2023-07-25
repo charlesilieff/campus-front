@@ -13,8 +13,7 @@ import {
 } from '@chakra-ui/react'
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import { Option as O } from 'effect'
-import { pipe } from 'effect'
+import { Option as O, pipe } from 'effect'
 import React, { useEffect } from 'react'
 import { FaPencilAlt, FaPlus, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
@@ -46,6 +45,7 @@ export const MyIntermittentReservations = () => {
   const handleSyncList = () => {
     if (O.isSome(userId)) dispatch(getOneBedUserReservationsByUserId(userId.value))
   }
+  const now = new Date()
 
   return (
     <VStack>
@@ -146,6 +146,7 @@ export const MyIntermittentReservations = () => {
                               />
 
                               <Button
+                                isDisabled={reservation.arrivalDate < now}
                                 size="sm"
                                 as={Link}
                                 to={`/bookingbeds/one-bed-user/${O.getOrNull(reservation.id)}`}

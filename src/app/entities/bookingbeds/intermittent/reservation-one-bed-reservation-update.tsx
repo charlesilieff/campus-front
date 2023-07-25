@@ -127,9 +127,7 @@ export const OneBedReservationUpdate = (): JSX.Element => {
         comment: O.none()
       }))
     }
-  }, [pipe(backendCustomer, O.flatMap(c => c.id))])
 
-  useEffect(() => {
     pipe(
       reservationId,
       O.fromNullable,
@@ -154,7 +152,7 @@ export const OneBedReservationUpdate = (): JSX.Element => {
 
       setBedId(pipe(backendReservation.value.beds, A.head, O.map(bed => bed.id)))
     }
-  }, [pipe(backendReservation, O.flatMap(c => c.id))])
+  }, [O.isSome(pipe(backendReservation, O.flatMap(c => c.id)))])
   useEffect(() => {
     if (reservationId === undefined) {
       dispatch(resetReservations())

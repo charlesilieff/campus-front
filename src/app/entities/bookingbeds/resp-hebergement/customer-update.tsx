@@ -35,7 +35,7 @@ const CustomerAndPersonNumberSchema = pipe(
     ),
     specialDietNumber: pipe(
       S.number,
-      S.positive({
+      S.filter(number => number >= 0, {
         title: 'specialDietNumber',
         message: () => 'Le nombre de régime doit être positif'
       })

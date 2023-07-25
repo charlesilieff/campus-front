@@ -58,7 +58,13 @@ export const DatesAndMeals: S.Schema<DatesAndMealsEncoded, DatesAndMealsDecoded>
     ),
     paymentMode: S.optional(S.string).toOption(),
     reservationNumber: S.optional(S.UUID).toOption(),
-    specialDietNumber: S.number,
+    specialDietNumber: pipe(
+      S.number,
+      S.filter(n => n >= 0, {
+        title: 'specialDietNumber',
+        message: () => 'Le nombre de régime doit être positif'
+      })
+    ),
     isArrivalDinner: S.boolean,
     isDepartureDinner: S.boolean,
     isArrivalLunch: S.boolean,
