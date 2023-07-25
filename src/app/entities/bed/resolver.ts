@@ -1,7 +1,7 @@
-import * as Match from '@effect/match'
 import * as AST from '@effect/schema/AST'
 import type * as ParseResult from '@effect/schema/ParseResult'
 import * as Schema from '@effect/schema/Schema'
+import { Match } from 'effect'
 import { pipe, Predicate } from 'effect'
 import { ReadonlyRecord as RR } from 'effect'
 import { Either as E } from 'effect'

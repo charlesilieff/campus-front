@@ -1,12 +1,19 @@
 import './home.scss'
 
 import { CopyIcon } from '@chakra-ui/icons'
-import { Box, Button, HStack, Image, Stack, Text, VStack } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  HStack,
+  Image,
+  Stack,
+  Text,
+  VStack
+} from '@chakra-ui/react'
 import { AUTHORITIES } from 'app/config/constants'
 import { useAppSelector } from 'app/config/store'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
-import { Option as O } from 'effect'
-import { pipe } from 'effect'
+import { Option as O, pipe } from 'effect'
 import React from 'react'
 import { BsPlusCircleFill } from 'react-icons/bs'
 import { Link } from 'react-router-dom'

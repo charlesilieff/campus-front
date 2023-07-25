@@ -1,6 +1,6 @@
 {
   "name": "gestionhebergement",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "description": "Description for gestionhebergement",
   "license": "MIT",
@@ -21,12 +21,11 @@
   "dependencies": {
     "@chakra-ui/icons": "2.1.0",
     "@chakra-ui/react": "2.8.0",
-    "@effect/match": "0.29.0",
-    "@effect/schema": "0.29.0",
+    "@effect/schema": "0.30.1",
     "@reduxjs/toolkit": "1.9.5",
     "axios": "1.4.0",
     "dayjs": "1.11.9",
-    "effect": "2.0.0-next.19",
+    "effect": "2.0.0-next.20",
     "immer": "9.0.21",
     "numeral": "2.0.6",
     "path-browserify": "1.0.1",
@@ -41,7 +40,7 @@
     "redux-thunk": "2.4.2",
     "rollup-plugin-visualizer": "5.9.2",
     "uuid": "9.0.0",
-    "vite": "4.4.4"
+    "vite": "4.4.5"
   },
   "devDependencies": {
     "@effect/babel-plugin": "^0.2.0",
@@ -61,13 +60,13 @@
     "eslint": "8.45.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-no-type-assertion": "1.3.0",
-    "eslint-plugin-react": "7.32.2",
+    "eslint-plugin-react": "7.33.0",
     "eslint-plugin-simple-import-sort": "10.0.0",
     "eslint-plugin-sort-destructure-keys": "1.5.0",
     "husky": "8.0.3",
     "identity-obj-proxy": "3.0.0",
     "process": "0.11.10",
-    "sass": "^1.63.6",
+    "sass": "^1.64.0",
     "ts-jest": "29.1.1",
     "tslib": "^2.6.0",
     "typescript": "5.1.6",
