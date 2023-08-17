@@ -12,9 +12,9 @@ import {
   Text,
   useDisclosure
 } from '@chakra-ui/react'
-import * as M from '@effect/match'
 import dayjs from 'dayjs'
 import { pipe } from 'effect'
+import * as M from 'effect/match'
 import React from 'react'
 import { FaTimesCircle } from 'react-icons/fa'
 import { Link } from 'react-router-dom'

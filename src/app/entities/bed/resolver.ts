@@ -1,4 +1,3 @@
-import * as Match from '@effect/match'
 import * as AST from '@effect/schema/AST'
 import type * as ParseResult from '@effect/schema/ParseResult'
 import * as Schema from '@effect/schema/Schema'
@@ -8,6 +7,7 @@ import { Either as E } from 'effect'
 import { Option as O } from 'effect'
 import { ReadonlyArray as A } from 'effect'
 import { apply } from 'effect/Function'
+import * as Match from 'effect/match'
 
 type Entry = [string, { readonly message: string }]
 
