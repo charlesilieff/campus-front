@@ -33,7 +33,7 @@ export const Bed: S.Schema<BedEncoded, BedDecoded> = S.lazy(() =>
   })
 )
 
-export type Bed = S.To<typeof Bed>
+export type Bed = S.Schema.To<typeof Bed>
 
 export const ordBedByNumber = Order.mapInput((b: Bed) => b.number)(String.Order)
 export const bedDefaultValue: Readonly<O.Option<Bed>> = O.none()
@@ -77,4 +77,4 @@ export const BedCreate: S.Schema<BedCreateEncoded, BedCreateDecoded> = S.struct(
   numberOfPlaces: S.number,
   roomId: S.optional(S.number).toOption()
 })
-export type BedCreate = S.To<typeof BedCreate>
+export type BedCreate = S.Schema.To<typeof BedCreate>

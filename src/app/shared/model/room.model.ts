@@ -38,7 +38,7 @@ export const Room: S.Schema<RoomEncoded, RoomDecoded> = S.lazy(() =>
   })
 )
 
-export type Room = S.To<typeof Room>
+export type Room = S.Schema.To<typeof Room>
 
 export interface RoomCreateDecoded {
   id: O.Option<number>

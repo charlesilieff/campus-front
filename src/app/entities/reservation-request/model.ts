@@ -98,4 +98,4 @@ export const DatesAndMeals: S.Schema<DatesAndMealsEncoded, DatesAndMealsDecoded>
   })
 )
 
-export type DatesAndMeals = S.To<typeof DatesAndMeals>
+export type DatesAndMeals = S.Schema.To<typeof DatesAndMeals>

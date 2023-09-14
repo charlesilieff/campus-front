@@ -29,7 +29,7 @@ export const OneBedReservationDatesAndMeals = pipe(
       `La date d'arrivée doit être avant la date de départ: ${input.departureDate.toLocaleDateString()}.`
   })
 )
-export type OneBedReservationDatesAndMeals = S.To<typeof OneBedReservationDatesAndMeals>
+export type OneBedReservationDatesAndMeals = S.Schema.To<typeof OneBedReservationDatesAndMeals>
 
 export const MealsOnlyReservationDatesAndMeals = pipe(
   S.struct({
@@ -50,4 +50,6 @@ export const MealsOnlyReservationDatesAndMeals = pipe(
   })
 )
 
-export type MealsOnlyReservationDatesAndMeals = S.To<typeof MealsOnlyReservationDatesAndMeals>
+export type MealsOnlyReservationDatesAndMeals = S.Schema.To<
+  typeof MealsOnlyReservationDatesAndMeals
+>

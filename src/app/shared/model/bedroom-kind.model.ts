@@ -6,7 +6,7 @@ export const BedroomKindCreate = S.struct({
   description: S.optional(S.string).toOption()
 })
 
-export type BedroomKindCreate = S.To<typeof BedroomKindCreate>
+export type BedroomKindCreate = S.Schema.To<typeof BedroomKindCreate>
 
 export const BedroomKind = S.struct({
   id: S.number,
@@ -14,6 +14,6 @@ export const BedroomKind = S.struct({
   description: S.optional(S.string).toOption()
 })
 
-export type BedroomKind = S.To<typeof BedroomKind>
+export type BedroomKind = S.Schema.To<typeof BedroomKind>
 
-export type BedroomKindEncoded = S.From<typeof BedroomKind>
+export type BedroomKindEncoded = S.Schema.From<typeof BedroomKind>

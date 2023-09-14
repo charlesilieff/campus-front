@@ -57,7 +57,7 @@ const ReservationAndSendMailSchema = S.struct({
   entity: ReservationCreateSchemaWithBedIds,
   sendMail: S.boolean
 })
-type ReservationAndSendMail = S.To<typeof ReservationAndSendMailSchema>
+type ReservationAndSendMail = S.Schema.To<typeof ReservationAndSendMailSchema>
 
 export const createEntity = createAsyncThunk(
   'bookingBeds/create_entity',

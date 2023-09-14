@@ -3,7 +3,7 @@ import * as S from '@effect/schema/Schema'
 import dayjs from 'dayjs'
 import { pipe } from 'effect'
 
-export const FormatLocalDate: S.Schema<string, Date> = S.transformResult(
+export const FormatLocalDate: S.Schema<string, Date> = S.transformOrFail(
   S.string,
   S.ValidDateFromSelf,
   // define a function that converts a string into a Date
@@ -13,7 +13,7 @@ export const FormatLocalDate: S.Schema<string, Date> = S.transformResult(
   b => PR.success(pipe(b, S.encodeSync(S.ValidDateFromSelf), b => b.toISOString().slice(0, 10)))
 )
 
-export const FormatLocalDateTime: S.Schema<string, Date> = S.transformResult(
+export const FormatLocalDateTime: S.Schema<string, Date> = S.transformOrFail(
   S.string,
   S.ValidDateFromSelf,
   // define a function that converts a string into a Date

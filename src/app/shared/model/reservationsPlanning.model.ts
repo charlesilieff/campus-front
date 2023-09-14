@@ -5,7 +5,7 @@ import { Customer, type CustomerEncoded } from 'app/shared/model/customer.model'
 import { FormatLocalDate } from './formatLocalDate'
 
 export const ReservationStatus = S.literal('pending', 'processed', 'urgent')
-export type ReservationStatus = S.To<typeof ReservationStatus>
+export type ReservationStatus = S.Schema.To<typeof ReservationStatus>
 export interface ReservationsPlanningEncoded {
   readonly id: number
   readonly isPaid: boolean

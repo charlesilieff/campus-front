@@ -28,7 +28,7 @@ export const Place: S.Schema<PlaceEncoded, PlaceDecoded> = S.struct({
   intermittentAllowed: S.optional(S.boolean).toOption()
 })
 
-export type Place = S.To<typeof Place>
+export type Place = S.Schema.To<typeof Place>
 
 export const defaultValue: Readonly<O.Option<Place>> = O.none()
 

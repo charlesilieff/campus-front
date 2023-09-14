@@ -8,5 +8,5 @@ export const Place = S.struct({
   rooms: S.array(RoomWithBedsWithStatus)
 })
 
-export type PlaceEncoded = S.From<typeof Place>
-export type Place = S.To<typeof Place>
+export type PlaceEncoded = S.Schema.From<typeof Place>
+export type Place = S.Schema.To<typeof Place>

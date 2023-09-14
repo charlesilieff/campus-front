@@ -12,8 +12,8 @@ dependencies:
     specifier: 2.8.0
     version: 2.8.0(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.15)(framer-motion@10.16.0)(react-dom@18.2.0)(react@18.2.0)
   '@effect/schema':
-    specifier: 0.33.1
-    version: 0.33.1(@effect/data@0.17.2)(@effect/io@0.38.1)
+    specifier: 0.36.1
+    version: 0.36.1(@effect/data@0.18.5)(@effect/io@0.40.3)
   '@reduxjs/toolkit':
     specifier: 1.9.5
     version: 1.9.5(react-redux@8.1.2)(react@18.2.0)
@@ -24,8 +24,8 @@ dependencies:
     specifier: 1.11.9
     version: 1.11.9
   effect:
-    specifier: 2.0.0-next.25
-    version: 2.0.0-next.25(@effect/data@0.17.2)(@effect/io@0.38.1)(@effect/match@0.32.0)(@effect/stm@0.22.0)(@effect/stream@0.34.0)
+    specifier: 2.0.0-next.32
+    version: 2.0.0-next.32(@effect/data@0.18.5)(@effect/io@0.40.3)(@effect/match@0.35.2)(@effect/stm@0.24.0)(@effect/stream@0.36.0)
   immer:
     specifier: 9.0.21
     version: 9.0.21
@@ -1676,57 +1676,55 @@ packages:
       '@babel/core': 7.22.10
     dev: true
 
-  /@effect/data@0.17.2:
-    resolution: {integrity: sha512-WA6tqvdjd9B446qSucsxCNpkbrpBU1MV1oD2klpop2s9Pzy2UPVyJhivV+5/7hW6Wn4JVqCkL+Ys97nkBdmJKA==}
+  /@effect/data@0.18.5:
+    resolution: {integrity: sha512-VFPJ0prGq3eF6/eZYKVI/1IC1purdGJXEHJC1ggKynPko03upjtmeCeCsEyMiY12DzVIAuME425JndiFb7m2xw==}
     dev: false
 
-  /@effect/io@0.38.1(@effect/data@0.17.2):
-    resolution: {integrity: sha512-eVjUVwyTlNCcZQBn9WQDFVCKoLXWfUL5yzhCY76E2FhJ8YUasmZCcIvfjbVXw4RguwgskCWfvUxQFAF29m7yYA==}
+  /@effect/io@0.40.3(@effect/data@0.18.5):
+    resolution: {integrity: sha512-bnHBFq1XzXn94x2w5FcXZz3MbY7N3YrhiI2CrncJr3WcGRDc2rCYIpPupw0JQGFcJsoopTj1BNfBuBR5s4/RyA==}
     peerDependencies:
-      '@effect/data': ^0.17.1
+      '@effect/data': ^0.18.5
     dependencies:
-      '@effect/data': 0.17.2
+      '@effect/data': 0.18.5
     dev: false
 
-  /@effect/match@0.32.0(@effect/data@0.17.2)(@effect/schema@0.33.1):
-    resolution: {integrity: sha512-04QfnIgCcMnnNbGxTv2xa9/7q1c5kgpsBodqTUZ8eX86A/EdE8Czz+JkVarG00/xE+nYhQLXOXCN9Zj+dtqVkQ==}
+  /@effect/match@0.35.2(@effect/data@0.18.5):
+    resolution: {integrity: sha512-2zZhWIdejX3xqbjormykBveHZTB/DBr/u/XBj5Ln6u2ShbMvoUykgVEscQLN3CsQeHDS14Vvr1DOvH0qeMILZQ==}
     peerDependencies:
-      '@effect/data': ^0.17.1
-      '@effect/schema': ^0.33.0
+      '@effect/data': ^0.18.3
     dependencies:
-      '@effect/data': 0.17.2
-      '@effect/schema': 0.33.1(@effect/data@0.17.2)(@effect/io@0.38.1)
+      '@effect/data': 0.18.5
     dev: false
 
-  /@effect/schema@0.33.1(@effect/data@0.17.2)(@effect/io@0.38.1):
-    resolution: {integrity: sha512-h+fQInui4q3we8fegAygL0Cs5B2DD/+oC3JWthOh8eLcbKkbYM9smCD/PsHuyQ+BaeWiSP5JdvREGlP4Sg+Ysw==}
+  /@effect/schema@0.36.1(@effect/data@0.18.5)(@effect/io@0.40.3):
+    resolution: {integrity: sha512-sBF5PNe5zZ2OzqABDkhvnUPoJ78be1tI7ByDYMO9rPa8paB28Ku/1OveXJda68YO15Jb4F4Z/IuRGYiEFZNHEA==}
     peerDependencies:
-      '@effect/data': ^0.17.1
-      '@effect/io': ^0.38.0
+      '@effect/data': ^0.18.5
+      '@effect/io': ^0.40.1
     dependencies:
-      '@effect/data': 0.17.2
-      '@effect/io': 0.38.1(@effect/data@0.17.2)
+      '@effect/data': 0.18.5
+      '@effect/io': 0.40.3(@effect/data@0.18.5)
       fast-check: 3.12.0
     dev: false
 
-  /@effect/stm@0.22.0(@effect/data@0.17.2)(@effect/io@0.38.1):
-    resolution: {integrity: sha512-K+v05Iveg9h//xZbo/JekZE4mHln8QA7dpfl84L3VKQlUfiAZOiN4ABTyb41Ly+n+YywSSbeTdbOya0ccxx/rQ==}
+  /@effect/stm@0.24.0(@effect/data@0.18.5)(@effect/io@0.40.3):
+    resolution: {integrity: sha512-6L4zhy2lvkxn3jMG7dvZ4lKOmxSvaNBpkIT/ZOS6mad+B5/r8G3bKFe0C70aHwpQkxORd9LVmFr/f5MXLKZtfQ==}
     peerDependencies:
-      '@effect/data': ^0.17.1
-      '@effect/io': ^0.38.0
+      '@effect/data': ^0.18.3
+      '@effect/io': ^0.40.0
     dependencies:
-      '@effect/data': 0.17.2
-      '@effect/io': 0.38.1(@effect/data@0.17.2)
+      '@effect/data': 0.18.5
+      '@effect/io': 0.40.3(@effect/data@0.18.5)
     dev: false
 
-  /@effect/stream@0.34.0(@effect/data@0.17.2)(@effect/io@0.38.1):
-    resolution: {integrity: sha512-8eDDQ0JG+ctsstLH/Qo4ojBkcEIFtqpEsWZS6leAwY9gXVmEG54PMWXZiX6dTchgQXKmSnLkEh36leAq4piawQ==}
+  /@effect/stream@0.36.0(@effect/data@0.18.5)(@effect/io@0.40.3):
+    resolution: {integrity: sha512-vAMQ3kumsAXAiAwtuzJEOeII2bAB9rNY1NLYOqpgvXVWTUIYQf/wy4QbbcLXLuoMUUi7zS/JDVmC8jbPscfLNg==}
     peerDependencies:
-      '@effect/data': ^0.17.1
-      '@effect/io': ^0.38.0
+      '@effect/data': ^0.18.3
+      '@effect/io': ^0.40.0
     dependencies:
-      '@effect/data': 0.17.2
-      '@effect/io': 0.38.1(@effect/data@0.17.2)
+      '@effect/data': 0.18.5
+      '@effect/io': 0.40.3(@effect/data@0.18.5)
     dev: false
 
   /@emotion/babel-plugin@11.11.0:
@@ -3531,20 +3529,20 @@ packages:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
     dev: true
 
-  /effect@2.0.0-next.25(@effect/data@0.17.2)(@effect/io@0.38.1)(@effect/match@0.32.0)(@effect/stm@0.22.0)(@effect/stream@0.34.0):
-    resolution: {integrity: sha512-fnDdmTh769T2l7sKjwV1tODYhmTbFfTA8sXh9qncW6/Fr0qbXFF/bbG6GIlL3xv6PSWsCZZqdXZ6doJZsr1MWQ==}
+  /effect@2.0.0-next.32(@effect/data@0.18.5)(@effect/io@0.40.3)(@effect/match@0.35.2)(@effect/stm@0.24.0)(@effect/stream@0.36.0):
+    resolution: {integrity: sha512-WSh1x3ajpKcinJrPLdlY+8/SSp2KZUOQywQfefRDWDo0aaLgNRbOFS1onDJdjtC0qDbay2f30UiTH7XtZm8+1A==}
     peerDependencies:
-      '@effect/data': ^0.17.1
-      '@effect/io': ^0.38.0
-      '@effect/match': ^0.32.0
-      '@effect/stm': ^0.22.0
-      '@effect/stream': ^0.34.0
+      '@effect/data': ^0.18.5
+      '@effect/io': ^0.40.1
+      '@effect/match': ^0.35.2
+      '@effect/stm': ^0.24.0
+      '@effect/stream': ^0.36.0
     dependencies:
-      '@effect/data': 0.17.2
-      '@effect/io': 0.38.1(@effect/data@0.17.2)
-      '@effect/match': 0.32.0(@effect/data@0.17.2)(@effect/schema@0.33.1)
-      '@effect/stm': 0.22.0(@effect/data@0.17.2)(@effect/io@0.38.1)
-      '@effect/stream': 0.34.0(@effect/data@0.17.2)(@effect/io@0.38.1)
+      '@effect/data': 0.18.5
+      '@effect/io': 0.40.3(@effect/data@0.18.5)
+      '@effect/match': 0.35.2(@effect/data@0.18.5)
+      '@effect/stm': 0.24.0(@effect/data@0.18.5)(@effect/io@0.40.3)
+      '@effect/stream': 0.36.0(@effect/data@0.18.5)(@effect/io@0.40.3)
     dev: false
 
   /electron-to-chromium@1.4.494:

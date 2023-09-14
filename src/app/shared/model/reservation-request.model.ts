@@ -23,4 +23,4 @@ export const ReservationRequest: S.Schema<ReservationRequestEncoded, Reservation
     })
   )
 
-export type ReservationRequest = S.To<typeof ReservationRequest>
+export type ReservationRequest = S.Schema.To<typeof ReservationRequest>

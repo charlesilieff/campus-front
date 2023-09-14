@@ -12,7 +12,7 @@ export const Authorities = S.literal(
   'ROLE_EMPLOYEE'
 )
 
-export type Authorities = S.To<typeof Authorities>
+export type Authorities = S.Schema.To<typeof Authorities>
 
 // {firstName : undefined,id: 1}
 // {firstName : "",id: 1}
@@ -45,5 +45,5 @@ export const User = S.struct({
   receiveMailReservation: S.optional(S.boolean).toOption()
 })
 
-export type UserEncoded = S.From<typeof User>
-export type User = S.To<typeof User>
+export type UserEncoded = S.Schema.From<typeof User>
+export type User = S.Schema.To<typeof User>

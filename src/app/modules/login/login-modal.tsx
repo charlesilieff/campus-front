@@ -28,8 +28,8 @@ const UserForm = S.struct({
   rememberMe: S.boolean
 })
 
-type UserForm = S.To<typeof UserForm>
-type UserFormEncoded = S.From<typeof UserForm>
+type UserForm = S.Schema.To<typeof UserForm>
+type UserFormEncoded = S.Schema.From<typeof UserForm>
 
 export interface ILoginModalProps {
   showModal: boolean

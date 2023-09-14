@@ -87,4 +87,4 @@ export const Reservation: S.Schema<ReservationEncoded, ReservationDecoded> = S.l
   })
 )
 
-export type Reservation = S.To<typeof Reservation>
+export type Reservation = S.Schema.To<typeof Reservation>

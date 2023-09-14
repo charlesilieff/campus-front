@@ -31,4 +31,4 @@ export const Customer: S.Schema<CustomerEncoded, CustomerDecoded> = S.struct({
   comment: S.optional(S.string).toOption()
 })
 
-export type Customer = S.To<typeof Customer>
+export type Customer = S.Schema.To<typeof Customer>

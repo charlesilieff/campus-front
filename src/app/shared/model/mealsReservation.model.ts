@@ -34,4 +34,4 @@ export const MealsOnlyUserReservation = S.struct({
   isSpecialDiet: S.boolean
 })
 
-export type MealsOnlyUserReservation = S.To<typeof MealsOnlyUserReservation>
+export type MealsOnlyUserReservation = S.Schema.To<typeof MealsOnlyUserReservation>

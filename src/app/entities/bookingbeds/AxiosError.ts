@@ -7,4 +7,4 @@ export const AxiosError = S.struct({
   response: S.struct({ data: S.struct({ raison: S.string }), status: S.number })
 })
 
-export type AxiosError = S.To<typeof AxiosError>
+export type AxiosError = S.Schema.To<typeof AxiosError>

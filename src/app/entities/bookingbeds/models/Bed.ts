@@ -11,5 +11,5 @@ export const BedWithStatus = S.struct({
 
 export const Bed = pipe(BedWithStatus, S.omit('booked'))
 
-export type BedWithStatusEncoded = S.From<typeof BedWithStatus>
-export type BedWithStatus = S.To<typeof BedWithStatus>
+export type BedWithStatusEncoded = S.Schema.From<typeof BedWithStatus>
+export type BedWithStatus = S.Schema.To<typeof BedWithStatus>

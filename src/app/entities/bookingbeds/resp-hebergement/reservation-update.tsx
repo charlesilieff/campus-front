@@ -60,7 +60,7 @@ export const DatesAndMeals = pipe(
   })
 )
 
-export type DatesAndMeals = S.To<typeof DatesAndMeals>
+export type DatesAndMeals = S.Schema.To<typeof DatesAndMeals>
 
 export type BedIds = ReadonlyArray<{ id: number }>
 

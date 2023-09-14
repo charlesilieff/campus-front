@@ -10,5 +10,5 @@ export const RoomWithBedsWithStatus = S.struct({
   bedroomKind: S.optional(BedroomKind).toOption()
 })
 
-export type RoomWithBedsEncodedWithStatus = S.From<typeof RoomWithBedsWithStatus>
-export type RoomWithBedsWithStatus = S.To<typeof RoomWithBedsWithStatus>
+export type RoomWithBedsEncodedWithStatus = S.Schema.From<typeof RoomWithBedsWithStatus>
+export type RoomWithBedsWithStatus = S.Schema.To<typeof RoomWithBedsWithStatus>

@@ -57,7 +57,7 @@ export const ReservationSchema = S.struct({
   commentMeals: S.optional(S.string).toOption()
 })
 
-export type ReservationSchema = S.To<typeof ReservationSchema>
+export type ReservationSchema = S.Schema.To<typeof ReservationSchema>
 
 export const ReservationSchemaWithBedIds = pipe(
   S.extend(
@@ -68,11 +68,13 @@ export const ReservationSchemaWithBedIds = pipe(
   )
 )
 
-export type ReservationSchemaWithBedIds = S.To<typeof ReservationSchemaWithBedIds>
+export type ReservationSchemaWithBedIds = S.Schema.To<typeof ReservationSchemaWithBedIds>
 
 export const ReservationCreateSchemaWithBedIds = pipe(
   ReservationSchemaWithBedIds,
   S.omit('id')
 )
 
-export type ReservationCreateSchemaWithBedIds = S.To<typeof ReservationCreateSchemaWithBedIds>
+export type ReservationCreateSchemaWithBedIds = S.Schema.To<
+  typeof ReservationCreateSchemaWithBedIds
+>

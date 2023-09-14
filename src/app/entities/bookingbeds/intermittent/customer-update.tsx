@@ -29,7 +29,7 @@ export const CustomerForm = S.struct({
   comment: S.optional(S.string).toOption()
 })
 
-export type CustomerForm = S.To<typeof CustomerForm>
+export type CustomerForm = S.Schema.To<typeof CustomerForm>
 
 interface CustomerUpdateProps {
   setCustomer: (customer: O.Option<CustomerForm>) => void

@@ -31,7 +31,7 @@ const UserForm = S.struct({
   receiveMailReservation: S.boolean
 })
 
-type UserForm = S.To<typeof UserForm>
+type UserForm = S.Schema.To<typeof UserForm>
 
 export const Settings = () => {
   const toast = useToast()

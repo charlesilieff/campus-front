@@ -48,7 +48,7 @@ const CustomerAndPersonNumberSchema = pipe(
   })
 )
 
-export type CustomerAndPersonNumberSchema = S.To<typeof CustomerAndPersonNumberSchema>
+export type CustomerAndPersonNumberSchema = S.Schema.To<typeof CustomerAndPersonNumberSchema>
 interface CustomerUpdateProps {
   setCustomer: (customer: O.Option<CustomerAndPersonNumberSchema>) => void
   setUpdateCustomer: (updateCustomer: boolean) => void

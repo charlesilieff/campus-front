@@ -41,4 +41,4 @@ export const PlaceWithRooms = pipe(
   })
 )
 
-export type PlaceWithRooms = S.To<typeof PlaceWithRooms>
+export type PlaceWithRooms = S.Schema.To<typeof PlaceWithRooms>

@@ -55,13 +55,13 @@ const AuthParams = S.struct({
   password: S.string,
   rememberMe: S.optional(S.boolean).toOption()
 })
-type AuthParams = S.To<typeof AuthParams>
+type AuthParams = S.Schema.To<typeof AuthParams>
 
 const IdToken = S.struct({
   // eslint-disable-next-line @typescript-eslint/naming-convention
   id_token: S.string
 })
-type IdToken = S.To<typeof IdToken>
+type IdToken = S.Schema.To<typeof IdToken>
 
 export const authenticate = createAsyncThunk(
   'authentication/login',
