@@ -25,8 +25,8 @@ import { FaSave } from 'react-icons/fa'
 import { reset, saveAccountSettings } from './settings.reducer'
 
 const UserForm = S.struct({
-  firstName: S.string,
-  lastName: S.string,
+  firstname: S.string,
+  lastname: S.string,
   email: S.string,
   receiveMailReservation: S.boolean
 })
@@ -76,8 +76,8 @@ export const Settings = () => {
       account,
       O.map(a => ({
         ...a,
-        firstName: O.some(values.firstName),
-        lastName: O.some(values.lastName),
+        firstname: O.some(values.firstname),
+        lastname: O.some(values.lastname),
         email: values.email,
         receiveMailReservation: O.some(values.receiveMailReservation)
       })),
@@ -94,8 +94,8 @@ export const Settings = () => {
       O.map(a =>
         resetForm({
           email: a.email,
-          firstName: a.firstName !== undefined ? O.getOrElse(a.firstName, () => '') : '',
-          lastName: a.lastName !== undefined ? O.getOrElse(a.lastName, () => '') : '',
+          firstname: a.firstname !== undefined ? O.getOrElse(a.firstname, () => '') : '',
+          lastname: a.lastname !== undefined ? O.getOrElse(a.lastname, () => '') : '',
           receiveMailReservation: O.getOrElse(a.receiveMailReservation, () => true)
         })
       )
@@ -110,15 +110,15 @@ export const Settings = () => {
         onSubmit={handleSubmit(handleValidSubmit)}
       >
         <VStack spacing={4}>
-          <FormControl isInvalid={errors.firstName !== undefined}>
-            <FormLabel htmlFor="firstName" fontWeight={'bold'}>
+          <FormControl isInvalid={errors.firstname !== undefined}>
+            <FormLabel htmlFor="firstname" fontWeight={'bold'}>
               {'Prénom'}
             </FormLabel>
             <Input
-              id="firstName"
+              id="firstname"
               type="text"
               placeholder="Prénom"
-              {...register('firstName', {
+              {...register('firstname', {
                 maxLength: {
                   value: 50,
                   message: 'Ce champ doit faire moins de 50 caractères.'
@@ -127,18 +127,18 @@ export const Settings = () => {
             />
 
             <FormErrorMessage>
-              {errors.lastName && errors.lastName.message}
+              {errors.lastname && errors.lastname.message}
             </FormErrorMessage>
           </FormControl>
-          <FormControl isInvalid={errors.lastName !== undefined}>
-            <FormLabel htmlFor="lastName" fontWeight={'bold'}>
+          <FormControl isInvalid={errors.lastname !== undefined}>
+            <FormLabel htmlFor="lastname" fontWeight={'bold'}>
               {'Nom'}
             </FormLabel>
             <Input
-              id="lastName"
+              id="lastname"
               type="text"
               placeholder="Nom"
-              {...register('lastName', {
+              {...register('lastname', {
                 maxLength: {
                   value: 50,
                   message: 'Ce champ doit faire moins de 50 caractères.'
@@ -147,7 +147,7 @@ export const Settings = () => {
             />
 
             <FormErrorMessage>
-              {errors.lastName && errors.lastName.message}
+              {errors.lastname && errors.lastname.message}
             </FormErrorMessage>
           </FormControl>
 

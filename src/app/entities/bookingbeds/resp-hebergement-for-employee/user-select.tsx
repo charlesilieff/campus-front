@@ -70,8 +70,8 @@ export const UserSelect = (
       A.findFirst(user => O.contains(user.id, formUser.id)),
       O.map(x => ({
         age: O.none(),
-        firstname: x.firstName !== undefined ? x.firstName : O.none(),
-        lastname: x.lastName !== undefined ? x.lastName : O.none(),
+        firstname: x.firstname !== undefined ? x.firstname : O.none(),
+        lastname: x.lastname !== undefined ? x.lastname : O.none(),
         comment: O.none(),
         email: x.email,
         id: O.none(),
@@ -85,8 +85,8 @@ export const UserSelect = (
         A.findFirst(user => O.contains(user.id, Number(formUser.id))),
         O.flatMap(u =>
           O.all({
-            firstName: u.firstName !== undefined ? u.firstName : O.none(),
-            lastName: u.lastName !== undefined ? u.lastName : O.none()
+            firstname: u.firstname !== undefined ? u.firstname : O.none(),
+            lastname: u.lastname !== undefined ? u.lastname : O.none()
           })
         ),
         O.isSome
@@ -134,10 +134,10 @@ export const UserSelect = (
                     {users ?
                       users.map(user => (
                         <option value={O.getOrUndefined(user.id)} key={O.getOrNull(user.id)}>
-                          {user.email} {user.firstName !== undefined && O.isSome(user.firstName) ?
-                            `; Prénom : ${user.firstName.value}` :
-                            null} {user.lastName !== undefined && O.isSome(user.lastName) ?
-                            `; Nom : ${user.lastName.value}` :
+                          {user.email} {user.firstname !== undefined && O.isSome(user.firstname) ?
+                            `; Prénom : ${user.firstname.value}` :
+                            null} {user.lastname !== undefined && O.isSome(user.lastname) ?
+                            `; Nom : ${user.lastname.value}` :
                             null}
                         </option>
                       )) :

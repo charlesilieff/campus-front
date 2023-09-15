@@ -119,8 +119,8 @@ export const OneBedReservationUpdate = (): JSX.Element => {
     } else if (O.isSome(account)) {
       setCustomer(O.some({
         id: O.none(),
-        firstname: account.value.firstName !== undefined ? account.value.firstName : O.none(),
-        lastname: account.value.lastName !== undefined ? account.value.lastName : O.none(),
+        firstname: account.value.firstname !== undefined ? account.value.firstname : O.none(),
+        lastname: account.value.lastname !== undefined ? account.value.lastname : O.none(),
         email: account.value.email,
         phoneNumber: O.none(),
         age: O.none(),
