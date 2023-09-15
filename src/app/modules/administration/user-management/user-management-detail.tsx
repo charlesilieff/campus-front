@@ -38,9 +38,9 @@ export const UserManagementDetail = () => {
                   <Badge backgroundColor="red">Deactivated</Badge>}
               </Box>
               <Heading size={'md'}>First Name</Heading>
-              <dd>{user.value.firstName !== undefined ? O.getOrNull(user.value.firstName) : ''}</dd>
+              <dd>{user.value.firstname !== undefined ? O.getOrNull(user.value.firstname) : ''}</dd>
               <Heading size={'md'}>Last Name</Heading>
-              <dd>{user.value.lastName !== undefined ? O.getOrNull(user.value.lastName) : ''}</dd>
+              <dd>{user.value.lastname !== undefined ? O.getOrNull(user.value.lastname) : ''}</dd>
               <Heading size={'md'}>Email</Heading>
               <dd>{user.value.email}</dd>
               <Heading size={'md'}>Created By</Heading>
