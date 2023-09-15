@@ -90,7 +90,7 @@ async dispatch => {
   const result = await dispatch(authenticate({ username, password, rememberMe }))
 
   const response = result.payload as AxiosResponse<IdToken>
-  console.log('response', result)
+
   if (response) {
     if (rememberMe) {
       Storage.local.set(AUTH_TOKEN_KEY, response.data.id_token)
