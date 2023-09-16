@@ -1,3 +1,4 @@
+import * as ParseResult from '@effect/schema/ParseResult'
 import * as S from '@effect/schema/Schema'
 import { Option as O } from 'effect'
 
@@ -19,16 +20,18 @@ export type Authorities = S.Schema.To<typeof Authorities>
 // {id: 1}
 // => {id: 1, firstName: O.none()}
 
-export const NonEmptyString = S.transform(
+export const NonEmptyString = S.transformOrFail(
   S.union(S.string, S.undefined),
   S.option(S.string),
   s => {
     console.log('NonEmptyString', s)
-    return s === undefined || s.length === 0 ? O.none() : O.some(s)
+    return s === undefined || s.length === 0 ?
+      ParseResult.success(O.none()) :
+      ParseResult.success(O.some(s))
   },
   b => {
     console.log('NonEmptyString encode', b)
-    return O.isSome(b) ? undefined : b
+    return ParseResult.success(b._tag === 'None' ? undefined : b)
   }
 )
 
