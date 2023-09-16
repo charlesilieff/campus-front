@@ -1,4 +1,3 @@
-import * as ParseResult from '@effect/schema/ParseResult'
 import * as S from '@effect/schema/Schema'
 import { Option as O } from 'effect'
 
