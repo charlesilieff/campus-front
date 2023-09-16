@@ -19,20 +19,25 @@ export type Authorities = S.Schema.To<typeof Authorities>
 // {id: 1}
 // => {id: 1, firstName: O.none()}
 
-export const NonEmptyString = S.optional(S.transform(
+export const NonEmptyString = S.transform(
   S.union(S.string, S.undefined),
   S.option(S.string),
-  s => s === undefined || s.length === 0 ? O.none() : O.some(s),
-  // define a function that converts a Date into a string
-  b => b._tag === 'None' ? undefined : b.value
-))
+  s => {
+    console.log('NonEmptyString', s)
+    return s === undefined || s.length === 0 ? O.none() : O.some(s)
+  },
+  b => {
+    console.log('NonEmptyString encode', b)
+    return O.isSome(b) ? undefined : b
+  }
+)
 
 export const User = S.struct({
   createdDate: S.optional(FormatLocalDateTime).toOption(),
   id: S.optional(S.number).toOption(),
   login: S.string,
-  firstName: NonEmptyString,
-  lastName: NonEmptyString,
+  firstName: S.optional(S.string).toOption(),
+  lastName: S.optional(S.string).toOption(),
   email: S.string,
   imageUrl: S.optional(S.string).toOption(),
   activated: S.boolean,

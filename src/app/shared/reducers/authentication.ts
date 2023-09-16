@@ -8,6 +8,7 @@ import axios from 'axios'
 import { Effect as T } from 'effect'
 import { Option as O } from 'effect'
 import { pipe } from 'effect'
+import { Either as E } from 'effect'
 
 import { User } from '../model/user.model'
 import { Storage } from '../util/storage-util'
@@ -42,7 +43,7 @@ export const getAccount = createAsyncThunk(
   async () =>
     pipe(
       T.promise(() => axios.get('api/account')),
-      T.map(d => S.parseOption(User)(d.data)),
+      T.map(d => S.parseOption(User)({ ...d.data })),
       T.runPromise
     ),
   {
@@ -172,6 +173,7 @@ export const AuthenticationSlice = createSlice({
         errorMessage: O.fromNullable(action.error.message)
       }))
       .addCase(getAccount.fulfilled, (state, action) => {
+        console.log('getAccount.fulfilled', action.payload)
         const isAuthenticated = pipe(
           action.payload,
           O.map(a => a.activated),
