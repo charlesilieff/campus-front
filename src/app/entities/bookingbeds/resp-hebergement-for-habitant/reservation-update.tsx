@@ -184,8 +184,8 @@ export const ReservationHabitantUpdate = () => {
           O.flatMap(customer, c =>
             O.all({
               age: O.some(c.age),
-              firstname: c.firstname,
-              lastname: c.lastname,
+              firstName: c.firstName,
+              lastName: c.lastName,
               id: O.some(c.id),
               email: O.some(c.email),
               phoneNumber: O.some(c.phoneNumber),
@@ -278,8 +278,8 @@ export const ReservationHabitantUpdate = () => {
               O.flatMap(customer, c =>
                 O.all({
                   age: O.some(c.age),
-                  firstname: c.firstname,
-                  lastname: c.lastname,
+                  firstName: c.firstName,
+                  lastName: c.lastName,
                   id: O.some(c.id),
                   email: O.some(c.email),
                   phoneNumber: O.some(c.phoneNumber),
@@ -298,8 +298,8 @@ export const ReservationHabitantUpdate = () => {
                       bedId.value,
                       {
                         age: customer.age,
-                        firstname: customer.firstname,
-                        lastname: customer.lastname,
+                        firstName: customer.firstName,
+                        lastName: customer.lastName,
                         id: customer.id,
                         email: customer.email,
                         phoneNumber: customer.phoneNumber,

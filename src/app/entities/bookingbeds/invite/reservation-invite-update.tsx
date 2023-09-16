@@ -63,8 +63,8 @@
 
 // export interface Customer {
 //   id: number
-//   firstname: string
-//   lastname: string
+//   firstName: string
+//   lastName: string
 //   email: string
 //   phoneNumber: O.Option<string>
 //   age: O.Option<number>
@@ -106,8 +106,8 @@
 //   // @ts-expect-error TODO: fix this
 //   customer: {
 //     id: customer.id,
-//     firstname: customer.firstname,
-//     lastname: customer.lastname,
+//     firstName: customer.firstName,
+//     lastName: customer.lastName,
 //     email: customer.email,
 //     phoneNumber: O.getOrUndefined(customer.phoneNumber),
 //     age: O.getOrUndefined(customer.age)
@@ -145,8 +145,8 @@
 //   // @ts-expect-error TODO: fix this
 //   customer: {
 //     id: customer.id,
-//     firstname: customer.firstname,
-//     lastname: customer.lastname,
+//     firstName: customer.firstName,
+//     lastName: customer.lastName,
 //     email: customer.email,
 //     phoneNumber: O.getOrUndefined(customer.phoneNumber),
 //     age: O.getOrUndefined(customer.age)
@@ -315,8 +315,8 @@
 //       // @ts-expect-error TODO: fix this
 //       setCustomer(O.some({
 //         id: backendCustomer?.id,
-//         firstname: backendCustomer?.firstname,
-//         lastname: backendCustomer?.lastname,
+//         firstName: backendCustomer?.firstName,
+//         lastName: backendCustomer?.lastName,
 //         email: backendCustomer?.email,
 //         phoneNumber: O.some(backendCustomer?.phoneNumber),
 //         age: O.some(backendCustomer?.age)

@@ -70,10 +70,10 @@ export const ReservationDetail = () => {
                   <HStack>
                     <Text fontWeight={'bold'}>Prénom:</Text>
 
-                    <Text>{customerEntity.value.firstname}</Text>
+                    <Text>{customerEntity.value.firstName}</Text>
                     <Text fontWeight={'bold'}>Nom:</Text>
 
-                    <Text>{customerEntity.value.lastname}</Text>
+                    <Text>{customerEntity.value.lastName}</Text>
                   </HStack>
                   <HStack>
                     <Text fontWeight={'bold'}>Age:</Text>

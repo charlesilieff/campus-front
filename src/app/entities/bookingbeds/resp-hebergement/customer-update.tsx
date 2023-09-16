@@ -21,8 +21,8 @@ import { BsPencil } from 'react-icons/bs'
 const CustomerAndPersonNumberSchema = pipe(
   S.struct({
     id: S.optional(S.number).toOption(),
-    firstname: S.string,
-    lastname: S.string,
+    firstName: S.string,
+    lastName: S.string,
     email: S.string,
     phoneNumber: S.optional(S.string).toOption(),
     age: S.optional(S.number).toOption(),
@@ -108,39 +108,39 @@ export const CustomerUpdate = (
           >
             <VStack spacing={10} alignItems={'left'}>
               <HStack spacing={12} minW={600} my={4}>
-                <FormControl isRequired isInvalid={errors.firstname !== undefined}>
-                  <FormLabel htmlFor="firstname" fontWeight={'bold'}>
+                <FormControl isRequired isInvalid={errors.firstName !== undefined}>
+                  <FormLabel htmlFor="firstName" fontWeight={'bold'}>
                     {'Prénom'}
                   </FormLabel>
                   <Input
-                    id="firstname"
+                    id="firstName"
                     type="text"
                     placeholder="Prénom"
-                    {...register('firstname')}
+                    {...register('firstName')}
                   />
 
                   <FormErrorMessage>
-                    {errors.firstname && errors.firstname.message}
+                    {errors.firstName && errors.firstName.message}
                   </FormErrorMessage>
                 </FormControl>
-                <FormControl isRequired isInvalid={errors.lastname !== undefined}>
-                  <FormLabel htmlFor="lastname" fontWeight={'bold'}>
+                <FormControl isRequired isInvalid={errors.lastName !== undefined}>
+                  <FormLabel htmlFor="lastName" fontWeight={'bold'}>
                     {'Nom'}
                   </FormLabel>
                   <Input
-                    id="lastname"
+                    id="lastName"
                     type="text"
                     placeholder="Nom"
-                    {...register('lastname')}
+                    {...register('lastName')}
                   />
 
                   <FormErrorMessage>
-                    {errors.lastname && errors.lastname.message}
+                    {errors.lastName && errors.lastName.message}
                   </FormErrorMessage>
                 </FormControl>
               </HStack>
               <HStack spacing={12} minW={800} my={4}>
-                <FormControl isRequired isInvalid={errors.firstname !== undefined}>
+                <FormControl isRequired isInvalid={errors.firstName !== undefined}>
                   <FormLabel htmlFor="email" fontWeight={'bold'}>
                     {'Email'}
                   </FormLabel>

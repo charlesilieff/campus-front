@@ -109,8 +109,8 @@ export const OneBedReservationUpdate = (): JSX.Element => {
     if (O.isSome(backendCustomer)) {
       setCustomer(O.some({
         id: backendCustomer.value.id,
-        firstname: O.some(backendCustomer.value.firstname),
-        lastname: O.some(backendCustomer.value.lastname),
+        firstName: O.some(backendCustomer.value.firstName),
+        lastName: O.some(backendCustomer.value.lastName),
         email: backendCustomer.value.email,
         phoneNumber: backendCustomer.value.phoneNumber,
         age: backendCustomer.value.age,
@@ -119,8 +119,8 @@ export const OneBedReservationUpdate = (): JSX.Element => {
     } else if (O.isSome(account)) {
       setCustomer(O.some({
         id: O.none(),
-        firstname: account.value.firstname !== undefined ? account.value.firstname : O.none(),
-        lastname: account.value.lastname !== undefined ? account.value.lastname : O.none(),
+        firstName: account.value.firstName !== undefined ? account.value.firstName : O.none(),
+        lastName: account.value.lastName !== undefined ? account.value.lastName : O.none(),
         email: account.value.email,
         phoneNumber: O.none(),
         age: O.none(),
@@ -201,8 +201,8 @@ export const OneBedReservationUpdate = (): JSX.Element => {
         O.flatMap(customer, c =>
           O.all({
             age: O.some(c.age),
-            firstname: c.firstname,
-            lastname: c.lastname,
+            firstName: c.firstName,
+            lastName: c.lastName,
             id: O.some(c.id),
             email: O.some(c.email),
             phoneNumber: O.some(c.phoneNumber),
@@ -282,8 +282,8 @@ export const OneBedReservationUpdate = (): JSX.Element => {
           customer,
           O.flatMap(c =>
             O.all({
-              firstname: c.firstname,
-              lastname: c.lastname,
+              firstName: c.firstName,
+              lastName: c.lastName,
               age: O.some(c.age),
               phoneNumber: O.some(c.phoneNumber),
               email: O.some(c.email),
@@ -334,8 +334,8 @@ export const OneBedReservationUpdate = (): JSX.Element => {
               customer,
               O.flatMap(c =>
                 O.all({
-                  firstname: c.firstname,
-                  lastname: c.lastname,
+                  firstName: c.firstName,
+                  lastName: c.lastName,
                   age: O.some(c.age),
                   phoneNumber: O.some(c.phoneNumber),
                   email: O.some(c.email),

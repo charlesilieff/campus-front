@@ -57,8 +57,8 @@ const createReservationRequest = (
   customer: {
     comment: customer.comment,
     id: customer.id,
-    firstname: customer.firstname,
-    lastname: customer.lastname,
+    firstName: customer.firstName,
+    lastName: customer.lastName,
     email: customer.email,
     phoneNumber: customer.phoneNumber,
     age: customer.age
@@ -151,9 +151,9 @@ export const ReservationRequestUpdate = (): JSX.Element => {
           setCustomer(O.some({
             age: reservationRequest.customer.age,
             email: reservationRequest.customer.email,
-            firstname: reservationRequest.customer.firstname,
+            firstName: reservationRequest.customer.firstName,
             id: reservationRequest.customer.id,
-            lastname: reservationRequest.customer.lastname,
+            lastName: reservationRequest.customer.lastName,
             phoneNumber: reservationRequest.customer.phoneNumber,
             comment: reservationRequest.customer.comment
           }))

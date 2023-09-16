@@ -89,8 +89,8 @@ const createReservationWithBedIds = (
 
   customer: {
     id: customer.id,
-    firstname: customer.firstname,
-    lastname: customer.lastname,
+    firstName: customer.firstName,
+    lastName: customer.lastName,
     email: customer.email,
     phoneNumber: customer.phoneNumber,
     age: customer.age,
@@ -147,9 +147,9 @@ export const ReservationUpdate = (): JSX.Element => {
             setCustomer(O.map(customer.id, id => ({
               id: O.some(id),
 
-              firstname: customer.firstname,
+              firstName: customer.firstName,
 
-              lastname: customer.lastname,
+              lastName: customer.lastName,
 
               email: customer.email,
 

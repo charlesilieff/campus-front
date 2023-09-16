@@ -57,15 +57,15 @@ export const ReservationModal = ({ reservation, isRespHebergement }: IProps) => 
         py={4}
       >
         <Stack minW={'80%'}>
-          <Text fontSize={14} isTruncated>{reservation.customer.firstname}</Text>
-          <Text fontSize={14} isTruncated>{reservation.customer.lastname}</Text>
+          <Text fontSize={14} isTruncated>{reservation.customer.firstName}</Text>
+          <Text fontSize={14} isTruncated>{reservation.customer.lastName}</Text>
         </Stack>
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader borderBottom={'solid'}>
-            {reservation.customer.lastname} {reservation.customer.firstname}
+            {reservation.customer.lastName} {reservation.customer.firstName}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>

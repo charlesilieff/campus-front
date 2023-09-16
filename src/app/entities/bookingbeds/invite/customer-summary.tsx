@@ -23,8 +23,8 @@
 //     customer: {
 //       age,
 //       email,
-//       firstname,
-//       lastname,
+//       firstName,
+//       lastName,
 //       phoneNumber
 //     },
 //     setUpdateCustomer
@@ -48,9 +48,9 @@
 
 //       <Stack direction={['column', 'row']} alignItems={'flex-start'} my={4}>
 //         <Text fontWeight={'bold'}>{'Nom :'}</Text>
-//         <Text>{firstname}</Text>
+//         <Text>{firstName}</Text>
 //         <Text pl={screen.availWidth > 400 ? 20 : 0} fontWeight={'bold'}>{'Prénom :'}</Text>
-//         <Text>{lastname}</Text>
+//         <Text>{lastName}</Text>
 //       </Stack>
 //       <VStack alignItems={'flex-start'} my={4}>
 //         <Stack direction={['column', 'row']} alignItems={'flex-start'}>

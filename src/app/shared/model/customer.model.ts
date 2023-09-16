@@ -3,8 +3,8 @@ import type { Option as O } from 'effect'
 
 export interface CustomerEncoded {
   id?: number
-  firstname: string
-  lastname: string
+  firstName: string
+  lastName: string
   age?: number
   phoneNumber?: string
   email: string
@@ -13,8 +13,8 @@ export interface CustomerEncoded {
 
 export interface CustomerDecoded {
   id: O.Option<number>
-  firstname: string
-  lastname: string
+  firstName: string
+  lastName: string
   age: O.Option<number>
   phoneNumber: O.Option<string>
   email: string
@@ -23,8 +23,8 @@ export interface CustomerDecoded {
 
 export const Customer: S.Schema<CustomerEncoded, CustomerDecoded> = S.struct({
   id: S.optional(S.number).toOption(),
-  firstname: S.string,
-  lastname: S.string,
+  firstName: S.string,
+  lastName: S.string,
   age: S.optional(S.number).toOption(),
   phoneNumber: S.optional(S.string).toOption(),
   email: S.string,

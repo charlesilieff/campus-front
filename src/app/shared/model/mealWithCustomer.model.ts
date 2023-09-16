@@ -7,8 +7,8 @@ export interface IMealWithCustomer {
   commentMeals?: string | null // todo à garder pour detail repas speciaux
   specialLunch?: number
   specialDinner?: number
-  firstname?: string | null
-  lastname?: string | null
+  firstName?: string | null
+  lastName?: string | null
 }
 
 export const defaultValue: Readonly<IMealWithCustomer> = {}

@@ -6,8 +6,8 @@ import { FormatLocalDate } from './formatLocalDate'
 
 // export interface BookingBeds {
 //   id?: number
-//   firstname?: string
-//   lastname?: string
+//   firstName?: string
+//   lastName?: string
 //   age?: number
 //   phoneNumber?: string
 //   email?: string

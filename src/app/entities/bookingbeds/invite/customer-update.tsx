@@ -26,8 +26,8 @@
 
 // export interface FormCustomer {
 //   id: number
-//   firstname: string
-//   lastname: string
+//   firstName: string
+//   lastName: string
 //   email: string
 //   phoneNumber?: string
 //   age?: number
@@ -90,50 +90,50 @@
 //           >
 //             <VStack alignItems={'flex-start'}>
 //               <Stack minW={600} my={4} direction={['column', 'row']}>
-//                 <FormControl isRequired isInvalid={errors.firstname !== undefined}>
-//                   <FormLabel htmlFor="firstname" fontWeight={'bold'}>
+//                 <FormControl isRequired isInvalid={errors.firstName !== undefined}>
+//                   <FormLabel htmlFor="firstName" fontWeight={'bold'}>
 //                     {'Prénom'}
 //                   </FormLabel>
 //                   <Input
 //                     width="auto"
-//                     id="firstname"
+//                     id="firstName"
 //                     type="text"
 //                     placeholder="Prénom"
-//                     {...register('firstname', {
+//                     {...register('firstName', {
 //                       required: 'Le prénom est obligatoire'
 //                     })}
 //                   />
 //                   <FormErrorMessage>
-//                     {errors.firstname && errors.firstname.message}
+//                     {errors.firstName && errors.firstName.message}
 //                   </FormErrorMessage>
 //                 </FormControl>
 //                 <FormControl
 //                   isRequired
-//                   isInvalid={errors.lastname !== undefined}
+//                   isInvalid={errors.lastName !== undefined}
 //                   // pl={screen.availWidth > 400 ? 20 : 0}
 //                 >
-//                   <FormLabel htmlFor="lastname" fontWeight={'bold'}>
+//                   <FormLabel htmlFor="lastName" fontWeight={'bold'}>
 //                     {'Nom'}
 //                   </FormLabel>
 //                   <Input
 //                     width="auto"
-//                     id="lastname"
+//                     id="lastName"
 //                     type="text"
 //                     placeholder="Nom"
-//                     {...register('lastname', {
+//                     {...register('lastName', {
 //                       required: 'Le prénom est obligatoire'
 //                     })}
 //                   />
 
 //                   <FormErrorMessage>
-//                     {errors.lastname && errors.lastname.message}
+//                     {errors.lastName && errors.lastName.message}
 //                   </FormErrorMessage>
 //                 </FormControl>
 //               </Stack>
 //               <Stack minW={600} my={4} direction={['column', 'row']}>
 //                 <FormControl
 //                   isRequired
-//                   isInvalid={errors.firstname !== undefined}
+//                   isInvalid={errors.firstName !== undefined}
 //                   pr={20}
 //                 >
 //                   <FormLabel htmlFor="email" fontWeight={'bold'}>

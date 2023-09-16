@@ -107,7 +107,7 @@ export const ReservationsListEmployee = () => {
                     {reservation.customer ?
                       (
                         <Link to={`/customer/${reservation.customer.id}`}>
-                          {reservation.customer.firstname} {reservation.customer.lastname}
+                          {reservation.customer.firstName} {reservation.customer.lastName}
                         </Link>
                       ) :
                       ''}

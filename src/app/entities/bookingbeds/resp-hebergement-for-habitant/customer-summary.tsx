@@ -22,8 +22,8 @@ export const CustomerSummary = (
     customer: {
       age,
       email,
-      firstname,
-      lastname,
+      firstName,
+      lastName,
       phoneNumber
     },
     setUpdateCustomer
@@ -47,11 +47,11 @@ export const CustomerSummary = (
       <Stack direction={{ base: 'column', md: 'row' }} alignItems={'flex-start'} my={4}>
         <HStack>
           <Text fontWeight={'bold'}>{'Nom :'}</Text>
-          <Text>{firstname}</Text>
+          <Text>{firstName}</Text>
         </HStack>
         <HStack>
           <Text pl={{ base: '0', md: '16' }} fontWeight={'bold'}>{'Prénom :'}</Text>
-          <Text>{lastname}</Text>
+          <Text>{lastName}</Text>
         </HStack>
       </Stack>
       <VStack alignItems={'flex-start'} py={2}>

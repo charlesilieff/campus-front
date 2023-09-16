@@ -25,8 +25,8 @@ import { UserSelect } from './user-select'
 
 export interface User {
   id: number
-  firstname: O.Option<string>
-  lastname: O.Option<string>
+  firstName: O.Option<string>
+  lastName: O.Option<string>
   email: string
   customerId: O.Option<number>
 }
@@ -189,8 +189,8 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
             setCustomer(
               O.some({
                 age: reservation.customer.age,
-                firstname: O.some(reservation.customer.firstname),
-                lastname: O.some(reservation.customer.lastname),
+                firstName: O.some(reservation.customer.firstName),
+                lastName: O.some(reservation.customer.lastName),
                 email: reservation.customer.email,
                 phoneNumber: reservation.customer.phoneNumber,
                 id: reservation.customer.id,
@@ -271,8 +271,8 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
           O.flatMap(customer, c =>
             O.all({
               age: O.some(c.age),
-              firstname: c.firstname,
-              lastname: c.lastname,
+              firstName: c.firstName,
+              lastName: c.lastName,
               id: O.some(c.id),
               email: O.some(c.email),
               phoneNumber: O.some(c.phoneNumber),
@@ -345,8 +345,8 @@ export const ReservationEmployeeUpdate = (): JSX.Element => {
               O.flatMap(customer, c =>
                 O.all({
                   age: O.some(c.age),
-                  firstname: c.firstname,
-                  lastname: c.lastname,
+                  firstName: c.firstName,
+                  lastName: c.lastName,
                   id: O.some(c.id),
                   email: O.some(c.email),
                   phoneNumber: O.some(c.phoneNumber),

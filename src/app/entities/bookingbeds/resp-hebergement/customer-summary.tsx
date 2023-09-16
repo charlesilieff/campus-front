@@ -22,8 +22,8 @@ export const CustomerSummary = (
     customer: {
       age,
       email,
-      firstname,
-      lastname,
+      firstName,
+      lastName,
       phoneNumber,
       personNumber,
       specialDietNumber
@@ -50,9 +50,9 @@ export const CustomerSummary = (
 
       <HStack py={2}>
         <Text fontWeight={'bold'}>{'Nom :'}</Text>
-        <Text>{firstname}</Text>
+        <Text>{firstName}</Text>
         <Text pl={12} fontWeight={'bold'}>{'Prénom :'}</Text>
-        <Text>{lastname}</Text>
+        <Text>{lastName}</Text>
       </HStack>
       <VStack alignItems={'flex-start'} py={2}>
         {O.isSome(age) ?

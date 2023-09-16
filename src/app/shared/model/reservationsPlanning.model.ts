@@ -12,8 +12,8 @@ export interface ReservationsPlanningEncoded {
   readonly isConfirmed: boolean
   readonly personNumber: number
   readonly customer: CustomerEncoded
-  // readonly firstname: string
-  // readonly lastname: string
+  // readonly firstName: string
+  // readonly lastName: string
   // readonly age: number
   // readonly phoneNumber: number
   // readonly email: string
@@ -30,8 +30,8 @@ export interface ReservationsPlanning {
   readonly isConfirmed: boolean
   readonly personNumber: number
   readonly customer: CustomerDecoded
-  // readonly firstname: string
-  // readonly lastname: string
+  // readonly firstName: string
+  // readonly lastName: string
   // readonly age: number
   // readonly phoneNumber: number
   // readonly email: string
@@ -49,8 +49,8 @@ export const ReservationsPlanning: S.Schema<ReservationsPlanningEncoded, Reserva
     isConfirmed: S.boolean,
     personNumber: S.number,
     customer: Customer,
-    // firstname: S.string,
-    // lastname: S.string,
+    // firstName: S.string,
+    // lastName: S.string,
     // age: S.number,
     // phoneNumber: S.number,
     // email: S.string,

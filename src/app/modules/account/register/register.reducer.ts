@@ -23,8 +23,8 @@ interface IRegister {
   langKey?: string
 }
 interface IRegisterIntermittent extends IRegister {
-  firstname: string
-  lastname: string
+  firstName: string
+  lastName: string
   phoneNumber?: string
   age?: number
 }

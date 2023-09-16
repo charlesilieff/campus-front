@@ -93,8 +93,8 @@ export const createUserOneBedReservation = (
   bedId,
   customer: {
     id: customer.id,
-    firstname: customer.firstname,
-    lastname: customer.lastname,
+    firstName: customer.firstName,
+    lastName: customer.lastName,
     email: customer.email,
     phoneNumber: customer.phoneNumber,
     age: customer.age,
@@ -120,8 +120,8 @@ export const createUserMealsOnlyReservation = (
 
   customer: {
     id: customer.id,
-    firstname: customer.firstname,
-    lastname: customer.lastname,
+    firstName: customer.firstName,
+    lastName: customer.lastName,
     email: customer.email,
     phoneNumber: customer.phoneNumber,
     age: customer.age,

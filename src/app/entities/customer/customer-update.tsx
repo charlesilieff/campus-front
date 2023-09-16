@@ -87,15 +87,15 @@ export const CustomerUpdate = (): JSX.Element => {
           onSubmit={handleSubmit(c => saveEntity(c as unknown as CustomerDecoded))}
         >
           <VStack spacing={4}>
-            <FormControl isRequired isInvalid={errors.firstname !== undefined}>
-              <FormLabel htmlFor="firstname" fontWeight={'bold'}>
+            <FormControl isRequired isInvalid={errors.firstName !== undefined}>
+              <FormLabel htmlFor="firstName" fontWeight={'bold'}>
                 {'Prénom'}
               </FormLabel>
               <Input
-                id="firstname"
+                id="firstName"
                 type="text"
                 placeholder="Prénom"
-                {...register('firstname', {
+                {...register('firstName', {
                   required: 'Le prénom est obligatoire',
                   minLength: {
                     value: 1,
@@ -109,18 +109,18 @@ export const CustomerUpdate = (): JSX.Element => {
               />
 
               <FormErrorMessage>
-                {errors.firstname && errors.firstname.message}
+                {errors.firstName && errors.firstName.message}
               </FormErrorMessage>
             </FormControl>
-            <FormControl isRequired isInvalid={errors.lastname !== undefined}>
-              <FormLabel htmlFor="lastname" fontWeight={'bold'}>
+            <FormControl isRequired isInvalid={errors.lastName !== undefined}>
+              <FormLabel htmlFor="lastName" fontWeight={'bold'}>
                 {'Nom'}
               </FormLabel>
               <Input
-                id="lastname"
+                id="lastName"
                 type="text"
                 placeholder="Nom"
-                {...register('lastname', {
+                {...register('lastName', {
                   required: 'Le nom est obligatoire',
                   minLength: {
                     value: 1,
@@ -134,7 +134,7 @@ export const CustomerUpdate = (): JSX.Element => {
               />
 
               <FormErrorMessage>
-                {errors.lastname && errors.lastname.message}
+                {errors.lastName && errors.lastName.message}
               </FormErrorMessage>
             </FormControl>
             <FormControl isInvalid={errors.age !== undefined}>

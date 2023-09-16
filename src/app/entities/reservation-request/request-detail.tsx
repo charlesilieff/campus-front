@@ -32,10 +32,10 @@ export const ReservationRequestDetail = (): JSX.Element => {
 
               <Heading size={'sm'}>Prénom</Heading>
 
-              <dd>{reservationRequestEntity.value.customer.firstname}</dd>
+              <dd>{reservationRequestEntity.value.customer.firstName}</dd>
               <Heading size={'sm'}>Nom</Heading>
 
-              <dd>{reservationRequestEntity.value.customer.lastname}</dd>
+              <dd>{reservationRequestEntity.value.customer.lastName}</dd>
               <Heading size={'sm'}>Age</Heading>
 
               <dd>{O.getOrNull(reservationRequestEntity.value.customer.age)}</dd>

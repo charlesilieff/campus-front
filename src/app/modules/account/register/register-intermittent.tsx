@@ -24,8 +24,8 @@ interface FormValues {
   email: string
   firstPassword: string
   secondPassword: string
-  firstname: string
-  lastname: string
+  firstName: string
+  lastName: string
   phoneNumber: O.Option<string>
   age: O.Option<number>
 }
@@ -51,7 +51,7 @@ export const RegisterIntermittentPage = (): JSX.Element => {
   password.current = watch('firstPassword', '')
 
   const handleValidSubmit = async (
-    { age, email, firstname, firstPassword, lastname, phoneNumber, username }: FormValues
+    { age, email, firstName, firstPassword, lastName, phoneNumber, username }: FormValues
   ) => {
     setIsLoading(true)
     await dispatch(
@@ -60,8 +60,8 @@ export const RegisterIntermittentPage = (): JSX.Element => {
         email,
         password: firstPassword,
         langKey: 'en',
-        firstname,
-        lastname,
+        firstName,
+        lastName,
         // @ts-expect-error TODO: fix this
         phoneNumber: O.getOrNull(phoneNumber),
         // @ts-expect-error TODO: fix this
@@ -207,13 +207,13 @@ export const RegisterIntermittentPage = (): JSX.Element => {
               </FormErrorMessage>
             </FormControl>
 
-            <FormControl isRequired isInvalid={errors.firstname !== undefined} mb={4}>
-              <FormLabel htmlFor="firstname">Prénom</FormLabel>
+            <FormControl isRequired isInvalid={errors.firstName !== undefined} mb={4}>
+              <FormLabel htmlFor="firstName">Prénom</FormLabel>
               <Input
-                id="firstname"
+                id="firstName"
                 placeholder="Prénom"
                 type="text"
-                {...register('firstname', {
+                {...register('firstName', {
                   required: 'Votre prénom est obligatoire.',
                   minLength: {
                     value: 1,
@@ -226,17 +226,17 @@ export const RegisterIntermittentPage = (): JSX.Element => {
                 })}
               />
               <FormErrorMessage>
-                {errors.firstname && errors.firstname.message}
+                {errors.firstName && errors.firstName.message}
               </FormErrorMessage>
             </FormControl>
 
-            <FormControl isRequired isInvalid={errors.lastname !== undefined} mb={4}>
-              <FormLabel htmlFor="lastname">Nom</FormLabel>
+            <FormControl isRequired isInvalid={errors.lastName !== undefined} mb={4}>
+              <FormLabel htmlFor="lastName">Nom</FormLabel>
               <Input
-                id="lastname"
+                id="lastName"
                 placeholder="Nom"
                 type="text"
-                {...register('lastname', {
+                {...register('lastName', {
                   required: 'Votre nom est obligatoire.',
                   minLength: {
                     value: 1,

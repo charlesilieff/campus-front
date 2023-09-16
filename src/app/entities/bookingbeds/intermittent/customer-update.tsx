@@ -21,8 +21,8 @@ import { BsPencil } from 'react-icons/bs'
 
 export const CustomerForm = S.struct({
   id: S.optional(S.number).toOption(),
-  firstname: S.optional(S.string).toOption(),
-  lastname: S.optional(S.string).toOption(),
+  firstName: S.optional(S.string).toOption(),
+  lastName: S.optional(S.string).toOption(),
   age: S.optional(S.number).toOption(),
   phoneNumber: S.optional(S.string).toOption(),
   email: S.string,
@@ -85,43 +85,43 @@ export const CustomerUpdate = (
               alignItems={'flex-start'}
               my={4}
             >
-              <FormControl isRequired isInvalid={errors.firstname !== undefined} maxW={500}>
-                <FormLabel htmlFor="firstname" fontWeight={'bold'}>
+              <FormControl isRequired isInvalid={errors.firstName !== undefined} maxW={500}>
+                <FormLabel htmlFor="firstName" fontWeight={'bold'}>
                   {'Prénom'}
                 </FormLabel>
                 <Input
-                  id="firstname"
+                  id="firstName"
                   type="text"
                   placeholder="Prénom"
-                  {...register('firstname', {
+                  {...register('firstName', {
                     required: 'Le prénom est obligatoire'
                   })}
                 />
 
                 <FormErrorMessage>
-                  {errors.firstname && errors.firstname.message}
+                  {errors.firstName && errors.firstName.message}
                 </FormErrorMessage>
               </FormControl>
               <FormControl
                 isRequired
-                isInvalid={errors.lastname !== undefined}
+                isInvalid={errors.lastName !== undefined}
                 px={{ base: '0', md: '20' }}
                 maxW={500}
               >
-                <FormLabel htmlFor="lastname" fontWeight={'bold'}>
+                <FormLabel htmlFor="lastName" fontWeight={'bold'}>
                   {'Nom'}
                 </FormLabel>
                 <Input
-                  id="lastname"
+                  id="lastName"
                   type="text"
                   placeholder="Nom"
-                  {...register('lastname', {
+                  {...register('lastName', {
                     required: 'Le prénom est obligatoire'
                   })}
                 />
 
                 <FormErrorMessage>
-                  {errors.lastname && errors.lastname.message}
+                  {errors.lastName && errors.lastName.message}
                 </FormErrorMessage>
               </FormControl>
             </Stack>
@@ -162,7 +162,7 @@ export const CustomerUpdate = (
               </FormControl>
             </Stack>
             <Stack spacing={12} maxW={600} my={4}>
-              <FormControl isRequired isInvalid={errors.firstname !== undefined}>
+              <FormControl isRequired isInvalid={errors.firstName !== undefined}>
                 <FormLabel htmlFor="email" fontWeight={'bold'}>
                   {'Email'}
                 </FormLabel>

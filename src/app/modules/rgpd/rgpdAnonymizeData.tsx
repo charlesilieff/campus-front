@@ -24,8 +24,8 @@ export const RGPDAnonymizeData = () => {
       setCustomers(
         data.map(c => ({
           ...c,
-          firstname: 'anonyme',
-          lastname: 'anonyme',
+          firstName: 'anonyme',
+          lastName: 'anonyme',
           age: O.none(),
           phoneNumber: O.none(),
           email: `anonyme${c.id}@anonyme.fr`

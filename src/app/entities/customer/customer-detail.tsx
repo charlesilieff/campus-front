@@ -29,11 +29,11 @@ export const CustomerDetail = () => {
 
             <Heading size={'md'}>Prénom</Heading>
 
-            <Text>{customerEntity.value.firstname}</Text>
+            <Text>{customerEntity.value.firstName}</Text>
 
             <Heading size={'md'}>Nom</Heading>
 
-            <Text>{customerEntity.value.lastname}</Text>
+            <Text>{customerEntity.value.lastName}</Text>
 
             <Heading size={'md'}>Age</Heading>
 

@@ -282,10 +282,10 @@ export const Day = ({ positionX, date, index }: IProps) => {
                       ) => (
                         <Tr key={index}>
                           <Td>
-                            {meals.firstname && meals.breakfast ? meals.firstname : null}
+                            {meals.firstName && meals.breakfast ? meals.firstName : null}
                           </Td>
                           <Td>
-                            {meals.lastname && meals.breakfast ? meals.lastname : null}
+                            {meals.lastName && meals.breakfast ? meals.lastName : null}
                           </Td>
                           <Td>
                             {meals.breakfast ? meals.breakfast : null}
@@ -372,10 +372,10 @@ export const Day = ({ positionX, date, index }: IProps) => {
                     {mealsWithCustomerData.filter(x => x.regularLunch !== 0).map((meals, index) => (
                       <Tr key={index}>
                         <Td>
-                          {meals.firstname && meals.regularLunch ? meals.firstname : null}
+                          {meals.firstName && meals.regularLunch ? meals.firstName : null}
                         </Td>
                         <Td>
-                          {meals.lastname && meals.regularLunch ? meals.lastname : null}
+                          {meals.lastName && meals.regularLunch ? meals.lastName : null}
                         </Td>
                         <Td>
                           {meals.regularLunch ? meals.regularLunch : null}
@@ -462,10 +462,10 @@ export const Day = ({ positionX, date, index }: IProps) => {
                       ) => (
                         <Tr key={index}>
                           <Td>
-                            {meals.firstname && meals.specialLunch ? meals.firstname : null}
+                            {meals.firstName && meals.specialLunch ? meals.firstName : null}
                           </Td>
                           <Td>
-                            {meals.lastname && meals.specialLunch ? meals.lastname : null}
+                            {meals.lastName && meals.specialLunch ? meals.lastName : null}
                           </Td>
                           <Td>
                             {meals.specialLunch ? meals.specialLunch : null}
@@ -555,10 +555,10 @@ export const Day = ({ positionX, date, index }: IProps) => {
                     ) => (
                       <Tr key={index}>
                         <Td>
-                          {meals.firstname && meals.regularDinner ? meals.firstname : null}
+                          {meals.firstName && meals.regularDinner ? meals.firstName : null}
                         </Td>
                         <Td>
-                          {meals.lastname && meals.regularDinner ? meals.lastname : null}
+                          {meals.lastName && meals.regularDinner ? meals.lastName : null}
                         </Td>
                         <Td>
                           {meals.regularDinner ? meals.regularDinner : null}
@@ -645,10 +645,10 @@ export const Day = ({ positionX, date, index }: IProps) => {
                       ) => (
                         <Tr key={index}>
                           <Td>
-                            {meals.firstname && meals.specialDinner ? meals.firstname : null}
+                            {meals.firstName && meals.specialDinner ? meals.firstName : null}
                           </Td>
                           <Td>
-                            {meals.lastname && meals.specialDinner ? meals.lastname : null}
+                            {meals.lastName && meals.specialDinner ? meals.lastName : null}
                           </Td>
                           <Td>
                             {meals.specialDinner ? meals.specialDinner : null}

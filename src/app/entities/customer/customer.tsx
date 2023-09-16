@@ -65,8 +65,8 @@ export const Customer = () => {
             <Tbody>
               {customerList.map((customer, i) => (
                 <Tr key={`entity-${i}`} data-cy="entityTable">
-                  <Td>{customer.firstname}</Td>
-                  <Td>{customer.lastname}</Td>
+                  <Td>{customer.firstName}</Td>
+                  <Td>{customer.lastName}</Td>
                   <Td>{O.getOrUndefined(customer.age)}</Td>
                   <Td>{O.getOrUndefined(customer.phoneNumber)}</Td>
                   {O.isSome(customer.id) ?

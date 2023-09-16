@@ -140,15 +140,15 @@ export const UserManagementUpdate = () => {
                 {errors.login && errors.login.message}
               </FormErrorMessage>
             </FormControl>
-            <FormControl isInvalid={errors.firstname !== undefined}>
-              <FormLabel htmlFor="firstname" fontWeight={'bold'}>
+            <FormControl isInvalid={errors.firstName !== undefined}>
+              <FormLabel htmlFor="firstName" fontWeight={'bold'}>
                 {'Prénom'}
               </FormLabel>
               <Input
-                id="firstname"
+                id="firstName"
                 type="text"
                 placeholder="Prénom"
-                {...register('firstname', {
+                {...register('firstName', {
                   maxLength: {
                     value: 50,
                     message: 'Ce champ doit faire moins de 50 caractères.'
@@ -157,18 +157,18 @@ export const UserManagementUpdate = () => {
               />
 
               <FormErrorMessage>
-                {errors.lastname && errors.lastname.message}
+                {errors.lastName && errors.lastName.message}
               </FormErrorMessage>
             </FormControl>
-            <FormControl isInvalid={errors.lastname !== undefined}>
-              <FormLabel htmlFor="lastname" fontWeight={'bold'}>
+            <FormControl isInvalid={errors.lastName !== undefined}>
+              <FormLabel htmlFor="lastName" fontWeight={'bold'}>
                 {'Nom'}
               </FormLabel>
               <Input
-                id="lastname"
+                id="lastName"
                 type="text"
                 placeholder="Nom"
-                {...register('lastname', {
+                {...register('lastName', {
                   maxLength: {
                     value: 50,
                     message: 'Ce champ doit faire moins de 50 caractères.'
@@ -177,7 +177,7 @@ export const UserManagementUpdate = () => {
               />
 
               <FormErrorMessage>
-                {errors.lastname && errors.lastname.message}
+                {errors.lastName && errors.lastName.message}
               </FormErrorMessage>
             </FormControl>
 
