@@ -8,7 +8,6 @@ import axios from 'axios'
 import { Effect as T } from 'effect'
 import { Option as O } from 'effect'
 import { pipe } from 'effect'
-import { Either as E } from 'effect'
 
 import { User } from '../model/user.model'
 import { Storage } from '../util/storage-util'
