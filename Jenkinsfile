@@ -44,7 +44,7 @@ pipeline {
         stage('Docker push'){
             steps {
                 echo "Building docker..."
-                sh "docker build . -t docker.ilieff.fr/${DOCKER_IMAGE_NAME}:1.2.0 -t docker.ilieff.fr/${DOCKER_IMAGE_NAME}:latest"
+                sh "docker build . -t docker.ilieff.fr/${DOCKER_IMAGE_NAME}:1.2.1 -t docker.ilieff.fr/${DOCKER_IMAGE_NAME}:latest"
                 echo "Login to Ilieff docker repo"
                 sh "docker login docker.ilieff.fr -u charles -p${DOCKER_REPO_PASSWORD}"
                 echo "Push docker..."
