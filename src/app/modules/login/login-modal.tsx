@@ -17,6 +17,7 @@ import {
   VStack
 } from '@chakra-ui/react'
 import * as S from '@effect/schema/Schema'
+import { useAppSelector } from 'app/config/store'
 import { schemaResolver } from 'app/entities/bed/resolver'
 import React from 'react'
 import { useForm } from 'react-hook-form'
@@ -33,12 +34,15 @@ type UserFormEncoded = S.Schema.From<typeof UserForm>
 
 export interface ILoginModalProps {
   showModal: boolean
-  loginError: boolean
+
   handleLogin: (username: string, password: string, rememberMe: boolean) => void
   handleClose: () => void
 }
 
 export const LoginModal = (props: ILoginModalProps) => {
+  const isLoging = useAppSelector(state => state.authentication.loading)
+  const loginError = useAppSelector(state => state.authentication.loginError)
+
   const login = (
     { username, password, rememberMe }: UserForm
   ) => {
@@ -51,7 +55,7 @@ export const LoginModal = (props: ILoginModalProps) => {
     formState: { errors }
   } = useForm<UserFormEncoded>({ mode: 'onTouched', resolver: schemaResolver(UserForm) })
 
-  const { loginError, handleClose } = props
+  const { handleClose } = props
 
   return (
     <Modal
@@ -148,7 +152,7 @@ export const LoginModal = (props: ILoginModalProps) => {
               <Button variant="back" onClick={handleClose} tabIndex={1}>
                 Annuler
               </Button>
-              <Button variant="save" type="submit" data-cy="submit">
+              <Button variant="save" type="submit" data-cy="submit" isLoading={isLoging}>
                 Se connecter
               </Button>
             </HStack>

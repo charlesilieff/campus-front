@@ -49,6 +49,7 @@ export const handleError = () => next => action => {
   if (isRejectedAction(action) && error && error.isAxiosError) {
     if (error.response) {
       const response = error.response
+
       const data = response.data
       console.log('data', data)
       if (
@@ -156,6 +157,8 @@ export const handleError = () => next => action => {
       console.log('Authentication Error: Trying to access url api/account with GET.')
     } else {
       console.log('Error message not Unknown', error)
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      if (error.code === '401') return next(action)
       toast({
         position: 'top',
         title: error.message || 'Unknown error!',
@@ -165,7 +168,6 @@ export const handleError = () => next => action => {
       })
     }
   } else if (error) {
-    console.log('Error message not Unknown 2', error)
     toast({
       position: 'top',
       title: error.message || 'Unknown error!',

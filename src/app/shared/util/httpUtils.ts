@@ -65,10 +65,7 @@ export const postHttpEntity = <A, B, C, D,>(
     S.encodeResult(schema)(entity),
     T.mapError(e => formatErrors(e.errors)),
     T.flatMap(b => T.tryPromise(() => axios.post(url, b, config))),
-    T.mapError(e => {
-      console.log('eeeeeee', e)
-      return S.parseSync(AxiosError)(e)
-    }),
+    T.mapError(e => S.parseSync(AxiosError)(e)),
     T.map(d => S.parseOption(responseType)(d.data)),
     T.map(d => castDraft(d)),
     T.runPromise

@@ -14,7 +14,7 @@ import {
 } from '@reduxjs/toolkit'
 import { AxiosError as AxiosErrorSchema } from 'app/entities/bookingbeds/AxiosError'
 import type { AxiosError } from 'axios'
-import { type Option as O, pipe } from 'effect'
+import { Option as O, pipe } from 'effect'
 import type {} from 'immer/dist/internal'
 
 /**
@@ -59,14 +59,21 @@ export const serializeAxiosError = (value: unknown): AxiosError | SerializedErro
   pipe(
     value,
     S.parseSync(Error),
-    d => S.parseSync(AxiosErrorSchema)(JSON.parse(d.message)),
-    d => ({
-      message: d.response.data.raison,
-      code: d.response.status.toString(),
-      isAxiosError: true,
-      toJSON: '',
-      name: d.name
-    })
+    d => {
+      const message = S.parseOption(AxiosErrorSchema)(d.message)
+
+      return {
+        message: O.isSome(message) ? message.value.response.data.raison : 'Erreur',
+        code: O.isSome(message) ?
+          message.value.response.status.toString() :
+          d.message.includes('401') ?
+          '401' :
+          '500',
+        isAxiosError: true,
+        toJSON: '',
+        name: O.isSome(message) ? message.value.name : 'Erreur'
+      }
+    }
   )
 
 export interface EntityState<T,> {
