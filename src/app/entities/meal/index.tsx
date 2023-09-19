@@ -28,8 +28,8 @@ export const MealTable = () => {
 
   const [refreshing, setRefreshing] = useState(false)
   const [date, setDate] = useState(dayjs())
-  const [startDate, setStartDate] = useState(dayjs())
-  const [endDate, setEndDate] = useState(dayjs())
+  const [startDate, setStartDate] = useState<O.Option<Dayjs>>(O.none())
+  const [endDate, setEndDate] = useState<O.Option<Dayjs>>(O.none())
   const [mealsData, setMealsData] = useState([] as IMeal[])
   const [numberOfDays, setNumberOfDays] = useState(31)
 
@@ -164,9 +164,8 @@ export const MealTable = () => {
         duration: 4000,
         isClosable: true
       })
-      return
     }
-    if (dayjs(e).isAfter(endDate)) {
+    if (O.isSome(endDate) && dayjs(e).isAfter(endDate.value)) {
       toast({
         position: 'bottom',
         title: 'Erreur date !',
@@ -175,12 +174,11 @@ export const MealTable = () => {
         duration: 4000,
         isClosable: true
       })
-      return
     }
-    setStartDate(dayjs(e))
+    setStartDate(O.some(dayjs(e)))
   }
   const startEndChange = (e: Dayjs) => {
-    if (dayjs(e).isBefore(startDate)) {
+    if (O.isSome(startDate) && dayjs(e).isBefore(startDate.value)) {
       toast({
         position: 'bottom',
         title: 'Erreur date !',
@@ -189,9 +187,9 @@ export const MealTable = () => {
         duration: 4000,
         isClosable: true
       })
-      return
+      setEndDate(O.some(dayjs(e)))
     } else {
-      setEndDate(dayjs(e))
+      setEndDate(O.some(dayjs(e)))
     }
   }
 
@@ -267,8 +265,8 @@ export const MealTable = () => {
         </VStack>
       </Box>
       <form>
-        <HStack m={4} spacing={8} margin={4} alignItems={'flex-start'}>
-          <Heading alignSelf={'flex-start'} size={'md'}>Changer mes repas par période</Heading>
+        <HStack m={4} spacing={8} margin={4} justifyContent={'center'}>
+          <Heading size={'md'}>Description par période</Heading>
         </HStack>
         <Stack
           m={4}

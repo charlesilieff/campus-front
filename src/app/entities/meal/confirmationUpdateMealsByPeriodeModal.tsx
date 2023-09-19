@@ -13,6 +13,7 @@ import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
+import { Option as O } from 'effect'
 import type { FunctionComponent } from 'react'
 import React, { useState } from 'react'
 import { FaBan, FaSave, FaTrash } from 'react-icons/fa'
@@ -21,8 +22,8 @@ const apiUrlMealsDateFor31DaysByUser = 'api/meals'
 
 export const ConfirmationUpdateMealsByPeriodModal: FunctionComponent<
   {
-    startDate: Dayjs
-    endDate: Dayjs
+    startDate: O.Option<Dayjs>
+    endDate: O.Option<Dayjs>
     reservationId: number
     setDate: (date: Dayjs) => void
     setRefreshing: (refreshing: boolean) => void
@@ -87,7 +88,7 @@ export const ConfirmationUpdateMealsByPeriodModal: FunctionComponent<
     )
 
     setIsLoading(false)
-    setDate(startDate)
+    O.isSome(startDate) && setDate(startDate.value)
 
     toast({
       position: 'top',
@@ -109,6 +110,9 @@ export const ConfirmationUpdateMealsByPeriodModal: FunctionComponent<
         onClick={onOpen}
         leftIcon={<FaSave />}
         colorScheme={'green'}
+        isDisabled={!(O.isSome(startDate) && O.isSome(endDate)
+          && startDate.value.isBefore(endDate.value)
+          && startDate.value.isAfter(dayjs().subtract(1, 'day')))}
         _hover={{
           textDecoration: 'none',
           color: 'green.200',
@@ -116,36 +120,40 @@ export const ConfirmationUpdateMealsByPeriodModal: FunctionComponent<
         }}
         size={{ base: 'sm', md: 'md' }}
       >
-        Se désinscrire sur la période sélectionnée
+        Confirmer
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>
-            Confirmer la mise à jour
-          </ModalHeader>
-          <ModalBody>
-            Êtes-vous sûr de vouloir modifier vos repas du {startDate.format('DD/MM/YYYY')} au{' '}
-            {endDate.format('DD/MM/YYYY')} ?
-          </ModalBody>
-          <ModalFooter justifyContent={'space-between'}>
-            <Button onClick={onClose} leftIcon={<FaBan />} variant="back" isLoading={isLoading}>
-              Retour
-            </Button>
-            <Button
-              onClick={() =>
-                updateMealsFromDate(startDate, endDate, reservationId).then(() => {
-                  setRefreshing(true)
-                })}
-              leftIcon={<FaTrash />}
-              variant="danger"
-              isLoading={isLoading}
-            >
-              Confirmer
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      {O.isSome(startDate) && O.isSome(endDate) ?
+        (
+          <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>
+                Confirmer la mise à jour
+              </ModalHeader>
+              <ModalBody>
+                Êtes-vous sûr de vouloir modifier vos repas du{' '}
+                {startDate.value.format('DD/MM/YYYY')} au {endDate.value.format('DD/MM/YYYY')} ?
+              </ModalBody>
+              <ModalFooter justifyContent={'space-between'}>
+                <Button onClick={onClose} leftIcon={<FaBan />} variant="back" isLoading={isLoading}>
+                  Retour
+                </Button>
+                <Button
+                  onClick={() =>
+                    updateMealsFromDate(startDate.value, endDate.value, reservationId).then(() => {
+                      setRefreshing(true)
+                    })}
+                  leftIcon={<FaTrash />}
+                  variant="danger"
+                  isLoading={isLoading}
+                >
+                  Confirmer
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        ) :
+        null}
     </>
   )
 }
