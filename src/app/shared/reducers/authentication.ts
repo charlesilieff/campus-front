@@ -172,7 +172,6 @@ export const AuthenticationSlice = createSlice({
         errorMessage: O.fromNullable(action.error.message)
       }))
       .addCase(getAccount.fulfilled, (state, action) => {
-        console.log('getAccount.fulfilled', action.payload)
         const isAuthenticated = pipe(
           action.payload,
           O.map(a => a.activated),

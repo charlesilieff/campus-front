@@ -55,9 +55,8 @@ export const Error = S.struct({ name: S.string, message: S.string })
  * serialize function used for async action errors,
  * since the default function from Redux Toolkit strips useful info from axios errors
  */
-export const serializeAxiosError = (value: unknown): AxiosError | SerializedError => {
-  console.log('valueeeeee', value)
-  return pipe(
+export const serializeAxiosError = (value: unknown): AxiosError | SerializedError =>
+  pipe(
     value,
     S.parseSync(Error),
     d => S.parseSync(AxiosErrorSchema)(JSON.parse(d.message)),
@@ -69,7 +68,6 @@ export const serializeAxiosError = (value: unknown): AxiosError | SerializedErro
       name: d.name
     })
   )
-}
 
 export interface EntityState<T,> {
   loading: boolean

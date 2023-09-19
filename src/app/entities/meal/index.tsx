@@ -1,7 +1,6 @@
 import { Box, Button, Heading, HStack, Input, Stack, Text, useToast,
   VStack } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-// import { isArrivalDateIsBeforeDepartureDate, isDateBeforeNow } from 'app/entities/bookingbeds/utils'
 import { getOneBedUserReservationsByUserId,
   getReservation } from 'app/entities/reservation/reservation.reducer'
 import type { IMeal } from 'app/shared/model/meal.model'
@@ -12,35 +11,21 @@ import { Option as O } from 'effect'
 import { ReadonlyArray as A } from 'effect'
 import { pipe } from 'effect'
 import React, { useEffect, useState } from 'react'
-// import { useForm } from 'react-hook-form'
 import { FaCalendar, FaCaretLeft, FaCaretRight } from 'react-icons/fa'
 
-// import { IntermittentReservations } from '../bookingbeds/intermittent/reservations-list'
 import { ConfirmationAddMealsScreenModal } from './confirmationAddMealsScreenModal'
 import { ConfirmationRemoveMealsScreenModal } from './confirmationRemoveMealsScreenModal'
-import { ConfirmationUpdateMealsByPeriodModal as ConfirmationUpdateMealsByPeriodModal } from './confirmationUpdateMealsByPeriodeModal'
+import { ConfirmationUpdateMealsByPeriodModal } from './confirmationUpdateMealsByPeriodeModal'
 import { ConfirmationUpdateMealsModal } from './confirmationUpdateMealsModal'
 import { DisplayTotalMeals } from './displayTotalMeals'
 import { MealsUserPlanning } from './mealsUserPlanning'
 
 const apiUrlMealsDateFor31DaysByUser = 'api/meals'
-// const apiUrlUpdateMeal = 'api/meals/update'
 
-export const Index = () => {
-  // const {
-  //   register,
-  //   watch
-  // } = useForm()
-  // const endDateCheck = useRef({})
-  // endDateCheck.current = watch('endDateCheck')
+export const MealTable = () => {
   const toast = useToast()
   const account = useAppSelector(state => state.authentication.account)
 
-  // const customerId = pipe(
-  //   account.customerId,
-  //   O.fromNullable,
-  //   O.map(Number)
-  // )
   const [refreshing, setRefreshing] = useState(false)
   const [date, setDate] = useState(dayjs())
   const [startDate, setStartDate] = useState(dayjs())
@@ -71,18 +56,7 @@ export const Index = () => {
         'day'
       )
     )
-  ) // .filter(x => x.beds?.length > 0)
-
-  // reservationList
-
-  // if (reservationList.length > 1) {
-  //   setReservationId(reservationListFirst.id)
-
-  // }
-
-  // // console.log('reservationListFirst', reservationListFirst)
-  // // const reservationListFirstId = reservationList[0].id
-  // // console.log('reservationListFirstId', reservationListFirstId)
+  )
 
   useEffect(() => {
     if (O.isSome(userId)) dispatch(getOneBedUserReservationsByUserId(userId.value))
@@ -90,16 +64,7 @@ export const Index = () => {
     if (reservationList.length > 0 && O.isSome(reservationList[0].id)) {
       dispatch(getReservation(reservationList[0].id.value))
     }
-
-    // setReservationId(reservationListFirst.id)
-    // MealsUserPlanning
-    // setDate(date)
-    // dispatch(MealsUserPlanning())
   }, [])
-
-  // const handleSyncList = () => {
-  //   if (O.isSome(userId)) dispatch(getIntermittentReservations(userId.value))
-  // }
 
   /**
    * Get meals for 31 days by user. //todo getMealsDateFor31DaysByUser by reservation
@@ -111,7 +76,6 @@ export const Index = () => {
       }`
       const { data } = await axios.get<IMeal[]>(requestUrl)
 
-      // const dataSorted = data.sort((a, b) => (a > b.date ? 1 : -1))
       setMealsData(data)
       setRefreshing(false)
     }
@@ -176,7 +140,6 @@ export const Index = () => {
   }
 
   const toggleAddDays = () => {
-    // TODO check if it's necessarry to load new data (if calendar is showing 7 days)
     setDate(date.add(1, 'day'))
     if (O.isSome(userId)) dispatch(getOneBedUserReservationsByUserId(userId.value))
 
@@ -189,7 +152,6 @@ export const Index = () => {
   const toggleSubtractDays = () => {
     setDate(date.subtract(1, 'day'))
     if (O.isSome(userId)) dispatch(getOneBedUserReservationsByUserId(userId.value))
-    // reservationList[0]
   }
 
   const startDateChange = (e: Dayjs) => {
@@ -233,86 +195,9 @@ export const Index = () => {
     }
   }
 
-  // console.log('reservationId :', reservationId)
-  // console.log('reservationListFirst ', reservationListFirst)
-  // setReservationId(reservationListFirst.id)
-
-  // console.log('reservationListFirst  id', O.getOrElse(reservationListFirst.id, () => '0'))
-  // console.log('reservationListFirst id', reservationListFirst.id)
-
   return (
     <>
       <Box m={4}>
-        {/* todo  */}
-        {
-          /* <HStack m={4} spacing={8} margin={4} marginBlockEnd={12} alignItems={'flex-start'}>
-
-          <FormControl isRequired isInvalid={reservationId === 0}>
-            <Stack>
-              <Heading alignSelf={'flex-start'}>Ma reservation :</Heading>
-            </Stack>
-            <HStack>
-              <Select
-                id="reservationId"
-                title="Mes réservations"
-                onChange={e => setReservationId(+e.target.value)}
-                // defaultValue={reservationListFirst ? reservationListFirst.id : null}
-
-                // placeholder="Sélectionner une réservation"
-                // {...register('userCategoryId', {})}
-                // defaultValue={reservationList ? reservationList[1].id : null}
-                // defaultValue={reservationListFirst ? reservationListFirst.id : null}
-                // defaultValue={reservationListFirstId ? reservationListFirstId : null}
-                // defaultValue={reservationListFirst.id}
-              >
-                {reservationList ?
-                  reservationList.map(reservation => (
-                    <option
-                      value={reservation.id}
-                      key={reservation.id}
-                      // accessKey={reservationListFirst.id}
-                    >
-                      {reservation.id}
-                    </option>
-                  )) :
-                  null}
-              </Select>
-              <Table>
-                <Tr borderBottom={'solid'}>
-                  <Th>Id</Th>
-                  <Th>Date d&apos;arrivée</Th>
-                  <Th>Date de départ</Th>
-
-                  <Th>Nombre de personne</Th>
-                  <Th>Commentaire</Th>
-                </Tr>
-                {reservationList ?
-                  reservationList.map((reservation, index) => (
-                    <Tr key={index}>
-                      <Td>
-                        {reservation.id}
-                      </Td>
-                      <Td>
-                        {reservation.arrivalDate.toString()}
-                      </Td>
-                      <Td>
-                        {reservation.departureDate.toString()}
-                      </Td>
-                      <Td>
-                        {reservation.personNumber}
-                      </Td>
-                      <Td>
-                        {reservation.comment}
-                      </Td>
-                    </Tr>
-                  )) :
-                  null}
-              </Table>
-            </HStack>
-          </FormControl>
-        </HStack> */
-        }
-
         <Heading alignSelf={'flex-start'}>Mes repas réservés</Heading>
         <Stack direction={{ base: 'column', md: 'row' }} justifyContent={'center'}>
           <HStack m={4} spacing={8}>
@@ -399,18 +284,9 @@ export const Index = () => {
             <Input
               id="inputStartDate"
               type="date"
-              onChange={e => startDateChange(dayjs(e.target.value))} // {e => startDateChange(dayjs(e.target.value))}
+              onChange={e => startDateChange(dayjs(e.target.value))}
               title="Date de début"
               placeholder="Date de début'"
-              // TODO check in onChange if the date is before the end date
-              // {...register('arrivalDate', {
-              //   required: "la date d'arrivée' est obligatoire",
-              //   validate(v) {
-              //     if (!isArrivalDateIsBeforeDepartureDate(v, endDateCheck.current.toString())) {
-              //       return "La date d'arrivée doit être avant la date de départ"
-              //     }
-              //   }
-              // })}
             >
             </Input>
           </Box>
@@ -422,23 +298,9 @@ export const Index = () => {
               onChange={e => startEndChange(dayjs(e.target.value))}
               title="Date de fin"
               placeholder="Date de fin"
-              // {...register('endDateCheck', {
-              //   required: 'la date de fin est obligatoire'
-              // })}
             >
             </Input>
           </Box>
-          {
-            /* Todo later <Box>
-            <Text>Se désinscrire</Text>
-            <Checkbox
-              id="unsubscribeDate"
-              isChecked={true}
-              onChange={newunsubscribeDate} // todo getMealsDateFor31DaysByUser
-            >
-            </Checkbox>
-          </Box> */
-          }
 
           {O.isSome(customerId) ?
             (
@@ -447,8 +309,6 @@ export const Index = () => {
                   setRefreshing={setRefreshing}
                   startDate={startDate}
                   endDate={endDate}
-                  // reservationId={reservationId}
-
                   reservationId={customerId.value} // TODO tmp to test without reservation id
                   setDate={setDate}
                 />
