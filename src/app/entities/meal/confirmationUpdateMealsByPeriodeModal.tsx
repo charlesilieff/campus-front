@@ -6,6 +6,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
   useDisclosure,
   useToast
 } from '@chakra-ui/react'
@@ -131,8 +132,15 @@ export const ConfirmationUpdateMealsByPeriodModal: FunctionComponent<
                 Confirmer la mise à jour
               </ModalHeader>
               <ModalBody>
-                Êtes-vous sûr de vouloir modifier vos repas du{' '}
-                {startDate.value.format('DD/MM/YYYY')} au {endDate.value.format('DD/MM/YYYY')} ?
+                <Text>
+                  <Text>Êtes-vous sûr de vouloir vous désinscrire aux repas du</Text>
+                  <Text display={'flex'} flexDirection={'row'}>
+                    <Text fontWeight={'bold'}>{startDate.value.format('DD/MM/YYYY')}</Text>{' '}
+                    <Text px={2}>au</Text>
+                    <Text fontWeight={'bold'}>{endDate.value.format('DD/MM/YYYY')}</Text>{' '}
+                    <Text px={2}>?</Text>
+                  </Text>
+                </Text>
               </ModalBody>
               <ModalFooter justifyContent={'space-between'}>
                 <Button onClick={onClose} leftIcon={<FaBan />} variant="back" isLoading={isLoading}>
