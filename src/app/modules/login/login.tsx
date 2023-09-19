@@ -9,7 +9,7 @@ import { LoginModal } from './login-modal'
 export const Login = () => {
   const dispatch = useAppDispatch()
   const isAuthenticated = useAppSelector(state => state.authentication.isAuthenticated)
-  const loginError = useAppSelector(state => state.authentication.loginError)
+
   const showModalLogin = useAppSelector(state => state.authentication.showModalLogin)
   const [showModal, setShowModal] = useState(showModalLogin)
   const navigate = useNavigate()
@@ -39,7 +39,6 @@ export const Login = () => {
       showModal={showModal}
       handleLogin={handleLogin}
       handleClose={handleClose}
-      loginError={loginError}
     />
   )
 }
