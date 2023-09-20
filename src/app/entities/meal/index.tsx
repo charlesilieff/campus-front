@@ -266,7 +266,7 @@ export const MealTable = () => {
       </Box>
       <form>
         <HStack m={4} spacing={8} margin={4} justifyContent={'center'}>
-          <Heading size={'md'}>Description par période</Heading>
+          <Heading size={'md'}>Désinscription aux repas par période</Heading>
         </HStack>
         <Stack
           m={4}
