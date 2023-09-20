@@ -13,6 +13,7 @@ export const setupAxiosInterceptors = (onUnauthenticated: () => void) => {
     const token = Storage.local.get('jhi-authenticationToken')
       || Storage.session.get('jhi-authenticationToken')
     if (token) {
+      // eslint-disable-next-line @typescript-eslint/no-base-to-string
       config.headers.Authorization = `Bearer ${token}`
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
