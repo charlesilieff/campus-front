@@ -29,7 +29,6 @@ export const Day = ({ positionX, date }: IProps) => {
       {/*  */}
       <Box
         style={{
-          borderLeftColor: dayMonth === 1 ? '#D9D9D9' : dayWeek === 1 ? '#D9D9D9' : '#D9D9D9',
           gridColumnStart: positionX,
           gridColumnEnd: positionX + 2,
           gridRowStart: 4,

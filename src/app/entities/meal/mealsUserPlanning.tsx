@@ -4,7 +4,7 @@ import type { IMeal } from 'app/shared/model/meal.model'
 import { getDateKey } from 'app/shared/util/date-utils'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaUtensils } from 'react-icons/fa'
 
 import { Day } from './day'
@@ -16,7 +16,12 @@ interface IProps {
   numberOfDays: number
   mealsData: IMeal[]
 }
-
+export type MealType =
+  | 'specialLunch'
+  | 'regularDinner'
+  | 'specialDinner'
+  | 'breakfast'
+  | 'regularLunch'
 /**
  * Affiche un tableau (colonne : les jours (calendrier)).
  * Chaque jour (Day) comporte les informations suivantes :
@@ -35,6 +40,23 @@ export const MealsUserPlanning = (
   const positionX = {}
   const positionX7Day = 3
 
+  const periodCheckDisabled = date.add(numberOfDays, 'days').isBefore(dayjs().add(2, 'day'))
+  const periodCheckChecked = (mealType: MealType, mealsData: IMeal[]): boolean => {
+    if (mealType === 'breakfast') {
+      return mealsData.every(meal => {
+        console.log('breakfast', meal.breakfast)
+        return meal.breakfast === 0 && meal.breakfast !== null && meal.breakfast !== undefined
+      })
+    }
+    return true
+  }
+  const [breakfastChecked, setBreakfastChecked] = useState(
+    periodCheckChecked('breakfast', mealsData)
+  )
+  useEffect(() => {
+    setBreakfastChecked(periodCheckChecked('breakfast', mealsData))
+  }, [date])
+  console.log('breakfastChecked', breakfastChecked)
   return (
     <Grid
       className="grid-container"
@@ -122,8 +144,8 @@ export const MealsUserPlanning = (
           p={2}
           colorScheme={'orange'}
           onChange={_ => console.log('breakfast')}
-          isChecked={true}
-          isDisabled={date.isBefore(dayjs().add(1, 'day'))}
+          isChecked={breakfastChecked}
+          isDisabled={periodCheckDisabled}
         />
       </Text>
       <Text
@@ -167,8 +189,8 @@ export const MealsUserPlanning = (
           p={2}
           colorScheme={'orange'}
           onChange={_ => console.log('breakfast')}
-          isChecked={true}
-          isDisabled={date.isBefore(dayjs().add(1, 'day'))}
+          isChecked={breakfastChecked}
+          isDisabled={periodCheckDisabled}
         />
       </Box>
 
@@ -215,8 +237,8 @@ export const MealsUserPlanning = (
           p={2}
           colorScheme={'orange'}
           onChange={_ => console.log('breakfast')}
-          isChecked={true}
-          isDisabled={date.isBefore(dayjs().add(1, 'day'))}
+          isChecked={breakfastChecked}
+          isDisabled={periodCheckDisabled}
         />
       </Box>
       <Months date={date} month={0} totalDays={totalDays} numberOfDays={numberOfDays}></Months>

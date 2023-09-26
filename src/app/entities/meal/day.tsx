@@ -9,6 +9,7 @@ import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 
 import type { IMealsNumber } from './IMealsNumber'
+import type { MealType } from './mealsUserPlanning'
 
 interface IProps {
   positionX: number
@@ -16,8 +17,6 @@ interface IProps {
   index: number
   mealsData: IMeal[]
 }
-
-type MealType = 'specialLunch' | 'regularDinner' | 'specialDinner' | 'breakfast' | 'regularLunch'
 
 // eslint-disable-next-line complexity
 export const Day = ({ positionX, date, index, mealsData }: IProps) => {
@@ -320,6 +319,7 @@ function commentStyle(positionX: number, date: dayjs.Dayjs) {
     gridColumnEnd: positionX + 1,
     borderLeftWidth: '0.01em',
     borderColor: '#D9D9D9',
+    borderLeftColor: '#D9D9D9',
     backgroundColor: 'white'
   } as React.CSSProperties
   if (date.day() === 1) {
@@ -328,7 +328,6 @@ function commentStyle(positionX: number, date: dayjs.Dayjs) {
   if (positionX === 3 || date.date() === 1) {
     style.borderLeftStyle = 'double'
     style.borderLeftWidth = '0.4em'
-    style.borderLeftColor = '#D9D9D9'
   }
 
   return style
