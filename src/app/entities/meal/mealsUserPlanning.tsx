@@ -1,5 +1,5 @@
 import { MoonIcon, SunIcon, TimeIcon } from '@chakra-ui/icons'
-import { Box, Grid, Text } from '@chakra-ui/react'
+import { Box, Grid, Text, VStack } from '@chakra-ui/react'
 import type { IMeal } from 'app/shared/model/meal.model'
 import { getDateKey } from 'app/shared/util/date-utils'
 import type { Dayjs } from 'dayjs'
@@ -46,7 +46,7 @@ export const MealsUserPlanning = (
           gridRowStart={1}
           gridRowEnd={4}
           gridColumnStart={1}
-          gridColumnEnd={numberOfDays === 7 ? 6 : 8}
+          gridColumnEnd={6}
           borderRightStyle={'solid'}
           borderRightWidth={'0.15em'}
           borderColor={'#D9D9D9'}
@@ -56,15 +56,18 @@ export const MealsUserPlanning = (
           justifyContent={'center'}
           display={'flex'}
           alignItems={'center'}
-          p={2}
         >
-          Repas &nbsp;<FaUtensils />
+          <VStack>
+            <Box paddingRight={2}>Repas</Box>
+
+            <FaUtensils />
+          </VStack>
         </Text>
         <Text
           gridRowStart={4}
           gridRowEnd={5}
           gridColumnStart={1}
-          gridColumnEnd={numberOfDays === 7 ? 6 : 8}
+          gridColumnEnd={6}
           textAlign={'center'}
           overflowWrap={'break-word'}
           borderTopStyle={'solid'}
@@ -78,13 +81,16 @@ export const MealsUserPlanning = (
           p={2}
           backgroundColor={'yellow.50'}
         >
-          Matin&nbsp;<TimeIcon />
+          <VStack>
+            <Box paddingRight={2}>Matin</Box>
+            <TimeIcon />
+          </VStack>
         </Text>
         <Text
           gridRowStart={5}
           gridRowEnd={6}
           gridColumnStart={1}
-          gridColumnEnd={numberOfDays === 7 ? 6 : 8}
+          gridColumnEnd={6}
           textAlign={'center'}
           overflowWrap={'break-word'}
           borderTopStyle={'solid'}
@@ -99,13 +105,16 @@ export const MealsUserPlanning = (
           backgroundColor={'orange.100'}
           p={2}
         >
-          Midi&nbsp;<SunIcon />
+          <VStack>
+            <Box paddingRight={2}>Midi</Box>
+            <SunIcon />
+          </VStack>
         </Text>
         <Text
           gridRowStart={6}
           gridRowEnd={7}
           gridColumnStart={1}
-          gridColumnEnd={numberOfDays === 7 ? 6 : 8}
+          gridColumnEnd={6}
           textAlign={'center'}
           overflowWrap={'break-word'}
           borderTopStyle={'solid'}
@@ -119,7 +128,10 @@ export const MealsUserPlanning = (
           p={2}
           backgroundColor={'#F7F7F7'}
         >
-          Soir&nbsp;<MoonIcon />
+          <VStack>
+            <Box paddingRight={2}>Soir</Box>
+            <MoonIcon />
+          </VStack>
         </Text>
         <Months date={date} month={0} totalDays={totalDays} numberOfDays={numberOfDays}></Months>
         {date.date() + numberOfDays - 1 > totalDays && (
