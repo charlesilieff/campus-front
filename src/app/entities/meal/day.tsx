@@ -1,6 +1,7 @@
 import {
   Box,
-  Checkbox
+  Checkbox,
+  VStack
 } from '@chakra-ui/react'
 import type { IMeal } from 'app/shared/model/meal.model'
 import type { Dayjs } from 'dayjs'
@@ -18,6 +19,7 @@ interface IProps {
 
 type MealType = 'specialLunch' | 'regularDinner' | 'specialDinner' | 'breakfast' | 'regularLunch'
 
+// eslint-disable-next-line complexity
 export const Day = ({ positionX, date, index, mealsData }: IProps) => {
   const handleChangeMeal = (mealType: MealType) => {
     if (mealsData[index][mealType] === 0) {
@@ -62,9 +64,9 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
   const [mealsNumber, setMealsNumber] = useState(defaultValue)
 
   let style: React.CSSProperties
-  style = commentStyle(positionX, date, mealsData, index)
+  style = commentStyle(positionX, date)
   useEffect(() => {
-    style = commentStyle(positionX, date, mealsData, index)
+    style = commentStyle(positionX, date)
   }, [mealsData])
 
   useEffect(() => {
@@ -98,7 +100,10 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
   return (
     <>
       <Box className="day popup-comment" style={style}>
-        {date.format('ddd DD ')}
+        <VStack spacing={0}>
+          <Box>{date.format('ddd')}</Box>
+          <Box>{date.format('DD')}</Box>
+        </VStack>
       </Box>
 
       <Box
@@ -109,8 +114,20 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
         gridColumnEnd={positionX + 1}
         gridRowStart={'4'}
         gridRowEnd={'5'}
-        borderLeftWidth={dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em'}
-        borderLeftStyle={dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed'}
+        borderLeftWidth={positionX === 3 ?
+          '0.3em' :
+          dayMonth === 1 ?
+          '0.3em' :
+          dayWeek === 1 ?
+          '0.15em' :
+          '0.01em'}
+        borderLeftStyle={positionX === 3 ?
+          'double' :
+          dayMonth === 1 ?
+          'double' :
+          dayWeek === 1 ?
+          'solid' :
+          'solid'}
         borderTopStyle={'solid'}
         borderTopWidth={'0.1em'}
         borderBottomWidth={'0.01em'}
@@ -136,8 +153,20 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
         gridColumnEnd={positionX + 1}
         gridRowStart={'5'}
         gridRowEnd={testRegular ? '6' : '5'}
-        borderLeftWidth={dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em'}
-        borderLeftStyle={dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed'}
+        borderLeftWidth={positionX === 3 ?
+          '0.3em' :
+          dayMonth === 1 ?
+          '0.3em' :
+          dayWeek === 1 ?
+          '0.15em' :
+          '0.01em'}
+        borderLeftStyle={positionX === 3 ?
+          'double' :
+          dayMonth === 1 ?
+          'double' :
+          dayWeek === 1 ?
+          'solid' :
+          'solid'}
         borderTopStyle={'solid'}
         // borderTopWidth={'0.1em'}
         borderBottomWidth={'0.01em'}
@@ -165,8 +194,20 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
         gridColumnEnd={positionX + 1}
         gridRowStart={'5'}
         gridRowEnd={!testRegular ? '6' : '5'}
-        borderLeftWidth={dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em'}
-        borderLeftStyle={dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed'}
+        borderLeftWidth={positionX === 3 ?
+          '0.3em' :
+          dayMonth === 1 ?
+          '0.3em' :
+          dayWeek === 1 ?
+          '0.15em' :
+          '0.01em'}
+        borderLeftStyle={positionX === 3 ?
+          'double' :
+          dayMonth === 1 ?
+          'double' :
+          dayWeek === 1 ?
+          'solid' :
+          'solid'}
         borderTopStyle={'solid'}
         // borderTopWidth={'0.1em'}
         borderBottomWidth={'0.01em'}
@@ -194,8 +235,20 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
         gridColumnEnd={positionX + 1}
         gridRowStart={'6'}
         gridRowEnd={testRegular ? '7' : '6'}
-        borderLeftWidth={dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em'}
-        borderLeftStyle={dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed'}
+        borderLeftWidth={positionX === 3 ?
+          '0.3em' :
+          dayMonth === 1 ?
+          '0.3em' :
+          dayWeek === 1 ?
+          '0.15em' :
+          '0.01em'}
+        borderLeftStyle={positionX === 3 ?
+          'double' :
+          dayMonth === 1 ?
+          'double' :
+          dayWeek === 1 ?
+          'solid' :
+          'solid'}
         borderTopStyle={'solid'}
         // borderTopWidth={'0.1em'}
         borderBottomWidth={'0.01em'}
@@ -223,8 +276,20 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
         gridColumnEnd={positionX + 1}
         gridRowStart={'6'}
         gridRowEnd={testRegular ? '7' : '6'}
-        borderLeftWidth={dayMonth === 1 ? '0.3em' : dayWeek === 1 ? '0.15em' : '0.01em'}
-        borderLeftStyle={dayMonth === 1 ? 'double' : dayWeek === 1 ? 'solid' : 'dashed'}
+        borderLeftWidth={positionX === 3 ?
+          '0.3em' :
+          dayMonth === 1 ?
+          '0.3em' :
+          dayWeek === 1 ?
+          '0.15em' :
+          '0.01em'}
+        borderLeftStyle={positionX === 3 ?
+          'double' :
+          dayMonth === 1 ?
+          'double' :
+          dayWeek === 1 ?
+          'solid' :
+          'solid'}
         borderTopStyle={'solid'}
         borderBottomWidth={'0.01em'}
         borderBottomStyle={'solid'}
@@ -253,20 +318,23 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
  * @param index
  * @returns
  */
-function commentStyle(positionX: number, date: dayjs.Dayjs, mealsContext: IMeal[], index: number) {
+function commentStyle(positionX: number, date: dayjs.Dayjs) {
   const style = {
     gridColumnStart: positionX,
     gridColumnEnd: positionX + 1,
     borderLeftWidth: '0.01em',
+    borderColor: '#D9D9D9',
     backgroundColor: 'white'
   } as React.CSSProperties
-  if (positionX === 8 || date.date() === 1 || date.day() === 1) {
+  if (date.day() === 1) {
     style.borderLeftWidth = '0.2em'
   }
-  if (mealsContext[index]?.id !== undefined) {
-    // if (mealsContext[index]?.comment?.length > 0) {
-    style.backgroundColor = '#B8D8BA'
-  } else style.backgroundColor = '#C4C0BF'
+  if (positionX === 3 || date.date() === 1) {
+    style.borderLeftStyle = 'double'
+    style.borderLeftWidth = '0.4em'
+    style.borderLeftColor = '#D9D9D9'
+  }
+
   return style
 }
 

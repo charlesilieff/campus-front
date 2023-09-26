@@ -11,7 +11,7 @@ interface IProps {
 }
 
 export const Months: FunctionComponent<IProps> = ({ month, date, totalDays, numberOfDays }) => {
-  const offSet = numberOfDays === 7 ? 6 : 8
+  const offSet = 3
 
   const endTable = numberOfDays + offSet
 
@@ -36,9 +36,11 @@ export const Months: FunctionComponent<IProps> = ({ month, date, totalDays, numb
       py={2}
       borderColor={'#D9D9D9'}
       borderBottomWidth={'0.1em'}
-      borderLeftWidth={'0.2em'}
+      borderLeftWidth={'0.3em'}
       textTransform={'capitalize'}
       fontWeight={'bold'}
+      borderLeftStyle="double"
+      borderLeftColor="#D9D9D9"
       backgroundColor={'white'}
     >
       {date.add(month, 'month').format('MMMM')}

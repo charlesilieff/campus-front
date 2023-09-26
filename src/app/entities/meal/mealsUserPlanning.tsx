@@ -32,7 +32,7 @@ export const MealsUserPlanning = (
 
   // Objets contenant la position en x dans la grille des jours.
   const positionX = {}
-  const positionX7Day = numberOfDays === 7 ? 6 : 8
+  const positionX7Day = 3
 
   return (
     <Box>
@@ -46,7 +46,7 @@ export const MealsUserPlanning = (
           gridRowStart={1}
           gridRowEnd={4}
           gridColumnStart={1}
-          gridColumnEnd={6}
+          gridColumnEnd={1}
           borderRightStyle={'solid'}
           borderRightWidth={'0.15em'}
           borderColor={'#D9D9D9'}
@@ -67,7 +67,7 @@ export const MealsUserPlanning = (
           gridRowStart={4}
           gridRowEnd={5}
           gridColumnStart={1}
-          gridColumnEnd={6}
+          gridColumnEnd={1}
           textAlign={'center'}
           overflowWrap={'break-word'}
           borderTopStyle={'solid'}
@@ -90,7 +90,7 @@ export const MealsUserPlanning = (
           gridRowStart={5}
           gridRowEnd={6}
           gridColumnStart={1}
-          gridColumnEnd={6}
+          gridColumnEnd={1}
           textAlign={'center'}
           overflowWrap={'break-word'}
           borderTopStyle={'solid'}
@@ -114,7 +114,7 @@ export const MealsUserPlanning = (
           gridRowStart={6}
           gridRowEnd={7}
           gridColumnStart={1}
-          gridColumnEnd={6}
+          gridColumnEnd={1}
           textAlign={'center'}
           overflowWrap={'break-word'}
           borderTopStyle={'solid'}
