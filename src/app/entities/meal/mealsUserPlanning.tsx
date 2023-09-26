@@ -1,8 +1,9 @@
 import { MoonIcon, SunIcon, TimeIcon } from '@chakra-ui/icons'
-import { Box, Grid, Text, VStack } from '@chakra-ui/react'
+import { Box, Checkbox, Grid, Text, VStack } from '@chakra-ui/react'
 import type { IMeal } from 'app/shared/model/meal.model'
 import { getDateKey } from 'app/shared/util/date-utils'
 import type { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 import React from 'react'
 import { FaUtensils } from 'react-icons/fa'
 
@@ -50,71 +51,135 @@ export const MealsUserPlanning = (
           borderRightStyle={'solid'}
           borderRightWidth={'0.15em'}
           borderColor={'#D9D9D9'}
-          py={2}
           borderBottom={0}
           borderLeft={0}
           justifyContent={'center'}
           display={'flex'}
           alignItems={'center'}
         >
-          <VStack>
+          <VStack justifyContent={'center'}>
             <Box paddingRight={2}>Repas</Box>
 
             <FaUtensils />
           </VStack>
         </Text>
         <Text
+          gridRowStart={1}
+          gridRowEnd={4}
+          gridColumnStart={2}
+          gridColumnEnd={3}
+          borderRightStyle={'none'}
+          borderBottom={0}
+          borderLeft={0}
+          justifyContent={'center'}
+          display={'flex'}
+          fontSize={'1rem'}
+        >
+          <VStack spacing={0} justifyContent={'center'}>
+            <Box>Sélectionner</Box>
+            <Box>la</Box>
+            <Box>période</Box>
+          </VStack>
+        </Text>
+        <Text
           gridRowStart={4}
           gridRowEnd={5}
           gridColumnStart={1}
-          gridColumnEnd={1}
+          gridColumnEnd={2}
           textAlign={'center'}
           overflowWrap={'break-word'}
           borderTopStyle={'solid'}
           borderRightStyle={'solid'}
           borderWidth={'0.15em'}
           borderColor={'#D9D9D9'}
-          py={2}
-          mt={'-0.1rem'}
           borderBottom={0}
           borderLeft={0}
           p={2}
           backgroundColor={'yellow.50'}
         >
-          <VStack>
+          <VStack justifyContent={'center'}>
             <Box paddingRight={2}>Matin</Box>
             <TimeIcon />
           </VStack>
         </Text>
         <Text
+          gridRowStart={4}
+          gridRowEnd={5}
+          gridColumnStart={2}
+          gridColumnEnd={3}
+          textAlign={'center'}
+          overflowWrap={'break-word'}
+          borderTopStyle={'solid'}
+          borderRightStyle={'none'}
+          borderWidth={'0.15em'}
+          borderColor={'#D9D9D9'}
+          borderBottom={0}
+          borderLeft={0}
+          p={2}
+          backgroundColor={'yellow.50'}
+        >
+          <Checkbox
+            size="lg"
+            mx={'auto'}
+            p={2}
+            colorScheme={'orange'}
+            onChange={_ => console.log('breakfast')}
+            isChecked={true}
+            isDisabled={date.isBefore(dayjs().add(1, 'day'))}
+          />
+        </Text>
+        <Text
           gridRowStart={5}
           gridRowEnd={6}
           gridColumnStart={1}
-          gridColumnEnd={1}
+          gridColumnEnd={2}
           textAlign={'center'}
           overflowWrap={'break-word'}
           borderTopStyle={'solid'}
           borderRightStyle={'solid'}
           borderWidth={'0.15em'}
           borderColor={'#D9D9D9'}
-          mt={'-0.1rem'}
           borderBottom={0}
           borderLeft={0}
-          alignContent={'center'} // TODO : center??
-          verticalAlign={'middle'} // TODO : center??
           backgroundColor={'orange.100'}
           p={2}
         >
-          <VStack>
+          <VStack justifyContent={'center'}>
             <Box paddingRight={2}>Midi</Box>
             <SunIcon />
           </VStack>
         </Text>
+        <Box
+          gridRowStart={5}
+          gridRowEnd={6}
+          gridColumnStart={2}
+          gridColumnEnd={3}
+          textAlign={'center'}
+          overflowWrap={'break-word'}
+          borderTopStyle={'solid'}
+          borderRightStyle={'none'}
+          borderWidth={'0.15em'}
+          borderColor={'#D9D9D9'}
+          borderBottom={0}
+          borderLeft={0}
+          backgroundColor={'orange.100'}
+        >
+          <Checkbox
+            size="lg"
+            mx={'auto'}
+            p={2}
+            colorScheme={'orange'}
+            onChange={_ => console.log('breakfast')}
+            isChecked={true}
+            isDisabled={date.isBefore(dayjs().add(1, 'day'))}
+          />
+        </Box>
+
         <Text
           gridRowStart={6}
           gridRowEnd={7}
           gridColumnStart={1}
-          gridColumnEnd={1}
+          gridColumnEnd={2}
           textAlign={'center'}
           overflowWrap={'break-word'}
           borderTopStyle={'solid'}
@@ -122,7 +187,6 @@ export const MealsUserPlanning = (
           borderWidth={'0.15em'}
           borderColor={'#D9D9D9'}
           py={2}
-          mt={'-0.1rem'}
           borderBottom={0}
           borderLeft={0}
           p={2}
@@ -133,6 +197,33 @@ export const MealsUserPlanning = (
             <MoonIcon />
           </VStack>
         </Text>
+        <Box
+          gridRowStart={6}
+          gridRowEnd={7}
+          gridColumnStart={2}
+          gridColumnEnd={3}
+          textAlign={'center'}
+          overflowWrap={'break-word'}
+          borderTopStyle={'solid'}
+          borderRightStyle={'none'}
+          borderWidth={'0.15em'}
+          borderColor={'#D9D9D9'}
+          py={2}
+          borderBottom={0}
+          borderLeft={0}
+          p={2}
+          backgroundColor={'#F7F7F7'}
+        >
+          <Checkbox
+            size="lg"
+            mx={'auto'}
+            p={2}
+            colorScheme={'orange'}
+            onChange={_ => console.log('breakfast')}
+            isChecked={true}
+            isDisabled={date.isBefore(dayjs().add(1, 'day'))}
+          />
+        </Box>
         <Months date={date} month={0} totalDays={totalDays} numberOfDays={numberOfDays}></Months>
         {date.date() + numberOfDays - 1 > totalDays && (
           <Months date={date} month={1} totalDays={totalDays} numberOfDays={numberOfDays}></Months>
