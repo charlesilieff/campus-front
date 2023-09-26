@@ -63,11 +63,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
   }
   const [mealsNumber, setMealsNumber] = useState(defaultValue)
 
-  let style: React.CSSProperties
-  style = commentStyle(positionX, date)
-  useEffect(() => {
-    style = commentStyle(positionX, date)
-  }, [mealsData])
+  const style: React.CSSProperties = commentStyle(positionX, date)
 
   useEffect(() => {
     const mealsToCookFromDb: IMealsNumber = {
@@ -99,7 +95,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
 
   return (
     <>
-      <Box className="day popup-comment" style={style}>
+      <Box className="day" style={style}>
         <VStack spacing={0}>
           <Box>{date.format('ddd')}</Box>
           <Box>{date.format('DD')}</Box>
@@ -152,7 +148,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
         gridColumnStart={positionX}
         gridColumnEnd={positionX + 1}
         gridRowStart={'5'}
-        gridRowEnd={testRegular ? '6' : '5'}
+        gridRowEnd={6}
         borderLeftWidth={positionX === 3 ?
           '0.3em' :
           dayMonth === 1 ?
@@ -193,7 +189,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
         gridColumnStart={positionX}
         gridColumnEnd={positionX + 1}
         gridRowStart={'5'}
-        gridRowEnd={!testRegular ? '6' : '5'}
+        gridRowEnd={6}
         borderLeftWidth={positionX === 3 ?
           '0.3em' :
           dayMonth === 1 ?
@@ -234,7 +230,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
         gridColumnStart={positionX}
         gridColumnEnd={positionX + 1}
         gridRowStart={'6'}
-        gridRowEnd={testRegular ? '7' : '6'}
+        gridRowEnd={'7'}
         borderLeftWidth={positionX === 3 ?
           '0.3em' :
           dayMonth === 1 ?
@@ -275,7 +271,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
         gridColumnStart={positionX}
         gridColumnEnd={positionX + 1}
         gridRowStart={'6'}
-        gridRowEnd={testRegular ? '7' : '6'}
+        gridRowEnd={'7'}
         borderLeftWidth={positionX === 3 ?
           '0.3em' :
           dayMonth === 1 ?
