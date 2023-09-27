@@ -9,6 +9,7 @@ import { FaUtensils } from 'react-icons/fa'
 
 import { Day } from './day'
 import { Months } from './months'
+import { periodCheckChecked } from './utils'
 
 interface IProps {
   date: Dayjs
@@ -16,12 +17,7 @@ interface IProps {
   numberOfDays: number
   mealsData: IMeal[]
 }
-export type MealType =
-  | 'specialLunch'
-  | 'regularDinner'
-  | 'specialDinner'
-  | 'breakfast'
-  | 'regularLunch'
+
 /**
  * Affiche un tableau (colonne : les jours (calendrier)).
  * Chaque jour (Day) comporte les informations suivantes :
@@ -42,29 +38,22 @@ export const MealsUserPlanning = (
 
   const periodCheckDisabled = date.add(numberOfDays, 'days').isBefore(dayjs().add(2, 'day'))
     || mealsData.every(m => m.id === undefined)
-  const periodCheckChecked = (mealType: MealType, mealsData: IMeal[]): boolean => {
-    if (mealsData.every(m => m.id === undefined)) {
-      return false
-    } else if (mealType === 'breakfast') {
-      return mealsData.every(meal => {
-        console.log(
-          'breakfast check',
-          meal.id === undefined
-            || (meal.breakfast === 0 && meal.breakfast !== null && meal.breakfast !== undefined)
-        )
-        return meal.id === undefined
-          || (meal.breakfast !== null && meal.breakfast !== undefined && meal.breakfast > 0)
-      })
-    }
-    return true
-  }
+
   const [breakfastChecked, setBreakfastChecked] = useState(
     periodCheckChecked('breakfast', mealsData)
   )
+  const [dinnerChecked, setDinnerChecked] = useState(
+    periodCheckChecked('dinner', mealsData)
+  )
+  const [lunchChecked, setLunchChecked] = useState(
+    periodCheckChecked('lunch', mealsData)
+  )
   useEffect(() => {
     setBreakfastChecked(periodCheckChecked('breakfast', mealsData))
+    setLunchChecked(periodCheckChecked('lunch', mealsData))
+    setDinnerChecked(periodCheckChecked('dinner', mealsData))
   }, [...mealsData])
-  console.log('breakfastChecked', breakfastChecked)
+
   return (
     <Grid
       className="grid-container"
@@ -198,7 +187,7 @@ export const MealsUserPlanning = (
           p={2}
           colorScheme={'orange'}
           onChange={_ => console.log('breakfast')}
-          isChecked={breakfastChecked}
+          isChecked={lunchChecked}
           isDisabled={periodCheckDisabled}
         />
       </Box>
@@ -246,7 +235,7 @@ export const MealsUserPlanning = (
           p={2}
           colorScheme={'orange'}
           onChange={_ => console.log('breakfast')}
-          isChecked={breakfastChecked}
+          isChecked={dinnerChecked}
           isDisabled={periodCheckDisabled}
         />
       </Box>
