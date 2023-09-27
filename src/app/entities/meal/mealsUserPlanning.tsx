@@ -16,6 +16,7 @@ interface IProps {
   totalDays: number
   numberOfDays: number
   mealsData: IMeal[]
+  setMealsData: (mealsData: IMeal[]) => void
 }
 
 /**
@@ -27,7 +28,7 @@ interface IProps {
  *  - Repas du soir.
  */
 export const MealsUserPlanning = (
-  { date, totalDays, numberOfDays, mealsData }: IProps
+  { date, totalDays, numberOfDays, mealsData, setMealsData }: IProps
 ) => {
   // On souhaite afficher 31 jours => Tableau de 31 élements.
   const monthDays = Array.from({ length: numberOfDays })
@@ -48,11 +49,25 @@ export const MealsUserPlanning = (
   const [lunchChecked, setLunchChecked] = useState(
     periodCheckChecked('lunch', mealsData)
   )
+
+  const handleBreakfastChange = (breakfastChecked: boolean, mealsData: IMeal[]): IMeal[] => {
+    const now = dayjs()
+    // @ts-expect-error : TODO : corriger le type de mealsData
+    return mealsData.map(m => ({
+      ...m,
+      breakfast: dayjs(m.date).isBefore(now.add(1, 'day')) ? m.breakfast : breakfastChecked ? 0 : 1
+    }))
+  }
+
   useEffect(() => {
     setBreakfastChecked(periodCheckChecked('breakfast', mealsData))
-    setLunchChecked(periodCheckChecked('lunch', mealsData))
-    setDinnerChecked(periodCheckChecked('dinner', mealsData))
-  }, [...mealsData])
+  }, [mealsData])
+  // useEffect(() => {
+  //   setLunchChecked(periodCheckChecked('lunch', mealsData))
+  // }, [...mealsData])
+  // useEffect(() => {
+  //   setDinnerChecked(periodCheckChecked('dinner', mealsData))
+  // }, [...mealsData])
 
   return (
     <Grid
@@ -141,7 +156,7 @@ export const MealsUserPlanning = (
           mx={'auto'}
           p={2}
           colorScheme={'orange'}
-          onChange={_ => console.log('breakfast')}
+          onChange={_ => setMealsData(handleBreakfastChange(breakfastChecked, mealsData))}
           isChecked={breakfastChecked}
           isDisabled={periodCheckDisabled}
         />
@@ -257,6 +272,7 @@ export const MealsUserPlanning = (
             date={dateDay}
             index={index}
             mealsData={mealsData}
+            setMealsData={setMealsData}
           />
         )
       })}

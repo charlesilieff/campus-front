@@ -9,23 +9,30 @@ import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 
 import type { IMealsNumber } from './IMealsNumber'
-import type { MealType } from './mealsUserPlanning'
+import type { MealType } from './utils'
 
 interface IProps {
   positionX: number
   date: Dayjs
   index: number
   mealsData: IMeal[]
+  setMealsData: (mealsData: IMeal[]) => void
 }
 
 // eslint-disable-next-line complexity
-export const Day = ({ positionX, date, index, mealsData }: IProps) => {
+export const Day = ({ positionX, date, index, mealsData, setMealsData }: IProps) => {
   const handleChangeMeal = (mealType: MealType) => {
-    if (mealsData[index][mealType] === 0) {
-      mealsData[index][mealType] = 1
-    } else {
-      mealsData[index][mealType] = 0
-    }
+    // if (mealsData[index][mealType] === 0) {
+    //   mealsData[index][mealType] = 1
+    // } else {
+    //   mealsData[index][mealType] = 0
+    // }
+    setMealsData(
+      mealsData.map((m, i) => ({
+        ...m,
+        [mealType]: index === i ? m[mealType] === 0 ? 1 : 0 : m[mealType]
+      }))
+    )
     const mealsToCookFromDb: IMealsNumber = {
       // @ts-expect-error TODO: fix this
       id: mealsData[index]?.id,
@@ -63,7 +70,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
   const [mealsNumber, setMealsNumber] = useState(defaultValue)
 
   const style: React.CSSProperties = commentStyle(positionX, date)
-
+  const now = dayjs()
   useEffect(() => {
     const mealsToCookFromDb: IMealsNumber = {
       // @ts-expect-error TODO: fix this
@@ -135,7 +142,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
               colorScheme={'orange'}
               onChange={_ => handleChangeMeal('breakfast')}
               isChecked={mealsNumber?.breakfast === 1}
-              isDisabled={date.isBefore(dayjs().add(1, 'day'))}
+              isDisabled={date.isBefore(now.add(1, 'day'))}
             />
           ) :
           null}
@@ -176,7 +183,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
               colorScheme={'orange'}
               onChange={_ => handleChangeMeal('regularLunch')}
               isChecked={mealsNumber?.lunchtime.regularDiet === 1}
-              isDisabled={date.isBefore(dayjs().add(1, 'day'))}
+              isDisabled={date.isBefore(now.add(1, 'day'))}
             />
           ) :
           null}
@@ -216,7 +223,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
               colorScheme={'orange'}
               onChange={_ => handleChangeMeal('specialLunch')}
               isChecked={mealsNumber?.lunchtime.specialDiet === 1}
-              isDisabled={date.isBefore(dayjs().add(1, 'day'))}
+              isDisabled={date.isBefore(now.add(1, 'day'))}
             />
           ) :
           null}
@@ -257,7 +264,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
               colorScheme={'orange'}
               onChange={_ => handleChangeMeal('regularDinner')}
               isChecked={mealsNumber?.dinner.regularDiet === 1}
-              isDisabled={date.isBefore(dayjs().add(1, 'day'))}
+              isDisabled={date.isBefore(now.add(1, 'day'))}
             />
           ) :
           null}
@@ -296,7 +303,7 @@ export const Day = ({ positionX, date, index, mealsData }: IProps) => {
               colorScheme={'orange'}
               onChange={_ => handleChangeMeal('specialDinner')}
               isChecked={mealsNumber?.dinner.specialDiet === 1}
-              isDisabled={date.isBefore(dayjs().add(1, 'day'))}
+              isDisabled={date.isBefore(now.add(1, 'day'))}
             />
           ) :
           null}

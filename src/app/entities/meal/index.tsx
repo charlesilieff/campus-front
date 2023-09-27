@@ -243,6 +243,7 @@ export const MealTable = () => {
           totalDays={date.daysInMonth()}
           numberOfDays={numberOfDays}
           mealsData={mealsData}
+          setMealsData={setMealsData}
         />
         <VStack m={4} spacing={8}>
           <ConfirmationUpdateMealsModal mealsData={mealsData} setRefreshing={setRefreshing} />
