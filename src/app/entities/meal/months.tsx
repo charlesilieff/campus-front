@@ -40,7 +40,6 @@ export const Months: FunctionComponent<IProps> = ({ month, date, totalDays, numb
       textTransform={'capitalize'}
       fontWeight={'bold'}
       borderLeftStyle="double"
-      borderLeftColor="#D9D9D9"
       backgroundColor={'white'}
     >
       {date.add(month, 'month').format('MMMM')}

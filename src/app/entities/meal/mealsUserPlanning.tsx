@@ -41,11 +41,19 @@ export const MealsUserPlanning = (
   const positionX7Day = 3
 
   const periodCheckDisabled = date.add(numberOfDays, 'days').isBefore(dayjs().add(2, 'day'))
+    || mealsData.every(m => m.id === undefined)
   const periodCheckChecked = (mealType: MealType, mealsData: IMeal[]): boolean => {
-    if (mealType === 'breakfast') {
+    if (mealsData.every(m => m.id === undefined)) {
+      return false
+    } else if (mealType === 'breakfast') {
       return mealsData.every(meal => {
-        console.log('breakfast', meal.breakfast)
-        return meal.breakfast === 0 && meal.breakfast !== null && meal.breakfast !== undefined
+        console.log(
+          'breakfast check',
+          meal.id === undefined
+            || (meal.breakfast === 0 && meal.breakfast !== null && meal.breakfast !== undefined)
+        )
+        return meal.id === undefined
+          || (meal.breakfast !== null && meal.breakfast !== undefined && meal.breakfast > 0)
       })
     }
     return true
@@ -55,7 +63,7 @@ export const MealsUserPlanning = (
   )
   useEffect(() => {
     setBreakfastChecked(periodCheckChecked('breakfast', mealsData))
-  }, [date])
+  }, [...mealsData])
   console.log('breakfastChecked', breakfastChecked)
   return (
     <Grid
@@ -92,7 +100,8 @@ export const MealsUserPlanning = (
         borderLeft={0}
         justifyContent={'center'}
         display={'flex'}
-        fontSize={'1rem'}
+        fontSize={'0.8rem'}
+        px={1}
       >
         <VStack spacing={0} justifyContent={'center'}>
           <Box>Sélectionner</Box>
