@@ -16,9 +16,9 @@ import React, { useState } from 'react'
 import { FaBan, FaSave } from 'react-icons/fa'
 
 export const ConfirmationUpdateMealsModal: FunctionComponent<
-  { mealsData: IMeal[]; setRefreshing: (refreshing: boolean) => void }
+  { mealsData: IMeal[]; setRefreshing: (refreshing: boolean) => void; isDisabled: boolean }
 > = (
-  { mealsData, setRefreshing }
+  { mealsData, setRefreshing, isDisabled }
 ): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false)
 
@@ -60,8 +60,9 @@ export const ConfirmationUpdateMealsModal: FunctionComponent<
           backgroundColor: '#38A169'
         }}
         size={{ base: 'sm', md: 'md' }}
+        isDisabled={isDisabled}
       >
-        Modifier les repas tels que sélectionnés
+        Confirmer
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

@@ -1,20 +1,28 @@
-import { Box, Button, Heading, HStack, Input, Stack, Text, useToast,
-  VStack } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Checkbox,
+  Heading,
+  HStack,
+  Input,
+  Stack,
+  Text,
+  useToast,
+  VStack
+} from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from 'app/config/store'
-import { getOneBedUserReservationsByUserId,
-  getReservation } from 'app/entities/reservation/reservation.reducer'
+import {
+  getOneBedUserReservationsByUserId,
+  getReservation
+} from 'app/entities/reservation/reservation.reducer'
 import type { IMeal } from 'app/shared/model/meal.model'
 import axios from 'axios'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
-import { Option as O } from 'effect'
-import { ReadonlyArray as A } from 'effect'
-import { pipe } from 'effect'
+import { Option as O, pipe, ReadonlyArray as A } from 'effect'
 import React, { useEffect, useState } from 'react'
 import { FaCalendar, FaCaretLeft, FaCaretRight } from 'react-icons/fa'
 
-import { ConfirmationAddMealsScreenModal } from './confirmationAddMealsScreenModal'
-import { ConfirmationRemoveMealsScreenModal } from './confirmationRemoveMealsScreenModal'
 import { ConfirmationUpdateMealsByPeriodModal } from './confirmationUpdateMealsByPeriodeModal'
 import { ConfirmationUpdateMealsModal } from './confirmationUpdateMealsModal'
 import { DisplayTotalMeals } from './displayTotalMeals'
@@ -32,7 +40,11 @@ export const MealTable = () => {
   const [endDate, setEndDate] = useState<O.Option<Dayjs>>(O.none())
   const [mealsData, setMealsData] = useState([] as IMeal[])
   const [numberOfDays, setNumberOfDays] = useState(31)
-
+  const [isMealDataUpdated, setIsMealDataUpdated] = useState(true)
+  const handleSetMealsData = (mealsData: IMeal[]) => {
+    setMealsData(mealsData)
+    setIsMealDataUpdated(false)
+  }
   /**
    * Get Reservations by user.
    */
@@ -195,7 +207,7 @@ export const MealTable = () => {
 
   return (
     <>
-      <Box m={4}>
+      <Stack m={4}>
         <Heading alignSelf={'flex-start'}>Mes repas réservés</Heading>
         <Stack direction={{ base: 'column', md: 'row' }} justifyContent={'center'}>
           <HStack m={4} spacing={8}>
@@ -243,28 +255,17 @@ export const MealTable = () => {
           totalDays={date.daysInMonth()}
           numberOfDays={numberOfDays}
           mealsData={mealsData}
-          setMealsData={setMealsData}
+          setMealsData={handleSetMealsData}
         />
-        <VStack m={4} spacing={8}>
-          <ConfirmationUpdateMealsModal mealsData={mealsData} setRefreshing={setRefreshing} />
-          <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
-            <ConfirmationRemoveMealsScreenModal
-              mealsData={mealsData}
-              date={date}
-              numberOfDays={numberOfDays}
-              setRefreshing={setRefreshing}
-              setDate={setDate}
-            />
-            <ConfirmationAddMealsScreenModal
-              mealsData={mealsData}
-              date={date}
-              numberOfDays={numberOfDays}
-              setRefreshing={setRefreshing}
-              setDate={setDate}
-            />
-          </Stack>
+        <VStack m={4} spacing={8} justifyContent={'center'}>
+          <Checkbox size={'lg'} fontWeight={'bold'}>Régime sans gluten/lactose</Checkbox>
+          <ConfirmationUpdateMealsModal
+            mealsData={mealsData}
+            setRefreshing={setRefreshing}
+            isDisabled={isMealDataUpdated}
+          />
         </VStack>
-      </Box>
+      </Stack>
       <form>
         <HStack m={4} spacing={8} margin={4} justifyContent={'center'}>
           <Heading size={'md'}>Désinscription aux repas par période</Heading>

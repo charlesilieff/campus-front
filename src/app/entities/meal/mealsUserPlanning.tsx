@@ -149,13 +149,11 @@ export const MealsUserPlanning = (
         borderLeft={0}
         justifyContent={'center'}
         display={'flex'}
-        fontSize={'0.8rem'}
         px={1}
       >
         <VStack spacing={0} justifyContent={'center'}>
-          <Box>Sélectionner</Box>
-          <Box>la</Box>
-          <Box>période</Box>
+          <Box>Période</Box>
+          <Checkbox size="lg" mx={'auto'} p={2} colorScheme={'orange'} />
         </VStack>
       </Text>
       <Text
