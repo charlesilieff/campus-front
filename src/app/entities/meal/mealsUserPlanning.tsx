@@ -58,16 +58,61 @@ export const MealsUserPlanning = (
       breakfast: dayjs(m.date).isBefore(now.add(1, 'day')) ? m.breakfast : breakfastChecked ? 0 : 1
     }))
   }
+  const [isSpecialMeal, setIsSpecialMeal] = useState(
+    mealsData.some(m => m.specialLunch === 1 || m.specialDinner === 1)
+  )
+  console.log('isSpecialMeal', isSpecialMeal)
+  const handleLunchChange = (lunchChecked: boolean, mealsData: IMeal[]): IMeal[] => {
+    const now = dayjs()
+
+    // @ts-expect-error : TODO : corriger le type de mealsData
+    return mealsData.map(m => ({
+      ...m,
+      regularLunch: dayjs(m.date).isBefore(now.add(1, 'day')) ?
+        m.regularLunch :
+        isSpecialMeal ?
+        0 :
+        lunchChecked ?
+        0 :
+        1,
+      specialLunch: dayjs(m.date).isBefore(now.add(1, 'day')) ?
+        m.specialLunch :
+        !isSpecialMeal ?
+        0 :
+        lunchChecked ?
+        0 :
+        1
+    }))
+  }
+
+  const handleDinnerChange = (dinnerChecked: boolean, mealsData: IMeal[]): IMeal[] => {
+    const now = dayjs()
+
+    // @ts-expect-error : TODO : corriger le type de mealsData
+    return mealsData.map(m => ({
+      ...m,
+      regularDinner: dayjs(m.date).isBefore(now.add(1, 'day')) ?
+        m.regularDinner :
+        isSpecialMeal ?
+        0 :
+        dinnerChecked ?
+        0 :
+        1,
+      specialDinner: dayjs(m.date).isBefore(now.add(1, 'day')) ?
+        m.specialDinner :
+        !isSpecialMeal ?
+        0 :
+        dinnerChecked ?
+        0 :
+        1
+    }))
+  }
 
   useEffect(() => {
     setBreakfastChecked(periodCheckChecked('breakfast', mealsData))
-  }, [mealsData])
-  // useEffect(() => {
-  //   setLunchChecked(periodCheckChecked('lunch', mealsData))
-  // }, [...mealsData])
-  // useEffect(() => {
-  //   setDinnerChecked(periodCheckChecked('dinner', mealsData))
-  // }, [...mealsData])
+    setLunchChecked(periodCheckChecked('lunch', mealsData))
+    setDinnerChecked(periodCheckChecked('dinner', mealsData))
+  }, [mealsData.map(m => m.breakfast)])
 
   return (
     <Grid
@@ -201,7 +246,7 @@ export const MealsUserPlanning = (
           mx={'auto'}
           p={2}
           colorScheme={'orange'}
-          onChange={_ => console.log('breakfast')}
+          onChange={_ => setMealsData(handleLunchChange(lunchChecked, mealsData))}
           isChecked={lunchChecked}
           isDisabled={periodCheckDisabled}
         />
@@ -249,7 +294,7 @@ export const MealsUserPlanning = (
           mx={'auto'}
           p={2}
           colorScheme={'orange'}
-          onChange={_ => console.log('breakfast')}
+          onChange={_ => setMealsData(handleDinnerChange(dinnerChecked, mealsData))}
           isChecked={dinnerChecked}
           isDisabled={periodCheckDisabled}
         />
