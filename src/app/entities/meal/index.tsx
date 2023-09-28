@@ -258,7 +258,9 @@ export const MealTable = () => {
           setMealsData={handleSetMealsData}
         />
         <VStack m={4} spacing={8} justifyContent={'center'}>
-          <Checkbox size={'lg'} fontWeight={'bold'}>Régime sans gluten/lactose</Checkbox>
+          <Checkbox size={'lg'} fontWeight={'bold'} colorScheme={'orange'}>
+            Régime sans gluten/lactose
+          </Checkbox>
           <ConfirmationUpdateMealsModal
             mealsData={mealsData}
             setRefreshing={setRefreshing}

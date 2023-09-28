@@ -40,15 +40,11 @@ export const MealsUserPlanning = (
   const periodCheckDisabled = date.add(numberOfDays, 'days').isBefore(dayjs().add(2, 'day'))
     || mealsData.every(m => m.id === undefined)
 
-  const [breakfastChecked, setBreakfastChecked] = useState(
-    periodCheckChecked('breakfast', mealsData)
-  )
-  const [dinnerChecked, setDinnerChecked] = useState(
-    periodCheckChecked('dinner', mealsData)
-  )
-  const [lunchChecked, setLunchChecked] = useState(
-    periodCheckChecked('lunch', mealsData)
-  )
+  const breakfastChecked = periodCheckChecked('breakfast', mealsData)
+
+  const dinnerChecked = periodCheckChecked('dinner', mealsData)
+
+  const lunchChecked = periodCheckChecked('lunch', mealsData)
 
   const handleBreakfastChange = (breakfastChecked: boolean, mealsData: IMeal[]): IMeal[] => {
     const now = dayjs()
@@ -61,7 +57,7 @@ export const MealsUserPlanning = (
   const [isSpecialMeal, setIsSpecialMeal] = useState(
     mealsData.some(m => m.specialLunch === 1 || m.specialDinner === 1)
   )
-  console.log('isSpecialMeal', isSpecialMeal)
+
   const handleLunchChange = (lunchChecked: boolean, mealsData: IMeal[]): IMeal[] => {
     const now = dayjs()
 
@@ -108,11 +104,11 @@ export const MealsUserPlanning = (
     }))
   }
 
-  useEffect(() => {
-    setBreakfastChecked(periodCheckChecked('breakfast', mealsData))
-    setLunchChecked(periodCheckChecked('lunch', mealsData))
-    setDinnerChecked(periodCheckChecked('dinner', mealsData))
-  }, [mealsData.map(m => m.breakfast)])
+  // useEffect(() => {
+  //   setBreakfastChecked(periodCheckChecked('breakfast', mealsData))
+  //   setLunchChecked(periodCheckChecked('lunch', mealsData))
+  //   setDinnerChecked(periodCheckChecked('dinner', mealsData))
+  // }, [mealsData.map(m => m.breakfast)])
 
   return (
     <Grid
