@@ -21,7 +21,7 @@ import axios from 'axios'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import { Option as O, pipe, ReadonlyArray as A } from 'effect'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaCalendar, FaCaretLeft, FaCaretRight } from 'react-icons/fa'
 
 import { ConfirmationUpdateMealsByPeriodModal } from './confirmationUpdateMealsByPeriodeModal'
@@ -259,7 +259,7 @@ export const MealTable = () => {
           numberOfDays={numberOfDays}
           mealsData={mealsData}
           setMealsData={handleSetMealsData}
-          isSpecialMeal={isSpecialDiet}
+          isSpecialDiet={isSpecialDiet}
         />
         <VStack m={4} spacing={8} justifyContent={'center'}>
           <Tooltip

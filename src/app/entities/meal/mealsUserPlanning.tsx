@@ -17,7 +17,7 @@ interface IProps {
   numberOfDays: number
   mealsData: IMeal[]
   setMealsData: (mealsData: IMeal[]) => void
-  isSpecialMeal: boolean
+  isSpecialDiet: boolean
 }
 
 /**
@@ -29,7 +29,7 @@ interface IProps {
  *  - Repas du soir.
  */
 export const MealsUserPlanning = (
-  { date, totalDays, numberOfDays, mealsData, setMealsData, isSpecialMeal }: IProps
+  { date, totalDays, numberOfDays, mealsData, setMealsData, isSpecialDiet }: IProps
 ) => {
   // On souhaite afficher 31 jours => Tableau de 31 élements.
   const monthDays = Array.from({ length: numberOfDays })
@@ -48,6 +48,41 @@ export const MealsUserPlanning = (
   const lunchChecked = periodCheckChecked('lunch', mealsData)
   const now = dayjs()
 
+  const handleAllMealChange = (allMealChecked: boolean, mealsData: IMeal[], now: Dayjs): IMeal[] =>
+    // @ts-expect-error : TODO : corriger le type de mealsData
+    mealsData.map(m => ({
+      ...m,
+      breakfast: dayjs(m.date).isBefore(now.add(1, 'day')) ? m.breakfast : allMealChecked ? 0 : 1,
+      regularLunch: dayjs(m.date).isBefore(now.add(1, 'day')) ?
+        m.regularLunch :
+        isSpecialDiet ?
+        0 :
+        allMealChecked ?
+        0 :
+        1,
+      specialLunch: dayjs(m.date).isBefore(now.add(1, 'day')) ?
+        m.specialLunch :
+        !isSpecialDiet ?
+        0 :
+        allMealChecked ?
+        0 :
+        1,
+      regularDinner: dayjs(m.date).isBefore(now.add(1, 'day')) ?
+        m.regularDinner :
+        isSpecialDiet ?
+        0 :
+        allMealChecked ?
+        0 :
+        1,
+      specialDinner: dayjs(m.date).isBefore(now.add(1, 'day')) ?
+        m.specialDinner :
+        !isSpecialDiet ?
+        0 :
+        allMealChecked ?
+        0 :
+        1
+    }))
+
   const handleBreakfastChange = (
     breakfastChecked: boolean,
     mealsData: IMeal[],
@@ -65,14 +100,14 @@ export const MealsUserPlanning = (
       ...m,
       regularLunch: dayjs(m.date).isBefore(now.add(1, 'day')) ?
         m.regularLunch :
-        isSpecialMeal ?
+        isSpecialDiet ?
         0 :
         lunchChecked ?
         0 :
         1,
       specialLunch: dayjs(m.date).isBefore(now.add(1, 'day')) ?
         m.specialLunch :
-        !isSpecialMeal ?
+        !isSpecialDiet ?
         0 :
         lunchChecked ?
         0 :
@@ -85,14 +120,14 @@ export const MealsUserPlanning = (
       ...m,
       regularDinner: dayjs(m.date).isBefore(now.add(1, 'day')) ?
         m.regularDinner :
-        isSpecialMeal ?
+        isSpecialDiet ?
         0 :
         dinnerChecked ?
         0 :
         1,
       specialDinner: dayjs(m.date).isBefore(now.add(1, 'day')) ?
         m.specialDinner :
-        !isSpecialMeal ?
+        !isSpecialDiet ?
         0 :
         dinnerChecked ?
         0 :
@@ -138,7 +173,21 @@ export const MealsUserPlanning = (
       >
         <VStack spacing={0} justifyContent={'center'}>
           <Box>Période</Box>
-          <Checkbox size="lg" mx={'auto'} p={2} colorScheme={'orange'} />
+          <Checkbox
+            size="lg"
+            mx={'auto'}
+            p={2}
+            colorScheme={'orange'}
+            isChecked={breakfastChecked && dinnerChecked && lunchChecked}
+            onChange={_ =>
+              setMealsData(
+                handleAllMealChange(
+                  breakfastChecked && dinnerChecked && lunchChecked,
+                  mealsData,
+                  now
+                )
+              )}
+          />
         </VStack>
       </Text>
       <Text
