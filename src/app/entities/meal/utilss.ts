@@ -26,7 +26,7 @@ export const periodCheckChecked = (
       isTooLate(meal.date)
       || meal.id === undefined
       || (meal.regularLunch !== null && meal.regularLunch !== undefined && meal.regularLunch > 0)
-      || (meal.specialDinner !== null && meal.specialDinner !== undefined && meal.specialDinner > 0)
+      || (meal.specialLunch !== null && meal.specialLunch !== undefined && meal.specialLunch > 0)
     )
   } else if (mealType === 'dinner') {
     return mealsData.every(meal =>
@@ -36,5 +36,6 @@ export const periodCheckChecked = (
       || (meal.specialDinner !== null && meal.specialDinner !== undefined && meal.specialDinner > 0)
     )
   }
+  console.error('Invalid meal type')
   return true
 }

@@ -4,12 +4,12 @@ import type { IMeal } from 'app/shared/model/meal.model'
 import { getDateKey } from 'app/shared/util/date-utils'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { FaUtensils } from 'react-icons/fa'
 
 import { Day } from './day'
 import { Months } from './months'
-import { periodCheckChecked } from './utils'
+import { periodCheckChecked } from './utilss'
 
 interface IProps {
   date: Dayjs
@@ -17,6 +17,7 @@ interface IProps {
   numberOfDays: number
   mealsData: IMeal[]
   setMealsData: (mealsData: IMeal[]) => void
+  isSpecialMeal: boolean
 }
 
 /**
@@ -28,7 +29,7 @@ interface IProps {
  *  - Repas du soir.
  */
 export const MealsUserPlanning = (
-  { date, totalDays, numberOfDays, mealsData, setMealsData }: IProps
+  { date, totalDays, numberOfDays, mealsData, setMealsData, isSpecialMeal }: IProps
 ) => {
   // On souhaite afficher 31 jours => Tableau de 31 élements.
   const monthDays = Array.from({ length: numberOfDays })
@@ -45,24 +46,22 @@ export const MealsUserPlanning = (
   const dinnerChecked = periodCheckChecked('dinner', mealsData)
 
   const lunchChecked = periodCheckChecked('lunch', mealsData)
+  const now = dayjs()
 
-  const handleBreakfastChange = (breakfastChecked: boolean, mealsData: IMeal[]): IMeal[] => {
-    const now = dayjs()
+  const handleBreakfastChange = (
+    breakfastChecked: boolean,
+    mealsData: IMeal[],
+    now: Dayjs
+  ): IMeal[] =>
     // @ts-expect-error : TODO : corriger le type de mealsData
-    return mealsData.map(m => ({
+    mealsData.map(m => ({
       ...m,
       breakfast: dayjs(m.date).isBefore(now.add(1, 'day')) ? m.breakfast : breakfastChecked ? 0 : 1
     }))
-  }
-  const [isSpecialMeal, setIsSpecialMeal] = useState(
-    mealsData.some(m => m.specialLunch === 1 || m.specialDinner === 1)
-  )
 
-  const handleLunchChange = (lunchChecked: boolean, mealsData: IMeal[]): IMeal[] => {
-    const now = dayjs()
-
+  const handleLunchChange = (lunchChecked: boolean, mealsData: IMeal[], now: Dayjs): IMeal[] =>
     // @ts-expect-error : TODO : corriger le type de mealsData
-    return mealsData.map(m => ({
+    mealsData.map(m => ({
       ...m,
       regularLunch: dayjs(m.date).isBefore(now.add(1, 'day')) ?
         m.regularLunch :
@@ -79,13 +78,10 @@ export const MealsUserPlanning = (
         0 :
         1
     }))
-  }
-
-  const handleDinnerChange = (dinnerChecked: boolean, mealsData: IMeal[]): IMeal[] => {
-    const now = dayjs()
-
+  console.log('mealData', mealsData)
+  const handleDinnerChange = (dinnerChecked: boolean, mealsData: IMeal[], now: Dayjs): IMeal[] =>
     // @ts-expect-error : TODO : corriger le type de mealsData
-    return mealsData.map(m => ({
+    mealsData.map(m => ({
       ...m,
       regularDinner: dayjs(m.date).isBefore(now.add(1, 'day')) ?
         m.regularDinner :
@@ -102,13 +98,6 @@ export const MealsUserPlanning = (
         0 :
         1
     }))
-  }
-
-  // useEffect(() => {
-  //   setBreakfastChecked(periodCheckChecked('breakfast', mealsData))
-  //   setLunchChecked(periodCheckChecked('lunch', mealsData))
-  //   setDinnerChecked(periodCheckChecked('dinner', mealsData))
-  // }, [mealsData.map(m => m.breakfast)])
 
   return (
     <Grid
@@ -195,7 +184,7 @@ export const MealsUserPlanning = (
           mx={'auto'}
           p={2}
           colorScheme={'orange'}
-          onChange={_ => setMealsData(handleBreakfastChange(breakfastChecked, mealsData))}
+          onChange={_ => setMealsData(handleBreakfastChange(breakfastChecked, mealsData, now))}
           isChecked={breakfastChecked}
           isDisabled={periodCheckDisabled}
         />
@@ -240,7 +229,7 @@ export const MealsUserPlanning = (
           mx={'auto'}
           p={2}
           colorScheme={'orange'}
-          onChange={_ => setMealsData(handleLunchChange(lunchChecked, mealsData))}
+          onChange={_ => setMealsData(handleLunchChange(lunchChecked, mealsData, now))}
           isChecked={lunchChecked}
           isDisabled={periodCheckDisabled}
         />
@@ -288,7 +277,7 @@ export const MealsUserPlanning = (
           mx={'auto'}
           p={2}
           colorScheme={'orange'}
-          onChange={_ => setMealsData(handleDinnerChange(dinnerChecked, mealsData))}
+          onChange={_ => setMealsData(handleDinnerChange(dinnerChecked, mealsData, now))}
           isChecked={dinnerChecked}
           isDisabled={periodCheckDisabled}
         />

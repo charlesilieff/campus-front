@@ -7,6 +7,7 @@ import {
   Input,
   Stack,
   Text,
+  Tooltip,
   useToast,
   VStack
 } from '@chakra-ui/react'
@@ -204,6 +205,7 @@ export const MealTable = () => {
       setEndDate(O.some(dayjs(e)))
     }
   }
+  const isSpecialMeal = mealsData.some(m => !(m.regularDinner === 1))
 
   return (
     <>
@@ -256,11 +258,27 @@ export const MealTable = () => {
           numberOfDays={numberOfDays}
           mealsData={mealsData}
           setMealsData={handleSetMealsData}
+          isSpecialMeal={isSpecialMeal}
         />
         <VStack m={4} spacing={8} justifyContent={'center'}>
-          <Checkbox size={'lg'} fontWeight={'bold'} colorScheme={'orange'}>
-            Régime sans gluten/lactose
-          </Checkbox>
+          <Tooltip
+            label="Utilisez la page de gestion de votre réservation pour changer de type de régime."
+            hasArrow
+            placement="auto-start"
+          >
+            <span>
+              <Checkbox
+                size={'lg'}
+                fontWeight={'bold'}
+                colorScheme={'orange'}
+                isDisabled
+                isChecked={isSpecialMeal}
+              >
+                Régime sans gluten/lactose
+              </Checkbox>
+            </span>
+          </Tooltip>
+
           <ConfirmationUpdateMealsModal
             mealsData={mealsData}
             setRefreshing={setRefreshing}

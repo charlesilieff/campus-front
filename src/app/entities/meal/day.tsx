@@ -9,7 +9,7 @@ import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 
 import type { IMealsNumber } from './IMealsNumber'
-import type { MealType } from './utils'
+import type { MealType } from './utilss'
 
 interface IProps {
   positionX: number
