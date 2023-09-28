@@ -42,6 +42,7 @@ export const MealTable = () => {
   const [mealsData, setMealsData] = useState([] as IMeal[])
   const [numberOfDays, setNumberOfDays] = useState(31)
   const [isMealDataUpdated, setIsMealDataUpdated] = useState(true)
+  const [isSpecialDiet, setIsSpecialDiet] = useState(false)
   const handleSetMealsData = (mealsData: IMeal[]) => {
     setMealsData(mealsData)
     setIsMealDataUpdated(false)
@@ -87,10 +88,11 @@ export const MealTable = () => {
       const requestUrl = `${apiUrlMealsDateFor31DaysByUser}/customer-id/${customerId}/date/${
         startDate.format('YYYY-MM-DD')
       }`
-      const { data } = await axios.get<IMeal[]>(requestUrl)
+      const { data } = await axios.get<[IMeal[], boolean]>(requestUrl)
 
-      setMealsData(data)
+      setMealsData(data[0])
       setRefreshing(false)
+      setIsSpecialDiet(data[1])
     }
     pipe(customerId, O.map(customerId => getMealsDateFor31DaysByUser(date, customerId)))
   }, [date, refreshing])
@@ -205,10 +207,6 @@ export const MealTable = () => {
       setEndDate(O.some(dayjs(e)))
     }
   }
-  const isSpecialMeal = useMemo(
-    () => mealsData.some(m => !(m.regularDinner === 1) || !(m.regularLunch === 1)),
-    []
-  )
 
   return (
     <>
@@ -261,7 +259,7 @@ export const MealTable = () => {
           numberOfDays={numberOfDays}
           mealsData={mealsData}
           setMealsData={handleSetMealsData}
-          isSpecialMeal={isSpecialMeal}
+          isSpecialMeal={isSpecialDiet}
         />
         <VStack m={4} spacing={8} justifyContent={'center'}>
           <Tooltip
@@ -275,7 +273,7 @@ export const MealTable = () => {
                 fontWeight={'bold'}
                 colorScheme={'orange'}
                 isDisabled
-                isChecked={isSpecialMeal}
+                isChecked={isSpecialDiet}
               >
                 Régime sans gluten/lactose
               </Checkbox>
