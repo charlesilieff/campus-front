@@ -9,7 +9,7 @@ import { FaUtensils } from 'react-icons/fa'
 
 import { Day } from './day'
 import { Months } from './months'
-import { periodCheckChecked } from './utilss'
+import { periodCheckChecked } from './utils'
 
 interface IProps {
   date: Dayjs
@@ -78,7 +78,7 @@ export const MealsUserPlanning = (
         0 :
         1
     }))
-  console.log('mealData', mealsData)
+
   const handleDinnerChange = (dinnerChecked: boolean, mealsData: IMeal[], now: Dayjs): IMeal[] =>
     // @ts-expect-error : TODO : corriger le type de mealsData
     mealsData.map(m => ({

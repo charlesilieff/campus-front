@@ -36,6 +36,6 @@ export const periodCheckChecked = (
       || (meal.specialDinner !== null && meal.specialDinner !== undefined && meal.specialDinner > 0)
     )
   }
-  console.error('Invalid meal type')
+
   return true
 }

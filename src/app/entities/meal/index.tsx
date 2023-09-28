@@ -21,7 +21,7 @@ import axios from 'axios'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import { Option as O, pipe, ReadonlyArray as A } from 'effect'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { FaCalendar, FaCaretLeft, FaCaretRight } from 'react-icons/fa'
 
 import { ConfirmationUpdateMealsByPeriodModal } from './confirmationUpdateMealsByPeriodeModal'
@@ -205,7 +205,10 @@ export const MealTable = () => {
       setEndDate(O.some(dayjs(e)))
     }
   }
-  const isSpecialMeal = mealsData.some(m => !(m.regularDinner === 1))
+  const isSpecialMeal = useMemo(
+    () => mealsData.some(m => !(m.regularDinner === 1) || !(m.regularLunch === 1)),
+    []
+  )
 
   return (
     <>
