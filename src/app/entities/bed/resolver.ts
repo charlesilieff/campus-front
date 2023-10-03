@@ -1,3 +1,4 @@
+import * as Match from '@effect/match'
 import * as AST from '@effect/schema/AST'
 import type * as ParseResult from '@effect/schema/ParseResult'
 import * as Schema from '@effect/schema/Schema'
@@ -6,7 +7,6 @@ import { ReadonlyRecord as RR } from 'effect'
 import { Either as E } from 'effect'
 import { Option as O } from 'effect'
 import { ReadonlyArray as A } from 'effect'
-import * as Match from 'effect'
 import { apply } from 'effect/Function'
 
 type Entry = [string, { readonly message: string }]
@@ -16,16 +16,14 @@ const getExamples = AST.getAnnotation<AST.ExamplesAnnotation>(AST.MessageAnnotat
 
 const buildError = (error: ParseResult.ParseErrors, path = [] as string[]): Array<Entry> =>
   pipe(
-    Match.Match.value(error),
-    Match.Match.tag('Key', e =>
-      A.flatMap(e.errors, _ => buildError(_, A.append(path, String(e.key))))),
-    Match.Match.tag(
+    Match.value(error),
+    Match.tag('Key', e => A.flatMap(e.errors, _ => buildError(_, A.append(path, String(e.key))))),
+    Match.tag(
       'Index',
-      e =>
-        A.flatMap(e.errors, _ => buildError(_, A.append(path, String(e.index))))
+      e => A.flatMap(e.errors, _ => buildError(_, A.append(path, String(e.index))))
     ),
-    Match.Match.tag('UnionMember', e => A.flatMap(e.errors, _ => buildError(_, path))),
-    Match.Match.tag('Type', _ => [
+    Match.tag('UnionMember', e => A.flatMap(e.errors, _ => buildError(_, path))),
+    Match.tag('Type', _ => [
       [A.join([_.expected.annotations['@effect/schema/TitleAnnotationId'] as string], '.'), {
         message: pipe(
           _.message,
@@ -41,13 +39,13 @@ const buildError = (error: ParseResult.ParseErrors, path = [] as string[]): Arra
         )
       }] as Entry
     ]),
-    Match.Match.tag('Missing', _ => [[A.join(path, '.'), { message: 'Missing' }] as Entry]),
-    Match.Match.tag('Forbidden', _ => [[A.join(path, '.'), { message: 'Forbidden' }] as Entry]),
-    Match.Match.tag(
+    Match.tag('Missing', _ => [[A.join(path, '.'), { message: 'Missing' }] as Entry]),
+    Match.tag('Forbidden', _ => [[A.join(path, '.'), { message: 'Forbidden' }] as Entry]),
+    Match.tag(
       'Unexpected',
       _ => [[A.join(path, '.'), { message: `Unexpected value: ${_.actual}` }] as Entry]
     ),
-    Match.Match.exhaustive
+    Match.exhaustive
   )
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

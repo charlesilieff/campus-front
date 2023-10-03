@@ -65,7 +65,7 @@ export const authenticate = createAsyncThunk(
   'authentication/login',
   async (auth: AuthParams) =>
     pipe(
-      S.encodeResult(AuthParams)(auth),
+      S.encode(AuthParams)(auth),
       T.mapError(e => formatErrors(e.errors)),
       T.flatMap(b => T.promise(() => axios.post('api/authenticate', b))),
       T.runPromise
