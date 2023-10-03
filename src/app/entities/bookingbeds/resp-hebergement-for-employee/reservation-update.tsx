@@ -51,7 +51,7 @@ export const createMealsOnlyReservationReservationUpdateUser = (
     T.catchAll(e =>
       pipe(
         e,
-        S.parseResult(AxiosError),
+        S.parse(AxiosError),
         T.flatMap(e => T.fail(console.log(e.code)))
       )
     )
@@ -79,7 +79,7 @@ export const updateMealsOnlyReservationReservationUpdateUser = (
     T.catchAll(e =>
       pipe(
         e,
-        S.parseResult(AxiosError),
+        S.parse(AxiosError),
         T.flatMap(e => T.fail(console.log(e.code)))
       )
     )
@@ -91,7 +91,7 @@ const getReservation = (id: number): T.Effect<never, void | ParseError, MealsOnl
     T.promise(
       () => axios.get(`${apiReservation}/${id}`)
     ),
-    T.flatMap(d => S.parseResult(MealsOnlyUserReservation)(d.data))
+    T.flatMap(d => S.parse(MealsOnlyUserReservation)(d.data))
   )
 
 export const ReservationEmployeeUpdate = (): JSX.Element => {

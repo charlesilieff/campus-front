@@ -32,7 +32,7 @@ const getOnlyMealsReservationsByUserId = (
 ): T.Effect<never, ParseError, readonly MealsOnlyUserReservation[]> =>
   pipe(
     T.promise(() => axios.get(`${apiEmployeeReservations}/${userId}`)),
-    T.flatMap(d => S.parseResult(S.array(MealsOnlyUserReservation))(d.data))
+    T.flatMap(d => S.parse(S.array(MealsOnlyUserReservation))(d.data))
   )
 
 export const MyEmployeeReservations = () => {

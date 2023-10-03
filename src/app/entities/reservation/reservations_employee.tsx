@@ -25,7 +25,7 @@ export const ReservationsListEmployee = () => {
     setLoading(true)
     await pipe(
       getEmployeeReservations,
-      T.flatMap(d => S.parseResult(S.array(MealsOnlyUserReservation))(d.data)),
+      T.flatMap(d => S.parse(S.array(MealsOnlyUserReservation))(d.data)),
       T.mapError(e => formatErrors(e.errors)),
       T.map(setReservations),
       T.tap(() => T.succeed(setLoading(false))),

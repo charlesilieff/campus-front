@@ -11,6 +11,9 @@ dependencies:
   '@chakra-ui/react':
     specifier: 2.8.1
     version: 2.8.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.15)(framer-motion@10.16.4)(react-dom@18.2.0)(react@18.2.0)
+  '@effect/match':
+    specifier: ^0.37.0
+    version: 0.37.0(effect@2.0.0-next.42)
   '@effect/schema':
     specifier: 0.39.2
     version: 0.39.2(effect@2.0.0-next.42)
@@ -1675,6 +1678,14 @@ packages:
     dependencies:
       '@babel/core': 7.22.20
     dev: true
+
+  /@effect/match@0.37.0(effect@2.0.0-next.42):
+    resolution: {integrity: sha512-Nm7qhO3KTSdey8y5hPNDtXeegUnTPg1ro0esf39A1VdF24sFpMSM/bnSxTgGk42mmor/HImiav20+pBsVLaI6A==}
+    peerDependencies:
+      effect: 2.0.0-next.42
+    dependencies:
+      effect: 2.0.0-next.42
+    dev: false
 
   /@effect/schema@0.39.2(effect@2.0.0-next.42):
     resolution: {integrity: sha512-UolykyRtrg+JHflZBfHK2p+w8IgP8u6kSkTq9VIggure12/2CFvlib9vphw4fJCN8cRd3gZo4LevU4FfS+ZLxw==}
