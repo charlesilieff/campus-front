@@ -1,6 +1,7 @@
 {
   "declaration": false,
   "compilerOptions": {
+    "incremental": true,
     "strict": true,
     "composite": true,
     "skipLibCheck": true,
