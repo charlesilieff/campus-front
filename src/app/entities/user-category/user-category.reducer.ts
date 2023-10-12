@@ -28,7 +28,7 @@ const apiUrl = 'api/user-categories'
 export const getEntities = createAsyncThunk(
   'user-category/fetch_entity_list',
   async () => {
-    const requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`
+    const requestUrl = `${apiUrl}`
     return axios.get<UserCategory[]>(requestUrl)
   }
 )

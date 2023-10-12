@@ -34,7 +34,7 @@ const apiUrl = 'api/rooms'
 export const getEntities = createAsyncThunk(
   'room/fetch_entity_list',
   async () => {
-    const requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`
+    const requestUrl = `${apiUrl}`
     return getHttpEntities(requestUrl, Room)
   }
 )

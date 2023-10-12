@@ -29,7 +29,7 @@ export const getOnePlace = async (id: number | string): Promise<O.Option<PlaceWi
 
 export const getPlacesWithoutImage = async (): Promise<ReadonlyArray<PlaceEncoded>> => {
   const apiUrlPlacesWithoutImage = 'api/places/noimage'
-  const requestUrl = `${apiUrlPlacesWithoutImage}?cacheBuster=${new Date().getTime()}`
+  const requestUrl = `${apiUrlPlacesWithoutImage}`
   const { data } = await axios.get<PlaceEncoded[]>(requestUrl)
 
   return data

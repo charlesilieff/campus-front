@@ -14,7 +14,7 @@ export const PlaceMenu = () => {
   const [place, setPlace] = useState(O.none<Place>())
 
   const getPlaces = async () => {
-    const requestUrl = `${apiUrlPlacesWithoutImage}?cacheBuster=${new Date().getTime()}`
+    const requestUrl = `${apiUrlPlacesWithoutImage}`
     const { data } = await axios.get<Place[]>(requestUrl)
 
     setPlaces(data)
@@ -23,7 +23,7 @@ export const PlaceMenu = () => {
   }
 
   const getOnePlace = async (id: string) => {
-    const requestUrl = `${apiUrlPlaces}/${id}?cacheBuster=${new Date().getTime()}`
+    const requestUrl = `${apiUrlPlaces}/${id}`
     const { data } = await axios.get<Place>(requestUrl)
     setPlace(O.some(data))
   }

@@ -30,7 +30,7 @@ const apiUrl = 'api/beds'
 export const getEntities = createAsyncThunk(
   'bed/fetch_entity_list',
   async () => {
-    const requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`
+    const requestUrl = `${apiUrl}`
     return getHttpEntities(requestUrl, Bed)
   }
 )
