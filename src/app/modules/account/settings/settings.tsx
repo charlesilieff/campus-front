@@ -16,9 +16,8 @@ import { useAppDispatch, useAppSelector } from 'app/config/store'
 import { schemaResolver } from 'app/entities/bed/resolver'
 import { hasAnyAuthority } from 'app/shared/auth/private-route'
 import { getSession } from 'app/shared/reducers/authentication'
-import { Option as O } from 'effect'
-import { pipe } from 'effect'
-import React, { useEffect } from 'react'
+import { Option as O, pipe } from 'effect'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaSave } from 'react-icons/fa'
 
@@ -35,6 +34,7 @@ type UserForm = S.Schema.To<typeof UserForm>
 
 export const Settings = () => {
   const toast = useToast()
+  const [isLoading, setIsLoading] = useState(false)
   const {
     handleSubmit,
     register,
@@ -69,9 +69,11 @@ export const Settings = () => {
         isClosable: true
       })
     }
+    setIsLoading(false)
   }, [successMessage])
 
   const handleValidSubmit = (values: UserForm) => {
+    setIsLoading(true)
     pipe(
       account,
       O.map(a => ({
@@ -197,6 +199,7 @@ export const Settings = () => {
               variant="save"
               type="submit"
               leftIcon={<FaSave />}
+              isLoading={isLoading}
             >
               Sauvegarder
             </Button>
