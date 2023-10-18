@@ -27,7 +27,7 @@ export const UserManagementUpdate = () => {
   const [authoritiesSelected, setAuthoritiesSelected] = React.useState<readonly Authorities[]>([])
   const currentUser = pipe(
     useAppSelector(state => state.authentication.account),
-    O.map(a => a.login),
+    O.map(a => a.username),
     O.getOrElse(() => '')
   )
   const dispatch = useAppDispatch()

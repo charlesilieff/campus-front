@@ -29,7 +29,7 @@ export const MyHabitantReservations = () => {
 
   const userId = pipe(
     account,
-    O.flatMap(account => account.id)
+    O.map(account => account.id)
   )
 
   const reservationList = useAppSelector(state => state.reservation.entities)

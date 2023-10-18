@@ -32,7 +32,7 @@ export const MyIntermittentReservations = () => {
   )
   const userId = pipe(
     account,
-    O.flatMap(a => a.id)
+    O.map(a => a.id)
   )
 
   const reservationList = useAppSelector(state => state.reservation.entities)

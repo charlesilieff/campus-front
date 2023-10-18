@@ -53,7 +53,7 @@ export const MealTable = () => {
 
   const dispatch = useAppDispatch()
 
-  const userId = O.flatMap(account, a => a.id)
+  const userId = O.map(account, a => a.id)
   const customerId = O.flatMap(account, a => a.customerId)
 
   const reservationList = pipe(

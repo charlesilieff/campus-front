@@ -1,13 +1,11 @@
 import { useAppSelector } from 'app/config/store'
 import { ErrorBoundary } from 'app/shared/error/error-boundary'
-import { Option as O } from 'effect'
-import { ReadonlyArray as A } from 'effect'
-import { pipe } from 'effect'
+import { Option as O, pipe, ReadonlyArray as A } from 'effect'
 import React from 'react'
 import type { PathRouteProps } from 'react-router-dom'
 import { Navigate, useLocation } from 'react-router-dom'
 
-import type { Authorities, User } from '../model/user.model'
+import type { Authorities, JwtTokenPayload } from '../model/user.model'
 
 interface IOwnProps extends PathRouteProps {
   hasAnyAuthorities?: Authorities[]
@@ -57,7 +55,10 @@ export const PrivateRoute = ({ children, hasAnyAuthorities = [], ...rest }: IOwn
   )
 }
 
-export const hasAnyAuthority = (user: O.Option<User>, hasAnyAuthorities: Authorities[]) =>
+export const hasAnyAuthority = (
+  user: O.Option<JwtTokenPayload>,
+  hasAnyAuthorities: Authorities[]
+) =>
   pipe(
     user,
     O.map(u => pipe(u.authorities, A.some(d => A.contains(hasAnyAuthorities, d)))),

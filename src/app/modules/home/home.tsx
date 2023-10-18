@@ -118,7 +118,7 @@ export const Home = (): JSX.Element => {
         </Box>
         {pipe(
           account,
-          O.map(a => a.login),
+          O.map(a => a.username),
           O.map(login => (
             <Box backgroundColor={'blue.100'} p={5} key="0">
               Vous êtes connecté comme {login}.

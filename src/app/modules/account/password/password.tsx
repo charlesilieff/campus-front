@@ -82,7 +82,7 @@ export const Password = () => {
       {O.isSome(account) ?
         (
           <VStack>
-            <Heading size="md">Mot de passe pour {account.value.login}</Heading>
+            <Heading size="md">Mot de passe pour {account.value.username}</Heading>
 
             <VStack p={8}>
               <form

@@ -25,7 +25,11 @@ export const Months: FunctionComponent<IProps> = ({ month, date, totalDays, numb
 
   // Position de fin vertical des cases. Si c'est le deuxième mois (month = 1), la postion est absolu à la fin (endTable)
 
-  const gridColumnEnd = remainingDays < 4 ? offSet + remainingDays : endTable
+  const gridColumnEnd = month === 1 ?
+    endTable :
+    numberOfDays === 7 ?
+    endTable :
+    offSet + remainingDays
 
   return (
     <Text

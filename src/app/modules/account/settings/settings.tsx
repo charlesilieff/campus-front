@@ -77,7 +77,10 @@ export const Settings = () => {
     pipe(
       account,
       O.map(a => ({
-        ...a,
+        id: a.id,
+        authorities: a.authorities,
+        customerId: a.customerId,
+        username: a.username,
         firstName: O.some(values.firstName),
         lastName: O.some(values.lastName),
         email: values.email,
@@ -106,7 +109,7 @@ export const Settings = () => {
   return (
     <VStack>
       <Heading size={'md'}>
-        Modifier utilisateur {pipe(account, O.map(a => a.login), O.getOrUndefined)}
+        Modifier utilisateur {pipe(account, O.map(a => a.username), O.getOrUndefined)}
       </Heading>
       <form
         onSubmit={handleSubmit(handleValidSubmit)}

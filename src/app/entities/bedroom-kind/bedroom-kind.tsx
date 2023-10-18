@@ -88,7 +88,6 @@ export const BedroomKind = () => {
                     {O.getOrNull(bedroomKind.description)}
                   </Td>
                   <Td>
-                    (
                     <HStack justifyContent={'flex-end'} spacing={0}>
                       <Button
                         as={Link}
@@ -115,7 +114,6 @@ export const BedroomKind = () => {
                         bedroomKindId={bedroomKind.id}
                       />
                     </HStack>
-                    )
                   </Td>
                 </Tr>
               ))}

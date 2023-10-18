@@ -54,7 +54,7 @@ export const OneBedReservationUpdate = (): JSX.Element => {
 
   const userId = pipe(
     account,
-    O.flatMap(account => account.id)
+    O.map(account => account.id)
   )
 
   const handleSubmitReservation = async (

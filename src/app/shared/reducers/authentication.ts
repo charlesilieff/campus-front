@@ -7,7 +7,7 @@ import type { AxiosResponse } from 'axios'
 import axios from 'axios'
 import { Effect as T, Option as O, pipe } from 'effect'
 
-import { User } from '../model/user.model'
+import { JwtTokenPayload } from '../model/user.model'
 import { Storage } from '../util/storage-util'
 import { serializeAxiosError } from './reducer.utils'
 
@@ -19,7 +19,7 @@ export const initialState = {
   loginSuccess: false,
   loginError: false, // Errors returned from server side
   showModalLogin: false,
-  account: O.none<User>(),
+  account: O.none<JwtTokenPayload>(),
   errorMessage: O.none<string>(), // Errors returned from server side
   redirectMessage: O.none<string>(),
   sessionHasBeenFetched: false,
@@ -40,7 +40,7 @@ export const getAccount = createAsyncThunk(
   async () =>
     pipe(
       T.promise(() => axios.get('api/account')),
-      T.map(d => S.parseOption(User)({ ...d.data })),
+      T.map(d => S.parseOption(JwtTokenPayload)({ ...d.data })),
       T.runPromise
     ),
   {
@@ -169,21 +169,13 @@ export const AuthenticationSlice = createSlice({
         showModalLogin: true,
         errorMessage: O.fromNullable(action.error.message)
       }))
-      .addCase(getAccount.fulfilled, (state, action) => {
-        const isAuthenticated = pipe(
-          action.payload,
-          O.map(a => a.activated),
-          O.getOrElse(() => false)
-        )
+      .addCase(getAccount.fulfilled, (state, action) => ({
+        ...state,
 
-        return {
-          ...state,
-          isAuthenticated,
-          loading: false,
-          sessionHasBeenFetched: true,
-          account: action.payload
-        }
-      })
+        loading: false,
+        sessionHasBeenFetched: true,
+        account: action.payload
+      }))
       .addCase(authenticate.pending, state => {
         state.loading = true
       })

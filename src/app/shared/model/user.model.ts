@@ -39,9 +39,7 @@ export const User = S.struct({
   firstName: S.optional(S.string).toOption(),
   lastName: S.optional(S.string).toOption(),
   email: S.string,
-  imageUrl: S.optional(S.string).toOption(),
   activated: S.boolean,
-  langKey: S.string,
   createdBy: S.string,
   lastModifiedBy: S.string,
   lastModifiedDate: S.optional(FormatLocalDateTime).toOption(),
@@ -52,3 +50,16 @@ export const User = S.struct({
 
 export type UserEncoded = S.Schema.From<typeof User>
 export type User = S.Schema.To<typeof User>
+
+export const JwtTokenPayload = S.struct({
+  id: S.number,
+  username: S.string,
+  authorities: S.array(Authorities),
+  customerId: S.optional(S.number).toOption(),
+  firstName: S.optional(S.string).toOption(),
+  receiveMailReservation: S.optional(S.boolean).toOption(),
+  lastName: S.optional(S.string).toOption(),
+  email: S.string
+})
+
+export interface JwtTokenPayload extends S.Schema.To<typeof JwtTokenPayload> {}

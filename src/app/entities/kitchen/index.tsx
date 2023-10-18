@@ -172,8 +172,6 @@ export const Index = () => {
             </Button>
           </HStack>
         </Stack>
-
-        {/* <MealsPlanning date={date} totalDays={totalDays} numberOfDays={numberOfDays} /> */}
         <MealsPlanning date={date} totalDays={totalDays} numberOfDays={numberOfDays} />
       </Box>
       {displayTotalMeals(resultTotalMeals)}
