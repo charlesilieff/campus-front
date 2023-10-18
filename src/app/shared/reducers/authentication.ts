@@ -86,7 +86,7 @@ export const login: (
 ) =>
 async dispatch => {
   const result = await dispatch(authenticate({ username, password, rememberMe }))
-
+  console.log(result)
   const response = result.payload as AxiosResponse<IdToken>
 
   if (response) {
@@ -171,7 +171,7 @@ export const AuthenticationSlice = createSlice({
       }))
       .addCase(getAccount.fulfilled, (state, action) => ({
         ...state,
-
+        isAuthenticated: true,
         loading: false,
         sessionHasBeenFetched: true,
         account: action.payload
