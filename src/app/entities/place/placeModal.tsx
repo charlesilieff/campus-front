@@ -26,7 +26,7 @@ export const PlaceModal = (place: Place) => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            {`${place.name} ${place.comment}`}
+            {`${place.name} ${O.getOrNull(place.comment)}`}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>

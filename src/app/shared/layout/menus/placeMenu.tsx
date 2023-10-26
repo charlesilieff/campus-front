@@ -1,6 +1,7 @@
 import { HStack, Select } from '@chakra-ui/react'
 import { PlaceModal } from 'app/entities/place/placeModal'
-import type { Place } from 'app/shared/model/place.model'
+import { Place } from 'app/shared/model/place.model'
+import { getHttpEntity } from 'app/shared/util/httpUtils'
 import axios from 'axios'
 import { Option as O } from 'effect'
 import { pipe } from 'effect'
@@ -24,8 +25,9 @@ export const PlaceMenu = () => {
 
   const getOnePlace = async (id: string) => {
     const requestUrl = `${apiUrlPlaces}/${id}`
-    const { data } = await axios.get<Place>(requestUrl)
-    setPlace(O.some(data))
+    const place = await getHttpEntity(requestUrl, Place)
+    console.log(place)
+    setPlace(place)
   }
 
   useEffect(() => {
