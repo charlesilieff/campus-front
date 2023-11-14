@@ -24,9 +24,10 @@ export const OneBedReservationDatesAndMeals = pipe(
     commentMeals: S.optional(S.string).toOption()
   }),
   S.filter(d => d.arrivalDate <= d.departureDate, {
-    title: 'arrivalDate',
-    message: input =>
-      `La date d'arrivée doit être avant la date de départ: ${input.departureDate.toLocaleDateString()}.`
+    title: 'departureDate',
+    message(input) {
+      return `La date de départ doit être avant la date d'arrivée: ${input.arrivalDate.toLocaleDateString()}.`
+    }
   })
 )
 export type OneBedReservationDatesAndMeals = S.Schema.To<typeof OneBedReservationDatesAndMeals>

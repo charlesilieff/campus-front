@@ -106,7 +106,6 @@ export const OneBedReservationUpdate = (): JSX.Element => {
   }, [])
 
   useEffect(() => {
-    console.log('bbbb', backendCustomer)
     if (O.isSome(backendCustomer)) {
       setCustomer(O.some({
         id: backendCustomer.value.id,

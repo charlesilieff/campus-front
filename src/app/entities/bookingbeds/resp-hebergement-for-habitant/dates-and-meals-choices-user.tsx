@@ -134,7 +134,10 @@ export const DatesAndMealsChoices = (
                 />
 
                 <FormErrorMessage>
-                  {errors.departureDate && errors.departureDate.message}
+                  {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                    errors[''] && errors['']?.message
+                  }
                 </FormErrorMessage>
               </FormControl>
             </Stack>

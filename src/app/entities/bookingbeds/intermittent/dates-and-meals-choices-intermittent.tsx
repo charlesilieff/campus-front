@@ -134,7 +134,7 @@ export const DatesAndMealsChoices = (
                   </FormErrorMessage>
                 </FormControl>
 
-                <FormControl isRequired isInvalid={errors.departureDate !== undefined}>
+                <FormControl isRequired isInvalid={errors[''] !== undefined}>
                   <FormLabel htmlFor="departureDate" fontWeight={'bold'}>
                     {'Date de départ'}
                   </FormLabel>
@@ -148,7 +148,10 @@ export const DatesAndMealsChoices = (
                   />
 
                   <FormErrorMessage>
-                    {errors.departureDate && errors.departureDate.message}
+                    {
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                      errors[''] && errors['']?.message
+                    }
                   </FormErrorMessage>
                 </FormControl>
               </HStack>
