@@ -10,8 +10,8 @@ import { ReservationRequestDetail } from './entities/reservation-request/request
 import { ReservationRequestUpdate } from './entities/reservation-request/reservation-update'
 import { AccountRoutes } from './modules/account'
 import { Activate } from './modules/account/activate/activate'
+import { PasswordResetFinish } from './modules/account/password-reset/finish/password-reset-finish'
 import { PasswordResetInit } from './modules/account/password-reset/init/password-reset-init'
-import { Password } from './modules/account/password/password'
 import { RegisterPage } from './modules/account/register/register'
 import { RegisterIntermittentPage } from './modules/account/register/register-intermittent'
 import { AdministrationRoutes } from './modules/administration'
@@ -66,7 +66,7 @@ export const Routes = () => (
       <Route path="activate" element={<Activate />} />
       <Route path="reset">
         <Route path="request" element={<PasswordResetInit />} />
-        <Route path="finish" element={<Password />} />
+        <Route path="finish" element={<PasswordResetFinish />} />
       </Route>
     </Route>
     <Route path="admin">
