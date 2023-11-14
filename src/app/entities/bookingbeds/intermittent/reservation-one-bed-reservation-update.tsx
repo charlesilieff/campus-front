@@ -109,8 +109,12 @@ export const OneBedReservationUpdate = (): JSX.Element => {
     if (O.isSome(backendCustomer)) {
       setCustomer(O.some({
         id: backendCustomer.value.id,
-        firstName: O.some(backendCustomer.value.firstName),
-        lastName: O.some(backendCustomer.value.lastName),
+        firstName: backendCustomer.value.firstName.length === 0 ?
+          O.none() :
+          O.some(backendCustomer.value.firstName),
+        lastName: backendCustomer.value.lastName.length === 0 ?
+          O.none() :
+          O.some(backendCustomer.value.lastName),
         email: backendCustomer.value.email,
         phoneNumber: backendCustomer.value.phoneNumber,
         age: backendCustomer.value.age,
@@ -119,8 +123,20 @@ export const OneBedReservationUpdate = (): JSX.Element => {
     } else if (O.isSome(account)) {
       setCustomer(O.some({
         id: O.none(),
-        firstName: account.value.firstName !== undefined ? account.value.firstName : O.none(),
-        lastName: account.value.lastName !== undefined ? account.value.lastName : O.none(),
+        firstName: account.value.firstName !== undefined && pipe(
+            account.value.firstName,
+            O.map(n => n.length !== 0),
+            O.getOrElse(() => false)
+          ) ?
+          account.value.firstName :
+          O.none(),
+        lastName: account.value.lastName !== undefined && pipe(
+            account.value.lastName,
+            O.map(n => n.length !== 0),
+            O.getOrElse(() => false)
+          ) ?
+          account.value.lastName :
+          O.none(),
         email: account.value.email,
         phoneNumber: O.none(),
         age: O.none(),
