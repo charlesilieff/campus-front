@@ -93,10 +93,17 @@ export const UserManagementUpdate = () => {
   }, [updateSuccess])
 
   const saveUser = (authoritiesSelected: readonly Authorities[]) => (values: User) => {
+    console.log('user', user)
+    const userToSave = {
+      ...values,
+      // THIS IS BECAUSE StringNonEmpty encode doest not work
+      firstName: pipe(values.firstName, O.flatMap(f => f === '' ? O.none() : O.some(f))),
+      lastName: pipe(values.lastName, O.flatMap(f => f === '' ? O.none() : O.some(f)))
+    }
     if (isNew) {
-      dispatch(createUser({ ...values, authorities: authoritiesSelected }))
+      dispatch(createUser({ ...userToSave, authorities: authoritiesSelected }))
     } else {
-      dispatch(updateUser({ ...values, authorities: authoritiesSelected }))
+      dispatch(updateUser({ ...userToSave, authorities: authoritiesSelected }))
     }
   }
   const saveUserWithAuthorities = saveUser(authoritiesSelected)

@@ -1,4 +1,6 @@
+import * as PR from '@effect/schema/ParseResult'
 import * as S from '@effect/schema/Schema'
+import { Option as O } from 'effect'
 
 import { FormatLocalDateTime } from './formatLocalDate'
 
@@ -17,19 +19,19 @@ export type Authorities = S.Schema.To<typeof Authorities>
 // {firstName : "",id: 1}
 // {id: 1}
 // => {id: 1, firstName: O.none()}
-
-// export const NonEmptyString = S.transformOrFail(
-//   S.union(S.string, S.undefined),
-//   S.option(S.string),
-//   s => {
-//     console.log('NonEmptyString', s === undefined || s.length === 0)
-//     return s === undefined || s.length === 0 ? PR.success(O.none() : O.some(s))
-//   },
-//   b => {
-//     console.log('NonEmptyString encode', b)
-//     return b._tag === 'None' ? PR.success(undefined) : PR.success(b)
-//   }
-// )
+// THIS IS NOT WORKING :
+export const NonEmptyString = S.transformOrFail(
+  S.union(S.string, S.undefined),
+  S.option(S.string),
+  s => {
+    console.log('NonEmptyString', s === undefined || s.length === 0)
+    return s === undefined || s.length === 0 ? PR.success(O.none()) : PR.success(O.some(s))
+  },
+  b => {
+    console.log('NonEmptyString encode', b)
+    return b._tag === 'None' ? PR.success(undefined) : PR.success(b.value)
+  }
+)
 
 export const User = S.struct({
   createdDate: S.optional(FormatLocalDateTime).toOption(),
