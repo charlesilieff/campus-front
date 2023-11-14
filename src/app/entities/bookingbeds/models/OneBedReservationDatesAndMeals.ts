@@ -9,7 +9,7 @@ export const OneBedReservationDatesAndMeals = pipe(
       S.DateFromSelf,
       S.filter(d => dayjs(d).add(1, 'day').isAfter(dayjs()), {
         title: 'arrivalDate',
-        message: () => "La date d'arrivée doit être supérieure à la date du jour."
+        message: () => "La date d'arrivée doit être supérieure à la date d'aujourd'hui."
       })
     ),
     departureDate: S.DateFromSelf,

@@ -46,7 +46,7 @@ export const DatesAndMealsChoices = (
     formState: { errors },
     reset: resetForm
   } = useForm({ resolver: schemaResolver(OneBedReservationDatesAndMeals) })
-  console.log(errors.isDepartureLunch)
+
   useEffect(() => {
     resetForm(
       // @ts-expect-error format date is mandatory for react-hook-form
