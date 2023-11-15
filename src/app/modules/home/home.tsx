@@ -71,6 +71,12 @@ export const Home = (): JSX.Element => {
         >
           Bienvenue dans l&apos;outil de gestion d&apos;hebergement du Campus de la Transition.
         </Text>
+        <Text
+          fontWeight={'bold'}
+        >
+          Si vous constatez un problème ou un bug, merci de le signaler à l&apos;adresse suivante :
+          cilieff@gmail.com
+        </Text>
         <Box
           m={5}
         >
